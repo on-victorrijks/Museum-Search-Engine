@@ -88,6 +88,23 @@ function updateFocus(focus){
     showForm(focus);
 }
 
+function updateInfos(infos){
+    total = infos.total;
+    completed = infos.completed;
+
+    completedText.innerHTML = completed;
+    totalText.innerHTML = total;
+
+    ["colors", "content", "emotion", "luminosity"].forEach(name => {
+        const completed = infos.completed_per_focus[name];
+        const total = infos.total_per_focus[name];
+
+        const stringToDisplay = completed + ' / ' + total;
+
+        document.querySelector('#info_' + name).innerHTML = stringToDisplay;
+    });
+}
+
 function fetchTask(){
     fetch('http://127.0.0.1:5000/api/get_task/' + input_setName.value)
     .then(response => response.json())
@@ -100,14 +117,7 @@ function fetchTask(){
             info_image.src = 'http://127.0.0.1:5000/images/' + data.content.recordID;
             
             updateFocus(data.content.focus);
-
-            infos = data.infos;
-            total = infos.total;
-            completed = infos.completed;
-
-            completedText.innerHTML = completed;
-            totalText.innerHTML = total;
-
+            updateInfos(data.infos);
         } else {
             info_out.innerHTML = data.message;
         }

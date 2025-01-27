@@ -82,6 +82,7 @@ def add_row_to_output_df(output, path, recordID, category, focus, caption):
     }
     # Save the output
     output.to_csv(path, index=False)
+    output = pd.read_csv(path) # Reload the output
 
 app = Flask(__name__, static_folder='static')
 CORS(app)
@@ -143,12 +144,21 @@ def get_new_task(setName):
     
     task = dataset["tasks"].iloc[0].to_dict()
     del task["caption"]
+
+    total_per_focus = {}
+    completed_per_focus = {}
+    for focus in ["content", "emotion", "colors", "luminosity"]:
+        completed_per_focus[focus] = len(dataset["output"][dataset["output"]["focus"] == focus])
+        total_per_focus[focus] = len(dataset["tasks"][dataset["tasks"]["focus"] == focus]) + completed_per_focus[focus]
+
     return jsonify({
         "success": True,
         "content": task,
         "infos": {
             "total": len(dataset["tasks"]) + len(dataset["output"]),
-            "completed": len(dataset["output"])
+            "completed": len(dataset["output"]),
+            "total_per_focus": total_per_focus,
+            "completed_per_focus": completed_per_focus
         }
     })
 
