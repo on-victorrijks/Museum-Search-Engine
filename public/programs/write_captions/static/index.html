@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Caption Tool</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="form">
+            <h2>Caption writing interface</h2>
+
+            <div class="spacer"></div>
+
+            <h2>You have done <b id="completed">?</b> on a total of <b id="total">?</b> tasks.</h2>
+
+            <div class="spacer"></div>
+
+            <div class="infoBox">
+                <h1>Information</h1>
+                <h3 id="info_out">
+                    This box will contain error messages or information about the saving process.
+                </h3>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="inputBox">
+                <label for="setName">Set:</label>
+                <select id="setName">
+                    <option value="testing">Testing set</option>
+                    <option value="validation">Validation set</option>
+                </select>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="FocusInform">
+                <h4>You are on a search engine and your goal is to find this image.</h4>
+                <h4>Please write a short caption (a sentence maximum) that you could enter to find it.</h4>
+                <h4>Please, also focus your caption on:</h4>
+                <div class="focusBox">
+                    <div class="focusIcon">
+                        <img id="focusIcon_src"/>
+                    </div>
+                    <b id="focusText">?</b>
+                </div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="inputBox">
+                <label for="caption">Caption:</label>
+                <textarea id="caption" rows="4" placeholder="Write a caption for the image..."></textarea>
+            </div>
+
+            <div class="buttonsContainer">
+                <div class="button" id="saveButton">Save</div>
+            </div>
+
+        </div>
+
+        <div class="imageContainer">
+            <img src="" id="image"/>
+        </div>
+
+    </div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
