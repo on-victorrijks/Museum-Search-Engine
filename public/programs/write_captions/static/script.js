@@ -1,5 +1,4 @@
 const input_setName = document.querySelector('#setName');
-const input_caption = document.querySelector('#caption');
 
 const info_image = document.querySelector('#image');
 
@@ -15,10 +14,6 @@ const totalText = document.querySelector('#total');
 
 let currentData = undefined;
 
-function resetInputs(){
-    input_caption.value = '';
-}
-
 function getFocusText(focus){
     switch(focus){
         case 'content':
@@ -26,7 +21,9 @@ function getFocusText(focus){
         case 'emotion':
             return 'The emotions or feelings that the image conveys such as happiness, sadness, anger, etc.';
         case 'colors':
-            return 'The colors present in the image and the brightness or darkness of the image.';
+            return 'The tint of the images, the vividness of the colors, etc.';
+        case 'luminosity':
+            return 'The brightness or darkness of the image.';
         default:
             return 'An error occurred';
     }
@@ -35,22 +32,60 @@ function getFocusText(focus){
 function getFocusImage(focus){
     switch(focus){
         case 'content':
-            return 'assets/icon_objects.png';
+            return './static/assets/icon_objects.png';
         case 'emotion':
-            return 'assets/icon_emotions.png';
+            return './static/assets/icon_emotions.png';
         case 'colors':
-            return 'assets/icon_colors.png';
+            return './static/assets/icon_colors.png';
+        case 'luminosity':
+            return './static/assets/icon_luminosity.png';
         default:
             return '';
     }
+}
+
+function hideAllForms(){
+    ["content", "emotion", "colors", "luminosity"].forEach(name => {
+        document.querySelector('#form_' + name).style.display = 'none';
+    });
+}
+
+function unselectAllValues(){
+    // Content
+    document.querySelector('#caption').value = '';
+
+    // Emotion
+    Array.from(document.querySelector('.emotions').children).forEach(div => {
+        div.setAttribute('isSelected', 'false');
+    });
+
+    // Colors
+    Array.from(document.querySelector('.colors').children).forEach(div => {
+        div.setAttribute('isSelected', 'false');
+    });
+
+    // Luminosity
+    Array.from(document.querySelector('.luminosities').children).forEach(div => {
+        div.setAttribute('isSelected', 'false');
+    });
+}
+
+function showForm(focus){
+    document.querySelector('#form_' + focus).setAttribute('style', 'display: block;');
 }
 
 function updateFocus(focus){
     const text = getFocusText(focus);
     const image = getFocusImage(focus);
 
+    // Update explanation
     focusIcon_src.src = image;
     focusText.innerHTML = text;
+
+    // Show correct form
+    hideAllForms();
+    unselectAllValues();
+    showForm(focus);
 }
 
 function fetchTask(){
@@ -59,8 +94,6 @@ function fetchTask(){
     .then(data => {
         success = data.success;
         if(success){
-
-            resetInputs();
 
             currentData = data.content;
 
@@ -81,8 +114,43 @@ function fetchTask(){
     });
 }
 
+const focus_to_parent_div = {
+    'content': '.content',
+    'emotion': '.emotions',
+    'colors': '.colors',
+    'luminosity': '.luminosities'
+};
+
+function get_data_from_form(focus){
+    if (focus === 'content'){
+        return {
+            caption: document.querySelector('#caption').value
+        };
+    } else {
+        const selected = [];
+        Array.from(document.querySelector(focus_to_parent_div[focus]).children).forEach(div => {
+            if(div.getAttribute('isselected') === 'true'){
+                let h3_text = div.querySelector('h3').innerHTML;
+                selected.push(h3_text);
+            }
+        });
+        if (selected.length === 0){
+            return {
+                caption: 'Neutre'
+            };
+        }
+
+        return {
+            caption: selected.join(', ')
+        };
+    }
+}
+
+
 function sendCaption(){
     // POST to /api/send_caption/<string:setName>
+    const caption = get_data_from_form(currentData.focus);
+    console.log(caption);
     fetch('http://127.0.0.1:5000/api/send_caption/' + input_setName.value, {
         method: 'POST',
         headers: {
@@ -90,7 +158,7 @@ function sendCaption(){
         },
         body: JSON.stringify({
             ...currentData,
-            caption: input_caption.value
+            ...caption
         })
     }).then(response => response.json()).then(data => {
         success = data.success;
@@ -103,7 +171,36 @@ function sendCaption(){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+
+    // Content
+    // Nothing to do
+
+    // Emotion
+    Array.from(document.querySelector('.emotions').children).forEach(div => {
+        div.addEventListener('click', function(){
+            const isSelected = div.getAttribute('isSelected');
+            div.setAttribute('isSelected', isSelected === 'true' ? 'false' : 'true');
+        });
+    });
+
+    // Colors
+    Array.from(document.querySelector('.colors').children).forEach(div => {
+        div.addEventListener('click', function(){
+            const isSelected = div.getAttribute('isSelected');
+            div.setAttribute('isSelected', isSelected === 'true' ? 'false' : 'true');
+        });
+    });
+
+    // Luminosity
+    Array.from(document.querySelector('.luminosities').children).forEach(div => {
+        div.addEventListener('click', function(){
+            const isSelected = div.getAttribute('isSelected');
+            div.setAttribute('isSelected', isSelected === 'true' ? 'false' : 'true');
+        });
+    });
+
     fetchTask();
+
 });
 
 input_setName.addEventListener('change', function(){

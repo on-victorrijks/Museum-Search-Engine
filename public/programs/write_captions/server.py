@@ -60,7 +60,7 @@ def get_input_df(path):
     for index, row in data.iterrows():
         recordID = row["recordID"]
         category = row["category"]
-        for focus in ["content", "emotion", "colors"]:
+        for focus in ["content", "emotion", "colors", "luminosity"]:
             tasks.loc[len(tasks)] = {
                 "recordID": recordID,
                 "category": category,
@@ -147,7 +147,7 @@ def get_new_task(setName):
         "success": True,
         "content": task,
         "infos": {
-            "total": len(dataset["tasks"]),
+            "total": len(dataset["tasks"]) + len(dataset["output"]),
             "completed": len(dataset["output"])
         }
     })

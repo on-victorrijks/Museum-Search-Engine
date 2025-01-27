@@ -151,3 +151,84 @@ body {
     flex: 1;
     font-weight: 400;
 }
+
+.tips{
+    padding: 10px;
+    border-radius: 8px;
+    border: solid 1px #ccc;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.tip{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.tipBubble{
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background: #000000;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 8px;
+}
+.tips p {
+    font-size: 16px;
+    flex: 1;
+}
+
+
+.emotions, .colors, .luminosities {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.emotion, .color, .luminosity {
+    width: 150px;
+    height: 150px;
+    background: #ffffff;
+    border: solid 2px #ffffff;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+.emotion[isselected="true"], .color[isselected="true"], .luminosity[isselected="true"]{
+    border: solid 2px #b19d2e;
+    background-color: #fafafa;
+}
+.emotion img {
+    width: 64px;
+    height: 64px;
+    border-radius: 64px;
+}
+.emotion h3, .color h3, .luminosity h3 {
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
+}
+
+.circleColor {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #cbcbcb;
+    border: solid 1px #6a6a6a;
+}
+
+.circleLuminosity {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #cbcbcb;
+    border: solid 1px #6a6a6a;
+}

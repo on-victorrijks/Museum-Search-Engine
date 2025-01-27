@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>Caption Tool</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./static/style.css">
 </head>
 <body>
 
@@ -38,9 +38,6 @@
             <div class="spacer"></div>
 
             <div class="FocusInform">
-                <h4>You are on a search engine and your goal is to find this image.</h4>
-                <h4>Please write a short caption (a sentence maximum) that you could enter to find it.</h4>
-                <h4>Please, also focus your caption on:</h4>
                 <div class="focusBox">
                     <div class="focusIcon">
                         <img id="focusIcon_src"/>
@@ -51,13 +48,148 @@
 
             <div class="spacer"></div>
 
-            <div class="inputBox">
-                <label for="caption">Caption:</label>
-                <textarea id="caption" rows="4" placeholder="Write a caption for the image..."></textarea>
+            <div class="sForm" id="form_content" style="display: none;">
+                <div class="inputBox">
+                    <label for="caption">Caption:</label>
+                    <textarea id="caption" rows="4" placeholder="Write a caption for the image..."></textarea>
+                </div>
+            </div>
+
+            <div class="sForm" id="form_emotion" style="display: none;">
+                <div class="inputBox">
+                    <label>Emotions:</label>
+                    <div class="emotions">
+
+                        <div class="emotion" id="emotion_neutral" isSelected="false">
+                            <img src="./static/assets/emotions/neutral.png"/>
+                            <h3>Neutre</h3>
+                        </div>
+
+                        <div class="emotion" id="emotion_happiness" isSelected="false">
+                            <img src="./static/assets/emotions/happiness.png"/>
+                            <h3>Joie</h3>
+                        </div>
+
+                        <div class="emotion" id="emotion_sadness" isSelected="false">
+                            <img src="./static/assets/emotions/sadness.png"/>
+                            <h3>Tristesse</h3>
+                        </div>
+
+                        <div class="emotion" id="emotion_fear" isSelected="false">
+                            <img src="./static/assets/emotions/fear.png"/>
+                            <h3>Peur</h3>
+                        </div>
+
+                        <div class="emotion" id="emotion_disgust" isSelected="false">
+                            <img src="./static/assets/emotions/Disgust.png"/>
+                            <h3>Dégoût</h3>
+                        </div>
+
+                        <div class="emotion" id="emotion_anger" isSelected="false">
+                            <img src="./static/assets/emotions/Anger.png"/>
+                            <h3>Colère</h3>
+                        </div>
+
+                        <div class="emotion" id="emotion_surprise" isSelected="false">
+                            <img src="./static/assets/emotions/Surprise.png"/>
+                            <h3>Surprise</h3>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="sForm" id="form_colors" style="display: none;">
+                <div class="inputBox">
+                    <label>Colors:</label>
+                    <div class="colors">
+
+                        <div class="color" id="color_neutral" isSelected="false">
+                            <div class="circleColor"></div>
+                            <h3>Neutral</h3>
+                        </div>
+
+                        <div class="color" id="color_bw" isSelected="false">
+                            <div class="circleColor" style="background: linear-gradient(to right, #000000, #ffffff);"></div>
+                            <h3>Noir et blanc<br>(bicolor)</h3>
+                        </div>
+
+                        <div class="emotion" id="color_vivid" isSelected="false">
+                            <div class="circleColor" style="background: conic-gradient(#ff5733, #ffc300, #28a745, #17a2b8, #6f42c1, #ff5733);"></div>
+                            <h3>Couleurs vives</h3>
+                        </div>
+
+                        <div class="emotion" id="color_dark" isSelected="false">
+                            <div class="circleColor" style="background: conic-gradient(#4a322f, #3f522d, #2d4a4a, #2f2f4a, #4a2d4a, #4a322f);"></div>
+                            <h3>Couleurs sombres</h3>
+                        </div>
+
+                        <div class="emotion" id="color_red" isSelected="false">
+                            <div class="circleColor" style="background: linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.8));"></div>
+                            <h3>Teinte rouge</h3>
+                        </div>
+
+                        <div class="emotion" id="color_green" isSelected="false">
+                            <div class="circleColor" style="background: linear-gradient(to right, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.8));"></div>
+                            <h3>Teinte verte</h3>
+                        </div>
+                   
+                        <div class="emotion" id="color_blue" isSelected="false">
+                            <div class="circleColor" style="background: linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(0, 0, 255, 0.8));"></div>
+                            <h3>Teinte bleue</h3>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="sForm" id="form_luminosity" style="display: none;">
+                <div class="inputBox">
+                    <label>Luminosity:</label>
+                    <div class="luminosities">
+
+                        <div class="luminosity" id="luminosity_neutral" isSelected="false">
+                            <div class="circleLuminosity"></div>
+                            <h3>Neutre</h3>
+                        </div>
+
+                        <div class="luminosity" id="luminosity_bright" isSelected="false">
+                            <div class="circleLuminosity" style="background: #fff;"></div>
+                            <h3>Lumineux</h3>
+                        </div>
+
+                        <div class="luminosity" id="luminosity_dark" isSelected="false">
+                            <div class="circleLuminosity" style="background: #000;"></div>
+                            <h3>Sombre</h3>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <div class="buttonsContainer">
                 <div class="button" id="saveButton">Save</div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="tips">
+                <div class="tip">
+                    <div class="tipBubble"></div>
+                    <p>Be concise and specific.</p>
+                </div>
+                <div class="tip">
+                    <div class="tipBubble"></div>
+                    <p>If an image does not evoke any emotion, you can add use the term "neutre" to define it.</p>
+                </div>
+                <div class="tip">
+                    <div class="tipBubble"></div>
+                    <p>Focus on the main objects or actions in the image.</p>
+                </div>
+                <div class="tip">
+                    <div class="tipBubble"></div>
+                    <p>Do not include irrelevant information.</p>
+                </div>
             </div>
 
         </div>
@@ -69,6 +201,6 @@
     </div>
 
 
-  <script src="script.js"></script>
+  <script src="./static/script.js"></script>
 </body>
 </html>
