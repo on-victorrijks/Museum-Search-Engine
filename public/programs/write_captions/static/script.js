@@ -11,6 +11,7 @@ const info_out = document.querySelector('#info_out');
 
 const completedText = document.querySelector('#completed');
 const totalText = document.querySelector('#total');
+const percentageText = document.querySelector('#percentage');
 
 let currentData = undefined;
 
@@ -94,6 +95,8 @@ function updateInfos(infos){
 
     completedText.innerHTML = completed;
     totalText.innerHTML = total;
+    percentageText.innerHTML = Math.round(completed / total * 100, 3);
+    
 
     ["colors", "content", "emotion", "luminosity"].forEach(name => {
         const completed = infos.completed_per_focus[name];
