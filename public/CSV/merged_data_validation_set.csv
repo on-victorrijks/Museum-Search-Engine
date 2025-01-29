@@ -1,0 +1,964 @@
+recordID,category,focus,caption,length_tokenization
+5002,Tableau,luminosity,"Une fête, un repas, une foule en intérieur, des enfants qui jouent, richesse, Lumineux",30
+10900,Tableau,luminosity,"Une femme joue du piano, elle lit une partition, la fenêtre est ouverte, on voit une branche avec des feuilles vertes, Lumineux",36
+5510,Dessin,luminosity,"Un adolescente est assise contre le mur, elle regarde vers le haut, elle réfléchit, Sombre",28
+4576,Tableau,content,"Un paysage avec un ciel nuageux, un lac en fond et un arbre en avant plan",22
+7689,Tableau,emotion,"Des hommes barbus et moustachus qui discutent, costumes, journal, discussion, débat, Peur",26
+7689,Tableau,emotion,"Des hommes barbus et moustachus qui discutent, costumes, journal, discussion, débat, Colère",26
+4168,Tableau,luminosity,"Une barrière dans un champ, des prairies, le ciel nuageux, Sombre",20
+4988,Tableau,luminosity,"Plusieurs personnes, des chevaux, un puit, un chateau en fond, des arbres, une montagne, promenade, convoi, Lumineux",35
+5101,Tableau,content,"Un musicien joue de la guitare, il est assis, il a une moustache et il est jeune",25
+10869,Dessin,colors,"Un prêtre prononce un sermon les mains écartées et le regard tourné vers le ciel, Bicolor, Teinte rouge",31
+7615,Tableau,content,"Un portrait d'un homme avec un chapeau noir et un habt noir, une rose derrière, moustache, ciel et batiment",31
+10835,Dessin,content,"Un vieil homme barbu, musclé, un baton dans la main",16
+6146,Tableau,colors,"Un homme, contre une charette, une femme assise sur l'herbe, un enfant avec un fleur, une femme avec un nourisson, Couleurs vives, Teinte verte",44
+2438,Tableau,luminosity,"Un bal en intérieur, une table remplie de plats, richesse, des personnes qui dansent, robes, soirée, fête, Lumineux",39
+959,Tableau,colors,"Un portrait d'une femme avec un habit bleu et blanc, elle a ses cheveux attachés, une rose dans la main, un médaillon en or, Neutral",36
+4320,Tableau,content,"Un panier avec pommes sur une table avec une tasse, des fleurs dans un vase rouge, des livres, du papier peint",31
+6090,Dessin,emotion,"Un portrait d'un homme avec un monocle, il est bien habillé, il a une moustache et des cheveux dégarni, émotion neutre",36
+579,Tableau,colors,"Portrait d'une jeune femme avec des cheveux noirs, robe blanche, pomme dans une main, maquillage, Noir et blanc",31
+10351,Dessin,colors,"Un dessin d'un personnage couché avec un habit ample sur lui, Noir et blanc",22
+4566,Tableau,emotion,"Un ruelle le soir, un lampadaire éclaire faiblement, une figure noire, Peur",23
+6258,Tableau,content,Une femme de dos dans une forêt qui marche entre les arbres,15
+5291,Dessin,luminosity,"Une femme est assise à côté d'un mur, elle porte une robe blanche, elle tient ses mains, Sombre",28
+3688,Tableau,emotion,"Une statut de Jésus entouré de bouquets de fleurs, trois bouquets de fleurs, Tristesse",28
+1655,Tableau,luminosity,"Un table avec deux poissons morts, des pommes, citron, poire, Sombre",21
+1096,Tableau,luminosity,"Une ville, des toits, une église, abstrait, Lumineux",17
+5495,Tableau,content,"Jésus qui parle à des personnes, un vieil homme avec une barbe blanche, une femme avec un foulard sur la tête, deux hommes d'église",41
+8693,Tableau,luminosity,"Un berger qui mène son troupeau de moutons dans la forêt, une prairie, Sombre",25
+6254,Tableau,luminosity,"Un homme moustachu est assis et lit le journal, il porte un habit noir, Lumineux",22
+1209,Tableau,colors,"Jésus entouré de personnes, des gardes, une ville en fond, Couleurs vives, Teinte rouge",28
+6372,Tableau,luminosity,"Vache, Ane, Chèvre, Bouc, Mouton, Arbre, Tronc, Chaine, Champ, Sombre",28
+4964,Tableau,luminosity,"Des ouvriers marchent dans la rue, un chien, foule qui marchent, manifestation, Lumineux",25
+8230,Tableau,emotion,"Un foule de personne devant une taverne, neige, hiver, arbres sans feuilles, charettes, village, Joie",32
+8332,Dessin,luminosity,"Un femme de profil en robe qui danse, Lumineux",13
+9914,Tableau,colors,"Un homme chauve avec une barbe qui est au dessus d'une femme avec une robe rouge qui prie, une fontaine, rocher, herbe, Couleurs vives",39
+5761,Dessin,content,"Un enfant debout avec deux femmes, un homme de dos, un vase",17
+3663,Tableau,emotion,"Des religieux agenouillés devant un homme nu dans une église, Peur",20
+4847,Tableau,luminosity,"Jésus, une foule, prières, intérieur, religion, Sombre",21
+1737,Tableau,colors,"Une fête de village, centre-ville, tente, extérieur, Couleurs sombres",24
+8318,Dessin,emotion,"Un homme de côté avec un chapeau et un manteau, des bottes, homme debout, Joie",26
+8318,Dessin,emotion,"Un homme de côté avec un chapeau et un manteau, des bottes, homme debout, Surprise",25
+7554,Dessin,colors,"Des gens qui dorment, la lumière bleue de la lune, des femmes qui tissent, un dortoir, une bougie, Couleurs sombres, Teinte bleue",42
+2030,Dessin,emotion,"Le prêtre lit un texte, des hommes assis et debouts le regarde, Peur",23
+2030,Dessin,emotion,"Le prêtre lit un texte, des hommes assis et debouts le regarde, Colère",23
+1811,Tableau,emotion,"Des hommes et des femmes autour d'un berceau, naissance, famille, intérieur, Joie",28
+8397,Dessin,content,"Des personnes marchent de dos dans un port, le ciel nuageux, des mats en fond, des lampadaires",27
+8729,Tableau,content,"Deux hommes qui regardent des livres, une femme avec un enfant, un marché dans la rue",23
+10760,Sculpture,content,Une sculpture représentant des hommes qui travaillent,15
+1436,Tableau,emotion,"Une table avec de la nourriture, un homard, des biscuits, du pain, des olives, des verres, Surprise",28
+1436,Tableau,content,"Une table avec de la nourriture, un homard, des biscuits, du pain, des olives, des verres",26
+8041,Tableau,emotion,"Un taverne avec des tables où des gens boivent et mangent, des femmes, un jeu, drague, Joie",30
+8041,Tableau,emotion,"Un taverne avec des tables où des gens boivent et mangent, des femmes, un jeu, drague, Colère",30
+1282,Tableau,content,"Une cabane au fond d'un jardin avec beaucoup d'arbres, de l'herbe",22
+2112,Tableau,luminosity,"Une femme qui tient un nourisson dans ses bras, collier de perle, foulard, assise, vêtement blanc, Sombre",31
+6497,Dessin,emotion,"Un homme assis qui dessine, des animaux, des arbres, une ville en fond, une rivière, émotion neutre",31
+5101,Tableau,colors,"Un musicien joue de la guitare, il est assis, il a une moustache et il est jeune, Couleurs sombres, Teinte rouge",35
+5804,Dessin,luminosity,"Un paysage avec des arbres, des collines, des animaux qui courent, de l'herbe, Lumineux",28
+7069,Dessin,luminosity,"Le bord d'une rive avec des arbres, un homme est assis avec un bouc, son chien et d'autres animaux, des maisons en fond, Lumineux",41
+2441,Tableau,luminosity,"Un intérieur avec beaucoup de tableaux, des artistes, vente d'art, Lumineux",24
+7980,Tableau,luminosity,"Deux jeunes femmes dans le jardin sur le chemin, religieuse, long vêtements blanc et noir, arbustes, Lumineux",32
+4286,Dessin,content,"Un fleuve avec deux bateaux, un pont et une ville, de la fumée qui sort des usines, un parc",28
+172,Dessin,emotion,"Une place avec un monument, un batiment, du brouillard, Peur",16
+4133,Tableau,emotion,"Une rivière qui coule, des prairies, une forêt, des rochers dans l'eau, Peur",27
+10856,Dessin,content,"Un femme qui donne le sein à un nourisson, elle porte un chapeau ",18
+6471,Tableau,content,"personnes sous une arche, rue, chevaux, chevalier, église dans le fond, homme en robe bleue",27
+7516,Tableau,colors,"Portrait d'un homme avec une fraise autour du cou, uniforme, royauté, il a un bouc, Couleurs sombres, Teinte rouge",37
+4286,Dessin,emotion,"Un fleuve avec deux bateaux, un pont et une ville, de la fumée qui sort des usines, un parc, Tristesse",32
+4286,Dessin,emotion,"Un fleuve avec deux bateaux, un pont et une ville, de la fumée qui sort des usines, un parc, Colère",31
+7099,Tableau,emotion,"Des animaux, vaches, moutons, chèvres, ferme en fond, arbres, émotion neutre",29
+7099,Tableau,emotion,"Des animaux, vaches, moutons, chèvres, ferme en fond, arbres, Joie",27
+10351,Dessin,emotion,"Un dessin d'un personnage couché avec un habit ample sur lui, émotion neutre",23
+10430,Dessin,luminosity,"Un dessin d'un visage de femme endormie la bouche ouverte et les yeux fermés, Lumineux",28
+8131,Dessin,content,"Une femme avec un parapluie dans un parc, une ville en fond, des nuages, de l'herbe",25
+7151,Tableau,content,"Des ouvriers qui travaillent dans l'usine, un grand four, de la chaleur, de l'effort",30
+4168,Tableau,colors,"Une barrière dans un champ, des prairies, le ciel nuageux, Noir et blanc",21
+7479,Tableau,emotion,"Un femme en robe verte écoute un homme en tenue noire, intérieur, une fenêtre derrière, Dégoût",35
+7479,Tableau,emotion,"Un femme en robe verte écoute un homme en tenue noire, intérieur, une fenêtre derrière, Colère",32
+5292,Dessin,emotion,"Une statue d'une personne assise à côté d'un escalier, une table, Peur",24
+5113,Dessin,colors,"Un portrait d'un homme en costume brun, il tient son chapeau blanc dans la main, moustache, jeune homme, Teinte rouge",32
+10426,Dessin,colors,"Un certificat, un diplome, un journal, Noir et blanc",14
+5761,Dessin,colors,"Un enfant debout avec deux femmes, un homme de dos, un vase, Bicolor, Teinte rouge",24
+8729,Tableau,luminosity,"Deux hommes qui regardent des livres, une femme avec un enfant, un marché dans la rue, Sombre",26
+6125,Dessin,colors,"Une femme assise à une table avec un chapeau posé sur la table, elle attend, Noir et blanc",24
+8074,Tableau,emotion,"Une biche qui court dans la forêt, des arbres, chasse, paysage, Peur",23
+3602,Dessin,content,"Une sculpture d'une tête, un homme avec une moustache",14
+1445,Tableau,content,"Une forêt avec une montagne en fond, un palmier, le ciel est bleu",20
+1111,Tableau,content,"Un bateau qui passe sous un pont, il y a de la fumée, une ville en fond",23
+2290,Tableau,luminosity,"Un portrait d'un homme, fraise cou, cheveux bruns, moustache et bouc, miroir, Sombre",28
+3921,Tableau,luminosity,"Portrait d'une femme assise de profil, cheveux roux, lunettes de lecture, oiseau, Lumineux",28
+10567,Tableau,content,Une femme nue qui s'habille,10
+7823,Tableau,luminosity,"Une vieille femme lit un livre assise, table, lampe de lecture, robe noire, Lumineux",24
+1111,Tableau,colors,"Un bateau qui passe sous un pont, il y a de la fumée, une ville en fond, Couleurs sombres",29
+5649,Dessin,content,"Des anges, des chevaux, des lions, des poutres, de l'or, religion",22
+6573,Dessin,emotion,"Une ville en ruine, des gravats sur le sol, une église détruite, l'après guerre, Peur",30
+6573,Dessin,emotion,"Une ville en ruine, des gravats sur le sol, une église détruite, l'après guerre, Colère",30
+4597,Tableau,content,"Un portrait d'un homme avec une moustache noir et des cheveux mi-long, un livre noir en main et un habit noir",29
+6472,Tableau,luminosity,"Un homme parle à une foule sur un balcon, des gardes en armure, des enfants, extérieur, Lumineux",31
+2796,Sculpture,content,Une sculpture de deux hommes musclés debout qui se tiennent,17
+7936,Dessin,emotion,"biche, vu de profil, animal, Surprise",11
+8656,Dessin,luminosity,"Une maison carré de deux étages, un arbre, des arbustes, maison de campagne, Lumineux",25
+1096,Tableau,colors,"Une ville, des toits, une église, abstrait, Noir et blanc",18
+4434,Tableau,emotion,"Une femme alarmée tient dans ses bras son enfant, on voit des personnes la regarder en fond, Peur",28
+7939,Dessin,luminosity,"Un tronc d'arbre dans une forêt, un parc, des personnes dans un parc, des couples en rendez-vous, Lumineux",33
+1277,Tableau,emotion,"Une forêt dense, des troncs, un ruisseau, des roches, des feuilles vertes, Peur",27
+1284,Tableau,colors,"Une femme trayant une vache dans un pré, des arbres en arrière-plan, une barque, une vache seule dans le champ, fermière, Noir et blanc",41
+1130,Tableau,content,"Un parc près du fleuve, un pont, des rues, un pont, des voitures et des bus, de la fumée et des nuages",36
+1332,Tableau,emotion,"Un paysage avec un chemin avec une princesse et des gardes, des enfants, une croix, eau, arbres, église en fond, Joie",36
+1332,Tableau,emotion,"Un paysage avec un chemin avec une princesse et des gardes, des enfants, une croix, eau, arbres, église en fond, Surprise",35
+10351,Dessin,luminosity,"Un dessin d'un personnage couché avec un habit ample sur lui, Lumineux",21
+6497,Dessin,colors,"Un homme assis qui dessine, des animaux, des arbres, une ville en fond, une rivière, Noir et blanc",30
+1616,Tableau,colors,"Une forêt, des montagnes, de l'eau, des cavaliers sur des chevaux, des arbres en avant plan, des nuages, un fort, Couleurs vives",40
+4638,Tableau,colors,"La guerre, bataille, drapeau, arme, combat, soldats, armée, chaos, Couleurs vives, Teinte bleue",35
+6492,Dessin,emotion,"Paysage avec des arbres en premier plan et une ville en arrière plan, muraille, émotion neutre",25
+1346,Tableau,colors,"Un homme sur un cheval, une batiment, de l'eau, un pont, des nuages, des vaches, un crépuscule, Couleurs sombres, Teinte rouge",43
+10900,Tableau,colors,"Une femme joue du piano, elle lit une partition, la fenêtre est ouverte, on voit une branche avec des feuilles vertes, Couleurs vives",39
+2438,Tableau,colors,"Un bal en intérieur, une table remplie de plats, richesse, des personnes qui dansent, robes, soirée, fête, Couleurs vives, Teinte rouge",46
+2604,Tableau,colors,"Le fond d'un jardin, arbre, cloture, portillon, herbe, clocher en fond, Noir et blanc",27
+6467,Tableau,colors,"Un rivière qui coule dans une forêt, des arbres avec des feuilles jaunes, l'automne, Couleurs vives",33
+1209,Tableau,content,"Jésus entouré de personnes, des gardes, une ville en fond",18
+1922,Tableau,luminosity,"Maison de campagne avec un roue à eau, montagnes en fond, pierre sur le sol, Sombre",23
+8693,Tableau,colors,"Un berger qui mène son troupeau de moutons dans la forêt, une prairie, Noir et blanc",26
+5497,Tableau,luminosity,"Jésus mort entouré de femmes et d'hommes qui prient, grotte, religion, décès, ange, Lumineux",32
+4561,Tableau,content,"Un vase sur une table avec des fleurs, des pétales sur la table",16
+10861,Tableau,emotion,"Portrait d'une jeune femme avec un collier de perles, cheveux coiffés, boucles d'oreilles, sourire, Joie",34
+1100,Tableau,emotion,"Un champ de blé, des maisons, des arbres avec des feuilles vertes, une haie, des nuages dans le ciel, Joie",34
+5292,Dessin,content,"Une statue d'une personne assise à côté d'un escalier, une table",21
+4996,Tableau,content,"Un portrait d'une femme en robe avec un chapeau, une ville ne fond, un tour dans la ville",24
+6141,Dessin,luminosity,"Un homme musclé porte un homme nu, combat, porter, Lumineux",16
+3663,Tableau,content,Des religieux agenouillés devant un homme nu dans une église,17
+959,Tableau,emotion,"Un portrait d'une femme avec un habit bleu et blanc, elle a ses cheveux attachés, une rose dans la main, un médaillon en or, émotion neutre",39
+959,Tableau,emotion,"Un portrait d'une femme avec un habit bleu et blanc, elle a ses cheveux attachés, une rose dans la main, un médaillon en or, Dégoût",40
+6456,Dessin,content,"Un portrait d'un homme, il regarde vers la gauche, il a des cheveux courts",22
+180,Tableau,colors,"Des femmes avec des instruments et des fleurs, un vieil homme avec une canne, une procession, Teinte verte",27
+1354,Tableau,colors,"Une femme voit des nourissons anges avec des ailes autour d'elles, Noir et blanc",23
+4597,Tableau,colors,"Un portrait d'un homme avec une moustache noir et des cheveux mi-long, un livre noir en main et un habit noir, Couleurs sombres",35
+1096,Tableau,emotion,"Une ville, des toits, une église, abstrait, Peur",17
+1096,Tableau,emotion,"Une ville, des toits, une église, abstrait, Surprise",16
+6932,Dessin,colors,"Dessin d'un corps musclé d'un homme, Noir et blanc",17
+4434,Tableau,content,"Une femme alarmée tient dans ses bras son enfant, on voit des personnes la regarder en fond",25
+7547,Tableau,emotion,"Un femme ouvrière de profil avec un foulard bleu, des toîts, elle regarde, de la fumée, émotion neutre",34
+7547,Tableau,emotion,"Un femme ouvrière de profil avec un foulard bleu, des toîts, elle regarde, de la fumée, Tristesse",33
+1360,Dessin,colors,"Un vieil homme souffrant, il tombe, des anges autour de lui, mort, maladie, Noir et blanc",31
+6141,Dessin,colors,"Un homme musclé porte un homme nu, combat, porter, Noir et blanc",17
+3400,Sculpture,emotion,"Une sculpture d'un soldat en uniforme, soldat avec casque, émotion neutre",21
+10341,Dessin,colors,"Un dessin d'un collier avec un médaillon et des plumes, bijou, Noir et blanc",23
+6090,Dessin,content,"Un portrait d'un homme avec un monocle, il est bien habillé, il a une moustache et des cheveux dégarni",31
+3663,Tableau,colors,"Des religieux agenouillés devant un homme nu dans une église, Teinte rouge",21
+10856,Dessin,luminosity,"Un femme qui donne le sein à un nourisson, elle porte un chapeau , Lumineux",21
+2441,Tableau,emotion,"Un intérieur avec beaucoup de tableaux, des artistes, vente d'art, Surprise",23
+1350,Tableau,colors,"Portrait d'une femme avec un noeud dans ses cheveux, cheveux blancs, grand-mère, Noir et blanc",30
+6543,Dessin,colors,"Deux hommes qui parlent, deux chiens, chapeau, arbre, roue, Bicolor, Teinte rouge",27
+7069,Dessin,content,"Le bord d'une rive avec des arbres, un homme est assis avec un bouc, son chien et d'autres animaux, des maisons en fond",38
+4320,Tableau,emotion,"Un panier avec pommes sur une table avec une tasse, des fleurs dans un vase rouge, des livres, du papier peint, Joie",34
+4092,Tableau,luminosity,"Une porte ouverte avec une fenêtre au fond, des rideaux, du parquet, Sombre",23
+8693,Tableau,emotion,"Un berger qui mène son troupeau de moutons dans la forêt, une prairie, Tristesse",26
+8693,Tableau,emotion,"Un berger qui mène son troupeau de moutons dans la forêt, une prairie, Peur",25
+5950,Tableau,emotion,"Un combat entre des soldats, boucliers, lances, mort, Tristesse",19
+5950,Tableau,emotion,"Un combat entre des soldats, boucliers, lances, mort, Peur",18
+5950,Tableau,emotion,"Un combat entre des soldats, boucliers, lances, mort, Colère",18
+10844,Dessin,emotion,"Des personnes en intérieur à une table, un homme se fait laver le pied, les personnes observent, Dégoût",32
+10844,Dessin,emotion,"Des personnes en intérieur à une table, un homme se fait laver le pied, les personnes observent, Colère",29
+10844,Dessin,emotion,"Des personnes en intérieur à une table, un homme se fait laver le pied, les personnes observent, Surprise",28
+3688,Tableau,colors,"Une statut de Jésus entouré de bouquets de fleurs, trois bouquets de fleurs, Couleurs sombres, Teinte verte",35
+5011,Tableau,emotion,"Un femme nue dans une forêt magique, des arbres en or, un paon doré, de l'eau calme, le paradis, Joie",37
+5011,Tableau,emotion,"Un femme nue dans une forêt magique, des arbres en or, un paon doré, de l'eau calme, le paradis, Surprise",36
+7068,Dessin,luminosity,"Homme à côté d'un ane, chien, villa, arbres, falaise, montagne, eau, maison de campagne, Lumineux",33
+1095,Tableau,colors,"Formes géométriques, abstrait, arbre, maison, rue, Noir et blanc",22
+7281,Tableau,content,"Un vieil homme assis avec un livre en face de lui, une jeune femme avec le regard inquiet, des livres",29
+7304,Dessin,content,"Un jardin avec des arbres, une personne avec un chien au centre, une cloture en bois, une maison de campagne en fond",30
+172,Dessin,colors,"Une place avec un monument, un batiment, du brouillard, Bicolor, Teinte rouge",20
+10844,Dessin,content,"Des personnes en intérieur à une table, un homme se fait laver le pied, les personnes observent",26
+6339,Tableau,colors,"Un femme qui court, jupe, arc, chien qui court, sandale, Noir et blanc",21
+10869,Dessin,emotion,"Un prêtre prononce un sermon les mains écartées et le regard tourné vers le ciel, Joie",27
+10869,Dessin,emotion,"Un prêtre prononce un sermon les mains écartées et le regard tourné vers le ciel, Surprise",26
+5002,Tableau,colors,"Une fête, un repas, une foule en intérieur, des enfants qui jouent, richesse, Teinte rouge",31
+10330,Dessin,emotion,"Portrait d'une femme accoudée sur un rebord, cheveux coiffés, mains qui se tiennent, Joie",31
+6193,Dessin,luminosity,"Un dessin d'un visage d'une femme avec les cheveux attachés, elle regarde vers le bas, Lumineux",29
+4566,Tableau,colors,"Un ruelle le soir, un lampadaire éclaire faiblement, une figure noire, Couleurs sombres, Teinte verte",31
+881,Dessin,luminosity,"Un temple avec une foule, un tribunal, un soldat adulé, des morts, antiquité, Lumineux",26
+7980,Tableau,emotion,"Deux jeunes femmes dans le jardin sur le chemin, religieuse, long vêtements blanc et noir, arbustes, Tristesse",33
+7416,Tableau,emotion,"Des marécages avec des arbres, dans le fond un village, de l'eau bleue, Joie",24
+7908,Dessin,luminosity,"Un chateau abandonné, des ruines, un palmier, un homme avec une femme et un enfant, Lumineux",27
+1616,Tableau,content,"Une forêt, des montagnes, de l'eau, des cavaliers sur des chevaux, des arbres en avant plan, des nuages, un fort",34
+2290,Tableau,emotion,"Un portrait d'un homme, fraise cou, cheveux bruns, moustache et bouc, miroir, émotion neutre",30
+5162,Dessin,luminosity,"Un groupe d'aventuriers découvrent une vallée, arbres, falaise, découverte, Lumineux",29
+7114,Dessin,emotion,"Un port avec des voiliers et des marins, la mer, des voiliers sur l'eau, un ciel nuageux, la plage de cailloux, Peur",41
+5508,Dessin,colors,"Un homme avec un instrument parle à trois vieux hommes, torse nu, barbe blanche, Teinte rouge",26
+795,Dessin,colors,"Une ile avec une ville, rocher, crépuscule, ruines, désert, Teinte rouge",25
+1346,Tableau,content,"Un homme sur un cheval, une batiment, de l'eau, un pont, des nuages, des vaches, un crépuscule",33
+1616,Tableau,emotion,"Une forêt, des montagnes, de l'eau, des cavaliers sur des chevaux, des arbres en avant plan, des nuages, un fort, Joie",37
+1467,Tableau,emotion,"Rue avec des maisons mitoyennes, ruelles, cheminées, façades, Tristesse",24
+1467,Tableau,emotion,"Rue avec des maisons mitoyennes, ruelles, cheminées, façades, Peur",23
+6467,Tableau,content,"Un rivière qui coule dans une forêt, des arbres avec des feuilles jaunes, l'automne",27
+7936,Dessin,luminosity,"biche, vu de profil, animal, Lumineux",12
+7689,Tableau,content,"Des hommes barbus et moustachus qui discutent, costumes, journal, discussion, débat",23
+2477,Tableau,content,"Des poulets, un coq, poulailler",11
+5124,Dessin,content,"Des boites colorées sur une table, parfums, flacons, miroir, salle de bain",23
+8078,Tableau,content,"Portrait d'une femme, cheveux bruns, diadème, habit traditionnel, collier de perles, miroir",28
+7155,Tableau,content,"Des ouvriers et une ouvrière qui marchent, travail manuel, saleté, fermiers, paysage désolé, pauvreté",37
+1360,Dessin,luminosity,"Un vieil homme souffrant, il tombe, des anges autour de lui, mort, maladie, Lumineux",30
+7936,Dessin,content,"biche, vu de profil, animal",9
+7823,Tableau,content,"Une vieille femme lit un livre assise, table, lampe de lecture, robe noire",21
+6141,Dessin,content,"Un homme musclé porte un homme nu, combat, porter",13
+8695,Tableau,colors,"Un veille femme au visage fermé, une plante dans un pot, l'ombre, Noir et blanc",26
+5364,Dessin,luminosity,"Un femme bien habillée en robe descend les marches avec un homme bien habillé, soirée, fête, Lumineux",29
+8309,Dessin,colors,"Un mendiant assis au sol, chapeau, rue, Noir et blanc",18
+4081,Tableau,content,"Un marécage, eau, roseau, forêt",13
+1281,Tableau,emotion,"La mer avec des vagues, des voiliers sur l'eau, une personne au bord de l'eau, un ciel nuageux, Peur",35
+1284,Tableau,luminosity,"Une femme trayant une vache dans un pré, des arbres en arrière-plan, une barque, une vache seule dans le champ, fermière, Sombre",40
+1188,Tableau,luminosity,"Un animal blanc dans la fôret, de la végétation, la chasse, Sombre",23
+4996,Tableau,emotion,"Un portrait d'une femme en robe avec un chapeau, une ville ne fond, un tour dans la ville, émotion neutre",29
+4996,Tableau,emotion,"Un portrait d'une femme en robe avec un chapeau, une ville ne fond, un tour dans la ville, Peur",27
+7190,Tableau,content,"Deux femmes et un homme travaillent dans un champ, fermier, outil, champ, arbre, cueillette",28
+8230,Tableau,content,"Un foule de personne devant une taverne, neige, hiver, arbres sans feuilles, charettes, village",29
+5364,Dessin,content,"Un femme bien habillée en robe descend les marches avec un homme bien habillé, soirée, fête",26
+8131,Dessin,luminosity,"Une femme avec un parapluie dans un parc, une ville en fond, des nuages, de l'herbe, Lumineux",28
+123,Tableau,luminosity,"Un homme musclé et des femmes nues, un temple, le paradis, un ange, nuages, dieu, Lumineux",30
+1860,Tableau,content,"Jésus mort avec trois femmes qui le tiennent, deux personnes dans le fond, mort, décès",28
+1245,Tableau,content,"Des fleurs, herbe haute, maison, arbres, jardin, haie, buissons",21
+6141,Dessin,emotion,"Un homme musclé porte un homme nu, combat, porter, Peur",16
+6141,Dessin,emotion,"Un homme musclé porte un homme nu, combat, porter, Colère",16
+6136,Tableau,colors,"Une plage, la mer, ciel clair, nuages blancs, ville cotière, cabanes de plage, enfants qui jouent dans le sable, parasol, Teinte bleue",43
+10540,Tableau,luminosity,"Un soldat dans le champ, soldat seul, herbe haute, colline, arbre, soldat français, Sombre",29
+1501,Tableau,luminosity,"Un vendeur ends des animaux à une fermière et sa fille, chapeau, fromage, Lumineux",28
+4081,Tableau,emotion,"Un marécage, eau, roseau, forêt, Peur",16
+4081,Tableau,emotion,"Un marécage, eau, roseau, forêt, Dégoût",19
+7099,Tableau,content,"Des animaux, vaches, moutons, chèvres, ferme en fond, arbres",24
+4576,Tableau,luminosity,"Un paysage avec un ciel nuageux, un lac en fond et un arbre en avant plan, Sombre",25
+5752,Tableau,content,"Une foule, centre-ville, église, place, défilé, fête, carnaval, ville",25
+8131,Dessin,colors,"Une femme avec un parapluie dans un parc, une ville en fond, des nuages, de l'herbe, Couleurs vives",31
+2150,Tableau,luminosity,"Des soldats sur des cheveaux, vu de proche, uniformes, nuages, chapeaux, Sombre",27
+6136,Tableau,content,"Une plage, la mer, ciel clair, nuages blancs, ville cotière, cabanes de plage, enfants qui jouent dans le sable, parasol",38
+6512,Dessin,luminosity,"Deux personnes, une muraille, une tour, des arbres, Lumineux",18
+1188,Tableau,content,"Un animal blanc dans la fôret, de la végétation, la chasse",20
+5649,Dessin,colors,"Des anges, des chevaux, des lions, des poutres, de l'or, religion, Couleurs vives",28
+1277,Tableau,colors,"Une forêt dense, des troncs, un ruisseau, des roches, des feuilles vertes, Couleurs sombres, Teinte verte",35
+1284,Tableau,content,"Une femme trayant une vache dans un pré, des arbres en arrière-plan, une barque, une vache seule dans le champ, fermière",37
+4638,Tableau,content,"La guerre, bataille, drapeau, arme, combat, soldats, armée, chaos",24
+1922,Tableau,colors,"Maison de campagne avec un roue à eau, montagnes en fond, pierre sur le sol, Noir et blanc",24
+7975,Tableau,emotion,"Portrait d'un jeune homme avec une légère moustache torse nu qui regarde vers le haut, cheveux courts, Joie",31
+8491,Tableau,content,"Un port, des voiliers, barques, ciel nuageux, ville portuaire, eau, bord de rive",26
+10916,Tableau,colors,"Une femme assise sur une planche avec un nourisson habillé en rouge dans ses bras, homme dans un voilier, ville, eau, Teinte verte",36
+11337,Tableau,content,"Un vieil homme sur son cheval, chapeau, petit mur, canne, foulard rouge",22
+10540,Tableau,content,"Un soldat dans le champ, soldat seul, herbe haute, colline, arbre, soldat français",26
+5304,Dessin,emotion,"Une femme assise avec un foulard lit un livre avec une lampe de lecture, émotion neutre",23
+5304,Dessin,emotion,"Une femme assise avec un foulard lit un livre avec une lampe de lecture, Joie",21
+5304,Dessin,emotion,"Une femme assise avec un foulard lit un livre avec une lampe de lecture, Tristesse",22
+211,Tableau,colors,"Jésus sur la croix, deux femmes et un homme prient, un homme debout, une ville en fond et des arbres, Couleurs vives",35
+2280,Tableau,content,"Un homme nu à l'envers sur la croix, hommes musclés, soldat, prisonnier",23
+330,Tableau,colors,"Un homme musclé torse nu, des anges qui volent, des enfants, religion, Couleurs vives",27
+1129,Tableau,content,"Un fleuve avec des bateaux, rue avec des arbres alignés, chevaux et calèches, route, eau, vagues",31
+836,Tableau,colors,"Ville portuaire, voilier, eau, église, feu, incendie, Couleurs vives",24
+1501,Tableau,emotion,"Un vendeur ends des animaux à une fermière et sa fille, chapeau, fromage, Joie",28
+1501,Tableau,emotion,"Un vendeur ends des animaux à une fermière et sa fille, chapeau, fromage, Surprise",27
+5752,Tableau,colors,"Une foule, centre-ville, église, place, défilé, fête, carnaval, ville, Couleurs vives",31
+6743,Tableau,colors,"Portrait d'un jeune soldat dans son uniforme près d'une ferme, chapeau dans une main, épée dans une main, Noir et blanc",37
+5752,Tableau,emotion,"Une foule, centre-ville, église, place, défilé, fête, carnaval, ville, Joie",28
+5752,Tableau,emotion,"Une foule, centre-ville, église, place, défilé, fête, carnaval, ville, Surprise",27
+3026,Sculpture,colors,"Sculpture d'un combat, hommes musclés, casques, calin, Teinte rouge",21
+2150,Tableau,emotion,"Des soldats sur des cheveaux, vu de proche, uniformes, nuages, chapeaux, Peur",27
+2150,Tableau,emotion,"Des soldats sur des cheveaux, vu de proche, uniformes, nuages, chapeaux, Colère",27
+211,Tableau,luminosity,"Jésus sur la croix, deux femmes et un homme prient, un homme debout, une ville en fond et des arbres, Lumineux",32
+8446,Dessin,colors,"Des hommes en uniforme et en costume discutent, groupe, débat, réunion, Noir et blanc",24
+763,Tableau,luminosity,"Une barque avec quelques personnes qui arrive sur le bord du lac, une montagne, de la végétation, des oiseaux dans le ciel, Sombre",39
+1524,Tableau,colors,"Un temple avec une foule qui regardent, des soldats arrivent, un arbre, personnes alignées, arc, Noir et blanc",32
+4565,Tableau,emotion,"Un paysage plat avec une prairie et un ciel dégagé, vache, émotion neutre",23
+6472,Tableau,colors,"Un homme parle à une foule sur un balcon, des gardes en armure, des enfants, extérieur, Teinte rouge",32
+2112,Tableau,colors,"Une femme qui tient un nourisson dans ses bras, collier de perle, foulard, assise, vêtement blanc, Noir et blanc",32
+2150,Tableau,colors,"Des soldats sur des cheveaux, vu de proche, uniformes, nuages, chapeaux, Couleurs sombres",30
+6512,Dessin,colors,"Deux personnes, une muraille, une tour, des arbres, Teinte rouge",19
+8397,Dessin,luminosity,"Des personnes marchent de dos dans un port, le ciel nuageux, des mats en fond, des lampadaires, Lumineux",30
+3374,Sculpture,content,"Une sculpture d'un homme musclé torse nu, combattant",16
+10895,Dessin,content,"Un paysage avec une ville, muraille, campagne, ville fortifiée",18
+8500,Dessin,emotion,"Des moulins sur le bord de l'eau, des barques, des voiliers sur l'eai, des roseaux, des personnes sur le bord de l'eau, émotion neutre",44
+1354,Tableau,luminosity,"Une femme voit des nourissons anges avec des ailes autour d'elles, Sombre",22
+5113,Dessin,content,"Un portrait d'un homme en costume brun, il tient son chapeau blanc dans la main, moustache, jeune homme",28
+10167,Dessin,colors,"Dessin d'un bijoux, bracelet, collier, lettre, Noir et blanc",18
+2030,Dessin,luminosity,"Le prêtre lit un texte, des hommes assis et debouts le regarde, Sombre",23
+2796,Sculpture,emotion,"Une sculpture de deux hommes musclés debout qui se tiennent, Peur",20
+2796,Sculpture,emotion,"Une sculpture de deux hommes musclés debout qui se tiennent, Colère",20
+5111,Tableau,content,"Portrait d'une femme, cheveux noirs, assise, mains",16
+10760,Sculpture,colors,"Une sculpture représentant des hommes qui travaillent, Teinte rouge",19
+4571,Tableau,colors,"Un canal entre deux batîments dans une ville avec un pont, fin de soirée, fenêtres avec de la lumière, Teinte bleue",33
+8404,Dessin,content,"Des corps, une grande porte ouverte, des débris, le chaos",16
+5749,Tableau,content,"Foule, ville, église, chevaux",11
+6193,Dessin,emotion,"Un dessin d'un visage d'une femme avec les cheveux attachés, elle regarde vers le bas, Joie",29
+10472,Tableau,colors,"Une tout avec un toit en pointe, des soldats sur des chevaux avec des drapeaux, un cortège, une foule, Noir et blanc",35
+4286,Dessin,luminosity,"Un fleuve avec deux bateaux, un pont et une ville, de la fumée qui sort des usines, un parc, Lumineux",31
+6492,Dessin,colors,"Paysage avec des arbres en premier plan et une ville en arrière plan, muraille, Noir et blanc",24
+10814,Dessin,emotion,"Un homme parle à une femme qui le regarde, la femme a les bras écartés, l'homme porte quelque chose dans sa main, Peur",34
+10814,Dessin,emotion,"Un homme parle à une femme qui le regarde, la femme a les bras écartés, l'homme porte quelque chose dans sa main, Colère",34
+8404,Dessin,luminosity,"Des corps, une grande porte ouverte, des débris, le chaos, Sombre",19
+5495,Tableau,emotion,"Jésus qui parle à des personnes, un vieil homme avec une barbe blanche, une femme avec un foulard sur la tête, deux hommes d'église, Peur",44
+5495,Tableau,emotion,"Jésus qui parle à des personnes, un vieil homme avec une barbe blanche, une femme avec un foulard sur la tête, deux hommes d'église, Dégoût",47
+5495,Tableau,emotion,"Jésus qui parle à des personnes, un vieil homme avec une barbe blanche, une femme avec un foulard sur la tête, deux hommes d'église, Colère",44
+5495,Tableau,emotion,"Jésus qui parle à des personnes, un vieil homme avec une barbe blanche, une femme avec un foulard sur la tête, deux hommes d'église, Surprise",43
+10567,Tableau,colors,"Une femme nue qui s'habille, Noir et blanc",14
+7463,Tableau,colors,"Une forêt avec des bouleaux, des arbres l'hiver, des personens sur un chemin, une promenade, des buissons, Noir et blanc",36
+5301,Dessin,content,"Un porte ouverte, une chambre, un lit, une table, un chapeau, des tableaux sur le mur, intérieur, appartement",36
+8606,Tableau,content,"Une barque avec deux personnes sur le bord de l'eau, des arbres, un ciel nuageux, personne assise dans la barque, ordre",37
+8058,Tableau,colors,"Portrait d'une vieil homme avec un grosse moustache blanche, uniforme militaire, général, armée, Teinte verte",32
+8511,Tableau,emotion,"Une ville portuaire, des tentes, bateaux, eau, voiliers, chevaux, Joie",23
+8511,Tableau,emotion,"Une ville portuaire, des tentes, bateaux, eau, voiliers, chevaux, Surprise",22
+3400,Sculpture,content,"Une sculpture d'un soldat en uniforme, soldat avec casque",16
+7939,Dessin,colors,"Un tronc d'arbre dans une forêt, un parc, des personnes dans un parc, des couples en rendez-vous, Bicolor, Teinte rouge",37
+2604,Tableau,content,"Le fond d'un jardin, arbre, cloture, portillon, herbe, clocher en fond",23
+4017,Dessin,colors,"L'avant d'un bateau, structure, Teinte verte",15
+7069,Dessin,colors,"Le bord d'une rive avec des arbres, un homme est assis avec un bouc, son chien et d'autres animaux, des maisons en fond, Noir et blanc",42
+8318,Dessin,colors,"Un homme de côté avec un chapeau et un manteau, des bottes, homme debout, Noir et blanc",27
+7155,Tableau,colors,"Des ouvriers et une ouvrière qui marchent, travail manuel, saleté, fermiers, paysage désolé, pauvreté, Couleurs sombres",43
+1467,Tableau,luminosity,"Rue avec des maisons mitoyennes, ruelles, cheminées, façades, Sombre",23
+8273,Tableau,emotion,"Un voilier sur l'eau avec des voiliers derrière, barque, ville en fond, ciel nuageux, Surprise",31
+6254,Tableau,content,"Un homme moustachu est assis et lit le journal, il porte un habit noir",19
+6932,Dessin,emotion,"Dessin d'un corps musclé d'un homme, Peur",16
+6435,Dessin,colors,"Deux cavaliers sur des chevaux voyagent avec des vaches, un chien, un mouton et une chèvre, désert, plaine, Noir et blanc",36
+123,Tableau,emotion,"Un homme musclé et des femmes nues, un temple, le paradis, un ange, nuages, dieu, Joie",30
+123,Tableau,emotion,"Un homme musclé et des femmes nues, un temple, le paradis, un ange, nuages, dieu, Surprise",29
+1188,Tableau,emotion,"Un animal blanc dans la fôret, de la végétation, la chasse, Peur",23
+10814,Dessin,content,"Un homme parle à une femme qui le regarde, la femme a les bras écartés, l'homme porte quelque chose dans sa main",31
+8729,Tableau,emotion,"Deux hommes qui regardent des livres, une femme avec un enfant, un marché dans la rue, émotion neutre",28
+8729,Tableau,emotion,"Deux hommes qui regardent des livres, une femme avec un enfant, un marché dans la rue, Colère",26
+119,Tableau,colors,"Un homme mort dans son bain, lettre, suicide, décès, déséspoir, Teinte verte",25
+4988,Tableau,emotion,"Plusieurs personnes, des chevaux, un puit, un chateau en fond, des arbres, une montagne, promenade, convoi, Joie",35
+8656,Dessin,content,"Une maison carré de deux étages, un arbre, des arbustes, maison de campagne",22
+1095,Tableau,emotion,"Formes géométriques, abstrait, arbre, maison, rue, Peur",21
+1095,Tableau,emotion,"Formes géométriques, abstrait, arbre, maison, rue, Surprise",20
+1524,Tableau,emotion,"Un temple avec une foule qui regardent, des soldats arrivent, un arbre, personnes alignées, arc, Peur",31
+1524,Tableau,emotion,"Un temple avec une foule qui regardent, des soldats arrivent, un arbre, personnes alignées, arc, Surprise",30
+10361,Dessin,content,"Des arbres qui cachent un village, hiver",12
+1861,Tableau,colors,"Un peintre et son tableau avec une femme et un nourisson, des hommes lui parlent, soldat, vieil homme, Teinte rouge",33
+1692,Tableau,content,"Un homme fou avec une flute, un homme peu visible dans l'ombre derrière, bouche ouverte, assis",30
+5301,Dessin,luminosity,"Un porte ouverte, une chambre, un lit, une table, un chapeau, des tableaux sur le mur, intérieur, appartement, Sombre",39
+6125,Dessin,luminosity,"Une femme assise à une table avec un chapeau posé sur la table, elle attend, Lumineux",23
+7281,Tableau,emotion,"Un vieil homme assis avec un livre en face de lui, une jeune femme avec le regard inquiet, des livres, Tristesse",33
+7281,Tableau,emotion,"Un vieil homme assis avec un livre en face de lui, une jeune femme avec le regard inquiet, des livres, Peur",32
+7281,Tableau,emotion,"Un vieil homme assis avec un livre en face de lui, une jeune femme avec le regard inquiet, des livres, Surprise",31
+7190,Tableau,colors,"Deux femmes et un homme travaillent dans un champ, fermier, outil, champ, arbre, cueillette, Couleurs vives",34
+4576,Tableau,emotion,"Un paysage avec un ciel nuageux, un lac en fond et un arbre en avant plan, Tristesse",26
+4576,Tableau,emotion,"Un paysage avec un ciel nuageux, un lac en fond et un arbre en avant plan, Peur",25
+4168,Tableau,emotion,"Une barrière dans un champ, des prairies, le ciel nuageux, Tristesse",21
+4168,Tableau,emotion,"Une barrière dans un champ, des prairies, le ciel nuageux, Peur",20
+6090,Dessin,colors,"Un portrait d'un homme avec un monocle, il est bien habillé, il a une moustache et des cheveux dégarni, Noir et blanc",35
+2796,Sculpture,colors,"Une sculpture de deux hommes musclés debout qui se tiennent, Noir et blanc",21
+7936,Dessin,colors,"biche, vu de profil, animal, Noir et blanc",13
+5804,Dessin,emotion,"Un paysage avec des arbres, des collines, des animaux qui courent, de l'herbe, émotion neutre",30
+1350,Tableau,emotion,"Portrait d'une femme avec un noeud dans ses cheveux, cheveux blancs, grand-mère, émotion neutre",31
+1350,Tableau,emotion,"Portrait d'une femme avec un noeud dans ses cheveux, cheveux blancs, grand-mère, Joie",29
+7908,Dessin,colors,"Un chateau abandonné, des ruines, un palmier, un homme avec une femme et un enfant, Bicolor, Teinte rouge",31
+7830,Tableau,luminosity,"Un forêt dense sur les collines, un ciel avec des nuages, Lumineux",20
+3921,Tableau,emotion,"Portrait d'une femme assise de profil, cheveux roux, lunettes de lecture, oiseau, émotion neutre",30
+5301,Dessin,emotion,"Un porte ouverte, une chambre, un lit, une table, un chapeau, des tableaux sur le mur, intérieur, appartement, Joie",39
+5301,Dessin,emotion,"Un porte ouverte, une chambre, un lit, une table, un chapeau, des tableaux sur le mur, intérieur, appartement, Peur",39
+2097,Tableau,emotion,"Jésus mort avec une femme et une homme agenouillé contre lui, un homme en uniforme militaire qui prie, décès, Tristesse",37
+2097,Tableau,emotion,"Jésus mort avec une femme et une homme agenouillé contre lui, un homme en uniforme militaire qui prie, décès, Peur",36
+6472,Tableau,content,"Un homme parle à une foule sur un balcon, des gardes en armure, des enfants, extérieur",28
+1731,Tableau,colors,"Une foule dans le village en hiver, le canal gelé, la neige sur les toits, la fumée sort des cheminées, Couleurs vives",39
+7416,Tableau,content,"Des marécages avec des arbres, dans le fond un village, de l'eau bleue",21
+795,Dessin,luminosity,"Une ile avec une ville, rocher, crépuscule, ruines, désert, Lumineux",24
+10472,Tableau,content,"Une tout avec un toit en pointe, des soldats sur des chevaux avec des drapeaux, un cortège, une foule",31
+9914,Tableau,content,"Un homme chauve avec une barbe qui est au dessus d'une femme avec une robe rouge qui prie, une fontaine, rocher, herbe",33
+791,Dessin,colors,"Une ville au loin avec un clocher, des toits dans le brouillard, la mer, la neige, Teinte rouge",27
+2187,Tableau,colors,"Trois hommes sur des chevaux au crépuscule, ils parlent avec un homme debout, ciel orangé, Teinte rouge",32
+6258,Tableau,luminosity,"Une femme de dos dans une forêt qui marche entre les arbres, Sombre",18
+5761,Dessin,luminosity,"Un enfant debout avec deux femmes, un homme de dos, un vase, Lumineux",20
+6586,Tableau,colors,"Portrait d'un jeune homme avec une tunique rouge et des cheveux longs, il tient à la main un parchemin, une ville en fond, Teinte rouge",38
+959,Tableau,content,"Un portrait d'une femme avec un habit bleu et blanc, elle a ses cheveux attachés, une rose dans la main, un médaillon en or",34
+6372,Tableau,emotion,"Vache, Ane, Chèvre, Bouc, Mouton, Arbre, Tronc, Chaine, Champ, émotion neutre",30
+11224,Tableau,colors,"Un calèche arrêté sur le bord d'un chemin avec ses occupants dehors, une forêts, chevaux, monument, statue, Couleurs sombres",40
+10351,Dessin,content,Un dessin d'un personnage couché avec un habit ample sur lui,18
+11293,Tableau,content,"Un portrait d'une vieille femme avec un chapeau, elle tient un gant dans une main, habit noir, assise",29
+5162,Dessin,emotion,"Un groupe d'aventuriers découvrent une vallée, arbres, falaise, découverte, Surprise",28
+2097,Tableau,content,"Jésus mort avec une femme et une homme agenouillé contre lui, un homme en uniforme militaire qui prie, décès",33
+4133,Tableau,content,"Une rivière qui coule, des prairies, une forêt, des rochers dans l'eau",24
+1130,Tableau,emotion,"Un parc près du fleuve, un pont, des rues, un pont, des voitures et des bus, de la fumée et des nuages, Joie",39
+1130,Tableau,emotion,"Un parc près du fleuve, un pont, des rues, un pont, des voitures et des bus, de la fumée et des nuages, Surprise",38
+763,Tableau,colors,"Une barque avec quelques personnes qui arrive sur le bord du lac, une montagne, de la végétation, des oiseaux dans le ciel, Couleurs sombres, Teinte verte",47
+6372,Tableau,content,"Vache, Ane, Chèvre, Bouc, Mouton, Arbre, Tronc, Chaine, Champ",25
+10167,Dessin,luminosity,"Dessin d'un bijoux, bracelet, collier, lettre, Lumineux",17
+7554,Dessin,luminosity,"Des gens qui dorment, la lumière bleue de la lune, des femmes qui tissent, un dortoir, une bougie, Sombre",34
+4434,Tableau,colors,"Une femme alarmée tient dans ses bras son enfant, on voit des personnes la regarder en fond, Couleurs vives, Teinte rouge",35
+1332,Tableau,colors,"Un paysage avec un chemin avec une princesse et des gardes, des enfants, une croix, eau, arbres, église en fond, Teinte verte",38
+1860,Tableau,emotion,"Jésus mort avec trois femmes qui le tiennent, deux personnes dans le fond, mort, décès, Tristesse",32
+1860,Tableau,emotion,"Jésus mort avec trois femmes qui le tiennent, deux personnes dans le fond, mort, décès, Peur",31
+2316,Tableau,content,"Huit fermiers hommes qui labourent le champ, travail, chemise, agriculture, pelle",23
+6543,Dessin,content,"Deux hommes qui parlent, deux chiens, chapeau, arbre, roue",20
+1501,Tableau,colors,"Un vendeur ends des animaux à une fermière et sa fille, chapeau, fromage, Couleurs vives",31
+11224,Tableau,luminosity,"Un calèche arrêté sur le bord d'un chemin avec ses occupants dehors, une forêts, chevaux, monument, statue, Sombre",37
+6435,Dessin,emotion,"Deux cavaliers sur des chevaux voyagent avec des vaches, un chien, un mouton et une chèvre, désert, plaine, Joie",35
+6435,Dessin,emotion,"Deux cavaliers sur des chevaux voyagent avec des vaches, un chien, un mouton et une chèvre, désert, plaine, Peur",35
+6435,Dessin,emotion,"Deux cavaliers sur des chevaux voyagent avec des vaches, un chien, un mouton et une chèvre, désert, plaine, Surprise",34
+7304,Dessin,emotion,"Un jardin avec des arbres, une personne avec un chien au centre, une cloture en bois, une maison de campagne en fond, émotion neutre",35
+4565,Tableau,colors,"Un paysage plat avec une prairie et un ciel dégagé, vache, Teinte verte",23
+8074,Tableau,luminosity,"Une biche qui court dans la forêt, des arbres, chasse, paysage, Sombre",23
+2049,Tableau,content,"Un fille avec un serre-tête tient un nourisson nu dans sses bras, portrait",22
+2187,Tableau,emotion,"Trois hommes sur des chevaux au crépuscule, ils parlent avec un homme debout, ciel orangé, Peur",31
+6706,Tableau,emotion,"Portrait d'un soldat en uniforme avec son chapeau sur sa tête et un sceptre, derrière lui d'autres soldats et un cheval, émotion neutre",44
+10809,Dessin,emotion,"Des anges qui regardent vers le haut, religion, ailes, Joie",18
+10809,Dessin,emotion,"Des anges qui regardent vers le haut, religion, ailes, Tristesse",19
+10809,Dessin,emotion,"Des anges qui regardent vers le haut, religion, ailes, Surprise",17
+7830,Tableau,content,"Un forêt dense sur les collines, un ciel avec des nuages",17
+10856,Dessin,colors,"Un femme qui donne le sein à un nourisson, elle porte un chapeau , Teinte rouge",22
+5245,Dessin,luminosity,"Une figure féminine noire dans l'ombre, un large manteau, un capuche, un voile, Sombre",28
+6339,Tableau,content,"Un femme qui court, jupe, arc, chien qui court, sandale",17
+856,Tableau,emotion,"Une femme sans haut vu de dos, une chambre avec un lit, déshabillée, une couverture, le réveil, Peur",32
+856,Tableau,emotion,"Une femme sans haut vu de dos, une chambre avec un lit, déshabillée, une couverture, le réveil, Surprise",31
+8273,Tableau,content,"Un voilier sur l'eau avec des voiliers derrière, barque, ville en fond, ciel nuageux",29
+5291,Dessin,emotion,"Une femme est assise à côté d'un mur, elle porte une robe blanche, elle tient ses mains, Tristesse",29
+5291,Dessin,emotion,"Une femme est assise à côté d'un mur, elle porte une robe blanche, elle tient ses mains, Peur",28
+9914,Tableau,emotion,"Un homme chauve avec une barbe qui est au dessus d'une femme avec une robe rouge qui prie, une fontaine, rocher, herbe, Joie",36
+3602,Dessin,emotion,"Une sculpture d'une tête, un homme avec une moustache, émotion neutre",19
+3602,Dessin,emotion,"Une sculpture d'une tête, un homme avec une moustache, Colère",17
+10780,Dessin,emotion,"Un dessin d'une chambre, lit, arche, meubles, intérieur, émotion neutre",27
+8511,Tableau,content,"Une ville portuaire, des tentes, bateaux, eau, voiliers, chevaux",20
+10540,Tableau,colors,"Un soldat dans le champ, soldat seul, herbe haute, colline, arbre, soldat français, Noir et blanc",30
+2112,Tableau,content,"Une femme qui tient un nourisson dans ses bras, collier de perle, foulard, assise, vêtement blanc",28
+11545,Tableau,colors,"Des fleurs blanches avec un grand papillon rouge et un grand papillon rose, Couleurs vives",23
+7151,Tableau,emotion,"Des ouvriers qui travaillent dans l'usine, un grand four, de la chaleur, de l'effort, Peur",33
+7151,Tableau,emotion,"Des ouvriers qui travaillent dans l'usine, un grand four, de la chaleur, de l'effort, Colère",33
+5113,Dessin,emotion,"Un portrait d'un homme en costume brun, il tient son chapeau blanc dans la main, moustache, jeune homme, émotion neutre",33
+5113,Dessin,emotion,"Un portrait d'un homme en costume brun, il tient son chapeau blanc dans la main, moustache, jeune homme, Joie",31
+451,Tableau,emotion,"Une femme assise de profil, robe bleue, cheveux coiffés, fleur dans les cheveux, émotion neutre",30
+451,Tableau,emotion,"Une femme assise de profil, robe bleue, cheveux coiffés, fleur dans les cheveux, Peur",28
+1655,Tableau,emotion,"Un table avec deux poissons morts, des pommes, citron, poire, Dégoût",24
+4320,Tableau,colors,"Un panier avec pommes sur une table avec une tasse, des fleurs dans un vase rouge, des livres, du papier peint, Couleurs vives",37
+2290,Tableau,content,"Un portrait d'un homme, fraise cou, cheveux bruns, moustache et bouc, miroir",25
+10361,Dessin,colors,"Des arbres qui cachent un village, hiver, Noir et blanc",16
+6592,Dessin,luminosity,"Un homme assis regarde l'horizon, un fleuve avec une ville en fond, un ciel nuageux, un chemin, Lumineux",33
+7068,Dessin,content,"Homme à côté d'un ane, chien, villa, arbres, falaise, montagne, eau, maison de campagne",30
+6258,Tableau,emotion,"Une femme de dos dans une forêt qui marche entre les arbres, Peur",18
+10330,Dessin,content,"Portrait d'une femme accoudée sur un rebord, cheveux coiffés, mains qui se tiennent",28
+1467,Tableau,content,"Rue avec des maisons mitoyennes, ruelles, cheminées, façades",20
+763,Tableau,emotion,"Une barque avec quelques personnes qui arrive sur le bord du lac, une montagne, de la végétation, des oiseaux dans le ciel, Joie",39
+763,Tableau,emotion,"Une barque avec quelques personnes qui arrive sur le bord du lac, une montagne, de la végétation, des oiseaux dans le ciel, Peur",39
+7554,Dessin,emotion,"Des gens qui dorment, la lumière bleue de la lune, des femmes qui tissent, un dortoir, une bougie, Tristesse",35
+7554,Dessin,emotion,"Des gens qui dorment, la lumière bleue de la lune, des femmes qui tissent, un dortoir, une bougie, Peur",34
+6226,Tableau,emotion,"Un cimetière avec des arbres sombres, un église, Peur",19
+1095,Tableau,content,"Formes géométriques, abstrait, arbre, maison, rue",18
+836,Tableau,content,"Ville portuaire, voilier, eau, église, feu, incendie",18
+1445,Tableau,luminosity,"Une forêt avec une montagne en fond, un palmier, le ciel est bleu, Sombre",23
+6090,Dessin,luminosity,"Un portrait d'un homme avec un monocle, il est bien habillé, il a une moustache et des cheveux dégarni, Lumineux",34
+1861,Tableau,content,"Un peintre et son tableau avec une femme et un nourisson, des hommes lui parlent, soldat, vieil homme",29
+5291,Dessin,colors,"Une femme est assise à côté d'un mur, elle porte une robe blanche, elle tient ses mains, Noir et blanc",29
+8500,Dessin,colors,"Des moulins sur le bord de l'eau, des barques, des voiliers sur l'eai, des roseaux, des personnes sur le bord de l'eau, Noir et blanc",43
+6743,Tableau,emotion,"Portrait d'un jeune soldat dans son uniforme près d'une ferme, chapeau dans une main, épée dans une main, émotion neutre",38
+7547,Tableau,colors,"Un femme ouvrière de profil avec un foulard bleu, des toîts, elle regarde, de la fumée, Teinte rouge",33
+1692,Tableau,colors,"Un homme fou avec une flute, un homme peu visible dans l'ombre derrière, bouche ouverte, assis, Couleurs sombres, Teinte rouge",40
+1282,Tableau,colors,"Une cabane au fond d'un jardin avec beaucoup d'arbres, de l'herbe, Noir et blanc",26
+5379,Dessin,emotion,"Une famille de mendiants, cane, froid, chiens errants, pauvreté, Tristesse",26
+5379,Dessin,emotion,"Une famille de mendiants, cane, froid, chiens errants, pauvreté, Peur",25
+7281,Tableau,colors,"Un vieil homme assis avec un livre en face de lui, une jeune femme avec le regard inquiet, des livres, Couleurs sombres",35
+4561,Tableau,luminosity,"Un vase sur une table avec des fleurs, des pétales sur la table, Lumineux",19
+11293,Tableau,luminosity,"Un portrait d'une vieille femme avec un chapeau, elle tient un gant dans une main, habit noir, assise, Sombre",32
+8307,Dessin,content,"Un mendiant adossé au mur tend sa main, un chapeau, une canne, barbe",24
+11293,Tableau,emotion,"Un portrait d'une vieille femme avec un chapeau, elle tient un gant dans une main, habit noir, assise, émotion neutre",34
+11293,Tableau,emotion,"Un portrait d'une vieille femme avec un chapeau, elle tient un gant dans une main, habit noir, assise, Tristesse",33
+11293,Tableau,emotion,"Un portrait d'une vieille femme avec un chapeau, elle tient un gant dans une main, habit noir, assise, Peur",32
+6543,Dessin,emotion,"Deux hommes qui parlent, deux chiens, chapeau, arbre, roue, émotion neutre",25
+6543,Dessin,emotion,"Deux hommes qui parlent, deux chiens, chapeau, arbre, roue, Surprise",22
+10895,Dessin,luminosity,"Un paysage avec une ville, muraille, campagne, ville fortifiée, Lumineux",21
+5011,Tableau,luminosity,"Un femme nue dans une forêt magique, des arbres en or, un paon doré, de l'eau calme, le paradis, Lumineux",37
+2604,Tableau,emotion,"Le fond d'un jardin, arbre, cloture, portillon, herbe, clocher en fond, émotion neutre",28
+2604,Tableau,emotion,"Le fond d'un jardin, arbre, cloture, portillon, herbe, clocher en fond, Tristesse",27
+2604,Tableau,emotion,"Le fond d'un jardin, arbre, cloture, portillon, herbe, clocher en fond, Peur",26
+1245,Tableau,colors,"Des fleurs, herbe haute, maison, arbres, jardin, haie, buissons, Noir et blanc",25
+6339,Tableau,luminosity,"Un femme qui court, jupe, arc, chien qui court, sandale, Sombre",20
+10869,Dessin,luminosity,"Un prêtre prononce un sermon les mains écartées et le regard tourné vers le ciel, Lumineux",27
+1100,Tableau,luminosity,"Un champ de blé, des maisons, des arbres avec des feuilles vertes, une haie, des nuages dans le ciel, Lumineux",34
+1346,Tableau,emotion,"Un homme sur un cheval, une batiment, de l'eau, un pont, des nuages, des vaches, un crépuscule, Joie",36
+1346,Tableau,emotion,"Un homme sur un cheval, une batiment, de l'eau, un pont, des nuages, des vaches, un crépuscule, Peur",36
+1346,Tableau,emotion,"Un homme sur un cheval, une batiment, de l'eau, un pont, des nuages, des vaches, un crépuscule, Colère",36
+1346,Tableau,emotion,"Un homme sur un cheval, une batiment, de l'eau, un pont, des nuages, des vaches, un crépuscule, Surprise",35
+10814,Dessin,luminosity,"Un homme parle à une femme qui le regarde, la femme a les bras écartés, l'homme porte quelque chose dans sa main, Lumineux",34
+4072,Tableau,colors,"Portrait d'une jeune femme qui lit un livre, vetêment noir, cheveux noirs courts, Noir et blanc",28
+1384,Dessin,emotion,"Une foule se réunit avec un oiseau dans le ciel, religion, miracle, Joie",22
+1384,Dessin,emotion,"Une foule se réunit avec un oiseau dans le ciel, religion, miracle, Surprise",21
+7069,Dessin,emotion,"Le bord d'une rive avec des arbres, un homme est assis avec un bouc, son chien et d'autres animaux, des maisons en fond, émotion neutre",43
+7069,Dessin,emotion,"Le bord d'une rive avec des arbres, un homme est assis avec un bouc, son chien et d'autres animaux, des maisons en fond, Joie",41
+6226,Tableau,luminosity,"Un cimetière avec des arbres sombres, un église, Sombre",19
+330,Tableau,content,"Un homme musclé torse nu, des anges qui volent, des enfants, religion",21
+172,Dessin,luminosity,"Une place avec un monument, un batiment, du brouillard, Lumineux",16
+8606,Tableau,emotion,"Une barque avec deux personnes sur le bord de l'eau, des arbres, un ciel nuageux, personne assise dans la barque, ordre, émotion neutre",42
+8606,Tableau,emotion,"Une barque avec deux personnes sur le bord de l'eau, des arbres, un ciel nuageux, personne assise dans la barque, ordre, Peur",40
+8606,Tableau,emotion,"Une barque avec deux personnes sur le bord de l'eau, des arbres, un ciel nuageux, personne assise dans la barque, ordre, Colère",40
+332,Tableau,emotion,"Un homme agenouillé avec une cane, un homme qui prie, un religieux avec un sceptre, un ange, un nourisson, Joie",33
+332,Tableau,emotion,"Un homme agenouillé avec une cane, un homme qui prie, un religieux avec un sceptre, un ange, un nourisson, Surprise",32
+1282,Tableau,luminosity,"Une cabane au fond d'un jardin avec beaucoup d'arbres, de l'herbe, Sombre",25
+3026,Sculpture,luminosity,"Sculpture d'un combat, hommes musclés, casques, calin, Lumineux",20
+10916,Tableau,content,"Une femme assise sur une planche avec un nourisson habillé en rouge dans ses bras, homme dans un voilier, ville, eau",31
+2150,Tableau,content,"Des soldats sur des cheveaux, vu de proche, uniformes, nuages, chapeaux",24
+332,Tableau,colors,"Un homme agenouillé avec une cane, un homme qui prie, un religieux avec un sceptre, un ange, un nourisson, Couleurs vives",36
+1282,Tableau,emotion,"Une cabane au fond d'un jardin avec beaucoup d'arbres, de l'herbe, émotion neutre",27
+1282,Tableau,emotion,"Une cabane au fond d'un jardin avec beaucoup d'arbres, de l'herbe, Peur",25
+7416,Tableau,colors,"Des marécages avec des arbres, dans le fond un village, de l'eau bleue, Couleurs vives",27
+5101,Tableau,emotion,"Un musicien joue de la guitare, il est assis, il a une moustache et il est jeune, Joie",28
+1524,Tableau,content,"Un temple avec une foule qui regardent, des soldats arrivent, un arbre, personnes alignées, arc",28
+361,Dessin,content,"Des femmes nues, de dos, accroupies, bouc, foule",18
+6254,Tableau,emotion,"Un homme moustachu est assis et lit le journal, il porte un habit noir, émotion neutre",24
+1098,Tableau,emotion,"Une femme et un garçon marchent sur un chemin avec des vaches, des arbres verts alignés, campagne, émotion neutre",33
+1098,Tableau,emotion,"Une femme et un garçon marchent sur un chemin avec des vaches, des arbres verts alignés, campagne, Joie",31
+3663,Tableau,luminosity,"Des religieux agenouillés devant un homme nu dans une église, Lumineux",20
+3688,Tableau,content,"Une statut de Jésus entouré de bouquets de fleurs, trois bouquets de fleurs",24
+8309,Dessin,content,"Un mendiant assis au sol, chapeau, rue",14
+5292,Dessin,luminosity,"Une statue d'une personne assise à côté d'un escalier, une table, Sombre",24
+1100,Tableau,colors,"Un champ de blé, des maisons, des arbres avec des feuilles vertes, une haie, des nuages dans le ciel, Couleurs vives, Teinte verte",42
+1284,Tableau,emotion,"Une femme trayant une vache dans un pré, des arbres en arrière-plan, une barque, une vache seule dans le champ, fermière, émotion neutre",42
+6254,Tableau,colors,"Un homme moustachu est assis et lit le journal, il porte un habit noir, Teinte rouge",23
+8729,Tableau,colors,"Deux hommes qui regardent des livres, une femme avec un enfant, un marché dans la rue, Noir et blanc",27
+1360,Dessin,emotion,"Un vieil homme souffrant, il tombe, des anges autour de lui, mort, maladie, Tristesse",31
+1360,Dessin,emotion,"Un vieil homme souffrant, il tombe, des anges autour de lui, mort, maladie, Peur",30
+451,Tableau,content,"Une femme assise de profil, robe bleue, cheveux coiffés, fleur dans les cheveux",25
+6497,Dessin,luminosity,"Un homme assis qui dessine, des animaux, des arbres, une ville en fond, une rivière, Lumineux",29
+5649,Dessin,emotion,"Des anges, des chevaux, des lions, des poutres, de l'or, religion, Joie",25
+5649,Dessin,emotion,"Des anges, des chevaux, des lions, des poutres, de l'or, religion, Surprise",24
+4092,Tableau,colors,"Une porte ouverte avec une fenêtre au fond, des rideaux, du parquet, Noir et blanc",24
+10567,Tableau,luminosity,"Une femme nue qui s'habille, Lumineux",13
+4133,Tableau,colors,"Une rivière qui coule, des prairies, une forêt, des rochers dans l'eau, Noir et blanc",28
+3374,Sculpture,emotion,"Une sculpture d'un homme musclé torse nu, combattant, émotion neutre",21
+10430,Dessin,colors,"Un dessin d'un visage de femme endormie la bouche ouverte et les yeux fermés, Noir et blanc",29
+1860,Tableau,luminosity,"Jésus mort avec trois femmes qui le tiennent, deux personnes dans le fond, mort, décès, Sombre",31
+10341,Dessin,luminosity,"Un dessin d'un collier avec un médaillon et des plumes, bijou, Lumineux",22
+6573,Dessin,luminosity,"Une ville en ruine, des gravats sur le sol, une église détruite, l'après guerre, Lumineux",30
+2477,Tableau,colors,"Des poulets, un coq, poulailler, Couleurs sombres",17
+8074,Tableau,content,"Une biche qui court dans la forêt, des arbres, chasse, paysage",20
+8332,Dessin,content,Un femme de profil en robe qui danse,10
+3669,Tableau,colors,"Des hommes barbus marchent entre des poutres, un turban, des habits de couleurs vives, soldat avec une épée, Couleurs vives",38
+5111,Tableau,emotion,"Portrait d'une femme, cheveux noirs, assise, mains, émotion neutre",21
+6497,Dessin,content,"Un homme assis qui dessine, des animaux, des arbres, une ville en fond, une rivière",26
+11337,Tableau,emotion,"Un vieil homme sur son cheval, chapeau, petit mur, canne, foulard rouge, émotion neutre",27
+1501,Tableau,content,"Un vendeur ends des animaux à une fermière et sa fille, chapeau, fromage",25
+8730,Tableau,content,"Un prêtre parle à une foule, des soldats, des lances, drapeau, pavé, hommes en uniforme militaire",33
+795,Dessin,emotion,"Une ile avec une ville, rocher, crépuscule, ruines, désert, Joie",24
+2316,Tableau,colors,"Huit fermiers hommes qui labourent le champ, travail, chemise, agriculture, pelle, Couleurs sombres",29
+1096,Tableau,content,"Une ville, des toits, une église, abstrait",14
+6467,Tableau,emotion,"Un rivière qui coule dans une forêt, des arbres avec des feuilles jaunes, l'automne, Joie",30
+7304,Dessin,colors,"Un jardin avec des arbres, une personne avec un chien au centre, une cloture en bois, une maison de campagne en fond, Noir et blanc",34
+332,Tableau,content,"Un homme agenouillé avec une cane, un homme qui prie, un religieux avec un sceptre, un ange, un nourisson",30
+10567,Tableau,emotion,"Une femme nue qui s'habille, Joie",13
+10567,Tableau,emotion,"Une femme nue qui s'habille, Surprise",12
+5011,Tableau,colors,"Un femme nue dans une forêt magique, des arbres en or, un paon doré, de l'eau calme, le paradis, Couleurs vives",40
+6534,Dessin,emotion,"Une roue à eau, un arbre, deux maisons, de l'eau, émotion neutre",23
+6512,Dessin,content,"Deux personnes, une muraille, une tour, des arbres",15
+1277,Tableau,content,"Une forêt dense, des troncs, un ruisseau, des roches, des feuilles vertes",24
+8693,Tableau,content,"Un berger qui mène son troupeau de moutons dans la forêt, une prairie",22
+881,Dessin,emotion,"Un temple avec une foule, un tribunal, un soldat adulé, des morts, antiquité, Tristesse",27
+881,Dessin,emotion,"Un temple avec une foule, un tribunal, un soldat adulé, des morts, antiquité, Peur",26
+881,Dessin,emotion,"Un temple avec une foule, un tribunal, un soldat adulé, des morts, antiquité, Colère",26
+7823,Tableau,emotion,"Une vieille femme lit un livre assise, table, lampe de lecture, robe noire, émotion neutre",26
+7823,Tableau,emotion,"Une vieille femme lit un livre assise, table, lampe de lecture, robe noire, Joie",24
+5111,Tableau,colors,"Portrait d'une femme, cheveux noirs, assise, mains, Teinte rouge",20
+10835,Dessin,emotion,"Un vieil homme barbu, musclé, un baton dans la main, émotion neutre",21
+10835,Dessin,emotion,"Un vieil homme barbu, musclé, un baton dans la main, Colère",19
+6534,Dessin,content,"Une roue à eau, un arbre, deux maisons, de l'eau",18
+10809,Dessin,colors,"Des anges qui regardent vers le haut, religion, ailes, Bicolor, Teinte rouge",22
+6481,Dessin,emotion,"Un canal avec un écluse, lampadaire, maison avec cheminée, eau, village au bord du canal, émotion neutre",30
+5508,Dessin,emotion,"Un homme avec un instrument parle à trois vieux hommes, torse nu, barbe blanche, Peur",25
+5508,Dessin,emotion,"Un homme avec un instrument parle à trois vieux hommes, torse nu, barbe blanche, Colère",25
+6586,Tableau,content,"Portrait d'un jeune homme avec une tunique rouge et des cheveux longs, il tient à la main un parchemin, une ville en fond",34
+5301,Dessin,colors,"Un porte ouverte, une chambre, un lit, une table, un chapeau, des tableaux sur le mur, intérieur, appartement, Noir et blanc",40
+6573,Dessin,colors,"Une ville en ruine, des gravats sur le sol, une église détruite, l'après guerre, Bicolor, Teinte rouge",34
+5379,Dessin,content,"Une famille de mendiants, cane, froid, chiens errants, pauvreté",22
+4565,Tableau,content,"Un paysage plat avec une prairie et un ciel dégagé, vache",18
+8291,Tableau,luminosity,"Une vieille femme sans abri au coin d'une rue, la main tendue, Sombre",21
+5124,Dessin,emotion,"Des boites colorées sur une table, parfums, flacons, miroir, salle de bain, Joie",26
+10861,Tableau,colors,"Portrait d'une jeune femme avec un collier de perles, cheveux coiffés, boucles d'oreilles, sourire, Teinte rouge",35
+5162,Dessin,content,"Un groupe d'aventuriers découvrent une vallée, arbres, falaise, découverte",26
+4964,Tableau,colors,"Des ouvriers marchent dans la rue, un chien, foule qui marchent, manifestation, Couleurs vives",28
+5002,Tableau,content,"Une fête, un repas, une foule en intérieur, des enfants qui jouent, richesse",27
+3688,Tableau,luminosity,"Une statut de Jésus entouré de bouquets de fleurs, trois bouquets de fleurs, Sombre",27
+8695,Tableau,content,"Un veille femme au visage fermé, une plante dans un pot, l'ombre",22
+2441,Tableau,content,"Un intérieur avec beaucoup de tableaux, des artistes, vente d'art",21
+3904,Tableau,luminosity,"Une jeune femme avec longue robe blanche descend les marches d'une soirée chic avec des invités bien habillés, Lumineux",30
+1737,Tableau,content,"Une fête de village, centre-ville, tente, extérieur",18
+4081,Tableau,luminosity,"Un marécage, eau, roseau, forêt, Sombre",16
+10780,Dessin,luminosity,"Un dessin d'une chambre, lit, arche, meubles, intérieur, Lumineux",25
+5304,Dessin,content,Une femme assise avec un foulard lit un livre avec une lampe de lecture,18
+2316,Tableau,emotion,"Huit fermiers hommes qui labourent le champ, travail, chemise, agriculture, pelle, émotion neutre",28
+2316,Tableau,emotion,"Huit fermiers hommes qui labourent le champ, travail, chemise, agriculture, pelle, Joie",26
+2316,Tableau,emotion,"Huit fermiers hommes qui labourent le champ, travail, chemise, agriculture, pelle, Tristesse",27
+1332,Tableau,content,"Un paysage avec un chemin avec une princesse et des gardes, des enfants, une croix, eau, arbres, église en fond",33
+6226,Tableau,content,"Un cimetière avec des arbres sombres, un église",16
+8606,Tableau,colors,"Une barque avec deux personnes sur le bord de l'eau, des arbres, un ciel nuageux, personne assise dans la barque, ordre, Noir et blanc",41
+10861,Tableau,content,"Portrait d'une jeune femme avec un collier de perles, cheveux coiffés, boucles d'oreilles, sourire",31
+1922,Tableau,content,"Maison de campagne avec un roue à eau, montagnes en fond, pierre sur le sol",20
+10540,Tableau,emotion,"Un soldat dans le champ, soldat seul, herbe haute, colline, arbre, soldat français, Tristesse",30
+10883,Dessin,emotion,"Dessin de corps nus, anatomie, déshabiller, maigre, Surprise",17
+1130,Tableau,luminosity,"Un parc près du fleuve, un pont, des rues, un pont, des voitures et des bus, de la fumée et des nuages, Lumineux",39
+8500,Dessin,content,"Des moulins sur le bord de l'eau, des barques, des voiliers sur l'eai, des roseaux, des personnes sur le bord de l'eau",39
+2477,Tableau,luminosity,"Des poulets, un coq, poulailler, Sombre",14
+8309,Dessin,emotion,"Un mendiant assis au sol, chapeau, rue, Tristesse",18
+8309,Dessin,emotion,"Un mendiant assis au sol, chapeau, rue, Peur",17
+8318,Dessin,content,"Un homme de côté avec un chapeau et un manteau, des bottes, homme debout",23
+1655,Tableau,colors,"Un table avec deux poissons morts, des pommes, citron, poire, Teinte verte",23
+8326,Dessin,colors,"Une arène avec des spectateurs qui regardent un spectacle, des poutres, Noir et blanc",23
+6481,Dessin,colors,"Un canal avec un écluse, lampadaire, maison avec cheminée, eau, village au bord du canal, Bicolor, Teinte rouge",32
+6932,Dessin,luminosity,"Dessin d'un corps musclé d'un homme, Lumineux",16
+11224,Tableau,content,"Un calèche arrêté sur le bord d'un chemin avec ses occupants dehors, une forêts, chevaux, monument, statue",34
+2438,Tableau,content,"Un bal en intérieur, une table remplie de plats, richesse, des personnes qui dansent, robes, soirée, fête",36
+1245,Tableau,emotion,"Des fleurs, herbe haute, maison, arbres, jardin, haie, buissons, émotion neutre",26
+1245,Tableau,emotion,"Des fleurs, herbe haute, maison, arbres, jardin, haie, buissons, Joie",24
+1281,Tableau,content,"La mer avec des vagues, des voiliers sur l'eau, une personne au bord de l'eau, un ciel nuageux",32
+5510,Dessin,emotion,"Un adolescente est assise contre le mur, elle regarde vers le haut, elle réfléchit, émotion neutre",30
+5510,Dessin,emotion,"Un adolescente est assise contre le mur, elle regarde vers le haut, elle réfléchit, Tristesse",29
+7304,Dessin,luminosity,"Un jardin avec des arbres, une personne avec un chien au centre, une cloture en bois, une maison de campagne en fond, Lumineux",33
+1861,Tableau,emotion,"Un peintre et son tableau avec une femme et un nourisson, des hommes lui parlent, soldat, vieil homme, Peur",32
+1861,Tableau,emotion,"Un peintre et son tableau avec une femme et un nourisson, des hommes lui parlent, soldat, vieil homme, Colère",32
+11545,Tableau,luminosity,"Des fleurs blanches avec un grand papillon rouge et un grand papillon rose, Lumineux",20
+6372,Tableau,colors,"Vache, Ane, Chèvre, Bouc, Mouton, Arbre, Tronc, Chaine, Champ, Noir et blanc",29
+6481,Dessin,content,"Un canal avec un écluse, lampadaire, maison avec cheminée, eau, village au bord du canal",25
+172,Dessin,content,"Une place avec un monument, un batiment, du brouillard",13
+1129,Tableau,emotion,"Un fleuve avec des bateaux, rue avec des arbres alignés, chevaux et calèches, route, eau, vagues, Peur",34
+7975,Tableau,content,"Portrait d'un jeune homme avec une légère moustache torse nu qui regarde vers le haut, cheveux courts",28
+7939,Dessin,content,"Un tronc d'arbre dans une forêt, un parc, des personnes dans un parc, des couples en rendez-vous",30
+7416,Tableau,luminosity,"Des marécages avec des arbres, dans le fond un village, de l'eau bleue, Lumineux",24
+10883,Dessin,colors,"Dessin de corps nus, anatomie, déshabiller, maigre, Noir et blanc",19
+6592,Dessin,emotion,"Un homme assis regarde l'horizon, un fleuve avec une ville en fond, un ciel nuageux, un chemin, émotion neutre",35
+6592,Dessin,emotion,"Un homme assis regarde l'horizon, un fleuve avec une ville en fond, un ciel nuageux, un chemin, Joie",33
+1129,Tableau,colors,"Un fleuve avec des bateaux, rue avec des arbres alignés, chevaux et calèches, route, eau, vagues, Noir et blanc",35
+4988,Tableau,colors,"Plusieurs personnes, des chevaux, un puit, un chateau en fond, des arbres, une montagne, promenade, convoi, Couleurs vives",38
+5804,Dessin,content,"Un paysage avec des arbres, des collines, des animaux qui courent, de l'herbe",25
+361,Dessin,colors,"Des femmes nues, de dos, accroupies, bouc, foule, Bicolor, Teinte rouge",25
+1245,Tableau,luminosity,"Des fleurs, herbe haute, maison, arbres, jardin, haie, buissons, Lumineux",24
+7689,Tableau,luminosity,"Des hommes barbus et moustachus qui discutent, costumes, journal, discussion, débat, Sombre",26
+1130,Tableau,colors,"Un parc près du fleuve, un pont, des rues, un pont, des voitures et des bus, de la fumée et des nuages, Couleurs vives",42
+4826,Tableau,colors,"Portrait d'un vieil homme à la barbe blanche et au crâne dégarni, mains visibles, nappe rouge, Couleurs sombres, Teinte verte",39
+8291,Tableau,colors,"Une vieille femme sans abri au coin d'une rue, la main tendue, Couleurs sombres",24
+7190,Tableau,emotion,"Deux femmes et un homme travaillent dans un champ, fermier, outil, champ, arbre, cueillette, émotion neutre",33
+7190,Tableau,emotion,"Deux femmes et un homme travaillent dans un champ, fermier, outil, champ, arbre, cueillette, Tristesse",32
+11545,Tableau,content,Des fleurs blanches avec un grand papillon rouge et un grand papillon rose,17
+8332,Dessin,emotion,"Un femme de profil en robe qui danse, Joie",13
+8074,Tableau,colors,"Une biche qui court dans la forêt, des arbres, chasse, paysage, Noir et blanc",24
+7642,Tableau,emotion,"Un homme assis qui regarde le sol avec un instrument de musique, une soeur religieuse en robe noir à côté, intérieur, Tristesse",37
+7642,Tableau,emotion,"Un homme assis qui regarde le sol avec un instrument de musique, une soeur religieuse en robe noir à côté, intérieur, Colère",36
+6125,Dessin,content,"Une femme assise à une table avec un chapeau posé sur la table, elle attend",20
+6258,Tableau,colors,"Une femme de dos dans une forêt qui marche entre les arbres, Noir et blanc",19
+8058,Tableau,content,"Portrait d'une vieil homme avec un grosse moustache blanche, uniforme militaire, général, armée",27
+3026,Sculpture,content,"Sculpture d'un combat, hommes musclés, casques, calin",17
+10167,Dessin,content,"Dessin d'un bijoux, bracelet, collier, lettre",14
+10883,Dessin,content,"Dessin de corps nus, anatomie, déshabiller, maigre",15
+7939,Dessin,emotion,"Un tronc d'arbre dans une forêt, un parc, des personnes dans un parc, des couples en rendez-vous, émotion neutre",35
+7939,Dessin,emotion,"Un tronc d'arbre dans une forêt, un parc, des personnes dans un parc, des couples en rendez-vous, Joie",33
+795,Dessin,content,"Une ile avec une ville, rocher, crépuscule, ruines, désert",21
+1188,Tableau,colors,"Un animal blanc dans la fôret, de la végétation, la chasse, Noir et blanc",24
+8656,Dessin,colors,"Une maison carré de deux étages, un arbre, des arbustes, maison de campagne, Noir et blanc",26
+4286,Dessin,colors,"Un fleuve avec deux bateaux, un pont et une ville, de la fumée qui sort des usines, un parc, Couleurs vives",34
+6193,Dessin,colors,"Un dessin d'un visage d'une femme avec les cheveux attachés, elle regarde vers le bas, Noir et blanc",30
+482,Tableau,emotion,"Portrait d'une jeune femme avec une robe noire et des bijoux, cheveux noirs, bouquet de fleurs, émotion neutre",32
+482,Tableau,emotion,"Portrait d'une jeune femme avec une robe noire et des bijoux, cheveux noirs, bouquet de fleurs, Joie",30
+4017,Dessin,emotion,"L'avant d'un bateau, structure, émotion neutre",15
+763,Tableau,content,"Une barque avec quelques personnes qui arrive sur le bord du lac, une montagne, de la végétation, des oiseaux dans le ciel",36
+1111,Tableau,emotion,"Un bateau qui passe sous un pont, il y a de la fumée, une ville en fond, émotion neutre",28
+1111,Tableau,emotion,"Un bateau qui passe sous un pont, il y a de la fumée, une ville en fond, Tristesse",27
+8332,Dessin,colors,"Un femme de profil en robe qui danse, Noir et blanc",14
+3669,Tableau,emotion,"Des hommes barbus marchent entre des poutres, un turban, des habits de couleurs vives, soldat avec une épée, émotion neutre",37
+119,Tableau,emotion,"Un homme mort dans son bain, lettre, suicide, décès, déséspoir, Tristesse",24
+119,Tableau,emotion,"Un homme mort dans son bain, lettre, suicide, décès, déséspoir, Peur",23
+4571,Tableau,content,"Un canal entre deux batîments dans une ville avec un pont, fin de soirée, fenêtres avec de la lumière",28
+8131,Dessin,emotion,"Une femme avec un parapluie dans un parc, une ville en fond, des nuages, de l'herbe, émotion neutre",30
+8131,Dessin,emotion,"Une femme avec un parapluie dans un parc, une ville en fond, des nuages, de l'herbe, Joie",28
+2477,Tableau,emotion,"Des poulets, un coq, poulailler, émotion neutre",16
+2477,Tableau,emotion,"Des poulets, un coq, poulailler, Dégoût",17
+4072,Tableau,emotion,"Portrait d'une jeune femme qui lit un livre, vetêment noir, cheveux noirs courts, émotion neutre",29
+4072,Tableau,emotion,"Portrait d'une jeune femme qui lit un livre, vetêment noir, cheveux noirs courts, Joie",27
+4576,Tableau,colors,"Un paysage avec un ciel nuageux, un lac en fond et un arbre en avant plan, Couleurs sombres",28
+3904,Tableau,emotion,"Une jeune femme avec longue robe blanche descend les marches d'une soirée chic avec des invités bien habillés, Joie",30
+5510,Dessin,content,"Un adolescente est assise contre le mur, elle regarde vers le haut, elle réfléchit",25
+10780,Dessin,colors,"Un dessin d'une chambre, lit, arche, meubles, intérieur, Bicolor, Teinte rouge",29
+836,Tableau,emotion,"Ville portuaire, voilier, eau, église, feu, incendie, Peur",21
+791,Dessin,content,"Une ville au loin avec un clocher, des toits dans le brouillard, la mer, la neige",23
+211,Tableau,emotion,"Jésus sur la croix, deux femmes et un homme prient, un homme debout, une ville en fond et des arbres, Tristesse",33
+1922,Tableau,emotion,"Maison de campagne avec un roue à eau, montagnes en fond, pierre sur le sol, émotion neutre",25
+1922,Tableau,emotion,"Maison de campagne avec un roue à eau, montagnes en fond, pierre sur le sol, Peur",23
+7155,Tableau,luminosity,"Des ouvriers et une ouvrière qui marchent, travail manuel, saleté, fermiers, paysage désolé, pauvreté, Sombre",40
+8446,Dessin,emotion,"Des hommes en uniforme et en costume discutent, groupe, débat, réunion, émotion neutre",25
+8446,Dessin,emotion,"Des hommes en uniforme et en costume discutent, groupe, débat, réunion, Colère",23
+6890,Tableau,emotion,"Des personnes dans un intérieur, des chiens, une fête, Joie",21
+1445,Tableau,colors,"Une forêt avec une montagne en fond, un palmier, le ciel est bleu, Teinte verte",25
+1294,Tableau,colors,"Un paysage désolé avec des arbres sans feuilles, un ciel nuageux, une prairie avec de haute herbes, Couleurs sombres, Teinte verte",39
+4092,Tableau,emotion,"Une porte ouverte avec une fenêtre au fond, des rideaux, du parquet, émotion neutre",25
+4092,Tableau,emotion,"Une porte ouverte avec une fenêtre au fond, des rideaux, du parquet, Peur",23
+579,Tableau,emotion,"Portrait d'une jeune femme avec des cheveux noirs, robe blanche, pomme dans une main, maquillage, émotion neutre",32
+579,Tableau,emotion,"Portrait d'une jeune femme avec des cheveux noirs, robe blanche, pomme dans une main, maquillage, Joie",30
+5761,Dessin,emotion,"Un enfant debout avec deux femmes, un homme de dos, un vase, émotion neutre",22
+5761,Dessin,emotion,"Un enfant debout avec deux femmes, un homme de dos, un vase, Joie",20
+8404,Dessin,emotion,"Des corps, une grande porte ouverte, des débris, le chaos, Tristesse",20
+8404,Dessin,emotion,"Des corps, une grande porte ouverte, des débris, le chaos, Peur",19
+8404,Dessin,emotion,"Des corps, une grande porte ouverte, des débris, le chaos, Dégoût",22
+4492,Tableau,content,"Une fête avec des femmes en robes et des hommes, danse, des costumes",20
+11224,Tableau,emotion,"Un calèche arrêté sur le bord d'un chemin avec ses occupants dehors, une forêts, chevaux, monument, statue, émotion neutre",39
+11224,Tableau,emotion,"Un calèche arrêté sur le bord d'un chemin avec ses occupants dehors, une forêts, chevaux, monument, statue, Colère",37
+3602,Dessin,colors,"Une sculpture d'une tête, un homme avec une moustache, Noir et blanc",18
+8695,Tableau,emotion,"Un veille femme au visage fermé, une plante dans un pot, l'ombre, Tristesse",26
+8695,Tableau,emotion,"Un veille femme au visage fermé, une plante dans un pot, l'ombre, Peur",25
+7114,Dessin,colors,"Un port avec des voiliers et des marins, la mer, des voiliers sur l'eau, un ciel nuageux, la plage de cailloux, Noir et blanc",42
+6456,Dessin,emotion,"Un portrait d'un homme, il regarde vers la gauche, il a des cheveux courts, émotion neutre",27
+6456,Dessin,emotion,"Un portrait d'un homme, il regarde vers la gauche, il a des cheveux courts, Tristesse",26
+6456,Dessin,emotion,"Un portrait d'un homme, il regarde vers la gauche, il a des cheveux courts, Peur",25
+6125,Dessin,emotion,"Une femme assise à une table avec un chapeau posé sur la table, elle attend, émotion neutre",25
+6125,Dessin,emotion,"Une femme assise à une table avec un chapeau posé sur la table, elle attend, Peur",23
+1360,Dessin,content,"Un vieil homme souffrant, il tombe, des anges autour de lui, mort, maladie",27
+6472,Tableau,emotion,"Un homme parle à une foule sur un balcon, des gardes en armure, des enfants, extérieur, émotion neutre",33
+6472,Tableau,emotion,"Un homme parle à une foule sur un balcon, des gardes en armure, des enfants, extérieur, Joie",31
+7479,Tableau,content,"Un femme en robe verte écoute un homme en tenue noire, intérieur, une fenêtre derrière",29
+7068,Dessin,colors,"Homme à côté d'un ane, chien, villa, arbres, falaise, montagne, eau, maison de campagne, Noir et blanc",34
+4561,Tableau,emotion,"Un vase sur une table avec des fleurs, des pétales sur la table, émotion neutre",21
+4561,Tableau,emotion,"Un vase sur une table avec des fleurs, des pétales sur la table, Joie",19
+4561,Tableau,emotion,"Un vase sur une table avec des fleurs, des pétales sur la table, Tristesse",20
+6193,Dessin,content,"Un dessin d'un visage d'une femme avec les cheveux attachés, elle regarde vers le bas",26
+4092,Tableau,content,"Une porte ouverte avec une fenêtre au fond, des rideaux, du parquet",20
+4826,Tableau,content,"Portrait d'un vieil homme à la barbe blanche et au crâne dégarni, mains visibles, nappe rouge",28
+1655,Tableau,content,"Un table avec deux poissons morts, des pommes, citron, poire",18
+4566,Tableau,content,"Un ruelle le soir, un lampadaire éclaire faiblement, une figure noire",20
+4571,Tableau,emotion,"Un canal entre deux batîments dans une ville avec un pont, fin de soirée, fenêtres avec de la lumière, émotion neutre",33
+4571,Tableau,emotion,"Un canal entre deux batîments dans une ville avec un pont, fin de soirée, fenêtres avec de la lumière, Joie",31
+7830,Tableau,colors,"Un forêt dense sur les collines, un ciel avec des nuages, Couleurs vives, Teinte rouge, Teinte bleue",32
+8491,Tableau,emotion,"Un port, des voiliers, barques, ciel nuageux, ville portuaire, eau, bord de rive, émotion neutre",31
+8491,Tableau,emotion,"Un port, des voiliers, barques, ciel nuageux, ville portuaire, eau, bord de rive, Joie",29
+7547,Tableau,content,"Un femme ouvrière de profil avec un foulard bleu, des toîts, elle regarde, de la fumée",29
+10472,Tableau,emotion,"Une tout avec un toit en pointe, des soldats sur des chevaux avec des drapeaux, un cortège, une foule, émotion neutre",36
+10472,Tableau,emotion,"Une tout avec un toit en pointe, des soldats sur des chevaux avec des drapeaux, un cortège, une foule, Joie",34
+10472,Tableau,emotion,"Une tout avec un toit en pointe, des soldats sur des chevaux avec des drapeaux, un cortège, une foule, Peur",34
+8058,Tableau,emotion,"Portrait d'une vieil homme avec un grosse moustache blanche, uniforme militaire, général, armée, émotion neutre",32
+8058,Tableau,emotion,"Portrait d'une vieil homme avec un grosse moustache blanche, uniforme militaire, général, armée, Colère",30
+1209,Tableau,emotion,"Jésus entouré de personnes, des gardes, une ville en fond, Joie",21
+1209,Tableau,emotion,"Jésus entouré de personnes, des gardes, une ville en fond, Surprise",20
+211,Tableau,content,"Jésus sur la croix, deux femmes et un homme prient, un homme debout, une ville en fond et des arbres",29
+6573,Dessin,content,"Une ville en ruine, des gravats sur le sol, une église détruite, l'après guerre",27
+5749,Tableau,luminosity,"Foule, ville, église, chevaux, Sombre",14
+1294,Tableau,luminosity,"Un paysage désolé avec des arbres sans feuilles, un ciel nuageux, une prairie avec de haute herbes, Sombre",31
+8309,Dessin,luminosity,"Un mendiant assis au sol, chapeau, rue, Lumineux",17
+8230,Tableau,colors,"Un foule de personne devant une taverne, neige, hiver, arbres sans feuilles, charettes, village, Neutral",31
+5804,Dessin,colors,"Un paysage avec des arbres, des collines, des animaux qui courent, de l'herbe, Noir et blanc",29
+8730,Tableau,emotion,"Un prêtre parle à une foule, des soldats, des lances, drapeau, pavé, hommes en uniforme militaire, émotion neutre",38
+8730,Tableau,emotion,"Un prêtre parle à une foule, des soldats, des lances, drapeau, pavé, hommes en uniforme militaire, Peur",36
+8730,Tableau,emotion,"Un prêtre parle à une foule, des soldats, des lances, drapeau, pavé, hommes en uniforme militaire, Colère",36
+791,Dessin,emotion,"Une ville au loin avec un clocher, des toits dans le brouillard, la mer, la neige, émotion neutre",28
+791,Dessin,emotion,"Une ville au loin avec un clocher, des toits dans le brouillard, la mer, la neige, Joie",26
+5245,Dessin,colors,"Une figure féminine noire dans l'ombre, un large manteau, un capuche, un voile, Noir et blanc",29
+8656,Dessin,emotion,"Une maison carré de deux étages, un arbre, des arbustes, maison de campagne, émotion neutre",27
+4492,Tableau,emotion,"Une fête avec des femmes en robes et des hommes, danse, des costumes, Joie",23
+6743,Tableau,content,"Portrait d'un jeune soldat dans son uniforme près d'une ferme, chapeau dans une main, épée dans une main",33
+6706,Tableau,content,"Portrait d'un soldat en uniforme avec son chapeau sur sa tête et un sceptre, derrière lui d'autres soldats et un cheval",39
+3374,Sculpture,colors,"Une sculpture d'un homme musclé torse nu, combattant, Noir et blanc",20
+1692,Tableau,emotion,"Un homme fou avec une flute, un homme peu visible dans l'ombre derrière, bouche ouverte, assis, Joie",33
+1692,Tableau,emotion,"Un homme fou avec une flute, un homme peu visible dans l'ombre derrière, bouche ouverte, assis, Peur",33
+1692,Tableau,emotion,"Un homme fou avec une flute, un homme peu visible dans l'ombre derrière, bouche ouverte, assis, Colère",33
+1692,Tableau,emotion,"Un homme fou avec une flute, un homme peu visible dans l'ombre derrière, bouche ouverte, assis, Surprise",32
+7516,Tableau,emotion,"Portrait d'un homme avec une fraise autour du cou, uniforme, royauté, il a un bouc, émotion neutre",32
+7114,Dessin,content,"Un port avec des voiliers et des marins, la mer, des voiliers sur l'eau, un ciel nuageux, la plage de cailloux",38
+10895,Dessin,colors,"Un paysage avec une ville, muraille, campagne, ville fortifiée, Bicolor, Teinte rouge",25
+2187,Tableau,content,"Trois hommes sur des chevaux au crépuscule, ils parlent avec un homme debout, ciel orangé",28
+7689,Tableau,colors,"Des hommes barbus et moustachus qui discutent, costumes, journal, discussion, débat, Couleurs sombres",29
+7908,Dessin,emotion,"Un chateau abandonné, des ruines, un palmier, un homme avec une femme et un enfant, Joie",27
+7908,Dessin,emotion,"Un chateau abandonné, des ruines, un palmier, un homme avec une femme et un enfant, Surprise",26
+4988,Tableau,content,"Plusieurs personnes, des chevaux, un puit, un chateau en fond, des arbres, une montagne, promenade, convoi",32
+6146,Tableau,content,"Un homme, contre une charette, une femme assise sur l'herbe, un enfant avec un fleur, une femme avec un nourisson",33
+5510,Dessin,colors,"Un adolescente est assise contre le mur, elle regarde vers le haut, elle réfléchit, Noir et blanc",29
+7980,Tableau,colors,"Deux jeunes femmes dans le jardin sur le chemin, religieuse, long vêtements blanc et noir, arbustes, Teinte verte",34
+5508,Dessin,content,"Un homme avec un instrument parle à trois vieux hommes, torse nu, barbe blanche",22
+11293,Tableau,colors,"Un portrait d'une vieille femme avec un chapeau, elle tient un gant dans une main, habit noir, assise, Couleurs sombres",35
+1281,Tableau,colors,"La mer avec des vagues, des voiliers sur l'eau, une personne au bord de l'eau, un ciel nuageux, Teinte verte",37
+8307,Dessin,emotion,"Un mendiant adossé au mur tend sa main, un chapeau, une canne, barbe, Tristesse",28
+8307,Dessin,emotion,"Un mendiant adossé au mur tend sa main, un chapeau, une canne, barbe, Peur",27
+4081,Tableau,colors,"Un marécage, eau, roseau, forêt, Noir et blanc",17
+8446,Dessin,luminosity,"Des hommes en uniforme et en costume discutent, groupe, débat, réunion, Lumineux",23
+10430,Dessin,emotion,"Un dessin d'un visage de femme endormie la bouche ouverte et les yeux fermés, Tristesse",29
+10430,Dessin,emotion,"Un dessin d'un visage de femme endormie la bouche ouverte et les yeux fermés, Peur",28
+5245,Dessin,emotion,"Une figure féminine noire dans l'ombre, un large manteau, un capuche, un voile, Peur",28
+5245,Dessin,emotion,"Une figure féminine noire dans l'ombre, un large manteau, un capuche, un voile, Surprise",27
+1731,Tableau,content,"Une foule dans le village en hiver, le canal gelé, la neige sur les toits, la fumée sort des cheminées",33
+10472,Tableau,luminosity,"Une tout avec un toit en pointe, des soldats sur des chevaux avec des drapeaux, un cortège, une foule, Lumineux",34
+4168,Tableau,content,"Une barrière dans un champ, des prairies, le ciel nuageux",17
+4571,Tableau,luminosity,"Un canal entre deux batîments dans une ville avec un pont, fin de soirée, fenêtres avec de la lumière, Lumineux",31
+4561,Tableau,colors,"Un vase sur une table avec des fleurs, des pétales sur la table, Couleurs vives, Teinte verte",27
+5497,Tableau,emotion,"Jésus mort entouré de femmes et d'hommes qui prient, grotte, religion, décès, ange, Tristesse",33
+5497,Tableau,emotion,"Jésus mort entouré de femmes et d'hommes qui prient, grotte, religion, décès, ange, Peur",32
+5497,Tableau,content,"Jésus mort entouré de femmes et d'hommes qui prient, grotte, religion, décès, ange",29
+4964,Tableau,content,"Des ouvriers marchent dans la rue, un chien, foule qui marchent, manifestation",22
+2049,Tableau,emotion,"Un fille avec un serre-tête tient un nourisson nu dans sses bras, portrait, Joie",25
+1354,Tableau,emotion,"Une femme voit des nourissons anges avec des ailes autour d'elles, Joie",22
+1354,Tableau,emotion,"Une femme voit des nourissons anges avec des ailes autour d'elles, Surprise",21
+5002,Tableau,emotion,"Une fête, un repas, une foule en intérieur, des enfants qui jouent, richesse, Joie",30
+5292,Dessin,colors,"Une statue d'une personne assise à côté d'un escalier, une table, Noir et blanc",25
+7830,Tableau,emotion,"Un forêt dense sur les collines, un ciel avec des nuages, Joie",20
+7830,Tableau,emotion,"Un forêt dense sur les collines, un ciel avec des nuages, Surprise",19
+5304,Dessin,colors,"Une femme assise avec un foulard lit un livre avec une lampe de lecture, Noir et blanc",22
+5749,Tableau,colors,"Foule, ville, église, chevaux, Couleurs sombres",17
+1350,Tableau,content,"Portrait d'une femme avec un noeud dans ses cheveux, cheveux blancs, grand-mère",26
+10844,Dessin,luminosity,"Des personnes en intérieur à une table, un homme se fait laver le pied, les personnes observent, Lumineux",29
+4964,Tableau,emotion,"Des ouvriers marchent dans la rue, un chien, foule qui marchent, manifestation, Colère",25
+5749,Tableau,emotion,"Foule, ville, église, chevaux, émotion neutre",16
+5749,Tableau,emotion,"Foule, ville, église, chevaux, Tristesse",15
+5749,Tableau,emotion,"Foule, ville, église, chevaux, Peur",14
+1209,Tableau,luminosity,"Jésus entouré de personnes, des gardes, une ville en fond, Lumineux",21
+123,Tableau,content,"Un homme musclé et des femmes nues, un temple, le paradis, un ange, nuages, dieu",27
+119,Tableau,content,"Un homme mort dans son bain, lettre, suicide, décès, déséspoir",20
+8307,Dessin,luminosity,"Un mendiant adossé au mur tend sa main, un chapeau, une canne, barbe, Lumineux",27
+8326,Dessin,emotion,"Une arène avec des spectateurs qui regardent un spectacle, des poutres, Surprise",21
+1731,Tableau,emotion,"Une foule dans le village en hiver, le canal gelé, la neige sur les toits, la fumée sort des cheminées, Joie",36
+4996,Tableau,colors,"Un portrait d'une femme en robe avec un chapeau, une ville ne fond, un tour dans la ville, Couleurs vives",30
+3921,Tableau,content,"Portrait d'une femme assise de profil, cheveux roux, lunettes de lecture, oiseau",25
+4597,Tableau,emotion,"Un portrait d'un homme avec une moustache noir et des cheveux mi-long, un livre noir en main et un habit noir, émotion neutre",34
+4597,Tableau,emotion,"Un portrait d'un homme avec une moustache noir et des cheveux mi-long, un livre noir en main et un habit noir, Surprise",31
+7155,Tableau,emotion,"Des ouvriers et une ouvrière qui marchent, travail manuel, saleté, fermiers, paysage désolé, pauvreté, Tristesse",41
+7155,Tableau,emotion,"Des ouvriers et une ouvrière qui marchent, travail manuel, saleté, fermiers, paysage désolé, pauvreté, Peur",40
+10780,Dessin,content,"Un dessin d'une chambre, lit, arche, meubles, intérieur",22
+8291,Tableau,emotion,"Une vieille femme sans abri au coin d'une rue, la main tendue, Tristesse",22
+8291,Tableau,emotion,"Une vieille femme sans abri au coin d'une rue, la main tendue, Peur",21
+2280,Tableau,emotion,"Un homme nu à l'envers sur la croix, hommes musclés, soldat, prisonnier, Tristesse",27
+2280,Tableau,emotion,"Un homme nu à l'envers sur la croix, hommes musclés, soldat, prisonnier, Peur",26
+2280,Tableau,emotion,"Un homme nu à l'envers sur la croix, hommes musclés, soldat, prisonnier, Colère",26
+5245,Dessin,content,"Une figure féminine noire dans l'ombre, un large manteau, un capuche, un voile",25
+7980,Tableau,content,"Deux jeunes femmes dans le jardin sur le chemin, religieuse, long vêtements blanc et noir, arbustes",29
+6706,Tableau,colors,"Portrait d'un soldat en uniforme avec son chapeau sur sa tête et un sceptre, derrière lui d'autres soldats et un cheval, Noir et blanc",43
+8273,Tableau,luminosity,"Un voilier sur l'eau avec des voiliers derrière, barque, ville en fond, ciel nuageux, Lumineux",32
+6136,Tableau,emotion,"Une plage, la mer, ciel clair, nuages blancs, ville cotière, cabanes de plage, enfants qui jouent dans le sable, parasol, Joie",41
+8404,Dessin,colors,"Des corps, une grande porte ouverte, des débris, le chaos, Teinte rouge",20
+5111,Tableau,luminosity,"Portrait d'une femme, cheveux noirs, assise, mains, Sombre",19
+791,Dessin,luminosity,"Une ville au loin avec un clocher, des toits dans le brouillard, la mer, la neige, Lumineux",26
+10426,Dessin,luminosity,"Un certificat, un diplome, un journal, Lumineux",13
+10809,Dessin,content,"Des anges qui regardent vers le haut, religion, ailes",15
+881,Dessin,colors,"Un temple avec une foule, un tribunal, un soldat adulé, des morts, antiquité, Teinte rouge",27
+10835,Dessin,luminosity,"Un vieil homme barbu, musclé, un baton dans la main, Lumineux",19
+10844,Dessin,colors,"Des personnes en intérieur à une table, un homme se fait laver le pied, les personnes observent, Noir et blanc",30
+10426,Dessin,content,"Un certificat, un diplome, un journal",10
+7463,Tableau,content,"Une forêt avec des bouleaux, des arbres l'hiver, des personens sur un chemin, une promenade, des buissons",32
+8500,Dessin,luminosity,"Des moulins sur le bord de l'eau, des barques, des voiliers sur l'eai, des roseaux, des personnes sur le bord de l'eau, Lumineux",42
+856,Tableau,content,"Une femme sans haut vu de dos, une chambre avec un lit, déshabillée, une couverture, le réveil",29
+482,Tableau,content,"Portrait d'une jeune femme avec une robe noire et des bijoux, cheveux noirs, bouquet de fleurs",27
+10835,Dessin,colors,"Un vieil homme barbu, musclé, un baton dans la main, Noir et blanc",20
+1354,Tableau,content,Une femme voit des nourissons anges avec des ailes autour d'elles,19
+10895,Dessin,emotion,"Un paysage avec une ville, muraille, campagne, ville fortifiée, émotion neutre",23
+5304,Dessin,luminosity,"Une femme assise avec un foulard lit un livre avec une lampe de lecture, Sombre",21
+3904,Tableau,colors,"Une jeune femme avec longue robe blanche descend les marches d'une soirée chic avec des invités bien habillés, Couleurs vives",33
+1692,Tableau,luminosity,"Un homme fou avec une flute, un homme peu visible dans l'ombre derrière, bouche ouverte, assis, Sombre",33
+10856,Dessin,emotion,"Un femme qui donne le sein à un nourisson, elle porte un chapeau , émotion neutre",23
+10856,Dessin,emotion,"Un femme qui donne le sein à un nourisson, elle porte un chapeau , Joie",21
+361,Dessin,emotion,"Des femmes nues, de dos, accroupies, bouc, foule, émotion neutre",23
+8078,Tableau,colors,"Portrait d'une femme, cheveux bruns, diadème, habit traditionnel, collier de perles, miroir, Couleurs vives, Teinte rouge",38
+10341,Dessin,content,"Un dessin d'un collier avec un médaillon et des plumes, bijou",19
+10916,Tableau,luminosity,"Une femme assise sur une planche avec un nourisson habillé en rouge dans ses bras, homme dans un voilier, ville, eau, Lumineux",34
+10916,Tableau,emotion,"Une femme assise sur une planche avec un nourisson habillé en rouge dans ses bras, homme dans un voilier, ville, eau, émotion neutre",36
+10916,Tableau,emotion,"Une femme assise sur une planche avec un nourisson habillé en rouge dans ses bras, homme dans un voilier, ville, eau, Joie",34
+6435,Dessin,luminosity,"Deux cavaliers sur des chevaux voyagent avec des vaches, un chien, un mouton et une chèvre, désert, plaine, Lumineux",35
+10426,Dessin,emotion,"Un certificat, un diplome, un journal, émotion neutre",15
+8307,Dessin,colors,"Un mendiant adossé au mur tend sa main, un chapeau, une canne, barbe, Bicolor, Teinte rouge",31
+881,Dessin,content,"Un temple avec une foule, un tribunal, un soldat adulé, des morts, antiquité",23
+5162,Dessin,colors,"Un groupe d'aventuriers découvrent une vallée, arbres, falaise, découverte, Bicolor, Teinte rouge",33
+7068,Dessin,emotion,"Homme à côté d'un ane, chien, villa, arbres, falaise, montagne, eau, maison de campagne, émotion neutre",35
+7068,Dessin,emotion,"Homme à côté d'un ane, chien, villa, arbres, falaise, montagne, eau, maison de campagne, Joie",33
+3602,Dessin,luminosity,"Une sculpture d'une tête, un homme avec une moustache, Lumineux",17
+1384,Dessin,content,"Une foule se réunit avec un oiseau dans le ciel, religion, miracle",19
+579,Tableau,content,"Portrait d'une jeune femme avec des cheveux noirs, robe blanche, pomme dans une main, maquillage",27
+5291,Dessin,content,"Une femme est assise à côté d'un mur, elle porte une robe blanche, elle tient ses mains",25
+10330,Dessin,colors,"Portrait d'une femme accoudée sur un rebord, cheveux coiffés, mains qui se tiennent, Bicolor, Teinte rouge",35
+6492,Dessin,content,"Paysage avec des arbres en premier plan et une ville en arrière plan, muraille",20
+7975,Tableau,colors,"Portrait d'un jeune homme avec une légère moustache torse nu qui regarde vers le haut, cheveux courts, Couleurs vives",34
+1811,Tableau,content,"Des hommes et des femmes autour d'un berceau, naissance, famille, intérieur",25
+10869,Dessin,content,Un prêtre prononce un sermon les mains écartées et le regard tourné vers le ciel,24
+7516,Tableau,content,"Portrait d'un homme avec une fraise autour du cou, uniforme, royauté, il a un bouc",27
+10341,Dessin,emotion,"Un dessin d'un collier avec un médaillon et des plumes, bijou, émotion neutre",24
+5364,Dessin,colors,"Un femme bien habillée en robe descend les marches avec un homme bien habillé, soirée, fête, Noir et blanc",30
+6226,Tableau,colors,"Un cimetière avec des arbres sombres, un église, Noir et blanc",20
+2030,Dessin,colors,"Le prêtre lit un texte, des hommes assis et debouts le regarde, Couleurs sombres, Teinte rouge",30
+6932,Dessin,content,Dessin d'un corps musclé d'un homme,13
+7908,Dessin,content,"Un chateau abandonné, des ruines, un palmier, un homme avec une femme et un enfant",24
+10760,Sculpture,emotion,"Une sculpture représentant des hommes qui travaillent, émotion neutre",20
+10883,Dessin,luminosity,"Dessin de corps nus, anatomie, déshabiller, maigre, Lumineux",18
+6534,Dessin,luminosity,"Une roue à eau, un arbre, deux maisons, de l'eau, Lumineux",21
+7642,Tableau,colors,"Un homme assis qui regarde le sol avec un instrument de musique, une soeur religieuse en robe noir à côté, intérieur, Couleurs sombres",39
+1384,Dessin,luminosity,"Une foule se réunit avec un oiseau dans le ciel, religion, miracle, Lumineux",22
+6435,Dessin,content,"Deux cavaliers sur des chevaux voyagent avec des vaches, un chien, un mouton et une chèvre, désert, plaine",32
+4826,Tableau,emotion,"Portrait d'un vieil homme à la barbe blanche et au crâne dégarni, mains visibles, nappe rouge, émotion neutre",33
+4826,Tableau,emotion,"Portrait d'un vieil homme à la barbe blanche et au crâne dégarni, mains visibles, nappe rouge, Joie",31
+8326,Dessin,luminosity,"Une arène avec des spectateurs qui regardent un spectacle, des poutres, Lumineux",22
+5124,Dessin,colors,"Des boites colorées sur une table, parfums, flacons, miroir, salle de bain, Couleurs vives",29
+6592,Dessin,content,"Un homme assis regarde l'horizon, un fleuve avec une ville en fond, un ciel nuageux, un chemin",30
+6890,Tableau,content,"Des personnes dans un intérieur, des chiens, une fête",18
+361,Dessin,luminosity,"Des femmes nues, de dos, accroupies, bouc, foule, Lumineux",21
+2112,Tableau,emotion,"Une femme qui tient un nourisson dans ses bras, collier de perle, foulard, assise, vêtement blanc, Tristesse",32
+2112,Tableau,emotion,"Une femme qui tient un nourisson dans ses bras, collier de perle, foulard, assise, vêtement blanc, Peur",31
+2280,Tableau,colors,"Un homme nu à l'envers sur la croix, hommes musclés, soldat, prisonnier, Couleurs sombres, Teinte rouge",33
+1737,Tableau,emotion,"Une fête de village, centre-ville, tente, extérieur, Joie",21
+3400,Sculpture,colors,"Une sculpture d'un soldat en uniforme, soldat avec casque, Noir et blanc",20
+4017,Dessin,content,"L'avant d'un bateau, structure",10
+5950,Tableau,content,"Un combat entre des soldats, boucliers, lances, mort",15
+7615,Tableau,emotion,"Un portrait d'un homme avec un chapeau noir et un habt noir, une rose derrière, moustache, ciel et batiment, émotion neutre",36
+10814,Dessin,colors,"Un homme parle à une femme qui le regarde, la femme a les bras écartés, l'homme porte quelque chose dans sa main, Bicolor, Teinte rouge",38
+4566,Tableau,luminosity,"Un ruelle le soir, un lampadaire éclaire faiblement, une figure noire, Sombre",23
+1100,Tableau,content,"Un champ de blé, des maisons, des arbres avec des feuilles vertes, une haie, des nuages dans le ciel",31
+8730,Tableau,colors,"Un prêtre parle à une foule, des soldats, des lances, drapeau, pavé, hommes en uniforme militaire, Noir et blanc",37
+2097,Tableau,colors,"Jésus mort avec une femme et une homme agenouillé contre lui, un homme en uniforme militaire qui prie, décès, Teinte rouge",37
+10330,Dessin,luminosity,"Portrait d'une femme accoudée sur un rebord, cheveux coiffés, mains qui se tiennent, Lumineux",31
+8078,Tableau,emotion,"Portrait d'une femme, cheveux bruns, diadème, habit traditionnel, collier de perles, miroir, émotion neutre",33
+1467,Tableau,colors,"Rue avec des maisons mitoyennes, ruelles, cheminées, façades, Couleurs sombres",26
+6534,Dessin,colors,"Une roue à eau, un arbre, deux maisons, de l'eau, Noir et blanc",22
+8041,Tableau,content,"Un taverne avec des tables où des gens boivent et mangent, des femmes, un jeu, drague",27
+1436,Tableau,colors,"Une table avec de la nourriture, un homard, des biscuits, du pain, des olives, des verres, Couleurs vives",32
+4565,Tableau,luminosity,"Un paysage plat avec une prairie et un ciel dégagé, vache, Lumineux",21
+4847,Tableau,colors,"Jésus, une foule, prières, intérieur, religion, Couleurs sombres",24
+9914,Tableau,luminosity,"Un homme chauve avec une barbe qui est au dessus d'une femme avec une robe rouge qui prie, une fontaine, rocher, herbe, Lumineux",36
+1294,Tableau,content,"Un paysage désolé avec des arbres sans feuilles, un ciel nuageux, une prairie avec de haute herbes",28
+5364,Dessin,emotion,"Un femme bien habillée en robe descend les marches avec un homme bien habillé, soirée, fête, Joie",29
+5011,Tableau,content,"Un femme nue dans une forêt magique, des arbres en or, un paon doré, de l'eau calme, le paradis",34
+6586,Tableau,emotion,"Portrait d'un jeune homme avec une tunique rouge et des cheveux longs, il tient à la main un parchemin, une ville en fond, émotion neutre",39
+8326,Dessin,content,"Une arène avec des spectateurs qui regardent un spectacle, des poutres",19
+180,Tableau,emotion,"Des femmes avec des instruments et des fleurs, un vieil homme avec une canne, une procession, Tristesse",26
+180,Tableau,emotion,"Des femmes avec des instruments et des fleurs, un vieil homme avec une canne, une procession, Peur",25
+7642,Tableau,content,"Un homme assis qui regarde le sol avec un instrument de musique, une soeur religieuse en robe noir à côté, intérieur",33
+11545,Tableau,emotion,"Des fleurs blanches avec un grand papillon rouge et un grand papillon rose, Joie",20
+1346,Tableau,luminosity,"Un homme sur un cheval, une batiment, de l'eau, un pont, des nuages, des vaches, un crépuscule, Sombre",36
+7151,Tableau,colors,"Des ouvriers qui travaillent dans l'usine, un grand four, de la chaleur, de l'effort, Teinte rouge",34
+6339,Tableau,emotion,"Un femme qui court, jupe, arc, chien qui court, sandale, Peur",20
+123,Tableau,colors,"Un homme musclé et des femmes nues, un temple, le paradis, un ange, nuages, dieu, Couleurs vives",33
+8291,Tableau,content,"Une vieille femme sans abri au coin d'une rue, la main tendue",18
+4638,Tableau,emotion,"La guerre, bataille, drapeau, arme, combat, soldats, armée, chaos, Tristesse",28
+4638,Tableau,emotion,"La guerre, bataille, drapeau, arme, combat, soldats, armée, chaos, Peur",27
+4638,Tableau,emotion,"La guerre, bataille, drapeau, arme, combat, soldats, armée, chaos, Colère",27
+6471,Tableau,emotion,"personnes sous une arche, rue, chevaux, chevalier, église dans le fond, homme en robe bleue, Colère",30
+6471,Tableau,emotion,"personnes sous une arche, rue, chevaux, chevalier, église dans le fond, homme en robe bleue, Surprise",29
+10167,Dessin,emotion,"Dessin d'un bijoux, bracelet, collier, lettre, émotion neutre",19
+7463,Tableau,emotion,"Une forêt avec des bouleaux, des arbres l'hiver, des personens sur un chemin, une promenade, des buissons, Peur",35
+6492,Dessin,luminosity,"Paysage avec des arbres en premier plan et une ville en arrière plan, muraille, Lumineux",23
+7554,Dessin,content,"Des gens qui dorment, la lumière bleue de la lune, des femmes qui tissent, un dortoir, une bougie",31
+1129,Tableau,luminosity,"Un fleuve avec des bateaux, rue avec des arbres alignés, chevaux et calèches, route, eau, vagues, Sombre",34
+10900,Tableau,content,"Une femme joue du piano, elle lit une partition, la fenêtre est ouverte, on voit une branche avec des feuilles vertes",33
+2796,Sculpture,luminosity,"Une sculpture de deux hommes musclés debout qui se tiennent, Sombre",20
+1098,Tableau,content,"Une femme et un garçon marchent sur un chemin avec des vaches, des arbres verts alignés, campagne",28
+180,Tableau,content,"Des femmes avec des instruments et des fleurs, un vieil homme avec une canne, une procession",22
+10361,Dessin,emotion,"Des arbres qui cachent un village, hiver, émotion neutre",17
+10361,Dessin,emotion,"Des arbres qui cachent un village, hiver, Peur",15
+8446,Dessin,content,"Des hommes en uniforme et en costume discutent, groupe, débat, réunion",20
+2441,Tableau,colors,"Un intérieur avec beaucoup de tableaux, des artistes, vente d'art, Couleurs vives",27
+6512,Dessin,emotion,"Deux personnes, une muraille, une tour, des arbres, émotion neutre",20
+4847,Tableau,emotion,"Jésus, une foule, prières, intérieur, religion, Tristesse",22
+10900,Tableau,emotion,"Une femme joue du piano, elle lit une partition, la fenêtre est ouverte, on voit une branche avec des feuilles vertes, Joie",36
+2030,Dessin,content,"Le prêtre lit un texte, des hommes assis et debouts le regarde",20
+4847,Tableau,content,"Jésus, une foule, prières, intérieur, religion",18
+8695,Tableau,luminosity,"Un veille femme au visage fermé, une plante dans un pot, l'ombre, Sombre",25
+1384,Dessin,colors,"Une foule se réunit avec un oiseau dans le ciel, religion, miracle, Noir et blanc",23
+1281,Tableau,luminosity,"La mer avec des vagues, des voiliers sur l'eau, une personne au bord de l'eau, un ciel nuageux, Sombre",35
+8041,Tableau,colors,"Un taverne avec des tables où des gens boivent et mangent, des femmes, un jeu, drague, Teinte rouge",31
+10361,Dessin,luminosity,"Des arbres qui cachent un village, hiver, Lumineux",15
+330,Tableau,emotion,"Un homme musclé torse nu, des anges qui volent, des enfants, religion, Joie",24
+8273,Tableau,colors,"Un voilier sur l'eau avec des voiliers derrière, barque, ville en fond, ciel nuageux, Noir et blanc",33
+1445,Tableau,emotion,"Une forêt avec une montagne en fond, un palmier, le ciel est bleu, Surprise",22
+6146,Tableau,emotion,"Un homme, contre une charette, une femme assise sur l'herbe, un enfant avec un fleur, une femme avec un nourisson, Joie",36
+6146,Tableau,emotion,"Un homme, contre une charette, une femme assise sur l'herbe, un enfant avec un fleur, une femme avec un nourisson, Peur",36
+10430,Dessin,content,Un dessin d'un visage de femme endormie la bouche ouverte et les yeux fermés,25
+3026,Sculpture,emotion,"Sculpture d'un combat, hommes musclés, casques, calin, Peur",20
+3026,Sculpture,emotion,"Sculpture d'un combat, hommes musclés, casques, calin, Colère",20
+7479,Tableau,colors,"Un femme en robe verte écoute un homme en tenue noire, intérieur, une fenêtre derrière, Teinte verte",34
+6136,Tableau,luminosity,"Une plage, la mer, ciel clair, nuages blancs, ville cotière, cabanes de plage, enfants qui jouent dans le sable, parasol, Lumineux",41
+1098,Tableau,colors,"Une femme et un garçon marchent sur un chemin avec des vaches, des arbres verts alignés, campagne, Couleurs vives, Teinte verte",39
+2290,Tableau,colors,"Un portrait d'un homme, fraise cou, cheveux bruns, moustache et bouc, miroir, Teinte verte",30
+1860,Tableau,colors,"Jésus mort avec trois femmes qui le tiennent, deux personnes dans le fond, mort, décès, Noir et blanc",32
+2438,Tableau,emotion,"Un bal en intérieur, une table remplie de plats, richesse, des personnes qui dansent, robes, soirée, fête, Joie",39
+3669,Tableau,content,"Des hommes barbus marchent entre des poutres, un turban, des habits de couleurs vives, soldat avec une épée",32
+11337,Tableau,colors,"Un vieil homme sur son cheval, chapeau, petit mur, canne, foulard rouge, Couleurs vives",28
+3904,Tableau,content,Une jeune femme avec longue robe blanche descend les marches d'une soirée chic avec des invités bien habillés,27
+4072,Tableau,content,"Portrait d'une jeune femme qui lit un livre, vetêment noir, cheveux noirs courts",24
+1294,Tableau,emotion,"Un paysage désolé avec des arbres sans feuilles, un ciel nuageux, une prairie avec de haute herbes, Peur",31
+482,Tableau,colors,"Portrait d'une jeune femme avec une robe noire et des bijoux, cheveux noirs, bouquet de fleurs, Couleurs sombres",33
+8397,Dessin,emotion,"Des personnes marchent de dos dans un port, le ciel nuageux, des mats en fond, des lampadaires, émotion neutre",32
+8397,Dessin,emotion,"Des personnes marchent de dos dans un port, le ciel nuageux, des mats en fond, des lampadaires, émotion neutre",32
