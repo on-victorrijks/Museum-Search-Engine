@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Card Game Demo</title>
+    <link rel="stylesheet" href="./static/dixit/style.css" />    
+</head>
+<body>
+
+    <div class="menu">
+        <button id="start_game">Start Game</button>
+        <div id="difficulty_levels">
+            <button id="easy" selected="true">Easy (3)</button>
+            <button id="medium" selected="false">Medium (6)</button>
+            <button id="hard" selected="false">Hard (9)</button>
+        </div>
+    </div>
+
+    <div class="game">
+        <div class="candidates" id="candidates">
+
+        </div>  
+        <div class="text">
+
+            <div class="question">
+                <h1 id="question">?</h1>
+                <div class="answers" id="answers">
+                    <button power="-1.00">Pas du tout</button>
+                    <button power="-0.50">Pas vraiment</button>
+                    <button power="0.00">Je ne sais pas</button>
+                    <button power="0.50">Plus au moins</button>
+                    <button power="1.00">Absolument</button>
+                </div>
+            </div>
+
+        </div>    
+    </div>
+
+
+    <script src="./static/dixit/script.js"></script>
+
+</body>
+</html>
