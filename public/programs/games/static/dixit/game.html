@@ -43,7 +43,7 @@
                 <div class="explanation">
                     <h2>Facile</h2>
                     <p>
-                        Vous avez <b>15</b> questions à poser au robot, le robot n'a que <b>5</b> questions à vous poser !
+                        Vous avez <b>9</b> questions à poser au robot, le robot n'a que <b>3</b> questions à vous poser !
                     </p>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="explanation">
                     <h2>Intermédiaire</h2>
                     <p>
-                        Vous avez <b>10</b> questions à poser au robot, le robot a aussi <b>10</b> questions à vous poser !
+                        Vous avez <b>6</b> questions à poser au robot, le robot a aussi <b>6</b> questions à vous poser !
                     </p>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                 <div class="explanation">
                     <h2>Difficile</h2>
                     <p>
-                        Vous avez seulement <b>5</b> questions à poser au robot, le robot a <b>15</b> questions à vous poser !
+                        Vous avez seulement <b>3</b> questions à poser au robot, le robot a <b>9</b> questions à vous poser !
                     </p>
                 </div>
             </div>
@@ -95,6 +95,17 @@
             <h1 id="topInstructionText">
                 ?
             </h1>
+            <div class="counters" id="counters_container">
+                <div class="counter" id="user">
+                    <h2>Vous</h2>
+                    <h3><b id="done">?</b>/<b id="tot">?</b></h3>
+                </div>
+                <div class="counterSeparator"></div>
+                <div class="counter" id="robot">
+                    <h2>Robot</h2>
+                    <h3><b id="done">?</b>/<b id="tot">?</b></h3>
+                </div>
+            </div>
         </div>
 
         <div class="candidates" id="candidates">
@@ -205,7 +216,7 @@
         <div class="close" id="close_larger">
             <img src="./static/dixit/assets/close.svg">
         </div>
-        <img id="larger_image" src="./static/image.jpg">
+        <img id="larger_image">
     </div>
 
     <div 

@@ -185,6 +185,17 @@ class GameEngine:
 
         return query_embedding
     
+    def batch_get_texts_embedding(self, texts):
+        # texts = list of strings
+        self.text_model.eval()
+        with torch.no_grad():
+            embeddings = self.text_model.forward(texts, self.text_tokenizer, device=self.device) # Note: add device parameter to forward manually
+
+        # Normalize
+        embeddings = embeddings / embeddings.norm(dim=-1, keepdim=True)
+
+        return embeddings
+
     def get_images_embedding(self, recordIDs):
         image_embeddings = []
         for recordID in recordIDs:
@@ -193,7 +204,43 @@ class GameEngine:
         return image_embeddings
     
     # QUESTIONS
-    def get_questions(self, candidates, sk=[1,2,3], N_questions=5):
+    def select_N_questions(
+        self,
+        sigma,
+        objects,
+        sims,
+        answers,
+        objectsTypes,
+        N_questions
+    ):
+        indices = np.arange(len(objects)) # The sorted indices of the objects (first = best question)
+        N = len(indices)
+        
+        scale = 1 + 4 * (1 - sigma)
+        weights = np.exp(-np.arange(N) / scale)
+        weights /= weights.sum()
+
+        selected_indices = np.random.choice(N, size=N_questions, replace=False, p=weights)
+        
+        selected_objects = [objects[i] for i in selected_indices]
+        selected_sims = sims[selected_indices]
+        selected_ans = answers[selected_indices]
+
+        questions = []
+        for i in range(N_questions):
+            question = {
+                "type": objectsTypes[i],
+                "content": selected_objects[i]
+            }
+            answers = selected_sims[i] * selected_ans[i]
+            questions.append({
+                "question": question,
+                "answers": answers.tolist()
+            })
+
+        return questions
+
+    def get_questions(self, robotSigma, userSigma, candidates, sk=[1,2,3], robotQuestions=5, userQuestions=5):
         # Get the iconographies of the candidates
         iconographies = {}
         for candidate in candidates:
@@ -236,20 +283,20 @@ class GameEngine:
         # Get the embeddings of the candidates
         candidates_embeddings = self.get_images_embedding(candidates)
         # Convert .cpu().numpy()
-        candidates_embeddings = candidates_embeddings.cpu().numpy()
+        candidates_embeddings = candidates_embeddings #.cpu().numpy()
 
-        def generate_questions(objects, isInternal=True):
+        def generate_questions(objects, objectsTypes, isInternal=True):
+            def formatObj(obj):
+                return f"Une image contenant {obj}"
+
             # Embeddings per object
-            object_embeddings = {}
-            for obj in objects:
-                object_embeddings[obj] = self.get_texts_embedding([obj]).cpu().numpy()
+            texts = [formatObj(obj) for obj in objects]
+            object_embeddings = self.batch_get_texts_embedding(texts)
             
             # Get the cosine similarity between each unique object and each candidate image
-            similarities_per_object = []
-            for obj in objects:
-                similarities_per_object.append(cosine_similarity(object_embeddings[obj], candidates_embeddings).flatten())
+            similarities_per_object = (candidates_embeddings @  object_embeddings.T).squeeze(0)
             # Convert to numpy array
-            similarities_per_object = np.array(similarities_per_object)
+            similarities_per_object = similarities_per_object.cpu().numpy().T
 
             # Get the answers if the questions are internal (we know the answer thanks to the iconography)
             if isInternal:
@@ -257,7 +304,8 @@ class GameEngine:
                 for obj in objects:
                     answers_for_obj = []
                     for candidate in candidates:
-                        answers_for_obj.append(1 if obj in chosen_objects[candidate] else 0.0)
+                        #answers_for_obj.append(1.0 if obj in chosen_objects[candidate] else 0.5) # temporary value
+                        answers_for_obj.append(1.0) # For now
                     answers_per_object.append(answers_for_obj)
                 # Convert to numpy array
                 answers_per_object = np.array(answers_per_object)
@@ -266,9 +314,9 @@ class GameEngine:
                 """
                 The value is always 1 since we use the value 0.0 to indicate that the object is not in the iconography of the candidate.
                 This is a clue that we have thanks to the iconography, but for external questions, we do not have this information !
-                """
+                """            
 
-            return objects, similarities_per_object, answers_per_object
+            return objects, similarities_per_object, answers_per_object, objectsTypes
 
         # We assume that an object can only appear once in the iconography of a candidate
         objects_in_candidates = set()
@@ -276,20 +324,40 @@ class GameEngine:
             for obj in chosen_objects[candidate]:
                 objects_in_candidates.add(obj)
         objects_in_candidates = list(objects_in_candidates)
+        objectsTypes_in_candidates = ["object" for _ in objects_in_candidates]
         
         # The set of other questions that help to differentiate the candidates
-        otherQuestions = set()
-        for color in COLORS:
-            otherQuestions.add(color)
-        for luminosity in LUMINOSITIES:
-            otherQuestions.add(luminosity)
-        otherQuestions = list(otherQuestions)
+        otherQuestions = []
+        otherQuestions_objectsTypes = []
 
-        internal_questions = generate_questions(objects_in_candidates, isInternal=True)
-        external_questions = generate_questions(otherQuestions, isInternal=False)
+        for color in COLORS:
+            otherQuestions.append(color)
+            otherQuestions_objectsTypes.append("color")
+
+        for luminosity in LUMINOSITIES:
+            otherQuestions.append(luminosity)
+            otherQuestions_objectsTypes.append("luminosity")
+
+        internal_questions = generate_questions(objects_in_candidates, objectsTypes_in_candidates, isInternal=True)
+        """
+        Shapes:
+        - internal_questions[0] = objects ==> (N_objects,)
+        - internal_questions[1] = sims ==> (N_objects, N_candidates)
+        - internal_questions[2] = ans ==> (N_objects, N_candidates)
+        - internal_questions[3] = objTypes ==> (N_objects,)
+        """
+        external_questions = generate_questions(otherQuestions, otherQuestions_objectsTypes, isInternal=False)
+        """
+        Shapes:
+        - external_questions[0] = objects ==> (N_objects,)
+        - external_questions[1] = sims ==> (N_objects, N_candidates)
+        - external_questions[2] = ans ==> (N_objects, N_candidates)
+        - external_questions[3] = objTypes ==> (N_objects,)
+        """
+
 
         def cSort(questions, cut=-1):
-            objects, sims, ans = questions
+            objects, sims, ans, objTypes = questions
             # Sort by variance, highest variance first
             sims_var = np.var(sims, axis=1)
             order = np.argsort(sims_var)[::-1]
@@ -297,13 +365,15 @@ class GameEngine:
             sorted_objects = [objects[i] for i in order]
             sorted_sims = sims[order]
             sorted_ans = ans[order]
+            sorted_objTypes = [objTypes[i] for i in order]
 
             if cut != -1:
                 sorted_objects = sorted_objects[:cut]
                 sorted_sims = sorted_sims[:cut]
                 sorted_ans = sorted_ans[:cut]
+                sorted_objTypes = sorted_objTypes[:cut]
 
-            return [sorted_objects, sorted_sims, sorted_ans]
+            return [sorted_objects, sorted_sims, sorted_ans, sorted_objTypes]
 
         # Sort the external questions
         external_questions = cSort(external_questions)#, cut=5)
@@ -312,43 +382,12 @@ class GameEngine:
         merged_objects = internal_questions[0] + external_questions[0]
         merged_similarities = np.concatenate((internal_questions[1], external_questions[1]), axis=0)
         merged_answers = np.concatenate((internal_questions[2], external_questions[2]), axis=0)
+        merged_objectsTypes = internal_questions[3] + external_questions[3]
 
-        merged_objects_in_order = cSort([merged_objects, merged_similarities, merged_answers], cut=N_questions)
+        merged_objects_in_order = cSort([merged_objects, merged_similarities, merged_answers, merged_objectsTypes])
 
-        return merged_objects_in_order
-
-    def TEMP(self):
-        candidates = None
-        answers_per_candidate = None
-        similarities_per_candidate = None
-
-        for correctIndex in range(len(candidates)):
-            # Select the 0/1 vector of answers for the correct candidate
-            correct_vector = answers_per_candidate[correctIndex]
-            # Multiply the similarities by the answers
-            similarities_per_candidate_copy = similarities_per_candidate.copy()
-            # Normalize the similarities
-            similarities_per_candidate_copy = similarities_per_candidate_copy / np.linalg.norm(similarities_per_candidate_copy, axis=1, keepdims=True)
-            # Multiply the similarities by the answers
-            similarities_per_candidate_copy = similarities_per_candidate_copy * (correct_vector)
-            # Each candidate has a score that is the sum of the similarities 
-            scores = np.sum(similarities_per_candidate_copy, axis=1)
-            # Order the candidates by score
-            order = np.argsort(scores)[::-1]
-            
-            fig, axs = plt.subplots(1, 1 + len(candidates), figsize=((1 + len(candidates))*3, 5))
-            # First image is the correct one
-            axs[0].imshow(Image.open(self.getImageFromRecordID(self.dataframe, candidates[correctIndex])), cmap='gray')
-            axs[0].axis("off")
-            axs[0].set_title(f"Correct candidate")
-
-            for i, index in enumerate(order):
-                axs[i+1].imshow(Image.open(self.getImageFromRecordID(self.dataframe, candidates[index])), cmap='gray')
-                axs[i+1].axis("off")
-                axs[i+1].set_title(f"{candidates[index]} - {scores[index]:.5f}")
-
-            plt.show()
+        # Get the robot questions and the user questions according to the sigma
+        robot_questions = self.select_N_questions(robotSigma, *merged_objects_in_order, robotQuestions)
+        user_questions = self.select_N_questions(userSigma, *merged_objects_in_order, (userQuestions + 3)*2) # (X+3)*2 to let the user choose with some margin 
         
-
-        
-        
+        return robot_questions, user_questions

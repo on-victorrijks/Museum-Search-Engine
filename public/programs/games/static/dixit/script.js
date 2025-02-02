@@ -15,6 +15,7 @@ const questions_container           = document.querySelector('#questions_contain
 const user_answers_container        = document.querySelector('#user_answers');
 const result_container              = document.querySelector('#result_container');
 const larger_container              = document.querySelector('#larger_container');
+const counters_container            = document.querySelector('#counters_container');
 
 const result_userGuess              = document.querySelector(".resultSplit[side='user'] #guess");
 const result_trueRobot              = document.querySelector(".resultSplit[side='user'] #correct");
@@ -25,6 +26,9 @@ const result_trueUser               = document.querySelector(".resultSplit[side=
 // Game variables
 let robot_selected_image = null;
 let candidates = [];
+
+let n_players_questions = 0;
+let n_robot_questions = 0;
 
 let userQuestions = [];
 let robotQuestions = [];
@@ -57,6 +61,10 @@ function handleError(error) {
 }
 
 function sendAnswerToRobot(power) {
+    // Increase the question index (the robot received an answer)
+    updateQuestionIndex(question_index + 1);
+    updateCounters();
+
     user_answers.push(power);
     launchRound(); // Go to the next round
 }
@@ -83,22 +91,84 @@ function selectSecretCard(recordID) {
     launchRound(); // Start the game
 }
 
-function getRobotGuess() {
-    const randomIndex = Math.floor(Math.random() * candidates.length);
-    return candidates[randomIndex];
+function updateCounters() {
+    const userQuestionsCounter = counters_container.querySelector(".counter#user #done");
+    const robotQuestionsCounter = counters_container.querySelector(".counter#robot #done");
+
+    userQuestionsCounter.innerHTML = questionsThatUserAsked.length;
+    robotQuestionsCounter.innerHTML = questionsThatRobotAsked.length;
 }
+
+function getRobotGuess() {
+    const scores = Array.from(Array(candidates.length).keys()).map(() => 0);
+    user_answers.forEach((power, answerIndex) => {
+        const questionData = questionsThatRobotAsked[answerIndex];
+        const similarities = questionData["answers"];
+        candidates.forEach((candidate, candidateIndex) => {
+            scores[candidateIndex] += similarities[candidateIndex] * power;
+        });
+    });
+
+    // Get the index of the candidate with the highest score
+    const maxScore = Math.max(...scores);
+    const maxScoreIndex = scores.indexOf(maxScore);
+
+    return candidates[maxScoreIndex];
+}
+
+function selectQuestion(questionData, index) {
+    // Increase the question index (the user asked a question)
+    updateQuestionIndex(question_index + 1);
+
+    // Add the question to the list of questions that the user asked
+    questionsThatUserAsked.push(questionData);
+    // Remove the question from the list of questions
+    userQuestions.splice(index, 1);
+    updateCounters();
+
+    setRobotThinking(true);
+    game_container.setAttribute('context', 'robotanswering');
+
+    // Get the robot answer
+    const determineThreshold = (similarities, N) => {
+        // Get the average similarity
+        const averageSimilarity = similarities.reduce((a, b) => a + b, 0) / N;
+        return averageSimilarity;
+    }
+      
+    // Example usage with your provided variables:
+    let indexOfRobotImage = candidates.indexOf(robot_selected_image);
+    let robotCosineSimilarities = questionData["answers"];  // Array of cosine similarity scores.
+    let similarityOfRobot = robotCosineSimilarities[indexOfRobotImage];
+    let N = candidates.length;
+    
+    // Determine the threshold using the helper function.
+    const threshold = determineThreshold(robotCosineSimilarities, N);
+    
+    // The robot answer is "true" if the similarity for its chosen candidate exceeds the threshold.
+    console.log(robotCosineSimilarities, threshold);
+    const robotAnswer = similarityOfRobot >= threshold;
+
+    // Add a timeout to simulate the robot thinking
+    setTimeout(() => {
+        // Add the answer
+        setRobotAnswer(robotAnswer, questionData);
+        setRobotThinking(false);
+    }, ROBOT_THINKING_TIME);
+}
+
 
 function endgame(userGuess) {
     const robotGuess = getRobotGuess();
 
     const isUserRight   = userGuess == robot_selected_image;
-    const isRobotRight  = robotGuess == robot_selected_image;
+    const isRobotRight  = robotGuess == selectedCardRecordID;
 
     // Append the cards in the result screen
-    appendCandidate(result_userGuess, userGuess);
-    appendCandidate(result_trueRobot, robot_selected_image);
-    appendCandidate(result_robotGuess, robotGuess);
-    appendCandidate(result_trueUser, selectedCardRecordID);
+    appendCandidate(result_userGuess, userGuess, false);
+    appendCandidate(result_trueRobot, robot_selected_image, false);
+    appendCandidate(result_robotGuess, robotGuess, false);
+    appendCandidate(result_trueUser, selectedCardRecordID, false);
 
     // Show the result screen
     /*
@@ -111,10 +181,7 @@ function endgame(userGuess) {
     */
     let result = 0; // 0=lose, 1=draw, 2=win
     let result_text = "";
-    if (!isUserRight) {
-        result = 0;
-        result_text = "lose";
-    } else if (isUserRight && isRobotRight) {
+    if ((isUserRight && isRobotRight) || (!isUserRight && !isRobotRight)) {
         result = 1;
         result_text = "draw";
     } else if (isUserRight && !isRobotRight) {
@@ -138,8 +205,6 @@ function endgame(userGuess) {
     if (isRobotRight) robotResult = "Le robot a trouvé votre carte secrete !";
     else robotResult = "Le robot n'a pas trouvé votre carte secrete !";
 
-    console.log(isUserRight, isRobotRight);
-
     document.querySelector("#resultTitle").innerHTML = resultTitle;
     document.querySelector(".resultSplit[side='user'] h2").innerHTML = userResult;
     document.querySelector(".resultSplit[side='robot'] h2").innerHTML = robotResult;
@@ -149,6 +214,11 @@ function endgame(userGuess) {
     result_container.setAttribute('userCorrectGuess', isUserRight);
     result_container.setAttribute('robotCorrectGuess', isRobotRight);
     result_container.setAttribute('result', result_text);
+
+    console.log("User question: ");
+    userQuestions.forEach((question, index) => {
+        console.log(question["question"], user_answers[index]);
+    });
 
 }
 
@@ -194,10 +264,11 @@ function setRobotQuestion(questionData) {
     game_container.querySelector(".box[context='userselectinganswer'] .messageBubble p").innerHTML = getQuestionText(questionData);
 }
 
-function loadRobotQuestions() {
-    // Increase the question index (the robot asked a question)
-    question_index += 1;
+function updateQuestionIndex(new_question_index) {
+    question_index = new_question_index;
+}
 
+function loadRobotQuestions() {
     setRobotThinking(true);
     game_container.setAttribute('context', 'userselectinganswer');
 
@@ -237,34 +308,6 @@ function getAnswerText(answer, questionData) {
 
 function setRobotAnswer(answer, questionData) {
     game_container.querySelector(".box[context='robotanswering'] .messageBubble p").innerHTML = getAnswerText(answer, questionData);
-}
-
-function selectQuestion(questionData, index) {
-    // Increase the question index (the user asked a question)
-    question_index += 1;
-
-    // Add the question to the list of questions that the user asked
-    questionsThatUserAsked.push(questionData);
-    // Remove the question from the list of questions
-    userQuestions.splice(index, 1);
-
-    setRobotThinking(true);
-    game_container.setAttribute('context', 'robotanswering');
-
-    // Get the robot answer
-    const indexOfRobotImage = candidates.indexOf(robot_selected_image);
-    const robotCosineSimilarities = questionData["answers"];
-    const similarityOfRobot = robotCosineSimilarities[indexOfRobotImage];
-    const thresholdForThisQuestion = 0.2; // Could be dynamic
-    // The robot answer by YES or NO
-    const robotAnswer = similarityOfRobot > thresholdForThisQuestion;
-
-    // Add a timeout to simulate the robot thinking
-    setTimeout(() => {
-        // Add the answer
-        setRobotAnswer(robotAnswer, questionData);
-        setRobotThinking(false);
-    }, ROBOT_THINKING_TIME);
 }
 
 function generateQuestionText({type, content}) {
@@ -343,8 +386,7 @@ function launchRound() {
 
     if (question_index==0){
         // We select which player goes first
-        //playerOdd = Math.random() < 0.5;
-        playerOdd = true;
+        playerOdd = Math.random() < 0.5;
     }
     
     // Is game finished
@@ -359,12 +401,12 @@ function launchRound() {
     let isPlayerTurn = (question_index % 2 == 1) == playerOdd;
     if (isPlayerTurn){
         // Check if the player still has questions
-        if (userQuestions.length == 0) {
+        if (n_players_questions - questionsThatUserAsked.length == 0) {
             isPlayerTurn = false;
         }
     } else {
         // Check if the robot still has questions
-        if (robotQuestions.length == 0) {
+        if (n_robot_questions - questionsThatRobotAsked.length == 0) {
             isPlayerTurn = true;
         }
     }
@@ -409,11 +451,13 @@ function showImageInLarge(recordID) {
 
 function appendCandidate(
     container,
-    recordID
+    recordID,
+    interactive
 ) {
     const card = document.createElement('div');
     card.classList.add('candidate');
     card.setAttribute('recordid', recordID);
+    card.setAttribute('interactive', interactive ? 'true' : 'false');
 
     const cardContent = document.createElement('div');
     cardContent.classList.add('cardContent');
@@ -424,7 +468,9 @@ function appendCandidate(
     const image = document.createElement('img');
     image.src = 'http://127.0.0.1:5000/images/' + recordID;
     imageContainer.appendChild(image);
-    imageContainer.onclick = () => clickOnCard(recordID);
+    if (interactive) {
+        imageContainer.onclick = () => clickOnCard(recordID);
+    }
 
     if (OVERLAY){
         const overlay = document.createElement('img');
@@ -484,7 +530,7 @@ function getSelectedDifficulty() {
             selected_difficulty = index;
         }
     });
-    return selected_difficulty;
+    return selected_difficulty - 1;
 }
 
 const setMenuVisibility = (visible) => menu_container.setAttribute('enabled', visible);
@@ -496,82 +542,6 @@ function setTopInstruction(instruction) {
 }
 
 function processServerResponse(data) {
-    // For now use mock data
-    if (false)
-    data = {
-        success: true,
-        message: {
-            robot_selected_image: 10156,
-            candidates: [
-                10156,
-                1643,
-                4977,
-                703,
-                1233,
-                6292,
-                1754,
-                4475,
-                1652,
-                4094
-            ],
-            n_players_questions: 1,//2,
-            n_robot_questions: 2,
-            userQuestions: [
-                {
-                    question: {
-                        type: "object",
-                        content: "chien"
-                    },
-                    answers: [0.132, 0.0, 0.0, 0.1, 0.3, 0.0, 0.2, 0.0, 0.2, 0.9], // cosine similarities * ico (if ico available)
-                },
-                {
-                    question: {
-                        type: "object",
-                        content: "chat"
-                    },
-                    answers: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0], // cosine similarities * ico (if ico available)
-                },
-                {
-                    question: {
-                        type: "color",
-                        content: "noir et blanc"
-                    },
-                    answers: [0.54, 0.0, 0.0, 0.1, 0.3, 0.0, 0.2, 0.0, 0.2, 0.9], // cosine similarities * ico (if ico available)
-                },
-                {
-                    question: {
-                        type: "luminosity",
-                        content: "sombre"
-                    },
-                    answers: [0.11, 0.0, 0.0, 0.1, 0.3, 0.0, 0.2, 0.0, 0.2, 0.9], // cosine similarities * ico (if ico available)
-                },
-                {
-                    question: {
-                        type: "object",
-                        content: "oiseau"
-                    },
-                    answers: [0.132, 0.0, 0.0, 0.1, 0.3, 0.0, 0.2, 0.0, 0.2, 0.9], // cosine similarities * ico (if ico available)
-                },
-            ],
-            "robotQuestions": [
-                {
-                    question: {
-                        type: "object",
-                        content: "chien"
-                    },
-                    answers: [0.132, 0.0, 0.0, 0.1, 0.3, 0.0, 0.2, 0.0, 0.2, 0.9], // cosine similarities * ico (if ico available)
-                },
-                {
-                    question: {
-                        type: "object",
-                        content: "chat"
-                    },
-                    answers: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0], // cosine similarities * ico (if ico available)
-                },
-            ]
-        }
-    }
-
     success = data.success;
     if(success){
         message = data.message;
@@ -589,14 +559,23 @@ function processServerResponse(data) {
         // Clear candidates
         clearCandidates();
 
+        // Update the counters
+        const userTot = counters_container.querySelector(".counter#user #tot");
+        const robotTot = counters_container.querySelector(".counter#robot #tot");
+
+        userTot.innerHTML = n_players_questions;
+        robotTot.innerHTML = n_robot_questions;
+
+        updateCounters();
+
         // Append candidates
         let rows = Array.from(candidates_rows);
         candidates.forEach((candidate, index) => {
             // Find the candidate container row that has less than 5 candidates
             if (index < 5) {
-                appendCandidate(rows[0], candidate);
+                appendCandidate(rows[0], candidate, true);
             } else {
-                appendCandidate(rows[1], candidate);
+                appendCandidate(rows[1], candidate, true);
             }
         });
             

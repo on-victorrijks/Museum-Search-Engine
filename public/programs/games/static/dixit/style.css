@@ -285,16 +285,53 @@ body {
 .topInstruction{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    height: 70px;
     flex-shrink: 0;
+    height: 120px;
 }
 .topInstruction h1 {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: bold;
     color: white;
 }
+.counters {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+.counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.counter h2 {
+    color: #d4d4d4;
+    font-size: 19px;
+    font-weight: 400;
+}
+.counter h3 {
+    color: white;
+    font-size: 25px;
+    font-weight: 400;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+.counter h3 b {
+    font-weight: bold;
+}
+.counterSeparator {
+    height: 20px;
+    width: 1px;
+    background: rgb(255 255 255 / 15%);
+    flex-shrink: 0;
+    margin: 0 15px;
+}
+
 .candidates {
     display: flex;
     flex-direction: column;
@@ -600,14 +637,15 @@ div#instruct {
     color: black;
     font-weight: 900;
     background: white;
-    padding: 5px;
+    padding: 1px 5px;
     border: solid 2px black;
+    display: inline-block;
 }
 /* Animation on game */
 .game[selectCards="true"] .candidates,  /* Selecting cards */
 .game[guessing="true"] .candidates      /* Guessing */
 {
-    height: calc(100vh - 60px - 70px);
+    height: calc(100vh - 60px - 120px);
 }
 .candidate .imageContainer {
     cursor: pointer;

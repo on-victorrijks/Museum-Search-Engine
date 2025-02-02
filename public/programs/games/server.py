@@ -13,31 +13,35 @@ import numpy as np
 from engine import GameEngine
 ##
 
-
 def QuelleEstLoeuvre(
     dataset, 
     engine, 
     difficulty, 
     difficulty_to_player_n_questions,
-    difficulty_to_robot_n_questions
+    difficulty_to_robot_n_questions,
+    difficulty_to_robot_sigma,
+    difficulty_to_user_sigma
 ):
 
     # Settings
     N_candidates        = 10
     N_players_questions = difficulty_to_player_n_questions[difficulty]
     N_robot_questions   = difficulty_to_robot_n_questions[difficulty]
+    robot_sigma         = difficulty_to_robot_sigma[difficulty]
+    user_sigma          = difficulty_to_user_sigma[difficulty]
 
     # Get number_of_candidates different random recordIDs from the filtered data    
     candidates = random.sample(dataset["recordID"].tolist(), N_candidates)
-    objects, sims, answers = engine.get_questions(candidates, N_questions=N_robot_questions)
+
+    robotQuestions, userQuestions = engine.get_questions(robot_sigma, user_sigma, candidates, robotQuestions=N_robot_questions, userQuestions=N_players_questions)
 
     return {
+        "robot_selected_image": random.choice(candidates),
         "candidates": candidates,
         "n_players_questions": N_players_questions,
         "n_robot_questions": N_robot_questions,
-        "objects": objects,
-        "sims": sims.tolist(),
-        "answers": answers.tolist(),
+        "userQuestions": userQuestions,
+        "robotQuestions": robotQuestions,
     }
 
     # answers is of shape (N_objects, N_candidates)
@@ -166,7 +170,7 @@ if __name__ == "__main__":
     # Remove rows with corrupted images
     FULL_DATASET = FULL_DATASET[FULL_DATASET["recordID"] != 11546]
     FULL_DATASET = FULL_DATASET[FULL_DATASET["recordID"] != 5262]
-    FULL_DATASET = FULL_DATASET.sample(frac=0.2).reset_index(drop=True)
+    FULL_DATASET = FULL_DATASET.sample(frac=0.10).reset_index(drop=True)
     print("OK: Dataset loaded")
 
     print("Loading iconographies...")
@@ -177,8 +181,10 @@ if __name__ == "__main__":
 
     ##
 
-    difficulty_to_player_n_questions = { 0:15, 1:10, 2:5 }
-    difficulty_to_robot_n_questions = { 0:5, 1:10, 2:15 }
+    difficulty_to_player_n_questions = { 0:9, 1:6, 2:3 }
+    difficulty_to_robot_n_questions = { 0:3, 1:6, 2:9 }
+    difficulty_to_robot_sigma = { 0:0.30, 1:0.60, 2:0.90 }
+    difficulty_to_user_sigma = { 0:1.00, 1:0.85, 2:0.70 }
 
     ##
 
@@ -208,11 +214,10 @@ if __name__ == "__main__":
         path = get_image_path_from_recordID(FULL_DATASET, recordID)
         if path is None:
             # Return a random image
-            path = get_image_path_from_recordID(FULL_DATASET, FULL_DATASET.sample()["recordID"].values[0])
-            #return {
-            #    "success": False,
-            #    "message": "No image found."
-            #}
+            return {
+                "success": False,
+                "message": "No image found."
+            }
         return send_file(path, mimetype='image/jpg')
 
     # Create game
@@ -227,7 +232,9 @@ if __name__ == "__main__":
             ENGINE, 
             difficulty, 
             difficulty_to_player_n_questions,
-            difficulty_to_robot_n_questions
+            difficulty_to_robot_n_questions,
+            difficulty_to_robot_sigma,
+            difficulty_to_user_sigma
         )
 
         return jsonify({
