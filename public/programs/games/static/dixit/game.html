@@ -3,39 +3,267 @@
 <head>
     <meta charset="UTF-8" />
     <title>Card Game Demo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./static/dixit/style.css" />    
 </head>
 <body>
 
-    <div class="menu">
-        <button id="start_game">Start Game</button>
-        <div id="difficulty_levels">
-            <button id="easy" selected="true">Easy (3)</button>
-            <button id="medium" selected="false">Medium (6)</button>
-            <button id="hard" selected="false">Hard (9)</button>
+    <div class="loader_container" id="loader_container" enabled="false">
+        <div class="loader">
+            <div class="loader_inner"></div>
+        </div>
+        <div class="loader_text">
+            <h1 id="loader_title">Chargement...</h1>
+            <h3 id="loader_message">...</h3>
         </div>
     </div>
 
-    <div class="game">
-        <div class="candidates" id="candidates">
+    <div class="menu" id="menu_container" enabled="true" loader="false">
 
-        </div>  
-        <div class="text">
+        <div class="background">
+            <h3>Chalutier au large de l'Islande, <i>Alfons Baele</i>, 1972</h3>
+        </div>
 
-            <div class="question">
-                <h1 id="question">?</h1>
-                <div class="answers" id="answers">
-                    <button power="-1.00">Pas du tout</button>
-                    <button power="-0.50">Pas vraiment</button>
-                    <button power="0.00">Je ne sais pas</button>
-                    <button power="0.50">Plus au moins</button>
-                    <button power="1.00">Absolument</button>
+        <div class="logo">
+            <img src="./static/dixit/assets/logo.png">
+        </div>
+
+        <div class="difficulty_levels" id="difficulty_levels">
+
+            <label>Choissisez votre difficulté</label>
+
+            <div class="difficulty_level" id="easy" selected="true">
+                <div class="check">
+                    <img src="./static/dixit/assets/icon_check.png">
+                </div>
+                <div class="explanation">
+                    <h2>Facile</h2>
+                    <p>
+                        Vous avez <b>15</b> questions à poser au robot, le robot n'a que <b>5</b> questions à vous poser !
+                    </p>
                 </div>
             </div>
 
-        </div>    
+            <div class="difficulty_level" id="medium" selected="false">
+                <div class="check">
+                    <img src="./static/dixit/assets/icon_check.png">
+                </div>
+                <div class="explanation">
+                    <h2>Intermédiaire</h2>
+                    <p>
+                        Vous avez <b>10</b> questions à poser au robot, le robot a aussi <b>10</b> questions à vous poser !
+                    </p>
+                </div>
+            </div>
+
+            <div class="difficulty_level" id="hard" selected="false">
+                <div class="check">
+                    <img src="./static/dixit/assets/icon_check.png">
+                </div>
+                <div class="explanation">
+                    <h2>Difficile</h2>
+                    <p>
+                        Vous avez seulement <b>5</b> questions à poser au robot, le robot a <b>15</b> questions à vous poser !
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="buttons">
+            <button id="start_game">Démarrer la partie</button>
+        </div>
+
     </div>
 
+    <div 
+        class="game" 
+        id="game_container" 
+        enabled="false"
+        selectCards="true"
+        context="userselectingquestion"
+        robotthinking="false"
+        guessing="false"
+        blurred="false"
+        >
+
+        <div class="topInstruction">
+            <h1 id="topInstructionText">
+                ?
+            </h1>
+        </div>
+
+        <div class="candidates" id="candidates">
+            <div class="row" id="candidates_row1"></div>
+            <div class="row" id="candidates_row2"></div>
+        </div>  
+
+        <div class="instructContainer">
+
+            <div class="box" context="userselectingquestion">
+                <div class="instruction">
+                    <h1 id="instructionText">Veuillez choisir la question que vous allez poser</h1>
+                </div>
+                <div class="questionsContainer" id="questions_container">
+
+                    <div class="question" id="question_0">
+                        <div class="questionNumber">
+                            <h4>1</h4>
+                        </div>
+                        <h2>Est-ce que l'image du robot contient une <b>femme</b> ?</h2>
+                    </div>
+                    
+                    <div class="question" id="question_1">
+                        <div class="questionNumber">
+                            <h4>2</h4>
+                        </div>
+                        <h2>Est-ce que l'image du robot contient un <b>chien</b> ?</h2>
+                    </div>
+
+                    <div class="question" id="question_2">
+                        <div class="questionNumber">
+                            <h4>3</h4>
+                        </div>
+                        <h2>Est-ce que l'image du robot est <b>sombre</b> ?</h2>
+                    </div>
+
+                    <div class="question" id="question_3">
+                        <div class="questionNumber">
+                            <h4>4</h4>
+                        </div>
+                        <h2>Est-ce que l'image du robot à une <b>teinte verte</b> ?</h2>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="box" context="robotanswering">
+                <div class="robotQuestion">
+                    <div class="robotIcon">
+                        <img src="./static/dixit/assets/robot.png">
+                    </div>
+                    <div class="robotMessage">
+                        <h2>Robot</h2>
+                        <div class="messageBubble">
+                            <div class="thinking"></div>
+                            <p><b>Oui!</b>, l'image que j'ai choisi contient une femme</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="actionsButtons">
+                    <button id="gotoNextQuestion">
+                        Prochaine question
+                    </button>
+                </div>
+            </div>
+            
+            <div class="box" context="userselectinganswer">
+                <div class="robotQuestion">
+                    <div class="robotIcon">
+                        <img src="./static/dixit/assets/robot.png">
+                    </div>
+                    <div class="robotMessage">
+                        <h2>Robot</h2>
+                        <div class="messageBubble">
+                            <div class="thinking"></div>
+                            <p>Est-ce que votre image contient un <b>homme</b> ?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="userAnswers" id="user_answers">
+                    <div class="userAnswer" index="0">
+                        <h1>Non</h1>
+                    </div>
+                    <div class="userAnswer" index="1">
+                        <h1>Pas vraiment</h1>
+                    </div>
+                    <div class="userAnswer" index="2">
+                        <h1>Je ne sais pas</h1>
+                    </div>
+                    <div class="userAnswer" index="3">
+                        <h1>Plus au moins</h1>
+                    </div>
+                    <div class="userAnswer" index="4">
+                        <h1>Oui</h1>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="larger_container"
+        id="larger_container"
+        enabled="false"
+    >
+        <div class="close" id="close_larger">
+            <img src="./static/dixit/assets/close.svg">
+        </div>
+        <img id="larger_image" src="./static/image.jpg">
+    </div>
+
+    <div 
+        id="result_container"
+        class="resultScreen"
+        enabled="false"
+        userCorrectGuess="false"
+        robotCorrectGuess="false"
+        result="win"
+    >
+        <div class="resultPopup">
+            <div class="resultImage"> <!-- Load all -->
+                <img src="./static/dixit/assets/win.svg" result="win">
+                <img src="./static/dixit/assets/lose.svg" result="lose">
+                <img src="./static/dixit/assets/draw.svg" result="draw">
+            </div>
+            <div class="resultContent">
+                <h1 id="resultTitle">Vous avez gagné !</h1>
+                <div class="resultSplits">
+
+                    <div class="resultSplit" side="user">
+                        <h2>Vous avez trouvé la carte du robot !</h2>
+                        <div class="CardsShow">
+                            <div class="CardsShowLabels">
+                                <h3>La carte que vous avez deviné</h3>
+                                <h3>La carte du robot</h3>
+                            </div>
+                            <div class="CardsShowCards">
+                                <div class="cardUnit" id="guess"></div>
+                                <div class="cardUnit" id="correct"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resultSeparator"></div>
+
+                    <div class="resultSplit" side="robot">
+                        <h2>Le robot n'a pas trouvé votre carte !</h2>
+                        <div class="CardsShow">
+                            <div class="CardsShowLabels">
+                                <h3>La carte que le robot a deviné</h3>
+                                <h3>Votre carte</h3>
+                            </div>
+                            <div class="CardsShowCards">
+                                <div class="cardUnit" id="guess"></div>
+                                <div class="cardUnit" id="correct"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="resultButtons">
+                <button id="playAgain">Faire une nouvelle partie</button>
+                <button id="changeDifficulty">Changer la difficulté</button>
+            </div>
+        </div>
+    </div>
 
     <script src="./static/dixit/script.js"></script>
 

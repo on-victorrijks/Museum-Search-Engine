@@ -2,51 +2,485 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Lato", serif;
+    font-weight: 400;
+    font-style: normal;
 }
-div#candidates {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
-    background: #d6d6d6;
-    padding: 30px 0;
-    flex: 1;
-}
-.candidate {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+    min-height: 100vh;
+
+    background-color: #00DBDE;
+    background-image: linear-gradient(45deg, #00DBDE 0%, #FC00FF 100%);
     
-    width: 200px;
-    position: relative;
-    z-index: 1;
 }
 
-
-
-.candidate img {
-    /* Image must fit in the container */
-    max-width: 100%;
-    max-height: 100%;
-
-    /* Image must not overflow the container */
-    object-fit: contain;
-
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-
-    cursor: pointer;
-
-    transform: scale(1);
-    transition: transform 0.2s;
+:root {
+    --color-accent-1: #152e64;
+    --color-accent-2: #ba0514;
+    --color-accent-3: #8b000b;
+    --shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    --color-card: #efe5d5;;
 }
-.ranking {
+
+/*LOADER*/
+.loader_container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    gap: 25px;
+    background: rgba(255,255,255,0.75);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.loader_container[enabled="false"]{
+    display: none;
+}
+.loader_container[enabled="true"]{
+    display: flex;
+}
+.loader { /*https://css-loaders.com/dots/*/
+    width: 100px;
+    aspect-ratio: 1;
+    --_g: no-repeat radial-gradient(circle closest-side,#000 90%,#0000);
+    background: 
+      var(--_g) 0    0,
+      var(--_g) 0    100%,
+      var(--_g) 100% 100%;
+    background-size: 40% 40%;
+    animation:l11 1s infinite linear;
+}
+@keyframes l11 {
+    25% {background-position:100% 0   ,0 100%,100% 100%}
+    50% {background-position:100% 0   ,0 0   ,100% 100%}
+    75% {background-position:100% 0   ,0 0   ,0    100%}
+    100%{background-position:100% 100%,0 0   ,0    100%}
+}
+
+.loader_text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.loader_text h1 {
+    font-size: 30px;
+}
+.loader_text h3 {
+    font-size: 20px;
+    color: rgb(72, 72, 72);
+}
+
+/*MENU*/
+.menu {
     position: absolute;
     left: 0;
     right: 0;
+    top: 0;
+    bottom: 0;
     margin: auto;
-    bottom: -25px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.menu[enabled="false"] {
+    display: none;
+}
+.menu[enabled="true"] {
+    display: flex;
+}
+.menu[loader="true"] {
+    filter: blur(5px);
+}
+.background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url("http://127.0.0.1:5000/static/dixit/assets/background_upscaled.jpg");
+    background-size: cover;
+    background-position: center center;
+    z-index: -1;
+    opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+.background h3 {
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    padding: 4px 8px;
+    margin: 8px;
+}
+.menu .logo {
+    width: 100%;
+    height: 100%;
+    max-height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3vh;
+}
+.menu .logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.difficulty_levels{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.menu label {
+    font-size: 30px;
+    margin: 10px 0;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    padding: 16px 32px;
+    width: fit-content;
+    box-shadow: var(--shadow);
+}
+.difficulty_level {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 15px;
+    margin: 0 15px;
+    padding: 15px;
+    border: solid 4px #dbdbdb;
+    cursor: pointer;
+    transition: all .2s;
+    transform: scale(0.9);
+    box-shadow: var(--shadow);
+    width: 100%;
+}
+.difficulty_level[selected="true"]{
+    background: var(--color-accent-1);
+    border-color: var(--color-accent-2);
+}
+.difficulty_level:hover {
+    transform: scale(1.00);
+    opacity: .9;
+}
+.difficulty_level .check {
+    width: calc(64px + 20px);
+    height: calc(64px + 20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(212, 212, 212);
+    padding: 10px;
+    border-radius: 50px;
+    border: solid 3px transparent;
+}
+.difficulty_level[selected="true"] .check {
+    background: var(--color-accent-3);
+    border: solid 3px var(--color-accent-2);
+}
+.difficulty_level .check img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.0;
+    filter: invert(0);
+    transition: all .2s;
+}
+.difficulty_level[selected="true"] .check img {
+    opacity: 1.0;
+    filter: invert(1);
+}
+.difficulty_level .explanation {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.explanation h2 {
+    font-size: 30px;
+    font-weight: bolder;
+}
+.explanation p {
+    font-weight: 500;
+    font-size: 23px;
+    color: #252525;
+}
+.explanation p b {
+    color: var(--color-accent-3)
+}
+.difficulty_level[selected="true"] .explanation h2 {
+    color: white;
+}
+.difficulty_level[selected="true"] .explanation p {
+    color: white;
+}
+.difficulty_level[selected="true"] .explanation p b {
+    color: white;
+    font-weight: bold;
+}
+.menu .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    justify-content: center;
+    align-items: center;
+}
+.buttons button {
+    border: none;
+    padding: 30px 60px;
+    font-size: 30px;
+    background: var(--color-accent-2);
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all .2s;
+    transform: scale(0.9);
+    box-shadow: var(--shadow);
+    border: solid 4px #dbdbdb;
+}
+.buttons button:hover {
+    transform: scale(1.0);
+    background: var(--color-accent-3);
+}
+
+/*GAME*/
+.game{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: #3c2219;
+    overflow: hidden;
+}
+.game[enabled="false"] {
+    display: none;
+}
+.game[enabled="true"] {
+    display: flex;
+}
+.topInstruction{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    flex-shrink: 0;
+}
+.topInstruction h1 {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+}
+.candidates {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100vw;
+    height: 55vh;
+    margin: 30px 0;
+    transition: all 1.0s;
+    flex-shrink: 0;
+}
+.candidates .row {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: calc(50% - 10px);
+}
+.candidate {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    z-index: 1;
+    background: var(--color-card);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    height: 100%;
+    max-width: calc(20% - 20px);
+    aspect-ratio: 0.7;
+    padding: 8px;
+    border: solid 1px #96805f;
+}
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    border: solid 1px #96805f;
+    border-radius: 6px;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+.candidate .imageContainer {
+    flex: 1;
+    background: var(--color-card);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin: 3px;
+    width: calc(100% - 6px);
+}
+.imageContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 8px solid transparent;
+    border-image: url(http://127.0.0.1:5000/static/dixit/assets/border.png) 30 stretch;
+    opacity: 1.0;
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+    z-index: 2;
+}
+.candidate .imageContainer #overlay{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    object-fit: unset;
+    display: none;
+}
+
+.candidate .imageContainer img {
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+    object-fit: contain;
+}
+.candidate .buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    width: calc(100% - 20px);
+    margin: 10px;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+.candidate .buttonsContainer .decorative{
+    flex: 1;
+    height: 1px;
+    background: #96805f;
+}
+.candidate .buttonsContainer button {
+    background: transparent;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 16px;
+    height: 100%;
+    border: unset;
+    width: 100px;
+    color: #96805f;
+}
+.candidate .buttonsContainer:hover > button{
+    color: black;
+}
+.candidate .buttonsContainer:hover > .decorative{
+    background: black;
+}
+
+/* Variants */
+.candidate[ownsecret="true"]{
+    border: solid 2px #ffd700;
+}
+.candidate[ownsecret="true"]::before {
+    content: "Votre carte";
+    color: black;
+    text-align: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    z-index: 10;
+    line-height: 25px;
+    font-weight: bold;
+    font-size: 19px;
+    background: #ffd700;
+    padding: 2px;
+}
+.candidate[userguess="true"]{
+    border: solid 2px #01ff40;
+}
+.candidate[userguess="true"]::after {
+    content: "Votre proposition";
+    color: black;
+    text-align: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    z-index: 10;
+    line-height: 25px;
+    font-weight: bold;
+    font-size: 19px;
+    background: #01ff40;
+    padding: 2px;
+}
+/* Special case where both are true */
+.candidate[ownsecret="true"][userguess="true"]{
+    /* Both are true */
+    box-shadow: 0 0 0 2px #01ff40;
+    outline: dashed 2px #ffd700;
+}
+.candidate[ownsecret="true"][userguess="true"]::after {
+    top: calc(25px + 4px);
+}
+
+
+
+.ranking {
+    position: absolute;
+    left: 5px;
+    top: 5px;
     background: #ffffff;
     aspect-ratio: 1;
     width: 50px;
@@ -56,103 +490,571 @@ div#candidates {
     justify-content: center;
     align-items: center;
     border: solid 2px black;
+    display: none;
 }
 .ranking h3 {
-    font-family: Arial, sans-serif;
     font-weight: 500;
     font-size: 20px;
 }
-.candidate:hover > .ranking {
-    display: none;
-}
-
-.candidate img:hover {
-    transform: scale(2.0);
-    z-index: 5;
-}
-.menu{
-    height: 5vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #d6d6d6;
-}   
-.game {
-    display: flex;
-    flex-direction: row;
-    height: 95vh;
-}
-.text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 25px;
-    gap: 20px;
-}
-h1#instruction {
-    font-family: 'Arial', sans-serif;
-    font-size: 25px;
-    font-weight: 400;
-}
-div#questions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: green;
-}
-
 .candidate[winner="true"] img {
     border: 5px solid rgb(255, 247, 10);
 }
+.instructContainer {
+    width: 100vw;
+    display: flex;
+    background: white;
+    box-shadow: var(--shadow);
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 8px 0;
+}
+div#instruct {
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.instruction {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.instruction h1 {
+    font-size: 30px;
+    font-weight: bold;
+}
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+.box h1 {
+    font-size: 23px;
+}
+.questionsContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    max-width: 1280px;
+}
 .question {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    width: calc(50% - 5px);
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    border: solid 2px black;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transform: scale(0.9);
+    transition: all .2s;
+}
+.question:nth-child(1) {
+    background: #bda0a0;
+}
+.question:nth-child(2) {
+    background: #a0bda7;
+}
+.question:nth-child(3) {
+    background: #a0afbd;
+}
+.question:nth-child(4) {
+    background: #babda0;
+}
+.question:hover {
+    transform: scale(1.0);
+    opacity: .9;
+}
+.questionNumber {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
 }
-h1#question {
-    font-family: Arial, sans-serif;
-    font-weight: 400;
-    font-size: 35px;
-    text-align: center;
+.questionNumber h4 {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
 }
-div#answers {
+.question h2 {
+    flex: 1;
+    font-size: 20px;
+    color: black;
+}
+.question h2 b {
+    color: black;
+    font-weight: 900;
+    background: white;
+    padding: 5px;
+    border: solid 2px black;
+}
+/* Animation on game */
+.game[selectCards="true"] .candidates,  /* Selecting cards */
+.game[guessing="true"] .candidates      /* Guessing */
+{
+    height: calc(100vh - 60px - 70px);
+}
+.candidate .imageContainer {
+    cursor: pointer;
+}
+.candidate .imageContainer img{
+    transition: all .2s;
+    filter: brightness(1.0);
+}
+.candidate .imageContainer:hover img#overlay{
+    filter: brightness(1) !important;
+}
+.game[selectCards="true"] .candidate .imageContainer:hover > img {
+    filter: brightness(1.2);
+}
+
+.robotQuestion {
+    flex: 1;
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    gap: 10px;
+}
+.robotIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 75px;
+    background: #dedede;
+    border-radius: 100px;
+    overflow: hidden;
+    border: solid 3px #272727;
+}
+.robotIcon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.robotMessage {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.robotMessage h2 {
+    font-size: 19px;
+    font-weight: bold;
+}
+.messageBubble {
+    padding: 8px;
+    border-radius: 8px;
+    background: #272727;
+    max-width: 70vw;
+}
+.messageBubble .thinking {
+    display: none;
+}
+.messageBubble p {
+    color: white;
+    font-weight: 500;
+    font-size: 22px;
+}
+.messageBubble p b {
+    background: white;
+    color: black;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+div#user_answers {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.userAnswer {
+    padding: 25px;
+    background: #d6d6d6;
+    border-radius: 10px;
+    border: solid 3px black;
+    transform: scale(0.9);
+    transition: all .2s;
+    cursor: pointer;
+}
+.userAnswer:hover {
+    transform: scale(1.0);
+    opacity: .9;
+}
+.userAnswer h1 {
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+}
+.userAnswer:nth-child(5) {
+    background: #2cff21;
+}
+.userAnswer:nth-child(4) {
+    background: #6effa8;
+}
+.userAnswer:nth-child(3) {
+    background: #d6d6d6;
+}
+.userAnswer:nth-child(2) {
+    background: #E4C087;
+}
+.userAnswer:nth-child(1) {
+    background: #BC7C7C;
+}
+.actionsButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.actionsButtons button {
+    padding: 25px;
+    background: #49ff7b;
+    border-radius: 10px;
+    border: solid 3px black;
+    transform: scale(0.9);
+    transition: all .2s;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+}
+.actionsButtons button:hover {
+    transform: scale(1.0);
+    opacity: .9;
+}
+
+.game[robotthinking="true"] .messageBubble p{
+    display: none;
+}
+.game[robotthinking="true"] .messageBubble .thinking {
+    display: block;
+    width: 40px;
+    aspect-ratio: 2;
+    --_g: no-repeat radial-gradient(circle closest-side, #ffffff 90%, #0000);
+    background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
+    background-size: calc(100% / 3) 50%;
+    animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+    20%{background-position:0%   0%, 50%  50%,100%  50%}
+    40%{background-position:0% 100%, 50%   0%,100%  50%}
+    60%{background-position:0%  50%, 50% 100%,100%   0%}
+    80%{background-position:0%  50%, 50%  50%,100% 100%}
+}
+
+
+/* 
+Contexts:
+userselectingquestion : User is selecting a question
+robotanswering : Robot is answering
+userselectinganswer : User is selecting an answer
+*/
+.game{
+    transition: all 0.4s;
+    filter: blur(0px);
+}
+.game[blurred="true"]{
+    filter: blur(5px);
+}
+.game .box {
+    display: none;
+}
+.game[context="userselectingquestion"] .box[context="userselectingquestion"] {
+    display: flex;
+}
+.game[context="robotanswering"] .box[context="robotanswering"] {
+    display: flex;
+    gap: 40px;
+}
+.game[context="userselectinganswer"] .box[context="userselectinganswer"] {
+    display: flex;
+    gap: 40px;
+}
+.game[robotthinking="true"] .box[context="robotanswering"] .actionsButtons{
+    /* Disabled during thinking */
+    pointer-events: none;
+    opacity: .5;
+    filter: grayscale(1);
+}
+.game[robotthinking="true"] .box[context="userselectinganswer"] .userAnswers{
+    /* Disabled during thinking */
+    pointer-events: none;
+    opacity: .5;
+    filter: grayscale(1);
+}
+
+/* Result screen */
+.resultScreen {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 100;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 300px;
+    background: rgba(0, 0, 0, 0.70);
+}
+.resultScreen[enabled="false"] {
+    display: none;
+}
+.resultScreen[enabled="true"] {
+    display: flex;
+}
+.resultPopup {
+    width: 70vw;
+    height: 50vw;
+    min-width: 600px;
+    min-height: 500px;
+    max-width: 1280px;
+    max-height: 800px;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+.resultImage {
+    height: 25%;
+    background: #d7d7d7;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+.resultImage img {
+    height: calc(100% - 40px);
+    width: calc(100% - 40px);
+    object-fit: contain;
+    margin: 20px;
+    display: none;
+}
+.resultContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+.resultContent .candidate{
+    box-shadow: unset;
+}
+.resultContent .candidate{
+    max-width: unset;
+}
+.resultContent h1 {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 7px 0 14px 0;
+}
+.resultSplits {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    flex: 1;
+    overflow: hidden;
+}
+.resultSplit {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    gap: 15px;
+}
+.resultSplit h2 {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #313131;
+    font-size: 23px;
+}
+.resultSeparator {
+    height: 100%;
+    width: 1px;
+    background: #dfdfdf;
+}
+.CardsShow {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     gap: 10px;
 }
-.answers button {
+.cardUnitContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    gap: 8px;
+}
+.CardsShowLabels {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
     width: 100%;
-    border: none;
-    background: red;
+}
+.CardsShowLabels h3 {
+    font-size: 20px;
+    flex: 1;
+    text-align: center;
+    color: #373737;
+}
+.CardsShowCards {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+}
+.cardUnit {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.resultButtons {
+    background: white;
+    width: 100%;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.resultButtons button {
+    width: 256px;
+    max-width: 40%;
+    padding: 15px 25px;
+    border: solid 2px black;
+    border-radius: 13px;
+    background: #f4f4f4;
     font-size: 18px;
-    font-weight: 300;
-    border-radius: 10px;
-    opacity: 1;
-    transition: all .5s;
+    font-weight: bold;
     cursor: pointer;
+    transform: scale(0.9);
+    transition: all .2s;
 }
-.answers button[power="-1.00"] {
-    background: #f49292;
+.resultButtons button:hover {
+    transform: scale(1.0);
+    opacity: .9;
 }
-.answers button[power="-0.50"] {
-    background: #f4b392;
+button#playAgain {
+    background: #9dff9d;
 }
-.answers button[power="0.00"] {
-    background: #f4d192;
+button#changeDifficulty {
+    background: #f9ff85;
 }
-.answers button[power="0.50"] {
-    background: #f4f192;
+/* Variants */
+.resultScreen[result="win"] .resultImage {
+    background-color: #FBAB7E;
+    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 }
-.answers button[power="1.00"] {
-    background: #d4f492;
+.resultScreen[result="win"] .resultImage img[result="win"] {
+    display: block;
 }
-.answers button:hover {
-    opacity: .7
+.resultScreen[result="lose"] .resultImage {
+    background-color: #FF9A8B;
+    background-image: linear-gradient(90deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);    
+}
+.resultScreen[result="lose"] .resultImage img[result="lose"] {
+    display: block;
+}
+.resultScreen[result="draw"] .resultImage {
+    background-color: #D4FC79;
+    background-image: linear-gradient(62deg, #D4FC79 0%, #96E6A1 100%);
+}
+.resultScreen[result="draw"] .resultImage img[result="draw"] {
+    display: block;
+}
+
+/* Larger  */
+.larger_container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8); /* Dimmed background */
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+.larger_container[enabled="true"] {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+}
+.larger_container img {
+    width: 90vw;
+    height: 90vh;
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, opacity 0.2s;
+    opacity: 1.0;
+    transform: scale(0.9);
+}
+.close img {
+    width: 60px;
+    height: 60px;
+}
+.larger_container .close:hover {
+    transform: scale(1.0);
 }

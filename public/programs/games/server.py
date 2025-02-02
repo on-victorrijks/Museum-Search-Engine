@@ -14,27 +14,30 @@ from engine import GameEngine
 ##
 
 
-def AIAsksQuestions(
+def QuelleEstLoeuvre(
     dataset, 
     engine, 
     difficulty, 
-    difficulty_to_number_of_candidates,
-    difficulty_to_number_of_questions
+    difficulty_to_player_n_questions,
+    difficulty_to_robot_n_questions
 ):
 
-    # Get the number of candidates
-    N_candidates = difficulty_to_number_of_candidates[difficulty]
-    N_questions = difficulty_to_number_of_questions[difficulty]
+    # Settings
+    N_candidates        = 10
+    N_players_questions = difficulty_to_player_n_questions[difficulty]
+    N_robot_questions   = difficulty_to_robot_n_questions[difficulty]
 
     # Get number_of_candidates different random recordIDs from the filtered data    
     candidates = random.sample(dataset["recordID"].tolist(), N_candidates)
-    objects, sims, answers = engine.get_questions(candidates, N_questions=N_questions)
+    objects, sims, answers = engine.get_questions(candidates, N_questions=N_robot_questions)
 
     return {
         "candidates": candidates,
+        "n_players_questions": N_players_questions,
+        "n_robot_questions": N_robot_questions,
         "objects": objects,
         "sims": sims.tolist(),
-        "answers": answers.tolist()
+        "answers": answers.tolist(),
     }
 
     # answers is of shape (N_objects, N_candidates)
@@ -174,8 +177,8 @@ if __name__ == "__main__":
 
     ##
 
-    difficulty_to_number_of_candidates = { 0:10, 1:5, 2:3 }
-    difficulty_to_number_of_questions = { 0:10, 1:10, 2:10 }
+    difficulty_to_player_n_questions = { 0:15, 1:10, 2:5 }
+    difficulty_to_robot_n_questions = { 0:5, 1:10, 2:15 }
 
     ##
 
@@ -204,10 +207,12 @@ if __name__ == "__main__":
     def serve_image(recordID):
         path = get_image_path_from_recordID(FULL_DATASET, recordID)
         if path is None:
-            return {
-                "success": False,
-                "message": "No image found."
-            }
+            # Return a random image
+            path = get_image_path_from_recordID(FULL_DATASET, FULL_DATASET.sample()["recordID"].values[0])
+            #return {
+            #    "success": False,
+            #    "message": "No image found."
+            #}
         return send_file(path, mimetype='image/jpg')
 
     # Create game
@@ -217,12 +222,12 @@ if __name__ == "__main__":
         difficulty = data["difficulty"]
 
         # Get the questions
-        game = AIAsksQuestions(
+        game = QuelleEstLoeuvre(
             FULL_DATASET, 
             ENGINE, 
             difficulty, 
-            difficulty_to_number_of_candidates,
-            difficulty_to_number_of_questions
+            difficulty_to_player_n_questions,
+            difficulty_to_robot_n_questions
         )
 
         return jsonify({
