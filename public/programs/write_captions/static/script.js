@@ -117,10 +117,16 @@ function fetchTask(){
 
             currentData = data.content;
 
+            updateInfos(data.infos);
+            
+            if (currentData === "N/A"){
+                info_out.innerHTML = 'No more tasks to do';
+                return;
+            }
+
             info_image.src = 'http://127.0.0.1:5000/images/' + data.content.recordID;
             
             updateFocus(data.content.focus);
-            updateInfos(data.infos);
         } else {
             info_out.innerHTML = data.message;
         }

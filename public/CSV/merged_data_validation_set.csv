@@ -95,7 +95,6 @@ recordID,category,focus,caption,length_tokenization
 6573,Dessin,emotion,"Une ville en ruine, des gravats sur le sol, une église détruite, l'après guerre, Colère",30
 4597,Tableau,content,"Un portrait d'un homme avec une moustache noir et des cheveux mi-long, un livre noir en main et un habit noir",29
 6472,Tableau,luminosity,"Un homme parle à une foule sur un balcon, des gardes en armure, des enfants, extérieur, Lumineux",31
-2796,Sculpture,content,Une sculpture de deux hommes musclés debout qui se tiennent,17
 7936,Dessin,emotion,"biche, vu de profil, animal, Surprise",11
 8656,Dessin,luminosity,"Une maison carré de deux étages, un arbre, des arbustes, maison de campagne, Lumineux",25
 1096,Tableau,colors,"Une ville, des toits, une église, abstrait, Noir et blanc",18
@@ -141,7 +140,6 @@ recordID,category,focus,caption,length_tokenization
 7547,Tableau,emotion,"Un femme ouvrière de profil avec un foulard bleu, des toîts, elle regarde, de la fumée, Tristesse",33
 1360,Dessin,colors,"Un vieil homme souffrant, il tombe, des anges autour de lui, mort, maladie, Noir et blanc",31
 6141,Dessin,colors,"Un homme musclé porte un homme nu, combat, porter, Noir et blanc",17
-3400,Sculpture,emotion,"Une sculpture d'un soldat en uniforme, soldat avec casque, émotion neutre",21
 10341,Dessin,colors,"Un dessin d'un collier avec un médaillon et des plumes, bijou, Noir et blanc",23
 6090,Dessin,content,"Un portrait d'un homme avec un monocle, il est bien habillé, il a une moustache et des cheveux dégarni",31
 3663,Tableau,colors,"Des religieux agenouillés devant un homme nu dans une église, Teinte rouge",21
@@ -276,8 +274,6 @@ recordID,category,focus,caption,length_tokenization
 5113,Dessin,content,"Un portrait d'un homme en costume brun, il tient son chapeau blanc dans la main, moustache, jeune homme",28
 10167,Dessin,colors,"Dessin d'un bijoux, bracelet, collier, lettre, Noir et blanc",18
 2030,Dessin,luminosity,"Le prêtre lit un texte, des hommes assis et debouts le regarde, Sombre",23
-2796,Sculpture,emotion,"Une sculpture de deux hommes musclés debout qui se tiennent, Peur",20
-2796,Sculpture,emotion,"Une sculpture de deux hommes musclés debout qui se tiennent, Colère",20
 5111,Tableau,content,"Portrait d'une femme, cheveux noirs, assise, mains",16
 10760,Sculpture,colors,"Une sculpture représentant des hommes qui travaillent, Teinte rouge",19
 4571,Tableau,colors,"Un canal entre deux batîments dans une ville avec un pont, fin de soirée, fenêtres avec de la lumière, Teinte bleue",33
@@ -301,7 +297,6 @@ recordID,category,focus,caption,length_tokenization
 8058,Tableau,colors,"Portrait d'une vieil homme avec un grosse moustache blanche, uniforme militaire, général, armée, Teinte verte",32
 8511,Tableau,emotion,"Une ville portuaire, des tentes, bateaux, eau, voiliers, chevaux, Joie",23
 8511,Tableau,emotion,"Une ville portuaire, des tentes, bateaux, eau, voiliers, chevaux, Surprise",22
-3400,Sculpture,content,"Une sculpture d'un soldat en uniforme, soldat avec casque",16
 7939,Dessin,colors,"Un tronc d'arbre dans une forêt, un parc, des personnes dans un parc, des couples en rendez-vous, Bicolor, Teinte rouge",37
 2604,Tableau,content,"Le fond d'un jardin, arbre, cloture, portillon, herbe, clocher en fond",23
 4017,Dessin,colors,"L'avant d'un bateau, structure, Teinte verte",15
@@ -340,7 +335,6 @@ recordID,category,focus,caption,length_tokenization
 4168,Tableau,emotion,"Une barrière dans un champ, des prairies, le ciel nuageux, Tristesse",21
 4168,Tableau,emotion,"Une barrière dans un champ, des prairies, le ciel nuageux, Peur",20
 6090,Dessin,colors,"Un portrait d'un homme avec un monocle, il est bien habillé, il a une moustache et des cheveux dégarni, Noir et blanc",35
-2796,Sculpture,colors,"Une sculpture de deux hommes musclés debout qui se tiennent, Noir et blanc",21
 7936,Dessin,colors,"biche, vu de profil, animal, Noir et blanc",13
 5804,Dessin,emotion,"Un paysage avec des arbres, des collines, des animaux qui courent, de l'herbe, émotion neutre",30
 1350,Tableau,emotion,"Portrait d'une femme avec un noeud dans ses cheveux, cheveux blancs, grand-mère, émotion neutre",31
@@ -880,7 +874,6 @@ recordID,category,focus,caption,length_tokenization
 2112,Tableau,emotion,"Une femme qui tient un nourisson dans ses bras, collier de perle, foulard, assise, vêtement blanc, Peur",31
 2280,Tableau,colors,"Un homme nu à l'envers sur la croix, hommes musclés, soldat, prisonnier, Couleurs sombres, Teinte rouge",33
 1737,Tableau,emotion,"Une fête de village, centre-ville, tente, extérieur, Joie",21
-3400,Sculpture,colors,"Une sculpture d'un soldat en uniforme, soldat avec casque, Noir et blanc",20
 4017,Dessin,content,"L'avant d'un bateau, structure",10
 5950,Tableau,content,"Un combat entre des soldats, boucliers, lances, mort",15
 7615,Tableau,emotion,"Un portrait d'un homme avec un chapeau noir et un habt noir, une rose derrière, moustache, ciel et batiment, émotion neutre",36
@@ -923,7 +916,6 @@ recordID,category,focus,caption,length_tokenization
 7554,Dessin,content,"Des gens qui dorment, la lumière bleue de la lune, des femmes qui tissent, un dortoir, une bougie",31
 1129,Tableau,luminosity,"Un fleuve avec des bateaux, rue avec des arbres alignés, chevaux et calèches, route, eau, vagues, Sombre",34
 10900,Tableau,content,"Une femme joue du piano, elle lit une partition, la fenêtre est ouverte, on voit une branche avec des feuilles vertes",33
-2796,Sculpture,luminosity,"Une sculpture de deux hommes musclés debout qui se tiennent, Sombre",20
 1098,Tableau,content,"Une femme et un garçon marchent sur un chemin avec des vaches, des arbres verts alignés, campagne",28
 180,Tableau,content,"Des femmes avec des instruments et des fleurs, un vieil homme avec une canne, une procession",22
 10361,Dessin,emotion,"Des arbres qui cachent un village, hiver, émotion neutre",17
@@ -960,5 +952,4 @@ recordID,category,focus,caption,length_tokenization
 4072,Tableau,content,"Portrait d'une jeune femme qui lit un livre, vetêment noir, cheveux noirs courts",24
 1294,Tableau,emotion,"Un paysage désolé avec des arbres sans feuilles, un ciel nuageux, une prairie avec de haute herbes, Peur",31
 482,Tableau,colors,"Portrait d'une jeune femme avec une robe noire et des bijoux, cheveux noirs, bouquet de fleurs, Couleurs sombres",33
-8397,Dessin,emotion,"Des personnes marchent de dos dans un port, le ciel nuageux, des mats en fond, des lampadaires, émotion neutre",32
 8397,Dessin,emotion,"Des personnes marchent de dos dans un port, le ciel nuageux, des mats en fond, des lampadaires, émotion neutre",32

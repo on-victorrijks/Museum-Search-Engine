@@ -19,10 +19,15 @@ FILE_FABRITIUS_DATA_FILTERED = PARENT + os.getenv("FILE_FABRITIUS_DATA_FILTERED"
 FILE_FABRITIUS_DATA_FILTERED_DOWNLOADED = PARENT + os.getenv("FILE_FABRITIUS_DATA_FILTERED_DOWNLOADED")
 FOLDER_FIGURES = PARENT + os.getenv("FOLDER_FIGURES")
 IMAGES_FOLDER = PARENT + os.getenv("IMAGES_FOLDER")
+
 RECORD_IDS_TESTING_SET = PARENT + os.getenv("RECORD_IDS_TESTING_SET")
 RECORD_IDS_VALIDATION_SET = PARENT + os.getenv("RECORD_IDS_VALIDATION_SET")
+RECORD_IDS_TRAINING_SET = PARENT + os.getenv("RECORD_IDS_TRAINING_SET")
+
 WRITTEN_CAPTIONS_TESTING_SET = PARENT + os.getenv("WRITTEN_CAPTIONS_TESTING_SET")
 WRITTEN_CAPTIONS_VALIDATION_SET = PARENT + os.getenv("WRITTEN_CAPTIONS_VALIDATION_SET")
+WRITTEN_CAPTIONS_TRAINING_SET = PARENT + os.getenv("WRITTEN_CAPTIONS_TRAINING_SET")
+
 
 ##
 
@@ -96,6 +101,10 @@ TESTING_DATA = {
     "tasks": get_input_df(RECORD_IDS_TESTING_SET),
     "output": get_output_df(WRITTEN_CAPTIONS_TESTING_SET)
 }
+TRAINING_DATA = {
+    "tasks": get_input_df(RECORD_IDS_TRAINING_SET),
+    "output": get_output_df(WRITTEN_CAPTIONS_TRAINING_SET)
+}
 
 # 2) Remove the tasks that have already been completed
 def remove_completed_tasks(tasks, output):
@@ -107,7 +116,7 @@ def remove_completed_tasks(tasks, output):
 
     return tasks
 
-for dataset in [VALIDATION_DATA, TESTING_DATA]:
+for dataset in [VALIDATION_DATA, TESTING_DATA, TRAINING_DATA]:
     dataset["tasks"] = remove_completed_tasks(dataset["tasks"], dataset["output"])
 
 # 2) Serve index.html
@@ -128,28 +137,42 @@ def serve_image(recordID):
 
 # 4) Get a task
 def get_new_task(setName):
-    global VALIDATION_DATA, TESTING_DATA
-    if setName not in ["validation", "testing"]:
+    global VALIDATION_DATA, TESTING_DATA, TRAINING_DATA
+    if setName not in ["validation", "testing", "training"]:
         return {
             "success": False,
             "message": "Invalid set name."
         }
     
-    dataset = VALIDATION_DATA if setName == "validation" else TESTING_DATA
-    if len(dataset["tasks"]) == 0:
-        return {
-            "success": False,
-            "message": "No more tasks."
-        }
-    
-    task = dataset["tasks"].iloc[0].to_dict()
-    del task["caption"]
+    dataset = None
+    if setName == "training":
+        dataset = TRAINING_DATA
+    elif setName == "testing":
+        dataset = TESTING_DATA
+    else:
+        dataset = VALIDATION_DATA
+
 
     total_per_focus = {}
     completed_per_focus = {}
     for focus in ["content", "emotion", "colors", "luminosity"]:
         completed_per_focus[focus] = len(dataset["output"][dataset["output"]["focus"] == focus])
         total_per_focus[focus] = len(dataset["tasks"][dataset["tasks"]["focus"] == focus]) + completed_per_focus[focus]
+
+    if len(dataset["tasks"]) == 0:
+        return {
+            "success": True,
+            "content": "N/A",
+            "infos": {
+                "total": len(dataset["tasks"]) + len(dataset["output"]),
+                "completed": len(dataset["output"]),
+                "total_per_focus": total_per_focus,
+                "completed_per_focus": completed_per_focus
+            }
+        }
+    
+    task = dataset["tasks"].iloc[0].to_dict()
+    del task["caption"]
 
     return jsonify({
         "success": True,
@@ -169,14 +192,21 @@ def get_task(setName):
 # 5) Send caption (receive completed JSON)
 @app.route('/api/send_caption/<string:setName>', methods=['POST'])
 def send_caption(setName):
-    global VALIDATION_DATA, TESTING_DATA
-    if setName not in ["validation", "testing"]:
+    global VALIDATION_DATA, TESTING_DATA, TRAINING_DATA
+    if setName not in ["validation", "testing", "training"]:
         return {
             "success": False,
             "message": "Invalid set name."
         }
     
-    dataset = VALIDATION_DATA if setName == "validation" else TESTING_DATA
+    dataset = None
+    if setName == "training":
+        dataset = TRAINING_DATA
+    elif setName == "testing":
+        dataset = TESTING_DATA
+    else:
+        dataset = VALIDATION_DATA
+    
     data = request.json
     recordID = data["recordID"]
     category = data["category"]
@@ -192,7 +222,7 @@ def send_caption(setName):
     
     add_row_to_output_df(
         dataset["output"],
-        WRITTEN_CAPTIONS_VALIDATION_SET if setName == "validation" else WRITTEN_CAPTIONS_TESTING_SET,
+        WRITTEN_CAPTIONS_VALIDATION_SET if setName == "validation" else WRITTEN_CAPTIONS_TESTING_SET if setName == "testing" else WRITTEN_CAPTIONS_TRAINING_SET,
         recordID,
         category,
         focus,

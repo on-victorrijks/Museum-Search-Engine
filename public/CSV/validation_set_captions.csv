@@ -88,7 +88,6 @@ recordID,category,focus,caption
 6573,Dessin,emotion,"Peur, Colère"
 4597,Tableau,content,"Un portrait d'un homme avec une moustache noir et des cheveux mi-long, un livre noir en main et un habit noir"
 6472,Tableau,luminosity,Lumineux
-2796,Sculpture,content,Une sculpture de deux hommes musclés debout qui se tiennent
 7936,Dessin,emotion,Surprise
 8656,Dessin,luminosity,Lumineux
 1096,Tableau,colors,Noir et blanc<br>(bicolor)
@@ -131,7 +130,6 @@ recordID,category,focus,caption
 7547,Tableau,emotion,"Neutre, Tristesse"
 1360,Dessin,colors,Noir et blanc<br>(bicolor)
 6141,Dessin,colors,Noir et blanc<br>(bicolor)
-3400,Sculpture,emotion,Neutre
 10341,Dessin,colors,Noir et blanc<br>(bicolor)
 6090,Dessin,content,"Un portrait d'un homme avec un monocle, il est bien habillé, il a une moustache et des cheveux dégarni"
 3663,Tableau,colors,Teinte rouge
@@ -262,7 +260,6 @@ recordID,category,focus,caption
 4492,Tableau,luminosity,Neutre
 10167,Dessin,colors,Noir et blanc<br>(bicolor)
 2030,Dessin,luminosity,Sombre
-2796,Sculpture,emotion,"Peur, Colère"
 5111,Tableau,content,"Portrait d'une femme, cheveux noirs, assise, mains"
 10760,Sculpture,colors,Teinte rouge
 4571,Tableau,colors,Teinte bleue
@@ -282,7 +279,6 @@ recordID,category,focus,caption
 8606,Tableau,content,"Une barque avec deux personnes sur le bord de l'eau, des arbres, un ciel nuageux, personne assise dans la barque, ordre"
 8058,Tableau,colors,Teinte verte
 8511,Tableau,emotion,"Joie, Surprise"
-3400,Sculpture,content,"Une sculpture d'un soldat en uniforme, soldat avec casque"
 7939,Dessin,colors,"Noir et blanc<br>(bicolor), Teinte rouge"
 2604,Tableau,content,"Le fond d'un jardin, arbre, cloture, portillon, herbe, clocher en fond"
 4017,Dessin,colors,Teinte verte
@@ -318,7 +314,6 @@ recordID,category,focus,caption
 4168,Tableau,emotion,"Tristesse, Peur"
 1098,Tableau,luminosity,Neutre
 6090,Dessin,colors,Noir et blanc<br>(bicolor)
-2796,Sculpture,colors,Noir et blanc<br>(bicolor)
 4492,Tableau,colors,Neutre
 7936,Dessin,colors,Noir et blanc<br>(bicolor)
 5804,Dessin,emotion,Neutre
@@ -373,7 +368,6 @@ recordID,category,focus,caption
 4565,Tableau,colors,Teinte verte
 8074,Tableau,luminosity,Sombre
 10861,Tableau,luminosity,Neutre
-3400,Sculpture,luminosity,Neutre
 2049,Tableau,content,"Un fille avec un serre-tête tient un nourisson nu dans sses bras, portrait"
 2187,Tableau,emotion,Peur
 6706,Tableau,emotion,Neutre
@@ -827,7 +821,6 @@ recordID,category,focus,caption
 2280,Tableau,colors,"Couleurs sombres, Teinte rouge"
 1737,Tableau,emotion,Joie
 6586,Tableau,luminosity,Neutre
-3400,Sculpture,colors,Noir et blanc<br>(bicolor)
 4017,Dessin,content,"L'avant d'un bateau, structure"
 5950,Tableau,content,"Un combat entre des soldats, boucliers, lances, mort"
 7615,Tableau,emotion,Neutre
@@ -871,7 +864,6 @@ recordID,category,focus,caption
 7554,Dessin,content,"Des gens qui dorment, la lumière bleue de la lune, des femmes qui tissent, un dortoir, une bougie"
 1129,Tableau,luminosity,Sombre
 10900,Tableau,content,"Une femme joue du piano, elle lit une partition, la fenêtre est ouverte, on voit une branche avec des feuilles vertes"
-2796,Sculpture,luminosity,Sombre
 1098,Tableau,content,"Une femme et un garçon marchent sur un chemin avec des vaches, des arbres verts alignés, campagne"
 180,Tableau,content,"Des femmes avec des instruments et des fleurs, un vieil homme avec une canne, une procession"
 10361,Dessin,emotion,"Neutre, Peur"
@@ -914,5 +906,4 @@ recordID,category,focus,caption
 1294,Tableau,emotion,Peur
 482,Tableau,colors,Couleurs sombres
 7099,Tableau,luminosity,Neutre
-8397,Dessin,emotion,Neutre
 8397,Dessin,emotion,Neutre
