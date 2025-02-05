@@ -9,6 +9,18 @@
 }
 
 :root {
+    --color-1: #ffffff;
+    --color-2: #e4e4e4;
+    --color-3: #e0e0e0;
+
+    --color-accent: #b2d5ff;
+
+    --text-color-1: #000000;
+    --text-color-2: #282828;
+    --text-color-3: #383838;
+}
+
+:root {
     --color-1: #101010;
     --color-2: #1d1d1d;
     --color-3: #2a2a2a;
@@ -198,7 +210,7 @@ img.logo {
     border-radius: 8px;
 }
 .query h3 {
-    font-weight: 300;
+    font-weight: 500;
     color: var(--text-color-3);
     font-size: 15px;
 }
