@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Interface</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./static/search/style.css">
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+</head>
+<body>
+  <div class="container">
+
+    <div class="searchBox">
+
+        <div class="sb-Content">
+
+            <div class="header">
+                <img src="./static/search/assets/logo.svg" alt="Logo" class="logo">
+            </div>
+
+            <div class="searchSection">
+                <h1>Rechercher via du texte</h1>
+                <div class="textForm">
+                    <input type="text" id="searchInput" placeholder="Rechercher avec du texte">
+                    <button id="addTextPrompt">Ajouter à la recherche</button>
+                </div>
+            </div>
+            <div class="searchSection">
+                <div class="dropHeader" id="dropHeader" onClick="toggleKeywords()">
+                    <h1>Rechercher via des mots-clés</h1>
+                    <div class="drop">
+                        <img src="./static/search/assets/drop.png"/>
+                    </div>
+                </div>
+                <div class="container" id="keywords_container">
+                </div>
+            </div>
+            <div class="searchSection">
+                <h1>Rechercher via des couleurs</h1>
+                <div class="container" id="colors_container">
+                    <div class="color" id="Noir et blanc" style="background: linear-gradient(45deg, #000000, #ffffff);"></div>
+                    <div class="color" id="Couleurs vives" style="background: conic-gradient(#ff5733, #ffc300, #28a745, #17a2b8, #6f42c1, #ff5733);"></div>
+                    <div class="color" id="Couleurs sombres" style="background: conic-gradient(#4a322f, #3f522d, #2d4a4a, #2f2f4a, #4a2d4a, #4a322f);"></div>
+                    <div class="color" id="Teinte rouge" style="background: linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.8));"></div>
+                    <div class="color" id="Teinte bleue" style="background: linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(0, 0, 255, 0.8));"></div>
+                    <div class="color" id="Teinte verte" style="background: linear-gradient(to right, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.8));"></div>
+                </div>
+            </div>
+            <div class="searchSection">
+                <h1>Rechercher via une luminosité</h1>
+                <div class="container" id="luminosity_container">
+                    <div class="luminosity" id="Image sombre" style="background: #333333;">
+                        <h3 style="color: #fff">Sombre</h3>
+                    </div>
+                    <div class="luminosity" id="Image claire" style="background: #c4c4c4;">
+                        <h3 style="color: #000">Clair</h3>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="queries" id="queries_container">
+            </div>
+    
+        </div>
+
+        <div class="buttons">
+            <button id="searchButton">Rechercher</button>
+            <button id="resetButton">Réinitialiser</button>
+        </div>
+
+    </div>
+
+    <div class="results">
+        <h1>Résultats</h1>
+        <div class="results_container" id="results_container">
+
+            <div class="loader_container" id="loader_container">
+                <div class="loader">
+                    <div class="loader_inner"></div>
+                </div>
+                <div class="loader_text">
+                    <h1 id="loader_title">Nous cherchons les meilleures images...</h1>
+                </div>
+            </div>
+
+            <div class="grid-sizer"></div>
+
+        </div>
+    </div>
+
+  </div>
+
+  <script src="./static/search/script.js"></script>
+
+</body>
+</html>

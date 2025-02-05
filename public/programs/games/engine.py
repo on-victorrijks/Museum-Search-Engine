@@ -7,37 +7,36 @@ from PIL import Image
 from multilingual_clip import pt_multilingual_clip # Note: add device parameter to forward manually
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+from transformers import CLIPProcessor, CLIPModel
 
 import open_clip
+import clip
 
 import transformers
 from torch.utils.data import DataLoader, Dataset
 from sklearn.metrics.pairwise import cosine_similarity
 
-COLORS = [
-    "Couleurs sombres",
-    "Couleurs claires",
-    "Teinte verte",
-    "Teinte rouge",
-    "Teinte bleue",
-    "Couleurs vives",
-    "Noir et blanc",
-    "Bicolor",
+OBJECTS = [
+    "homme",
+    "femme",
+    "animal",
+    "maison",
+    "arbre",
+    "bateau",
 ]
 
 LUMINOSITIES = [
     "Lumineux",
-    "Sombre"
+    "Sombre",
 ]
 
-EMOTIONS = [
-    "Joie",
-    "Tristesse",
-    "Colère",
-    "Peur",
-    "Surprise",
-    "Dégoût",
-    "émotion neutre"
+COLORS = [
+    "Rouge",
+    "Vert",
+    "Bleu",
+    "Jaune",
+    "Blanc",
+    "Noir",
 ]
 
 class ImageTextDataset(Dataset):
@@ -60,6 +59,155 @@ class ImageTextDataset(Dataset):
         return image, "empty"
 
 class GameEngine:
+    def __init__(
+        self,
+        dataframe,
+        imagesEmbeddings,
+        objectsEmbeddings,
+        iconographies,
+        getImageFromRecordID,
+        device,
+        MODELS_FOLDER
+    ):
+        self.dataframe = dataframe
+        self.imagesEmbeddings = imagesEmbeddings
+        self.objectsEmbeddings = objectsEmbeddings
+        self.iconographies = iconographies
+        self.getImageFromRecordID = getImageFromRecordID
+        self.device = device
+        self.MODELS_FOLDER = MODELS_FOLDER
+
+        self.model = None
+        self.processor = None
+        self.tokenizer = None
+        self.load_model()
+
+        self.test()
+    
+    def test(self):
+        queries = [
+            {
+                "weight": 1.0,
+                "value": "Portrait d'un homme"
+            },
+        ]
+
+        k = 5
+        best_entries = self.get_k_closest_images_from_queries(queries, k)
+        recordIDs = [int(entry["recordID"]) for entry in best_entries]
+        assert recordIDs == [3919, 7975, 6630, 3887, 4825], recordIDs
+
+    def load_model(self):
+        model_name = "openai/clip-vit-large-patch14"
+        processor = CLIPProcessor.from_pretrained(model_name)
+        model = CLIPModel.from_pretrained(model_name).to(self.device)
+        tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
+        # Load the weights of the model
+        weights_path = os.path.join(self.MODELS_FOLDER, "2025-02-05 17_09_07_allFocus_5.pt")
+        # Load the weights of the model
+        model.load_state_dict(torch.load(weights_path))
+        
+        self.model = model
+        self.processor = processor
+        self.tokenizer = tokenizer
+
+    def get_query_embedding(self, query):
+        self.model.eval()
+
+        inputs = self.processor(text=query, return_tensors="pt", padding=True, truncation=True)
+        input_ids = inputs['input_ids'].to(self.device)
+        attention_mask = inputs['attention_mask'].to(self.device)
+
+        # Compute text embeddings
+        text_features = self.model.get_text_features(input_ids=input_ids, attention_mask=attention_mask)
+        #text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+        text_features = text_features.flatten(1)
+
+        return text_features.cpu().detach().numpy()
+
+    def get_queries_embedding(self, queries):
+        weights = [query['weight'] for query in queries]
+        values = [query['value'] for query in queries]
+
+        embeddings = [self.get_query_embedding(query) for query in values] # List of numpy arrays
+        embeddings = np.array(embeddings) # Convert to numpy array
+
+        # Multiply each embedding by its weight
+        for i in range(len(embeddings)):
+            embeddings[i] *= weights[i]
+            
+        # Sum all the embeddings
+        embeddings = np.sum(embeddings, axis=0)
+
+        # Normalize
+        embeddings /= np.linalg.norm(embeddings)
+
+        return embeddings
+    
+    def getEntryFromIndex(self, index):
+        entry = self.dataframe.iloc[index]
+        columns = [
+            "objectWork.creatorDescription",
+            "objectWork.termClassification",
+            "objectWork.workID",
+            "objectWork.titleText",
+            "objectWork.inscriptionDescription",
+            "creator.creatorAuthID",
+            "creator.lastNameCreator",
+            "creator.firstNameCreator",
+            "creator.birthDeathDatesPlacesCreatorDescription",
+            "creator.nationalityCreator",
+            "creator.copyrightHolderName",
+            "creator.copyrightStatement",
+            "formalDescription.physicalAppearanceDescription",
+            "subjectMatter.subjectTerms",
+            "subjectMatter.iconographicTerms",
+            "subjectMatter.conceptualTerms",
+            "objectWork.objectWorkRemarks",
+            "formalDescription.stylesPeriodsDescription",
+            "subjectMatter.iconographicInterpretation",
+            "formalDescription.termStylesPeriods",
+            "materials.materialsTechDescription",
+        ]
+        #data = {column: entry[column] for column in columns} 
+        data = {}
+        data["recordID"] = int(entry["recordID"])
+        data["creator.firstNameCreator"] = str(entry["creator.firstNameCreator"])
+        data["creator.lastNameCreator"] = str(entry["creator.lastNameCreator"])
+        data["objectWork.titleText"] = str(entry["objectWork.titleText"])
+        return data 
+    
+    def get_k_closest_images_from_queries(self, queries, k):
+        queries_embedding = self.get_queries_embedding(queries)
+        sims = cosine_similarity(queries_embedding, self.imagesEmbeddings).squeeze()
+        indices = np.argsort(sims)[::-1]
+        
+        # Get the best k index of the images
+        best_indices = indices[:k]
+
+        # Get the recordID of the best images
+        best_entries = [self.getEntryFromIndex(index) for index in best_indices]
+
+        return best_entries
+    
+    def get_k_closest_neighbors(self, recordID, k):
+        image_embedding = self.get_image_embedding(recordID)
+        if image_embedding is None:
+            return None
+
+        sims = cosine_similarity([image_embedding], self.imagesEmbeddings).squeeze()
+        indices = np.argsort(sims)[::-1]
+        
+        # Get the best k index of the images
+        best_indices = indices[:k]
+
+        # Get the recordID of the best images
+        best_entries = [self.getEntryFromIndex(index) for index in best_indices]
+
+        return best_entries
+
+    
+class DEPR__GameEngine:
 
     def __init__(
         self,

@@ -44,78 +44,6 @@ def QuelleEstLoeuvre(
         "robotQuestions": robotQuestions,
     }
 
-    # answers is of shape (N_objects, N_candidates)
-    user_answers = np.zeros(len(objects))
-
-    def get_scoring(N_answered):
-        # Compute the score of each candidate
-        scores = np.zeros(N_candidates)
-
-        for objectIndex in range(N_answered):
-            for candidateIndex in range(N_candidates):
-                user_answer = user_answers[objectIndex]
-                sim = sims[objectIndex, candidateIndex]
-                ico_answer = answers[objectIndex, candidateIndex]
-                score = user_answer * sim * ico_answer
-                scores[candidateIndex] += score
-        
-        # Order the candidates by score
-        order = np.argsort(scores)[::-1]
-
-        return order, scores
-
-    def generateQuestion(object):
-        return f"Est-ce que cette image contient ou est associée à '{object}' ?"
-
-    # Plot the candidates
-    def plot_candidates(questionIndex):
-
-        if questionIndex > 0:
-            order, scores = get_scoring(questionIndex)
-        else:
-            order = np.arange(N_candidates)
-            scores = np.zeros(N_candidates)
-
-        fig, axs = plt.subplots(1, N_candidates, figsize=(N_candidates * 5, 10))
-        plt.suptitle(generateQuestion(objects[questionIndex]))
-        for i, recordID in enumerate(candidates):
-            path = get_image_path_from_recordID(FULL_DATASET, recordID)
-            img = plt.imread(path)
-            axs[i].imshow(img, cmap="gray")
-            axs[i].axis("off")
-
-            candidate_position = order.tolist().index(i) + 1
-            candidate_score = scores[i]
-
-            axs[i].set_title(f"Position: {candidate_position}\nScore: {candidate_score:.2f}")
-
-        plt.tight_layout()
-        plt.show()
-
-        answer = None
-        while answer not in ["0", "1"]:
-            answer = input("OUI (1) ou NON (0)? ")
-        return answer
-    
-    # Ask the questions
-    for i in range(len(objects)):
-        user_answers[i] = int(plot_candidates(i))
-
-    # Compute the final score
-    order, scores = get_scoring(len(objects))
-
-    # Plot the candidates in this order with their scores
-    fig, axs = plt.subplots(1, N_candidates, figsize=(N_candidates * 5, 4))
-    for i, index in enumerate(order):
-        recordID = candidates[index]
-        path = get_image_path_from_recordID(FULL_DATASET, recordID)
-        img = plt.imread(path)
-        axs[i].imshow(img, cmap="gray")
-        axs[i].axis("off")
-        axs[i].set_title(f"Score: {scores[index]:.2f}")
-    plt.show()
-
-
 
 if __name__ == "__main__":
 
@@ -136,6 +64,16 @@ if __name__ == "__main__":
     WRITTEN_CAPTIONS_TESTING_SET = PARENT + os.getenv("WRITTEN_CAPTIONS_TESTING_SET")
     WRITTEN_CAPTIONS_VALIDATION_SET = PARENT + os.getenv("WRITTEN_CAPTIONS_VALIDATION_SET")
     FILE_FABRITIUS_ICONOGRAPHIES_JSON = PARENT + os.getenv("FILE_FABRITIUS_ICONOGRAPHIES_JSON")
+    EMBEDDINGS_FOLDER = PARENT + os.getenv("EMBEDDINGS_FOLDER")
+    MODELS_FOLDER = PARENT + os.getenv("MODELS_FOLDER")
+
+    ##
+
+    safeFormat = lambda x : x.replace("/", "_").replace(":", "_").replace(" ", "_")
+    model_name = "ViT-L/14"
+    embedding_name = safeFormat(model_name) + "_embeddings.npy"
+    path_imagesEmbeddings = os.path.join(EMBEDDINGS_FOLDER, "images_" + embedding_name)
+    path_objectsEmbeddings = os.path.join(EMBEDDINGS_FOLDER, "objects_" + embedding_name)
 
     ##
 
@@ -170,7 +108,8 @@ if __name__ == "__main__":
     # Remove rows with corrupted images
     FULL_DATASET = FULL_DATASET[FULL_DATASET["recordID"] != 11546]
     FULL_DATASET = FULL_DATASET[FULL_DATASET["recordID"] != 5262]
-    FULL_DATASET = FULL_DATASET.sample(frac=0.10).reset_index(drop=True)
+    # To splice us .head(N)
+
     print("OK: Dataset loaded")
 
     print("Loading iconographies...")
@@ -178,6 +117,14 @@ if __name__ == "__main__":
     with open(FILE_FABRITIUS_ICONOGRAPHIES_JSON, "r", encoding="utf-8") as f:
         ICONOGRAPHIES = json.load(f)
     print("OK: Iconographies loaded")   
+
+    print("Loading embeddings...")
+    # Load the image embeddings
+    imagesEmbeddings = np.load(path_imagesEmbeddings)
+    objectsEmbeddings = np.load(path_objectsEmbeddings)
+    print(np.mean(imagesEmbeddings), np.std(imagesEmbeddings))
+    print(np.mean(objectsEmbeddings), np.std(objectsEmbeddings))
+    print("OK: Embeddings loaded")
 
     ##
 
@@ -189,13 +136,35 @@ if __name__ == "__main__":
     ##
 
     print("Starting engine...")
-    ENGINE = GameEngine(
-        FULL_DATASET,
-        ICONOGRAPHIES,
-        get_image_path_from_recordID,
-        device,
-        directLoad=True#False
-    )
+    ENGINE = None
+    if False:
+        ENGINE = GameEngine(
+            FULL_DATASET,
+            ICONOGRAPHIES,
+            get_image_path_from_recordID,
+            device,
+            directLoad=True#False
+        )
+    else:
+        """
+            self,
+            dataframe,
+            imagesEmbeddings,
+            objectsEmbeddings,
+            iconographies,
+            getImageFromRecordID,
+            device,
+            MODELS_FOLDER
+        """
+        ENGINE = GameEngine(
+            FULL_DATASET,
+            imagesEmbeddings,
+            objectsEmbeddings,
+            ICONOGRAPHIES,
+            get_image_path_from_recordID,
+            device,
+            MODELS_FOLDER
+        )
     print("OK: Engine started")
 
 
@@ -207,6 +176,61 @@ if __name__ == "__main__":
     @app.route('/dixit')
     def index():
         return app.send_static_file('dixit/game.html')
+
+    @app.route('/search')
+    def search():
+        return app.send_static_file('search/index.html')
+
+    @app.route('/api/search/query', methods=['POST'])
+    def query():
+        data = request.json
+        queries = data["queries"]
+
+        if len(queries) == 0:
+            return jsonify({
+                "success": False,
+                "message": "No queries provided."
+            })
+
+        # Get the recordIDs
+        result = ENGINE.get_k_closest_images_from_queries(queries, 50)
+
+        return jsonify({
+            "success": True,
+            "result": result
+        })
+
+    # Get neighbors
+    @app.route('/api/search/neighbors', methods=['POST'])
+    def neighbors():
+        data = request.json
+        recordID = data["recordID"]
+
+        if recordID is None:
+            return jsonify({
+                "success": False,
+                "message": "No recordID provided."
+            })
+
+        try:
+            recordID = int(recordID)
+        except:
+            return jsonify({
+                "success": False,
+                "message": "Invalid recordID."
+            })
+
+        neighbors = ENGINE.get_k_closest_neighbors(recordID, 3)
+        if neighbors is None:
+            return jsonify({
+                "success": False,
+                "message": "Invalid recordID."
+            })
+
+        return jsonify({
+            "success": True,
+            "neighbors": neighbors
+        })
 
     # Get image
     @app.route('/images/<int:recordID>')
