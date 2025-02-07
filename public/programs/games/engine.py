@@ -16,28 +16,27 @@ import transformers
 from torch.utils.data import DataLoader, Dataset
 from sklearn.metrics.pairwise import cosine_similarity
 
-OBJECTS = [
-    "homme",
-    "femme",
-    "animal",
-    "maison",
-    "arbre",
-    "bateau",
-]
-
 LUMINOSITIES = [
     "Lumineux",
     "Sombre",
 ]
 
 COLORS = [
-    "Rouge",
-    "Vert",
-    "Bleu",
-    "Jaune",
-    "Blanc",
-    "Noir",
+    "Noir et blanc",
+    "Couleurs vives",
+    "Couleurs sombres",
+    "Teinte rouge",
+    "Teinte bleue",
+    "Teinte verte",
 ]
+
+TYPES = [
+    "Portrait",
+    "Paysage",
+    "Sculpture",
+]
+
+OTHERS = LUMINOSITIES + COLORS + TYPES
 
 class ImageTextDataset(Dataset):
     def __init__(self, dataframe, preprocess, getImageFromRecordID):
@@ -64,14 +63,17 @@ class GameEngine:
         dataframe,
         imagesEmbeddings,
         objectsEmbeddings,
+        othersEmbeddings,
         iconographies,
         getImageFromRecordID,
         device,
-        MODELS_FOLDER
+        MODELS_FOLDER, 
+        largeIconographyThreshold=6
     ):
         self.dataframe = dataframe
         self.imagesEmbeddings = imagesEmbeddings
         self.objectsEmbeddings = objectsEmbeddings
+        self.othersEmbeddings = othersEmbeddings
         self.iconographies = iconographies
         self.getImageFromRecordID = getImageFromRecordID
         self.device = device
@@ -81,9 +83,14 @@ class GameEngine:
         self.processor = None
         self.tokenizer = None
         self.load_model()
+        #self.test()
 
-        self.test()
+        self.flattened_iconographies = None
+        self.compute_flattened_iconographies()
     
+        self.recordIDsWithLargeEnoughIconography = None
+        self.compute_recordIDsWithLargeEnoughIconography(largeIconographyThreshold)
+
     def test(self):
         queries = [
             {
@@ -125,17 +132,26 @@ class GameEngine:
 
         return text_features.cpu().detach().numpy()
 
-    def get_queries_embedding(self, queries):
+    def depr__get_queries_embedding(self, queries, version="classic"):
         weights = [query['weight'] for query in queries]
         values = [query['value'] for query in queries]
+
 
         embeddings = [self.get_query_embedding(query) for query in values] # List of numpy arrays
         embeddings = np.array(embeddings) # Convert to numpy array
 
-        # Multiply each embedding by its weight
-        for i in range(len(embeddings)):
-            embeddings[i] *= weights[i]
-            
+        if version == "classic":
+            # Multiply each embedding by its weight
+            for i in range(len(embeddings)):
+                embeddings[i] *= weights[i]
+        elif version == "power":
+           # Multiply each embedding by the power of its weight
+            for i in range(len(embeddings)):
+                sign = 1 if weights[i] >= 0 else -1
+                embeddings[i] *= np.power(weights[i], 2) * sign
+        else:
+            raise Exception("Unknown version")
+
         # Sum all the embeddings
         embeddings = np.sum(embeddings, axis=0)
 
@@ -143,6 +159,41 @@ class GameEngine:
         embeddings /= np.linalg.norm(embeddings)
 
         return embeddings
+
+    def get_queries_embedding(self, queries, precomputed={}, version="classic"):
+        weights = [query['weight'] for query in queries]
+        values = [query['value'] for query in queries]
+
+        embeddings = []
+        for i in range(len(values)):
+            if i in precomputed:
+                embeddings.append([precomputed[i]])
+                print(precomputed[i].shape)
+            else:
+                embeddings.append(self.get_query_embedding(values[i]))
+                print(self.get_query_embedding(values[i]).shape)
+        embeddings = np.array(embeddings) # Convert to numpy array
+
+        if version == "classic":
+            # Multiply each embedding by its weight
+            for i in range(len(embeddings)):
+                embeddings[i] *= weights[i]
+        elif version == "power":
+           # Multiply each embedding by the power of its weight
+            for i in range(len(embeddings)):
+                sign = 1 if weights[i] >= 0 else -1
+                embeddings[i] *= np.power(weights[i], 2) * sign
+        else:
+            raise Exception("Unknown version")
+
+        # Sum all the embeddings
+        embeddings = np.sum(embeddings, axis=0)
+
+        # Normalize
+        embeddings /= np.linalg.norm(embeddings)
+
+        return embeddings
+    
     
     def getEntryFromIndex(self, index):
         entry = self.dataframe.iloc[index]
@@ -177,8 +228,59 @@ class GameEngine:
         data["objectWork.titleText"] = str(entry["objectWork.titleText"])
         return data 
     
+    def guess(self, candidates, questions):
+        # candidates = list of recordIDs !
+
+        # Get the embeddings of the candidates
+        indexesOfCandidates = []
+        recordIDS = self.dataframe["recordID"].tolist()
+
+        for candidate in candidates:
+            index = recordIDS.index(candidate)
+            indexesOfCandidates.append(index)
+    
+        candidates_embeddings = self.imagesEmbeddings[indexesOfCandidates]
+        # Get the embeddings of the questions content
+        questions_as_queries = []
+        all0weights = True
+        for question in questions:
+            questions_as_queries.append({
+                "weight": question["user_answer"],
+                "value": question["content"]
+            })
+            all0weights = all0weights and question["user_answer"] == 0.0
+    
+        if all0weights:
+            # If all the weights are 0, answer with a random candidate
+            return random.choice(candidates)
+        
+        queries_embedding = self.get_queries_embedding(questions_as_queries)
+
+        # Compute the cosine similarity between the candidates and the questions
+        sims = cosine_similarity(queries_embedding, candidates_embeddings).squeeze()
+        indices = np.argsort(sims)[::-1]
+
+        # Get the best candidate
+        best_index = indices[0]
+        best_candidate = candidates[best_index]
+
+        return best_candidate
+
+    def get_image_embedding(self, recordID):
+        recordIDs = self.dataframe["recordID"].tolist()
+        index = recordIDs.index(recordID)
+        return self.imagesEmbeddings[index]
+
     def get_k_closest_images_from_queries(self, queries, k):
-        queries_embedding = self.get_queries_embedding(queries)
+        precomputed = {}
+
+        for i, query in enumerate(queries):
+            type = query["type"]
+            if type=="interaction":
+                recordID = query["value"]
+                precomputed[i] = self.get_image_embedding(int(recordID))
+
+        queries_embedding = self.get_queries_embedding(queries, precomputed=precomputed, version="power")
         sims = cosine_similarity(queries_embedding, self.imagesEmbeddings).squeeze()
         indices = np.argsort(sims)[::-1]
         
@@ -206,336 +308,254 @@ class GameEngine:
 
         return best_entries
 
-    
-class DEPR__GameEngine:
-
-    def __init__(
-        self,
-        dataframe,
-        iconographies,
-        getImageFromRecordID,
-        device,
-        directLoad=True,
-        ):
-        
-        self.dataframe = dataframe
-        self.iconographies = iconographies
-        self.getImageFromRecordID = getImageFromRecordID
-        self.device = device
-
-        # Textual model
-        self.text_model = None
-        self.text_tokenizer = None
-        if directLoad:
-            self.load_textual_model()
-            self.verify_textual_model()
-
-        # Image model
-        self.image_model = None
-        self.image_tokenizer = None
-        self.image_preprocess = None
-        if directLoad:
-            self.load_image_model()
-
-        # Dataset
-        self.dataset = ImageTextDataset(self.dataframe, self.image_preprocess, self.getImageFromRecordID)
-        self.dataloader = DataLoader(self.dataset, batch_size=2, num_workers=0)
-
-        # Compute image embeddings
-        self.image_embeddings = None
-        if directLoad:
-            self.compute_image_embeddings()
-
-        # Get the list of unique objects
-        self.unique_objects = None
-        self.compute_unique_objects()
-
-    def compute_unique_objects(self):
-        unique_objects = set()
-        for _, row in self.dataframe.iterrows():
-            iconography = self.iconographies.get(str(row['recordID']), None)
-            if iconography is None:
-                continue
+    def compute_flattened_iconographies(self):
+        # Flatten each iconography
+        flattened_iconographies = {}
+        for recordID in self.iconographies:
+            flattened_iconography = []
 
             def visit(node):
                 value = node["value"]
                 children = node["children"]
+                isOther = value == "<group>" or value == "root"
 
-                isGroup = value == "<group>"
-
-                if not isGroup:
-                    unique_objects.add(value)
+                if not isOther:
+                    flattened_iconography.append(value)
 
                 for child in children:
                     visit(child)
 
-            visit(iconography)
+            visit(self.iconographies[recordID])
 
-        self.unique_objects = list(unique_objects)
+            flattened_iconographies[recordID] = flattened_iconography
 
-    def load_textual_model(self):
-        model_name = 'M-CLIP/XLM-Roberta-Large-Vit-B-16Plus'
+        self.flattened_iconographies = flattened_iconographies
 
-        # Load Model & Tokenizer
-        self.text_model = pt_multilingual_clip.MultilingualCLIP.from_pretrained(model_name)
-        self.text_tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
-        self.text_model = self.text_model.to(self.device)
-        self.text_model.eval()
-
-    def load_image_model(self):
-        openclip_model_name = "ViT-B-16-plus-240"
-        openclip_pretrained = "laion400m_e32"
-
-        #openclip_model_name = "ViTamin-XL-384"
-        #openclip_pretrained = "datacomp1b"
-        # ==> Better results than ViT-B-16-plus-240 but not avaialble in pt_multilingual_clip
-
-        self.image_model, _, self.image_preprocess = open_clip.create_model_and_transforms(openclip_model_name, pretrained=openclip_pretrained)
-        #self.openclip_tokenizer = open_clip.get_tokenizer(openclip_model_name)
-        self.image_model = self.image_model.to(self.device)
-
-    def verify_textual_model(self):
-        # Verify that the pt_multilingual_clip has been modified to allow for device in forward
-        try:
-            self.text_model.forward("test", self.text_tokenizer, device=self.device)
-            print("GOOD: Model has been modified to allow for device in forward")
-        except:
-            raise Exception("Model has not been modified to allow for device in forward !")
+    def compute_recordIDsWithLargeEnoughIconography(self, threshold):
+        recordIDsWithLargeEnoughIconography = []
+        for recordID in self.flattened_iconographies:
+            iconography = self.flattened_iconographies[recordID]
+            if len(iconography) >= threshold:
+                recordIDsWithLargeEnoughIconography.append(int(recordID))
         
-    def compute_image_embeddings(self):
-        image_embeddings = []
-        print("Computing image embeddings...")
-        for images, _ in tqdm(self.dataloader):
-            images = images.to(self.device)
-            with torch.no_grad():
-                image_features = self.image_model.encode_image(images)
-            image_embeddings.append(image_features)
-        print("OK: Image embeddings computed")
+        self.recordIDsWithLargeEnoughIconography = recordIDsWithLargeEnoughIconography
 
-        image_embeddings = torch.cat(image_embeddings)
-        # Normalize embeddings
-        self.image_embeddings = image_embeddings / image_embeddings.norm(dim=-1, keepdim=True)
+        print(f"Number of entries with |ico| >= {threshold}: {len(recordIDsWithLargeEnoughIconography)}")
 
-    def get_image_embedding(self, recordID):
-        index_of_recordID = self.dataframe[self.dataframe['recordID'] == recordID].index[0]
-        return self.image_embeddings[index_of_recordID]
-    
-    def get_texts_embedding(self, texts):
-        self.text_model.eval()
-        with torch.no_grad():
-            query_embedding = torch.zeros((1, 640)).to(self.device)
-            for i, query in enumerate(texts):
-                part = self.text_model.forward(query, self.text_tokenizer, device=self.device) # Note: add device parameter to forward manually
-                query_embedding += part
+    def getFlattenedIconography(self, recordID):
+        return self.flattened_iconographies.get(str(recordID), None)
 
-        # Normalize
-        query_embedding = query_embedding / query_embedding.norm(dim=-1, keepdim=True)
-
-        return query_embedding
-    
-    def batch_get_texts_embedding(self, texts):
-        # texts = list of strings
-        self.text_model.eval()
-        with torch.no_grad():
-            embeddings = self.text_model.forward(texts, self.text_tokenizer, device=self.device) # Note: add device parameter to forward manually
-
-        # Normalize
-        embeddings = embeddings / embeddings.norm(dim=-1, keepdim=True)
-
-        return embeddings
-
-    def get_images_embedding(self, recordIDs):
-        image_embeddings = []
-        for recordID in recordIDs:
-            image_embeddings.append(self.get_image_embedding(recordID))
-        image_embeddings = torch.stack(image_embeddings)
-        return image_embeddings
-    
-    # QUESTIONS
     def select_N_questions(
         self,
         sigma,
-        objects,
-        sims,
-        answers,
-        objectsTypes,
-        N_questions
+        scores,
     ):
-        indices = np.arange(len(objects)) # The sorted indices of the objects (first = best question)
-        N = len(indices)
+        indices = np.arange(len(scores))
+        nb_swaps = int(sigma * len(scores))
+        new_order = indices.copy()
+
+        for _ in range(nb_swaps):
+            i, j = np.random.choice(len(scores), 2, replace=False)
+            new_order[i], new_order[j] = new_order[j], new_order[i]
         
-        scale = 1 + 4 * (1 - sigma)
-        weights = np.exp(-np.arange(N) / scale)
-        weights /= weights.sum()
+        return new_order
 
-        selected_indices = np.random.choice(N, size=N_questions, replace=False, p=weights)
-        
-        selected_objects = [objects[i] for i in selected_indices]
-        selected_sims = sims[selected_indices]
-        selected_ans = answers[selected_indices]
+    # Functions for the "Quelle est l'oeuvre" game
+    def get_questions(
+        self, 
+        N_candidates,
+        N_players_questions,
+        N_robot_questions,
+        robot_sigma, 
+        user_sigma, 
+        ):
 
-        questions = []
-        for i in range(N_questions):
-            question = {
-                "type": objectsTypes[i],
-                "content": selected_objects[i]
-            }
-            answers = selected_sims[i] * selected_ans[i]
-            questions.append({
-                "question": question,
-                "answers": answers.tolist()
-            })
+        # Find the candidates
+        candidates = random.sample(self.recordIDsWithLargeEnoughIconography, N_candidates)
 
-        return questions
-
-    def get_questions(self, robotSigma, userSigma, candidates, sk=[1,2,3], robotQuestions=5, userQuestions=5):
         # Get the iconographies of the candidates
         iconographies = {}
         for candidate in candidates:
-            iconographies[candidate] = self.iconographies.get(str(candidate), "No iconography found.")
+            iconographies[candidate] = self.getFlattenedIconography(candidate)
+
+        if None in iconographies.values():
+            raise Exception("Iconography not found for one of the candidates")
         
-        iconographies_at_depth_k = {}
-        for k in range(0, 4):
-            iconographies_at_depth_k[k] = {}
-            for candidate in candidates:
-                iconographies_at_depth_k[k][candidate] = []
+        # Get the candidates embeddings
+        indexesOfCandidates = [self.dataframe[self.dataframe['recordID'] == candidate].index[0] for candidate in candidates]
+        candidates_embeddings = self.imagesEmbeddings[indexesOfCandidates]
 
-        def visit(node, recordID, parentIsGroup=False):
-            value = node["value"]
-            children = node["children"]
-            depth = node["depth"]
-
-            isGroup = value == "<group>"
-
-            if not isGroup:
-                realDepth = (depth - 1) if parentIsGroup else depth
-                iconographies_at_depth_k[realDepth][recordID].append(value)
-
-            for child in children:
-                visit(child, recordID, parentIsGroup=isGroup)
-
+        # One-hot encoding of the objects
+        unique_objects = set()
         for candidate in candidates:
-            iconography = iconographies[candidate]
-            # Visit the iconography json tree
-            visit(iconography, candidate)
+            for object in iconographies[candidate]:
+                unique_objects.add(object)
 
-        #chosen_objects = iconographies_at_depth_k[sk]
-        chosen_objects = {}
-        for sk_ in sk:
-            for candidate in candidates:
-                if candidate not in chosen_objects:
-                    chosen_objects[candidate] = []
+        unique_objects = list(unique_objects) # Freeze the order of the objects
+        N_objects = len(unique_objects)
 
-                chosen_objects[candidate] += iconographies_at_depth_k[sk_][candidate]
-
-        # Get the embeddings of the candidates
-        candidates_embeddings = self.get_images_embedding(candidates)
-        # Convert .cpu().numpy()
-        candidates_embeddings = candidates_embeddings #.cpu().numpy()
-
-        def generate_questions(objects, objectsTypes, isInternal=True):
-            def formatObj(obj):
-                return f"Une image contenant {obj}"
-
-            # Embeddings per object
-            texts = [formatObj(obj) for obj in objects]
-            object_embeddings = self.batch_get_texts_embedding(texts)
-            
-            # Get the cosine similarity between each unique object and each candidate image
-            similarities_per_object = (candidates_embeddings @  object_embeddings.T).squeeze(0)
-            # Convert to numpy array
-            similarities_per_object = similarities_per_object.cpu().numpy().T
-
-            # Get the answers if the questions are internal (we know the answer thanks to the iconography)
-            if isInternal:
-                answers_per_object = []
-                for obj in objects:
-                    answers_for_obj = []
-                    for candidate in candidates:
-                        #answers_for_obj.append(1.0 if obj in chosen_objects[candidate] else 0.5) # temporary value
-                        answers_for_obj.append(1.0) # For now
-                    answers_per_object.append(answers_for_obj)
-                # Convert to numpy array
-                answers_per_object = np.array(answers_per_object)
-            else:
-                answers_per_object = np.ones((len(objects), len(candidates)))
-                """
-                The value is always 1 since we use the value 0.0 to indicate that the object is not in the iconography of the candidate.
-                This is a clue that we have thanks to the iconography, but for external questions, we do not have this information !
-                """            
-
-            return objects, similarities_per_object, answers_per_object, objectsTypes
-
-        # We assume that an object can only appear once in the iconography of a candidate
-        objects_in_candidates = set()
-        for candidate in candidates:
-            for obj in chosen_objects[candidate]:
-                objects_in_candidates.add(obj)
-        objects_in_candidates = list(objects_in_candidates)
-        objectsTypes_in_candidates = ["object" for _ in objects_in_candidates]
+        def one_hot_encoding_from_iconography(iconography):
+            one_hot = np.zeros(N_objects)
+            for objectIndex, object in enumerate(unique_objects):
+                if object in iconography:
+                    one_hot[objectIndex] = 1
+            return one_hot
         
-        # The set of other questions that help to differentiate the candidates
-        otherQuestions = []
-        otherQuestions_objectsTypes = []
+        candidates_one_hot = np.zeros((len(candidates), N_objects))
+        for i, candidate in enumerate(candidates):
+            candidates_one_hot[i] = one_hot_encoding_from_iconography(iconographies[candidate])
+
+        # Get the score of each object
+        def score_object(matrix, element_index):
+            # number_of_candidates_with_object
+            number_of_candidates_with_object = np.sum(matrix[:, element_index] == 1)
+            number_of_candidates_without_object = np.sum(matrix[:, element_index] == 0)
+            total = number_of_candidates_with_object + number_of_candidates_without_object
+            x = number_of_candidates_with_object/total
+            # The best object is the one separating the most the candidates
+            # ==> Simply f(x) = (x)(1-x) ==> max for x = 0.5 !
+            # ==> We could also use (x)^(1/2) * (1 - x) or a variant
+            return x * (1 - x)
+    
+        score_per_object = np.array([score_object(candidates_one_hot, i) for i in range(N_objects)])
+
+        # Sort the objects by score
+        order = np.argsort(score_per_object)[::-1]
+        
+        # Generate the question objects
+        questions = []
+
+        # Questions with KNOWN answers 
+        for questionIndex in range(len(order)):
+            objectIndex = order[questionIndex]
+            object = unique_objects[objectIndex]
+
+            # Compute the cosine_similarities between the object and the candidates
+            object_embedding = self.objectsEmbeddings[objectIndex]
+            sims = cosine_similarity([object_embedding], candidates_embeddings).squeeze()
+            score = score_per_object[objectIndex]
+
+            question = {
+                "score": score,
+                "user_can_ask": True,
+                "robot_can_ask": True,
+                "type": "object",
+                "content": object,
+                "answers_iconography": candidates_one_hot[:, objectIndex].tolist(),
+                "cosine_similarities": sims.tolist()
+            }
+
+            questions.append(question)
+
+        max_score = np.max(score_per_object) * 1.05
+        min_score = np.min(score_per_object) * 0.95
+        def getRandomScore():
+            return random.uniform(min_score, max_score)
+
+        # Questions with ESTIMATED answers
+        # OTHERS = LUMINOSITIES + COLORS + TYPES
+        for luminosity in LUMINOSITIES:
+            # Compute the cosine_similarities between the object and the candidates
+            luminosityIndex = OTHERS.index(luminosity)
+            other_embedding = self.othersEmbeddings[luminosityIndex]
+            sims = cosine_similarity([other_embedding], candidates_embeddings).squeeze()
+
+            question = {
+                "score": getRandomScore(),
+                "user_can_ask": False,
+                "robot_can_ask": True,
+                "type": "luminosities",
+                "content": luminosity,
+                "answers_iconography": [1.0] * len(candidates),
+                "cosine_similarities": sims.tolist()
+            }
+
+            questions.append(question)
 
         for color in COLORS:
-            otherQuestions.append(color)
-            otherQuestions_objectsTypes.append("color")
+            # Compute the cosine_similarities between the object and the candidates
+            colorIndex = OTHERS.index(color)
+            other_embedding = self.othersEmbeddings[colorIndex]
+            sims = cosine_similarity([other_embedding], candidates_embeddings).squeeze()
 
-        for luminosity in LUMINOSITIES:
-            otherQuestions.append(luminosity)
-            otherQuestions_objectsTypes.append("luminosity")
+            question = {
+                "score": getRandomScore(),
+                "user_can_ask": False,
+                "robot_can_ask": True,
+                "type": "colors",
+                "content": color,
+                "answers_iconography": [1.0] * len(candidates),
+                "cosine_similarities": sims.tolist()
+            }
 
-        internal_questions = generate_questions(objects_in_candidates, objectsTypes_in_candidates, isInternal=True)
-        """
-        Shapes:
-        - internal_questions[0] = objects ==> (N_objects,)
-        - internal_questions[1] = sims ==> (N_objects, N_candidates)
-        - internal_questions[2] = ans ==> (N_objects, N_candidates)
-        - internal_questions[3] = objTypes ==> (N_objects,)
-        """
-        external_questions = generate_questions(otherQuestions, otherQuestions_objectsTypes, isInternal=False)
-        """
-        Shapes:
-        - external_questions[0] = objects ==> (N_objects,)
-        - external_questions[1] = sims ==> (N_objects, N_candidates)
-        - external_questions[2] = ans ==> (N_objects, N_candidates)
-        - external_questions[3] = objTypes ==> (N_objects,)
-        """
+            questions.append(question)
 
+        for type in TYPES:
+            # Compute the cosine_similarities between the object and the candidates
+            typeIndex = OTHERS.index(type)
+            other_embedding = self.othersEmbeddings[typeIndex]
+            sims = cosine_similarity([other_embedding], candidates_embeddings).squeeze()
 
-        def cSort(questions, cut=-1):
-            objects, sims, ans, objTypes = questions
-            # Sort by variance, highest variance first
-            sims_var = np.var(sims, axis=1)
-            order = np.argsort(sims_var)[::-1]
+            question = {
+                "score": getRandomScore(),
+                "user_can_ask": False,
+                "robot_can_ask": True,
+                "type": "types",
+                "content": type,
+                "answers_iconography": [1.0] * len(candidates),
+                "cosine_similarities": sims.tolist()
+            }
 
-            sorted_objects = [objects[i] for i in order]
-            sorted_sims = sims[order]
-            sorted_ans = ans[order]
-            sorted_objTypes = [objTypes[i] for i in order]
+            questions.append(question)
 
-            if cut != -1:
-                sorted_objects = sorted_objects[:cut]
-                sorted_sims = sorted_sims[:cut]
-                sorted_ans = sorted_ans[:cut]
-                sorted_objTypes = sorted_objTypes[:cut]
+        # Find the robot_selected_image
+        # ==> It must be an image with enough "YES" in the iconography
+        robot_selected_image_candidates = []
+        for candidate in candidates:
+            number_of_yes = np.sum(candidates_one_hot[candidates.index(candidate)])
+            if number_of_yes >= N_players_questions:
+                robot_selected_image_candidates.append(candidate)
+        robot_selected_image = random.choice(robot_selected_image_candidates)
+        robot_selected_image_index = candidates.index(robot_selected_image)
 
-            return [sorted_objects, sorted_sims, sorted_ans, sorted_objTypes]
+        # Get the number of questions to pick from for the robot and the user
+        def getNumberOfQuestions(minimum, maximum, sigma):
+            return int(minimum + (1 - sigma) * (maximum - minimum))
+    
+        mdf_N_questions_player = getNumberOfQuestions(N_players_questions, len(questions), user_sigma)
+        mdf_N_questions_robot = getNumberOfQuestions(N_robot_questions, len(questions), robot_sigma)
 
-        # Sort the external questions
-        external_questions = cSort(external_questions)#, cut=5)
+        # Compute the userScore
+        def userScore(question):
+            answerForRobotSelectedImage = question["answers_iconography"][robot_selected_image_index]
+            if answerForRobotSelectedImage == 0:
+                # This question does not give an information about the robot_selected_image
+                return -1.0
+            
+            answersForOtherImages = [question["answers_iconography"][i] for i in range(len(candidates)) if i != robot_selected_image_index]
+            meanAnswerWithoutRobotSelectedImage = np.mean(answersForOtherImages)
+            # The best indices are the ones that only concern the robot_selected_image !
+            return 1 - meanAnswerWithoutRobotSelectedImage
+    
+        for question in questions:
+            question["userScore"] = userScore(question)
 
-        # Sort the merged questions
-        merged_objects = internal_questions[0] + external_questions[0]
-        merged_similarities = np.concatenate((internal_questions[1], external_questions[1]), axis=0)
-        merged_answers = np.concatenate((internal_questions[2], external_questions[2]), axis=0)
-        merged_objectsTypes = internal_questions[3] + external_questions[3]
+        # Order the questions by score (highest first)
+        user_questions = questions.copy()
+        user_questions = sorted(user_questions, key=lambda x: x["userScore"], reverse=True)
+        # Remove questions with a negative userScore
+        user_questions = [question for question in user_questions if question["userScore"] >= 0]
+        user_questions = user_questions[:min(mdf_N_questions_player, len(user_questions))]
 
-        merged_objects_in_order = cSort([merged_objects, merged_similarities, merged_answers, merged_objectsTypes])
+        robot_questions = questions.copy()
+        robot_questions = sorted(robot_questions, key=lambda x: x["score"], reverse=True)
+        robot_questions = robot_questions[:mdf_N_questions_robot]
+    
+        # Using the sigmas, modify the orders of the questions a bit (swap some questions)
+        robot_order = self.select_N_questions(robot_sigma, robot_questions)
+        robot_questions = [robot_questions[i] for i in robot_order][:N_robot_questions]
 
-        # Get the robot questions and the user questions according to the sigma
-        robot_questions = self.select_N_questions(robotSigma, *merged_objects_in_order, robotQuestions)
-        user_questions = self.select_N_questions(userSigma, *merged_objects_in_order, (userQuestions + 3)*2) # (X+3)*2 to let the user choose with some margin 
-        
-        return robot_questions, user_questions
+        user_order = self.select_N_questions(user_sigma, user_questions)
+        user_questions = [user_questions[i] for i in user_order][:N_players_questions]
+
+        return candidates, robot_selected_image, robot_questions, user_questions

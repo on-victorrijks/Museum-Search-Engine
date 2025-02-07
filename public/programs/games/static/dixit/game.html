@@ -43,7 +43,7 @@
                 <div class="explanation">
                     <h2>Facile</h2>
                     <p>
-                        Vous avez <b>9</b> questions à poser au robot, le robot n'a que <b>3</b> questions à vous poser !
+                        Vous avez <b>10</b> indices, le robot n'a que <b>5</b> questions à vous poser !
                     </p>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="explanation">
                     <h2>Intermédiaire</h2>
                     <p>
-                        Vous avez <b>6</b> questions à poser au robot, le robot a aussi <b>6</b> questions à vous poser !
+                        Vous avez <b>7</b> indices, le robot a aussi <b>7</b> questions à vous poser !
                     </p>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                 <div class="explanation">
                     <h2>Difficile</h2>
                     <p>
-                        Vous avez seulement <b>3</b> questions à poser au robot, le robot a <b>9</b> questions à vous poser !
+                        Vous avez seulement <b>4</b> indices, le robot a <b>10</b> questions à vous poser !
                     </p>
                 </div>
             </div>
@@ -85,7 +85,7 @@
         id="game_container" 
         enabled="false"
         selectCards="true"
-        context="userselectingquestion"
+        context="robotanswering"
         robotthinking="false"
         guessing="false"
         blurred="false"
@@ -114,43 +114,6 @@
         </div>  
 
         <div class="instructContainer">
-
-            <div class="box" context="userselectingquestion">
-                <div class="instruction">
-                    <h1 id="instructionText">Veuillez choisir la question que vous allez poser</h1>
-                </div>
-                <div class="questionsContainer" id="questions_container">
-
-                    <div class="question" id="question_0">
-                        <div class="questionNumber">
-                            <h4>1</h4>
-                        </div>
-                        <h2>Est-ce que l'image du robot contient une <b>femme</b> ?</h2>
-                    </div>
-                    
-                    <div class="question" id="question_1">
-                        <div class="questionNumber">
-                            <h4>2</h4>
-                        </div>
-                        <h2>Est-ce que l'image du robot contient un <b>chien</b> ?</h2>
-                    </div>
-
-                    <div class="question" id="question_2">
-                        <div class="questionNumber">
-                            <h4>3</h4>
-                        </div>
-                        <h2>Est-ce que l'image du robot est <b>sombre</b> ?</h2>
-                    </div>
-
-                    <div class="question" id="question_3">
-                        <div class="questionNumber">
-                            <h4>4</h4>
-                        </div>
-                        <h2>Est-ce que l'image du robot à une <b>teinte verte</b> ?</h2>
-                    </div>
-
-                </div>
-            </div>
 
             <div class="box" context="robotanswering">
                 <div class="robotQuestion">

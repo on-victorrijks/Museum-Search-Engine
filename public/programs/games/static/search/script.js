@@ -25,6 +25,7 @@ const colorsContainer = document.getElementById("colors_container");
 const luminosityContainer = document.getElementById("luminosity_container");
 
 let isLoading = false;
+const SEARCH_DELAY = 0;
 
 function setGridLoading(loading) {
     isLoading = loading;
@@ -43,7 +44,7 @@ function initMasonry() {
             });
             setGridLoading(false);
         });
-    }, 500);
+    }, SEARCH_DELAY);
 }
 
 function debounceSendQueries() {
@@ -87,13 +88,60 @@ function formatTitle(title, maxLength) {
     return title.slice(0, maxLength - 3) + "...";
 }
 
+function addLike(recordID, imageURL) {
+    addQuery("interaction", recordID, imageURL, initialWeight=1);
+}
+
+function addDislike(recordID, imageURL) {
+    addQuery("interaction", recordID, imageURL, initialWeight=-1);
+}
+
+function removeLike(recordID) {
+    removeQuery(`interaction__${recordID}`);
+}
+
 function appendResult(result) {
     const resultDiv = document.createElement("div");
     resultDiv.className = "result";
     resultDiv.id = result.recordID;
 
     const image = document.createElement('img');
-    image.src = `http://127.0.0.1:5000/images/${result.recordID}`;
+    const imageURL = `http://127.0.0.1:5000/images/${result.recordID}`;
+    image.src = imageURL;
+
+    const interactContainer = document.createElement("div");
+    interactContainer.className = "interactContainer";
+
+    const likeButton = document.createElement("button");
+    likeButton.className = "likeButton";
+    likeButton.innerHTML = `<img src="./static/search/assets/like.svg">`;
+    const isAlreadyLiked = queries.some(q => q.id === `interaction__${result.recordID}` && q.weight > 0);
+    if (isAlreadyLiked) {
+        likeButton.classList.add("selected");
+        likeButton.addEventListener("click", () => removeLike(result.recordID));
+    } else {
+        likeButton.addEventListener("click", () => {
+            removeLike(result.recordID); 
+            addLike(result.recordID, imageURL)
+        });
+    }
+
+    const dislikeButton = document.createElement("button");
+    dislikeButton.className = "dislikeButton";
+    dislikeButton.innerHTML = `<img src="./static/search/assets/dislike.svg">`;
+    const isAlreadyDisliked = queries.some(q => q.id === `interaction__${result.recordID}` && q.weight < 0);
+    if (isAlreadyDisliked) {
+        dislikeButton.classList.add("selected");
+        dislikeButton.addEventListener("click", () => removeLike(result.recordID));
+    } else {
+        dislikeButton.addEventListener("click", () => {
+            removeLike(result.recordID);
+            addDislike(result.recordID, imageURL)
+        });
+    }
+
+    interactContainer.appendChild(likeButton);
+    interactContainer.appendChild(dislikeButton);
 
     const textContainer = document.createElement("div");
     textContainer.className = "textContainer";
@@ -107,6 +155,7 @@ function appendResult(result) {
         <h1>${formatTitle(title, 50)}</h1>
     `;
 
+    resultDiv.appendChild(interactContainer);
     resultDiv.appendChild(textContainer);
     resultDiv.appendChild(image);
     resultsContainer.appendChild(resultDiv);
@@ -116,15 +165,17 @@ function clearResults() {
     document.querySelectorAll(".result").forEach(result => result.remove());
 }
 
-function addQuery(type, value) {
+function addQuery(type, value, backgroundImage=null, initialWeight=1) {
     let queryID = `${type}__${value}`;
     if (queries.some(q => q.id === queryID)) return;
+
+    const hasBackgroundImage = backgroundImage !== null;
 
     let queryDiv = document.createElement("div");
     queryDiv.className = "query";
     queryDiv.id = queryID;
     queryDiv.innerHTML = `
-        <div class="topQ">
+        <div class="topQ" bg="${hasBackgroundImage.toString()}" style="background-image: url(${backgroundImage})">
             <div class="topQText">
                 <h3>${capitalize(type)}</h3>
                 <h2>${value}</h2>
@@ -135,20 +186,22 @@ function addQuery(type, value) {
         </div>
         <div class="range">
             <div class="ticks">
+                <h4>Ne pas voir ça</h4>
                 <h4>Non</h4>
                 <h4>Pas vraiment</h4>
                 <h4>Neutre</h4>
                 <h4>Pourquoi pas</h4>
                 <h4>Oui</h4>
+                <h4>Absolument voir ça</h4>
             </div>
-            <input type="range" min="-2" max="2" step="0.25" value="1">
+            <input type="range" min="-5" max="5" step="0.5" value="${initialWeight}">
         </div>
     `;
 
     queryDiv.querySelector(".removeQuery").addEventListener("click", () => removeQuery(queryID));
     queriesContainer.appendChild(queryDiv);
 
-    queries.push({ id: queryID, type, value, weight: 1 });
+    queries.push({ id: queryID, type, value, weight: initialWeight });
     debounceSendQueries();
 }
 
@@ -277,8 +330,10 @@ function capitalize(str) {
 function toggleKeywords() {
     if (keywordsContainer.style.display === "none") {
         keywordsContainer.style.display = "flex";
+        document.querySelector("#dropHeader").setAttribute("closed", "false");
     } else {
         keywordsContainer.style.display = "none";
+        document.querySelector("#dropHeader").setAttribute("closed", "true");
     }
 
 }

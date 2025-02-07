@@ -11,7 +11,6 @@ const loader_message                = document.querySelector('#loader_message');
 
 const menu_container                = document.querySelector('#menu_container');
 const game_container                = document.querySelector('#game_container');
-const questions_container           = document.querySelector('#questions_container');
 const user_answers_container        = document.querySelector('#user_answers');
 const result_container              = document.querySelector('#result_container');
 const larger_container              = document.querySelector('#larger_container');
@@ -24,20 +23,19 @@ const result_trueUser               = document.querySelector(".resultSplit[side=
 
 
 // Game variables
-let robot_selected_image = null;
 let candidates = [];
-
+let robot_selected_image = null;
+let index_robot_selected_image = null;
 let n_players_questions = 0;
 let n_robot_questions = 0;
-
-let userQuestions = [];
-let robotQuestions = [];
-
+let user_questions = [];
+let robot_questions = [];
 let questionsThatUserAsked = [];
 let questionsThatRobotAsked = [];
-
 let question_index = 0;
-let user_answers = [];
+
+let user_questions_index = 0;
+let robot_questions_index = 0;
 
 let waiting_for_user_guess = false;
 let selectedCardRecordID = null;
@@ -45,7 +43,7 @@ let playerOdd = true; // true if the player played first, false if the robot pla
 
 const index_to_power = [-1.0, -0.5, 0.0, 0.5, 1.0]
 
-const ROBOT_THINKING_TIME = 750;
+const ROBOT_THINKING_TIME = 500;
 const OVERLAY = false;
 //
 
@@ -62,10 +60,10 @@ function handleError(error) {
 
 function sendAnswerToRobot(power) {
     // Increase the question index (the robot received an answer)
-    updateQuestionIndex(question_index + 1);
     updateCounters();
-
-    user_answers.push(power);
+    // Add the answer to the list of answers
+    const lastQuestionThatRobotAsked = questionsThatRobotAsked[questionsThatRobotAsked.length - 1];
+    lastQuestionThatRobotAsked["user_answer"] = power;
     launchRound(); // Go to the next round
 }
 
@@ -99,11 +97,12 @@ function updateCounters() {
     robotQuestionsCounter.innerHTML = questionsThatRobotAsked.length;
 }
 
-function getRobotGuess() {
+function depr__getRobotGuess() {
     const scores = Array.from(Array(candidates.length).keys()).map(() => 0);
-    user_answers.forEach((power, answerIndex) => {
-        const questionData = questionsThatRobotAsked[answerIndex];
-        const similarities = questionData["answers"];
+    questionsThatRobotAsked.forEach((questionData, answerIndex) => {
+        const power = questionData["user_answer"];
+        const similarities = questionData["cosine_similarities"];
+        console.log(power, similarities);
         candidates.forEach((candidate, candidateIndex) => {
             scores[candidateIndex] += similarities[candidateIndex] * power;
         });
@@ -116,38 +115,47 @@ function getRobotGuess() {
     return candidates[maxScoreIndex];
 }
 
-function selectQuestion(questionData, index) {
+function getRobotGuess(callback) {
+    fetch('http://127.0.0.1:5000/api/dixit/guess', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            candidates: candidates,
+            questions: questionsThatRobotAsked
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            callback(data.message.guess);
+        } else {
+            handleError(data.error);
+            callback(null);
+        }
+    })
+    .catch((error) => {
+        handleError(error);
+        callback(null);
+    });
+}
+
+
+function loadRobotIndice() {
+    const questionData = user_questions[user_questions_index];
     // Increase the question index (the user asked a question)
-    updateQuestionIndex(question_index + 1);
+    question_index += 1;
+    user_questions_index += 1;
 
     // Add the question to the list of questions that the user asked
     questionsThatUserAsked.push(questionData);
-    // Remove the question from the list of questions
-    userQuestions.splice(index, 1);
     updateCounters();
 
     setRobotThinking(true);
     game_container.setAttribute('context', 'robotanswering');
 
     // Get the robot answer
-    const determineThreshold = (similarities, N) => {
-        // Get the average similarity
-        const averageSimilarity = similarities.reduce((a, b) => a + b, 0) / N;
-        return averageSimilarity;
-    }
-      
-    // Example usage with your provided variables:
-    let indexOfRobotImage = candidates.indexOf(robot_selected_image);
-    let robotCosineSimilarities = questionData["answers"];  // Array of cosine similarity scores.
-    let similarityOfRobot = robotCosineSimilarities[indexOfRobotImage];
-    let N = candidates.length;
-    
-    // Determine the threshold using the helper function.
-    const threshold = determineThreshold(robotCosineSimilarities, N);
-    
-    // The robot answer is "true" if the similarity for its chosen candidate exceeds the threshold.
-    console.log(robotCosineSimilarities, threshold);
-    const robotAnswer = similarityOfRobot >= threshold;
+    const answerForQuestion = questionData["answers_iconography"][index_robot_selected_image];
+    const robotAnswer = answerForQuestion == 1;
 
     // Add a timeout to simulate the robot thinking
     setTimeout(() => {
@@ -159,67 +167,67 @@ function selectQuestion(questionData, index) {
 
 
 function endgame(userGuess) {
-    const robotGuess = getRobotGuess();
-
-    const isUserRight   = userGuess == robot_selected_image;
-    const isRobotRight  = robotGuess == selectedCardRecordID;
-
-    // Append the cards in the result screen
-    appendCandidate(result_userGuess, userGuess, false);
-    appendCandidate(result_trueRobot, robot_selected_image, false);
-    appendCandidate(result_robotGuess, robotGuess, false);
-    appendCandidate(result_trueUser, selectedCardRecordID, false);
-
-    // Show the result screen
-    /*
-        id="result_container"
-        class="resultScreen"
-        enabled="false"
-        userCorrectGuess="false"
-        robotCorrectGuess="false"
-        result="win"
-    */
-    let result = 0; // 0=lose, 1=draw, 2=win
-    let result_text = "";
-    if ((isUserRight && isRobotRight) || (!isUserRight && !isRobotRight)) {
-        result = 1;
-        result_text = "draw";
-    } else if (isUserRight && !isRobotRight) {
-        result = 2;
-        result_text = "win";
-    } else {
-        result = 0;
-        result_text = "lose";
-    }
-
-    let resultTitle = "";
-    if (result==0) resultTitle = "Vous avez perdu !";
-    else if (result==1) resultTitle = "Egalité !";
-    else if (result==2) resultTitle = "Vous avez gagné !";
-
-    let userResult = "";
-    if (isUserRight) userResult = "Vous avez trouvé la carte secrete du robot !";
-    else userResult = "Vous n'avez pas trouvé la carte secrete du robot !";
-
-    let robotResult = "";
-    if (isRobotRight) robotResult = "Le robot a trouvé votre carte secrete !";
-    else robotResult = "Le robot n'a pas trouvé votre carte secrete !";
-
-    document.querySelector("#resultTitle").innerHTML = resultTitle;
-    document.querySelector(".resultSplit[side='user'] h2").innerHTML = userResult;
-    document.querySelector(".resultSplit[side='robot'] h2").innerHTML = robotResult;
-
-    game_container.setAttribute('blurred', 'true');
-    result_container.setAttribute('enabled', true);
-    result_container.setAttribute('userCorrectGuess', isUserRight);
-    result_container.setAttribute('robotCorrectGuess', isRobotRight);
-    result_container.setAttribute('result', result_text);
-
-    console.log("User question: ");
-    userQuestions.forEach((question, index) => {
-        console.log(question["question"], user_answers[index]);
+    getRobotGuess((robotGuess) => {
+        const isUserRight   = userGuess == robot_selected_image;
+        const isRobotRight  = robotGuess == selectedCardRecordID;
+    
+        // Append the cards in the result screen
+        appendCandidate(result_userGuess, userGuess, false);
+        appendCandidate(result_trueRobot, robot_selected_image, false);
+        appendCandidate(result_robotGuess, robotGuess, false);
+        appendCandidate(result_trueUser, selectedCardRecordID, false);
+    
+        // Show the result screen
+        let result = 0; // 0=lose, 1=draw, 2=win
+        let result_text = "";
+        if ((isUserRight && isRobotRight) || (!isUserRight && !isRobotRight)) {
+            result = 1;
+            result_text = "draw";
+        } else if (isUserRight && !isRobotRight) {
+            result = 2;
+            result_text = "win";
+        } else {
+            result = 0;
+            result_text = "lose";
+        }
+    
+        let resultTitle = "";
+        if (result==0) resultTitle = "Vous avez perdu !";
+        else if (result==1) resultTitle = "Egalité !";
+        else if (result==2) resultTitle = "Vous avez gagné !";
+    
+        let userResult = "";
+        if (isUserRight) userResult = "Vous avez trouvé la carte secrete du robot !";
+        else userResult = "Vous n'avez pas trouvé la carte secrete du robot !";
+    
+        let robotResult = "";
+        if (isRobotRight) robotResult = "Le robot a trouvé votre carte secrete !";
+        else robotResult = "Le robot n'a pas trouvé votre carte secrete !";
+    
+        document.querySelector("#resultTitle").innerHTML = resultTitle;
+        document.querySelector(".resultSplit[side='user'] h2").innerHTML = userResult;
+        document.querySelector(".resultSplit[side='robot'] h2").innerHTML = robotResult;
+    
+        game_container.setAttribute('blurred', 'true');
+        result_container.setAttribute('enabled', true);
+        result_container.setAttribute('userCorrectGuess', isUserRight);
+        result_container.setAttribute('robotCorrectGuess', isRobotRight);
+        result_container.setAttribute('result', result_text);
+    
+        console.log("User question: ");
+        questionsThatUserAsked.forEach((questionData) => {
+            const term = questionData["content"];
+            const answer = questionData["answers_iconography"][index_robot_selected_image]==1;
+            console.log(term, ":", answer);
+        });
+    
+        console.log("Robot question: ");
+        questionsThatRobotAsked.forEach((questionData) => {
+            const term = questionData["content"];
+            const answer = questionData["user_answer"];
+            console.log(term, ":", answer);
+        });
     });
-
 }
 
 function clickOnCard(recordID) {
@@ -248,15 +256,19 @@ function setRobotThinking(thinking) {
 }
 
 function getQuestionText(questionData) {
-    type = questionData["question"]["type"];
-    content = questionData["question"]["content"];
+    type = questionData["type"];
+    content = questionData["content"];
 
     if (type == "object") {
         return `Est-ce que votre image contient un(e) <b>${content}</b> ?`;
-    } else if (type == "color") {
-        return `Est-ce que votre image est de couleur <b>${content}</b> ?`;
-    } else if (type == "luminosity") {
-        return `Est-ce que votre image est <b>${content}</b> ?`;
+    } else if (type == "colors") {
+        return `Est-ce que votre image est de couleur: <b>${content}</b> ?`;
+    } else if (type == "luminosities") {
+        return `Est-ce que votre image est de luminosité: <b>${content}</b> ?`;
+    } else if (type == "types") {
+        return `Est-ce que votre image est un(e) <b>${content}</b> ?`;
+    } else {
+        return type + " " + content;
     }
 }
 
@@ -264,17 +276,19 @@ function setRobotQuestion(questionData) {
     game_container.querySelector(".box[context='userselectinganswer'] .messageBubble p").innerHTML = getQuestionText(questionData);
 }
 
-function updateQuestionIndex(new_question_index) {
-    question_index = new_question_index;
-}
-
 function loadRobotQuestions() {
     setRobotThinking(true);
     game_container.setAttribute('context', 'userselectinganswer');
 
     // Get the robot question
-    const questionData = robotQuestions.pop();
+    const questionData = robot_questions[robot_questions_index];
+
+    // Add the question to the list of questions that the robot asked
     questionsThatRobotAsked.push(questionData);
+
+    // Increase the question index (the robot asked a question)
+    question_index += 1;
+    robot_questions_index += 1;
 
     // Add a timeout to simulate the robot thinking
     setTimeout(() => {
@@ -285,24 +299,12 @@ function loadRobotQuestions() {
 }
 
 function getAnswerText(answer, questionData) {
-    type = questionData["question"]["type"];
-    content = questionData["question"]["content"];
+    type = questionData["type"];
+    content = questionData["content"];
     if (answer) {
-        if (type == "object") {
-            return `<b>Oui!</b>, mon image contient un(e) ${content} !`;
-        } else if (type == "color") {
-            return `<b>Oui!</b>, mon image est de couleur ${content} !`;
-        } else if (type == "luminosity") {
-            return `<b>Oui!</b>, mon image est ${content} !`;
-        }
+        return `Mon image contient un(e) <b>${content}</b> !`;
     } else {
-        if (type == "object") {
-            return `<b>Non!</b>, mon image ne contient pas de ${content} !`;
-        } else if (type == "color") {
-            return `<b>Non!</b>, mon image n'est pas de couleur ${content} !`;
-        } else if (type == "luminosity") {
-            return `<b>Non!</b>, mon image n'est pas ${content} !`;
-        }
+        return `Mon image ne contient pas de <b>${content}</b> !`;
     }
 }
 
@@ -320,57 +322,6 @@ function generateQuestionText({type, content}) {
     }
 }
 
-function appendQuestion(questionData, index) {
-    let inHTMLIndex = 1;
-    Array.from(questions_container.children).forEach((child) => {
-        inHTMLIndex += 1;
-    });
-    
-    const div = document.createElement('div');
-    div.classList.add('question');
-    div.setAttribute('id', `question_${index}`);
-
-    const questionNumber = document.createElement('div');
-    questionNumber.classList.add('questionNumber');
-    const questionNumberText = document.createElement('h4');
-    questionNumberText.innerHTML = inHTMLIndex;
-    questionNumber.appendChild(questionNumberText);
-    div.appendChild(questionNumber);
-
-    const questionText = document.createElement('h2');
-    questionText.innerHTML = generateQuestionText(questionData["question"]);
-    div.appendChild(questionText);
-
-    div.onclick = () => selectQuestion(questionData, index);
-    
-    questions_container.appendChild(div);
-}
-
-function clearQuestions() {
-    questions_container.innerHTML = '';
-}
-
-function loadUserQuestions() {
-    //Take 4 random questions from the userQuestions
-    const randomIndexes = [];
-    let indexes = Array.from(Array(userQuestions.length).keys());
-    for (let i = 0; i < 4; i++) {
-        const randomIndex = Math.floor(Math.random() * indexes.length);
-        randomIndexes.push(indexes[randomIndex]);
-        indexes.splice(randomIndex, 1);
-    }
-
-    // Add questions to the interface
-    clearQuestions();
-
-    randomIndexes.forEach((index) => {
-        appendQuestion(userQuestions[index], index);
-    });    
-    
-    // Set the context to user selecting question
-    game_container.setAttribute('context', 'userselectingquestion');
-}
-
 function guessingTime() {
     // Activate the guessing mode
     game_container.setAttribute('guessing', 'true');
@@ -380,6 +331,7 @@ function guessingTime() {
 
     waiting_for_user_guess = true;
 }
+
 
 function launchRound() {
     const isLastQuestion = question_index == (n_players_questions + n_robot_questions - 1);
@@ -414,8 +366,8 @@ function launchRound() {
     document.querySelector("#gotoNextQuestion").innerHTML = isLastQuestion ? "Devinez la carte" : "Passer à la question suivante";
 
     if (isPlayerTurn) {
-        setTopInstruction("Vous pouvez choisir la question que vous voulez poser !");
-        loadUserQuestions();
+        setTopInstruction("Le robot vous donne un indice !");
+        loadRobotIndice();
     } else {
         setTopInstruction("Le robot va vous poser une question !");
         loadRobotQuestions();
@@ -546,15 +498,50 @@ function processServerResponse(data) {
     if(success){
         message = data.message;
 
-        robot_selected_image = message.robot_selected_image;
+        /*
+        {
+            "candidates": List<Int>,
+            "n_players_questions": 9,
+            "n_robot_questions": 3,
+            "robot_questions": [
+                {
+                    "answers_iconography": List<Int> (0/1),
+                    "content": "aile",
+                    "cosine_similarities": List<Float>,
+                    "robot_can_ask": true,
+                    "robot_score": 0.8888888888888888,
+                    "score": 0.16000000000000003,
+                    "type": "object",
+                    "user_can_ask": true
+                },
+            ],
+            "robot_selected_image": 6124,
+            "user_questions": [
+                {
+                    "answers_iconography": List<Int> (0/1),
+                    "content": "femme",
+                    "cosine_similarities": List<Float>,
+                    "robot_can_ask": true,
+                    "robot_score": 0.4444444444444444,
+                    "score": 0.24,
+                    "type": "object",
+                    "user_can_ask": true
+                },
+                ...
+            ]
+        }
+        */
         candidates = message.candidates;
+        robot_selected_image = message.robot_selected_image;
+        index_robot_selected_image = candidates.indexOf(robot_selected_image);
         n_players_questions = message.n_players_questions;
         n_robot_questions = message.n_robot_questions;
-        userQuestions = message.userQuestions;
-        robotQuestions = message.robotQuestions;
+        robot_questions = message.robot_questions;
+        user_questions = message.user_questions;
 
         question_index = 0;
-        user_answers = [];
+        user_questions_index = 0;
+        robot_questions_index = 0;
 
         // Clear candidates
         clearCandidates();
@@ -606,24 +593,23 @@ function reset() {
 
     game_container.setAttribute('guessing', 'false');
 
-    robot_selected_image = null;
     candidates = [];
-
-    userQuestions = [];
-    robotQuestions = [];
-
+    robot_selected_image = null;
+    index_robot_selected_image = null;
+    n_players_questions = 0;
+    n_robot_questions = 0;
+    user_questions = [];
+    robot_questions = [];
     questionsThatUserAsked = [];
     questionsThatRobotAsked = [];
 
     question_index = 0;
-    user_answers = [];
 
     waiting_for_user_guess = false;
     selectedCardRecordID = null;
     playerOdd = true; // true if the player played first, false if the robot played first
 
     clearCandidates();
-    clearQuestions();
 
     setTopInstruction("Veuillez selectionner votre carte secrete !");
     game_container.setAttribute('context', 'userselectingcard');
@@ -691,6 +677,7 @@ document.querySelector("#playAgain").addEventListener('click', () => {
     create_game();
 });
 document.querySelector("#changeDifficulty").addEventListener('click', () => {
+    result_container.setAttribute('enabled', false);
     setMenuVisibility(true);
     setGameVisibility(false);
 });

@@ -30,18 +30,22 @@ def QuelleEstLoeuvre(
     robot_sigma         = difficulty_to_robot_sigma[difficulty]
     user_sigma          = difficulty_to_user_sigma[difficulty]
 
-    # Get number_of_candidates different random recordIDs from the filtered data    
-    candidates = random.sample(dataset["recordID"].tolist(), N_candidates)
-
-    robotQuestions, userQuestions = engine.get_questions(robot_sigma, user_sigma, candidates, robotQuestions=N_robot_questions, userQuestions=N_players_questions)
+    candidates, robot_selected_image, robot_questions, user_questions = engine.get_questions(
+        N_candidates,
+        N_players_questions,
+        N_robot_questions,
+        robot_sigma, 
+        user_sigma, 
+    )
 
     return {
-        "robot_selected_image": random.choice(candidates),
-        "candidates": candidates,
         "n_players_questions": N_players_questions,
         "n_robot_questions": N_robot_questions,
-        "userQuestions": userQuestions,
-        "robotQuestions": robotQuestions,
+
+        "candidates": candidates,
+        "robot_selected_image": robot_selected_image,
+        "robot_questions": robot_questions,
+        "user_questions": user_questions
     }
 
 
@@ -74,6 +78,7 @@ if __name__ == "__main__":
     embedding_name = safeFormat(model_name) + "_embeddings.npy"
     path_imagesEmbeddings = os.path.join(EMBEDDINGS_FOLDER, "images_" + embedding_name)
     path_objectsEmbeddings = os.path.join(EMBEDDINGS_FOLDER, "objects_" + embedding_name)
+    path_othersEmbeddings = os.path.join(EMBEDDINGS_FOLDER, "others_" + embedding_name)
 
     ##
 
@@ -122,49 +127,32 @@ if __name__ == "__main__":
     # Load the image embeddings
     imagesEmbeddings = np.load(path_imagesEmbeddings)
     objectsEmbeddings = np.load(path_objectsEmbeddings)
+    othersEmbeddings = np.load(path_othersEmbeddings)
     print(np.mean(imagesEmbeddings), np.std(imagesEmbeddings))
     print(np.mean(objectsEmbeddings), np.std(objectsEmbeddings))
+    print(np.mean(othersEmbeddings), np.std(othersEmbeddings))
     print("OK: Embeddings loaded")
 
     ##
 
-    difficulty_to_player_n_questions = { 0:9, 1:6, 2:3 }
-    difficulty_to_robot_n_questions = { 0:3, 1:6, 2:9 }
-    difficulty_to_robot_sigma = { 0:0.30, 1:0.60, 2:0.90 }
-    difficulty_to_user_sigma = { 0:1.00, 1:0.85, 2:0.70 }
+    difficulty_to_player_n_questions = { 0:10, 1:7, 2:4 }
+    difficulty_to_robot_n_questions = { 0:5, 1:7, 2:10 }
+    difficulty_to_robot_sigma = { 0:0.20, 1:0.10, 2:0.00 }
+    difficulty_to_user_sigma = { 0:0.0, 1:0.10, 2:0.20 }
 
     ##
 
     print("Starting engine...")
-    ENGINE = None
-    if False:
-        ENGINE = GameEngine(
-            FULL_DATASET,
-            ICONOGRAPHIES,
-            get_image_path_from_recordID,
-            device,
-            directLoad=True#False
-        )
-    else:
-        """
-            self,
-            dataframe,
-            imagesEmbeddings,
-            objectsEmbeddings,
-            iconographies,
-            getImageFromRecordID,
-            device,
-            MODELS_FOLDER
-        """
-        ENGINE = GameEngine(
-            FULL_DATASET,
-            imagesEmbeddings,
-            objectsEmbeddings,
-            ICONOGRAPHIES,
-            get_image_path_from_recordID,
-            device,
-            MODELS_FOLDER
-        )
+    ENGINE = GameEngine(
+        FULL_DATASET,
+        imagesEmbeddings,
+        objectsEmbeddings,
+        othersEmbeddings,
+        ICONOGRAPHIES,
+        get_image_path_from_recordID,
+        device,
+        MODELS_FOLDER
+    )
     print("OK: Engine started")
 
 
@@ -186,7 +174,7 @@ if __name__ == "__main__":
         data = request.json
         queries = data["queries"]
 
-        if len(queries) == 0:
+        if not queries or len(queries) == 0:
             return jsonify({
                 "success": False,
                 "message": "No queries provided."
@@ -266,6 +254,30 @@ if __name__ == "__main__":
             "message": game
         })
 
+    @app.route('/api/dixit/guess', methods=['POST'])
+    def guess():
+        data = request.json
+        candidates = data["candidates"]
+        questions = data["questions"]
+    
+        if (not candidates) or len(candidates) == 0:
+            return jsonify({
+                "success": False,
+                "message": "No candidates provided."
+            })
+
+        if (not questions) or len(questions) == 0:
+            return jsonify({
+                "success": False,
+                "message": "No questions provided."
+            })
+
+        return jsonify({
+            "success": True,
+            "message": {
+                "guess": ENGINE.guess(candidates, questions)
+            }
+        })
 
     # 
     if __name__ == '__main__':
