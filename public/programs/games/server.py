@@ -169,6 +169,10 @@ if __name__ == "__main__":
     def search():
         return app.send_static_file('search/index.html')
 
+    @app.route('/explorator')
+    def explorator():
+        return app.send_static_file('explorator/explorator.html')
+
     @app.route('/api/search/query', methods=['POST'])
     def query():
         data = request.json
@@ -276,6 +280,31 @@ if __name__ == "__main__":
             "success": True,
             "message": {
                 "guess": ENGINE.guess(candidates, questions)
+            }
+        })
+    
+    @app.route('/api/explorator/getImages', methods=['POST'])
+    def getImages():
+        data = request.json
+        fromRecordID = data["fromRecordID"]
+
+        return jsonify({
+            "success": True,
+            "message": {
+                "recordIDs": ENGINE.getImages(fromRecordID)
+            }
+        })
+    
+    @app.route('/api/explorator/interpolate', methods=['POST'])
+    def interpolate():
+        data = request.json
+        recordID1 = data["recordID1"]
+        recordID2 = data["recordID2"]
+
+        return jsonify({
+            "success": True,
+            "message": {
+                "entries": ENGINE.interpolate(recordID1, recordID2, k=8)
             }
         })
 

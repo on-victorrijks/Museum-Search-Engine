@@ -168,10 +168,8 @@ class GameEngine:
         for i in range(len(values)):
             if i in precomputed:
                 embeddings.append([precomputed[i]])
-                print(precomputed[i].shape)
             else:
                 embeddings.append(self.get_query_embedding(values[i]))
-                print(self.get_query_embedding(values[i]).shape)
         embeddings = np.array(embeddings) # Convert to numpy array
 
         if version == "classic":
@@ -193,7 +191,6 @@ class GameEngine:
         embeddings /= np.linalg.norm(embeddings)
 
         return embeddings
-    
     
     def getEntryFromIndex(self, index):
         entry = self.dataframe.iloc[index]
@@ -270,6 +267,65 @@ class GameEngine:
         recordIDs = self.dataframe["recordID"].tolist()
         index = recordIDs.index(recordID)
         return self.imagesEmbeddings[index]
+
+    def getImages(self, fromRecordID, k=5):
+        if fromRecordID==-1:
+            # If fromRecordID==None; get k random images
+            recordIDs = self.dataframe["recordID"].tolist()
+            return random.sample(recordIDs, k)
+        else:
+            # Get the image embeddings of fromRecordID
+            image_embedding = self.get_image_embedding(int(fromRecordID))
+            # Find k images far away from fromRecordID
+            sims = cosine_similarity([image_embedding], self.imagesEmbeddings).squeeze()
+            # Sort from LOWEST to HIGHEST
+            indices = np.argsort(sims)
+            # Get the best k index of the images
+            best_indices = indices[:k]
+            # Get the recordID of the best images
+            best_entries = [int(self.getEntryFromIndex(index)["recordID"]) for index in best_indices]
+            return best_entries
+
+    def getIndexFromRecordID(self, recordID):
+        recordIDs = self.dataframe["recordID"].tolist()
+        index = recordIDs.index(recordID)
+        return index
+
+    def interpolate(self, recordID1, recordID2, k=3):
+        # Interpolate between the two images and find k intermediate images (all different)
+        image_embedding1 = self.get_image_embedding(recordID1)
+        image_embedding2 = self.get_image_embedding(recordID2)
+
+        # Interpolate
+        interpolations = []
+        for i in range(k):
+            alpha = i/(k-1)
+            interpolation = alpha * image_embedding1 + (1 - alpha) * image_embedding2
+            interpolations.append(interpolation)
+        
+        # Find the closest image to each interpolation
+        interpolationsRecordIDs = []
+        used_indices = [self.getIndexFromRecordID(recordID1), self.getIndexFromRecordID(recordID2)]
+        for i in range(k):
+            interpolation = interpolations[i]
+            sims = cosine_similarity([interpolation], self.imagesEmbeddings).squeeze()
+            indices = np.argsort(sims)[::-1]
+
+            best_index = 0
+            while indices[best_index] in used_indices:
+                best_index += 1
+
+            best_recordID = self.getEntryFromIndex(indices[best_index])["recordID"]
+            interpolationsRecordIDs.append(best_recordID)
+            used_indices.append(indices[best_index])
+
+        interpolationsRecordIDs = interpolationsRecordIDs[::-1]
+
+        recordIDs = [recordID1] + interpolationsRecordIDs + [recordID2]
+        # Get the information of the images
+        entries = [self.getEntryFromIndex(self.getIndexFromRecordID(recordID)) for recordID in recordIDs]
+
+        return entries 
 
     def get_k_closest_images_from_queries(self, queries, k):
         precomputed = {}
