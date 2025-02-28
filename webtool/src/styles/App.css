@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Change font family */
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+:root {
+    --background-color: #1a191e;
+    --text-color: #e0e0e0;
+
+    --button-bg: #ffffff;
+    --button-text: #000000;
+    
+    --hover-bg: #bbbbbb;
+    --border-color: #333333;
+    --input-bg: #1f1f1f;
+    --input-text: #e0e0e0;
+    --container-bg: #2c2b32;
+    --keyword-bg: #1f1f1f;
+    --keyword-text: #c7c7c7;
+    --keyword-bg-enabled: #ffffff;
+    --keyword-text-enabled: #000000;
+
+    --search-input-bg: #ffffff;
+    --search-button-bg: #ff7676;
+    
+    --tab-handler-bg: #2c2b32;
+    --tab-handler-border: var(--border-color);
+    --tab-handler-text: #e0e0e0;
+
+    --tab-handler-button-border: #646464;
+    --tab-handler-button-color: #a9a9a9;
+}
+#root {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color);
+}
+
+.app {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.tabs-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    gap: 1px;
+}
+.searchContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.searchContainer input[type="text"] {
+    border: 0;
+    background: var(--search-input-bg);
+    padding: 10px 15px;
+    border-radius: 10px;
+    width: 300px;
+}
+.searchContainer button {
+    background: var(--search-button-bg);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 10px;
+    border: none;
+}
+.tab {
+    flex: 1;
+    min-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: var(--tab-bg);
+}
+.tab-handler {
+    width: 100%;
+    padding: 5px 10px;
+    background: var(--tab-handler-bg);
+    border-bottom: solid 1px var(--tab-handler-border);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.tab-handler h1 {
+    color: var(--tab-handler-text);
+    font-size: 13px;
+    font-weight: 300;
+}
+.tab-handler button {
+    background-color: transparent;
+    border: solid 1px var(--tab-handler-button-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    color: var(--tab-handler-button-color);
+    font-weight: 300;
+    cursor: pointer;
+}
+.tab-content {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+}

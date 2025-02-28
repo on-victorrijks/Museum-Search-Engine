@@ -1,0 +1,320 @@
+/* Content Container */
+.sb-Content {
+    max-width: 50vw;
+    width: 500px;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    border-right: solid 1px var(--border-color);
+}
+/* Header */
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 25px 10px;
+    background: var(--container-bg);
+}
+.header img {
+    width: 80%;
+    max-width: 300px;
+    filter: invert(1);
+}
+
+/* Search Section */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    flex-shrink: 0;
+}
+.searchSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.searchSection h1 {
+    font-size: 14px;
+    color: rgb(200, 200, 200);
+}
+
+/* Form for Text Input */
+.textForm {
+    display: flex;
+    gap: 8px;
+}
+
+.textForm input {
+    flex-grow: 1;
+    padding: 8px;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.textForm button {
+    padding: 4px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    width: 40px;
+    height: 40px;
+}
+.textForm button:hover {
+    background-color: var(--hover-bg);
+}
+.textForm button.microphone {
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+    border: solid 1px var(--border-color)
+}
+.textForm button.microphone:hover {
+    background-color: rgb(255, 0, 0);
+    color: white;
+}
+
+
+
+/* Dropdown Header */
+.dropHeader {
+    display: flex;
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+}
+
+/* Keyword container */
+.container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-height: 150px;
+    overflow-y: auto;
+}
+.color, .luminosity {
+    flex: 1;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 2px var(--border-color)
+}
+.color.enabled {
+    border-color: white;
+}
+.luminosity.enabled {
+    border-color: white;
+}
+.keyword {
+    border-radius: 5px;
+    padding: 5px 8px;
+    background-color: var(--keyword-bg);
+    color: var(--keyword-text);
+    border: solid 1px var(--border-color);
+    font-size: 10px;
+    cursor: pointer;
+}
+.keyword.enabled{
+    background-color: var(--keyword-bg-enabled);
+    color: var(--keyword-text-enabled);
+}
+.color:hover, .luminosity:hover, .keyword:hover {
+    opacity: 0.7;
+}
+
+
+/* Luminosity Text */
+.luminosity h3 {
+font-size: 12px; /* Smaller text */
+color: var(--text-color);
+}
+
+.queries{
+    background: var(--background-color);
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.queryPartsHeader {
+    width: 100%;
+    display: flex;
+    background: var(--container-bg);
+    padding: 10px 20px;
+    border-bottom: solid 1px var(--border-color);
+}
+.queryPartsHeader h1 {
+    font-size: 17px;
+    color: #acacac;
+    text-align: left;
+    width: 100%;
+}
+.queries_container {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.emptyQueryParts {
+    flex: 1;
+    height: -webkit-fill-available;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.emptyQueryParts h1 {
+    color: #646464;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.queryPart {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--container-bg);
+    border: solid 1px var(--border-color);
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+.queryPart-Header {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    gap: 10px;
+    width: 100%;
+}
+.queryPart-Slider-v1 {
+    width: 100%;
+    padding: 5px 60px 20px 60px;
+    background: rgba(0, 0, 0, 0.1);
+    border-top: solid 1px var(--border-color);
+}
+.queryPart-Slider {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border-top: solid 1px var(--border-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+.queryPart-Slider .side {
+    width: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: #acacac;
+}
+.queryPart-Slider .side.min {
+    color: #ff7676;
+}
+.queryPart-Slider .side.max {
+    color: #76ff76;
+}
+.queryPartText {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0;
+}
+.queryPartText h4 {
+    font-size: 12px;
+    color: #acacac;
+}
+.queryPartText h2 {
+    font-size: 18px;
+    color: #fff;
+}
+.queryPart button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px var(--border-color);
+    background: #444444;
+    border-radius: 50%;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+.queryPart button:hover {
+    background-color: var(--hover-bg);
+    color: black;
+}
+/* Change MUI Slider */
+.MuiSlider-markLabel {
+    width: 80px;
+    color: rgb(203, 203, 203) !important;
+    white-space: normal !important;
+    text-align: center;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+    margin-top: 5px !important;
+}
+.MuiSlider-colorPrimary {
+    color: rgb(255, 255, 255) !important;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    background-color: var(--container-bg);
+    border-top: solid 1px var(--border-color);
+}
+.buttons button {
+    padding: 10px 15px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    flex: 1;
+}
+.buttons button:hover {
+    background-color: var(--hover-bg);
+    color: #000;
+}
+.buttons button[disabled] {
+    background-color: #646464;
+    color: #acacac;
+    cursor: not-allowed;
+}
