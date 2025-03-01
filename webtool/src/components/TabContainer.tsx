@@ -1,16 +1,29 @@
 import React, {
-    useState    
+    use,
+    useEffect,
+    useState,
 } from 'react';
 import { TabData } from '../types/tab';
+import { FaTimes } from 'react-icons/fa';
+import SearchResults from './SearchResults';
 
 interface TabContainer {
     tabs: TabData[];
     removeTab: (tabIdentifier: string) => void;
+    dislikeRecord: (imageInformations: Record<string, any>) => void;
+    likeRecord: (imageInformations: Record<string, any>) => void;
+    getLikeStatus: (
+        tabIdentifier: string,
+        recordID: number
+    ) => boolean | undefined;
 }
 
 const TabContainer: React.FC<TabContainer> = ({
     tabs,
-    removeTab
+    removeTab,
+    dislikeRecord,
+    likeRecord,
+    getLikeStatus
 }) => {
 
     const getTabName = (tab: TabData) => {
@@ -33,16 +46,25 @@ const TabContainer: React.FC<TabContainer> = ({
                 <div key={tab.identifier} className='tab'>
 
                     <div className='tab-handler'>
-                        <h1>{getTabName(tab)} - {tab.type}</h1>
+                        <h1>{getTabName(tab)}</h1>
                         <button
                             onClick={() => removeTab(tab.identifier)}
                         >
-                            <h3>X</h3>
+                            <FaTimes />
                         </button>
                     </div>
 
                     <div className='tab-content'>
-                        {JSON.stringify(tab.content)}
+                        {
+                            tab.type === 'results' && <>
+                                <SearchResults 
+                                    results={tab.content.results} 
+                                    dislikeRecord={dislikeRecord}
+                                    likeRecord={likeRecord}
+                                    getLikeStatus={(recordID) => getLikeStatus(tab.identifier, recordID)}
+                                />
+                            </>
+                        }
                     </div>
                 </div>
             ))}

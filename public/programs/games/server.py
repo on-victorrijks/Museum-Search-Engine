@@ -11,6 +11,7 @@ import numpy as np
 
 # Import from folder engine
 from engine import GameEngine
+from database import MockDB
 ##
 
 def QuelleEstLoeuvre(
@@ -47,7 +48,6 @@ def QuelleEstLoeuvre(
         "robot_questions": robot_questions,
         "user_questions": user_questions
     }
-
 
 if __name__ == "__main__":
 
@@ -154,6 +154,13 @@ if __name__ == "__main__":
         MODELS_FOLDER
     )
     print("OK: Engine started")
+
+    print("Starting database...")
+    DB = MockDB()
+    # Insert mock data
+    DB.insert_mock_data(FULL_DATASET.to_dict(orient="records"), imagesEmbeddings, ICONOGRAPHIES)
+    DB.set_engine(ENGINE)
+    print("OK: Database started")
 
 
     app = Flask(__name__, static_folder='static')
@@ -308,9 +315,56 @@ if __name__ == "__main__":
             }
         })
 
-    # 
-    if __name__ == '__main__':
-        # By default, Flask will serve at http://127.0.0.1:5000/
-        #app.run(debug=True)
+    # New Routes !
+    @app.route(
+        '/api/search/v2/query', 
+        methods=['POST']
+    )
+    def query_v2():
+        data = request.json
 
-        app.run()
+        hard = data["hard"]
+        soft = data["soft"]
+        version = data["version"]
+
+        page = data["page"]
+        page_size = data["page_size"]
+
+        # Validate
+        if not hard and not soft:
+            return jsonify({
+                "success": False,
+                "message": "No constraints provided."
+            })
+        if version not in ["classic", "power"]:
+            return jsonify({
+                "success": False,
+                "message": "Invalid version."
+            })
+        if page is None:
+            page = 0
+        if page_size is None:
+            page_size = 10
+
+        page_size = max(1, page_size)
+ 
+        # Query the database
+        results = DB.query(
+            filters=hard,
+            queries=soft,
+            page=page,
+            page_size=page_size
+        )
+
+        return jsonify({
+            "success": True,
+            "message": results
+        })
+
+
+
+    # 
+
+    # By default, Flask will serve at http://127.0.0.1:5000/
+    #app.run(debug=True)
+    app.run()

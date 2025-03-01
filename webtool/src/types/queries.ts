@@ -1,11 +1,14 @@
 interface QueryPart {
     identifier: string;
     type: string;
+    weight: number;
+    isSoft: boolean;
     term?: string;
     keyword?: string;
     color?: string;
     luminosity?: string;
-    weight: number;
+    recordID?: number;
+    imageInformations?: Record<string, any>;
 };
 
 interface Query {

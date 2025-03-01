@@ -62,10 +62,12 @@ const weights = [
   ];
 
 interface SearchComponent {
+    loading: boolean;
     receiveQuery: (query: Query) => void;
 }
 
 const SearchComponent: React.FC<SearchComponent> = ({
+    loading,
     receiveQuery
 }) => {
 
@@ -98,6 +100,7 @@ const SearchComponent: React.FC<SearchComponent> = ({
             const newQueryPart: QueryPart = {
                 identifier: 'N/A',
                 type: 'term',
+                isSoft: true,
                 term: localSearchTerm,
                 weight: 1
             };
@@ -116,6 +119,7 @@ const SearchComponent: React.FC<SearchComponent> = ({
         } else {
             const newQueryPart: QueryPart = {
                 identifier: 'N/A',
+                isSoft: true,
                 type: 'keyword',
                 keyword: keyword,
                 weight: 1
@@ -145,6 +149,7 @@ const SearchComponent: React.FC<SearchComponent> = ({
         } else {
             const newQueryPart: QueryPart = {
                 identifier: 'N/A',
+                isSoft: true,
                 type: 'color',
                 color: colorId,
                 weight: 1
@@ -174,6 +179,7 @@ const SearchComponent: React.FC<SearchComponent> = ({
         } else {
             const newQueryPart: QueryPart = {
                 identifier: 'N/A',
+                isSoft: true,
                 type: 'luminosity',
                 luminosity: luminosityId,
                 weight: 1
@@ -200,7 +206,6 @@ const SearchComponent: React.FC<SearchComponent> = ({
 
     // Remove query part
     const removeQueryPart = (identifier: string) => {
-        console.log(queryParts);
         setQueryParts(queryParts.filter(q => q.identifier !== identifier));
     }
 
@@ -259,6 +264,8 @@ const SearchComponent: React.FC<SearchComponent> = ({
                     return 'Couleur';
                 case 'luminosity':
                     return 'Luminosité';
+                case 'precomputed':
+                    return 'Image';
                 default:
                     return 'Inconnu';
             }
@@ -273,6 +280,11 @@ const SearchComponent: React.FC<SearchComponent> = ({
                         {queryPart.keyword && <h2>{queryPart.keyword}</h2>}
                         {queryPart.color && <h2>{queryPart.color}</h2>}
                         {queryPart.luminosity && <h2>{queryPart.luminosity}</h2>}
+                        {queryPart.imageInformations && <>
+                            <h2>
+                                {queryPart.imageInformations["objectWork.titleText"]} - {queryPart.imageInformations["objectWork.creatorDescription"]}
+                            </h2>
+                        </>}
                     </div>
                     <button
                         onClick={() => removeQueryPart(queryPart.identifier)}
