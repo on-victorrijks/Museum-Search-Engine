@@ -6,20 +6,25 @@ import React, {
 import { TabData } from '../types/tab';
 import { FaTimes } from 'react-icons/fa';
 import SearchResults from './SearchResults';
+import { FaPenToSquare } from 'react-icons/fa6';
+import { Query } from '../types/queries';
 
 interface TabContainer {
     tabs: TabData[];
+    selectedTabIdentifier: string;
+    selectTab: (tabIdentifier: string) => void;
     removeTab: (tabIdentifier: string) => void;
     dislikeRecord: (imageInformations: Record<string, any>) => void;
     likeRecord: (imageInformations: Record<string, any>) => void;
     getLikeStatus: (
-        tabIdentifier: string,
         recordID: number
     ) => boolean | undefined;
 }
 
 const TabContainer: React.FC<TabContainer> = ({
     tabs,
+    selectedTabIdentifier,
+    selectTab,
     removeTab,
     dislikeRecord,
     likeRecord,
@@ -39,14 +44,28 @@ const TabContainer: React.FC<TabContainer> = ({
         }
     }
     
+    const isEmptyQuery = (query: Query) => {
+        return query.parts.length === 0;
+    }
+
     return (
         <>
 
             {tabs.map(tab => (
-                <div key={tab.identifier} className='tab'>
+                <div 
+                key={tab.identifier} 
+                className={`tab ${selectedTabIdentifier === tab.identifier ? 'selected' : ''}`}
+                >
 
-                    <div className='tab-handler'>
-                        <h1>{getTabName(tab)}</h1>
+                    <div 
+                        className='tab-handler'
+                    >
+                        <h1>{getTabName(tab)} - {tab.identifier}</h1>
+                        <button
+                            onClick={() => selectTab(tab.identifier)}
+                        >
+                            <FaPenToSquare />
+                        </button>
                         <button
                             onClick={() => removeTab(tab.identifier)}
                         >
@@ -58,10 +77,11 @@ const TabContainer: React.FC<TabContainer> = ({
                         {
                             tab.type === 'results' && <>
                                 <SearchResults 
+                                    isEmptyQuery={isEmptyQuery(tab.content.query)}
                                     results={tab.content.results} 
                                     dislikeRecord={dislikeRecord}
                                     likeRecord={likeRecord}
-                                    getLikeStatus={(recordID) => getLikeStatus(tab.identifier, recordID)}
+                                    getLikeStatus={(recordID) => getLikeStatus(recordID)}
                                 />
                             </>
                         }

@@ -6,6 +6,7 @@ import React, {
 import { FaArrowRight, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 
 interface SearchResultsArgs {
+    isEmptyQuery: boolean;
     results: Record<string, any>[];
     dislikeRecord: (imageInformations: Record<string, any>) => void;
     likeRecord: (imageInformations: Record<string, any>) => void;
@@ -13,6 +14,7 @@ interface SearchResultsArgs {
 }
 
 const SearchResults: React.FC<SearchResultsArgs> = ({
+    isEmptyQuery,
     results,
     dislikeRecord,
     likeRecord,
@@ -94,6 +96,18 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
 
     return (
         <>
+            {isEmptyQuery && (
+                <div className='empty-query'>
+                    <h2>Entrez une requête pour commencer</h2>
+                </div>
+            )}
+            {
+                !isEmptyQuery && results.length === 0 && (
+                    <div className='no-results'>
+                        <h2>Aucun résultat trouvé</h2>
+                    </div>
+                )
+            }
             {results.map((result, index) => renderResult(result, index))}
         </>
     );

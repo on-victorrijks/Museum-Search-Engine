@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/SearchComponent.css';
 import { TabData } from '../types/tab';
 import { QueryPart, Query } from '../types/queries';
@@ -64,20 +64,30 @@ const weights = [
 interface SearchComponent {
     loading: boolean;
     receiveQuery: (query: Query) => void;
+    
+    selectedTabIdentifier: string;
+
+    queryParts: QueryPart[];
+    setQueryParts: (queryParts: QueryPart[]) => void;
+
+    updateQueryPartWeight: (identifier: string, weight: number) => void;
+
+    resetQuery: () => void;
 }
 
 const SearchComponent: React.FC<SearchComponent> = ({
     loading,
-    receiveQuery
+    receiveQuery,
+    selectedTabIdentifier,
+    queryParts,
+    setQueryParts,
+    updateQueryPartWeight,
+    resetQuery
 }) => {
 
-    const [queryIdentifier, setQueryIdentifier] = useState<string>(uuidv4());
-
     const [keywordsVisible, setKeywordsVisible] = useState<boolean>(false);
-
     const [localSearchTerm, setLocalSearchTerm] = useState<string>('');
-
-    const [queryParts, setQueryParts] = useState<QueryPart[]>([]);
+    const [isAutoSearchEnabled, setIsAutoSearchEnabled] = useState<boolean>(true);
 
     const toggleKeywords = () => {
         setKeywordsVisible(!keywordsVisible);
@@ -92,7 +102,14 @@ const SearchComponent: React.FC<SearchComponent> = ({
         newQueryPart.identifier = uuidv4();
         setQueryParts([...queryParts, newQueryPart]);
     }
-
+    
+    useEffect(() => {
+        if (isAutoSearchEnabled) {
+            if (queryParts.length > 0) {
+                compileIntoTab(false);
+            }
+        }
+    }, [queryParts]);
 
     // Manual terms
     const addTermToSearch = () => {
@@ -206,7 +223,11 @@ const SearchComponent: React.FC<SearchComponent> = ({
 
     // Remove query part
     const removeQueryPart = (identifier: string) => {
+        const userRemovingLastElement = queryParts.length === 1;
         setQueryParts(queryParts.filter(q => q.identifier !== identifier));
+        if (userRemovingLastElement) {
+            resetQuery();
+        }
     }
 
     // Render queries
@@ -241,10 +262,12 @@ const SearchComponent: React.FC<SearchComponent> = ({
                     min={-2}
                     max={2}
                     valueLabelDisplay="off"
-                    onChange={(e, value) => {
-                        queryPart.weight = value as number;
-                    }}
+                    onChangeCommitted={(e, value) => updateQueryPartWeight(
+                        queryPart.identifier, 
+                        value as number
+                    )}
                     color='primary'
+                    disabled={loading}
                 />
                 <div className='side max'>
                     <FaThumbsUp />
@@ -271,8 +294,17 @@ const SearchComponent: React.FC<SearchComponent> = ({
             }
         }
 
+        let imageURL;
+        if (queryPart.imageInformations) {
+            imageURL = "http://127.0.0.1:5000/images/" + queryPart.imageInformations["recordID"];
+        }
+
         return (
             <div key={queryPart.identifier} className="queryPart">
+                { queryPart.imageInformations &&
+                <div className="queryPartImage" style={{ backgroundImage: `url(${imageURL})` }}>
+                </div>
+                }
                 <div className='queryPart-Header'>
                     <div className="queryPartText">
                         <h4>{formatType(queryPart.type)}</h4>
@@ -306,10 +338,11 @@ const SearchComponent: React.FC<SearchComponent> = ({
     }
 
     // Buttons
-    const compileIntoTab = () => {
+    const compileIntoTab = (isNewSearch:boolean) => {
+        let identifier = isNewSearch ? 'N/A' : selectedTabIdentifier;
         const query = {
-            identifier: queryIdentifier,
-            parts: queryParts,
+            identifier: identifier,
+            parts: isNewSearch ? [] : queryParts,
             results: null
         };
         receiveQuery(query);
@@ -317,8 +350,6 @@ const SearchComponent: React.FC<SearchComponent> = ({
 
     const clearAll = () => {
         setQueryParts([]);
-        // Modify the query identifier
-        setQueryIdentifier(uuidv4());
     }
 
     return (
@@ -396,7 +427,7 @@ const SearchComponent: React.FC<SearchComponent> = ({
         {/* Queries Container */}
         <div className="queries">
             <div className='queryPartsHeader'>
-                <h1>Vos filtres</h1>
+                <h1>Vos filtres - {selectedTabIdentifier}</h1>
             </div>
             <div className='queries_container'>
             {
@@ -411,17 +442,31 @@ const SearchComponent: React.FC<SearchComponent> = ({
         <div className="buttons">
             <button
                 className="primary"
-                onClick={compileIntoTab}
-                disabled={queryParts.length === 0}
+                onClick={() => compileIntoTab(false)}
+                disabled={loading || queryParts.length === 0}
             >
                 Rechercher
             </button>
             <button
                 className="secondary"
-                onClick={clearAll}
-                disabled={queryParts.length === 0}
+                onClick={() => compileIntoTab(true)}
+                disabled={loading || queryParts.length === 0}
+            >
+                Nouvelle recherche
+            </button>
+            <button
+                className="secondary"
+                onClick={() => clearAll()}
+                disabled={loading || queryParts.length === 0}
             >
                 Réinitialiser
+            </button>
+            <button
+                className="secondary"
+                onClick={() => setIsAutoSearchEnabled(!isAutoSearchEnabled)}
+                disabled={loading}
+            >
+                {isAutoSearchEnabled ? 'Désactiver' : 'Activer'} la recherche automatique
             </button>
         </div>
 

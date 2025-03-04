@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Import CSS
 import './styles/App.css';
+import Tree from './components/Tree';
 
 const App: React.FC = () => {
 
@@ -25,7 +26,28 @@ const App: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedTabIdentifier, setSelectedTabIdentifier] = useState<string>("N/A");
 
+    const [queryParts, setQueryParts] = useState<QueryPart[]>([]);
+
     const getNumberOfTabs = () => tabs.length;
+
+    const handleError = (sPath: string, message: string) => {
+      console.log(message);
+    }
+
+    const selectTab = (tabIdentifier: string) => {
+      console.log("Selecting tab", tabIdentifier);
+      // Get the QueryParts of the selected tab
+      const tab = tabs.find(tab => tab.identifier === tabIdentifier);
+      if (!tab) {
+        handleError("App.selectTab()", "Tab not found");
+        return;
+      }
+      const queryParts = tab.content.query.parts;
+      // Set the QueryParts
+      setQueryParts(queryParts);
+      // Select the tab
+      setSelectedTabIdentifier(tabIdentifier);
+    }
 
     const queryServer = async (tabIndex: number, updatedTabs: TabData[], query: Query) => {
         // Send the query
@@ -71,10 +93,23 @@ const App: React.FC = () => {
         let identifier = query.identifier;
 
         if (selectedTabIdentifier==="N/A") {
-          setSelectedTabIdentifier(query.identifier);
-          identifier = query.identifier;
+          // This is the first query
+          // We need to create a new tab (therefore a new identifier)
+          const newTabIdentifier = uuidv4();
+          setSelectedTabIdentifier(newTabIdentifier);
+          identifier = newTabIdentifier;
+          query.identifier = newTabIdentifier;
         } else {
-          identifier = selectedTabIdentifier;
+          if (query.identifier !== selectedTabIdentifier) {
+            // This is a new query ==> This will create a new tab !
+            const newTabIdentifier = uuidv4();
+            setSelectedTabIdentifier(newTabIdentifier);
+            identifier = newTabIdentifier;
+            query.identifier = newTabIdentifier;
+          } else {
+            // We are updating a selected tab
+            identifier = selectedTabIdentifier;
+          }
         }
 
         // Check if a tab has the same query identifier
@@ -89,12 +124,21 @@ const App: React.FC = () => {
             identifier: identifier,
             content: {
               query: query,
-              results: {}
+              results: []
             }
           }];
           newTabIndex = updatedTabs.length - 1;
 
-          queryServer(newTabIndex, updatedTabs, query);
+          if (query.parts.length==0) {
+            // The user created a new query ==> We create the tab but we do not send the query to the server
+            setTabs(updatedTabs);
+            setQueryParts([]);
+            setLoading(false);
+            return;
+          } else {
+            // The user created a new query and added some QueryParts ==> We send the query to the server
+            queryServer(newTabIndex, updatedTabs, query); // Handles the states updates
+          }
         } else {
 
           tab.content.query = query;
@@ -108,20 +152,55 @@ const App: React.FC = () => {
             }
           }
 
-          queryServer(newTabIndex, updatedTabs, query);
+          if (query.parts.length==0) {
+            // The user updated the query but removed all QueryParts ==> We remove the tab
+            updatedTabs = [];
+            setTabs(updatedTabs);
+            setQueryParts([]);
+            setLoading(false);
+            return;
+          } else {
+            // The user updated the query and added some QueryParts ==> We send the query to the server
+            queryServer(newTabIndex, updatedTabs, query); // Handles the states updates
+          }
         }
 
       }
 
       const removeTab = (tabIdentifier: string) => {
-        setTabs(tabs.filter(tab => tab.identifier !== tabIdentifier));
+        let toRemoveTabIndex : number = -1;
+        let newSelectedTabIdentifier : string = "N/A";
+        let newQueryParts : QueryPart[] = [];
+        tabs.forEach((tab, index) => {
+          // Find the index of the tab to remove
+          if (tab.identifier === tabIdentifier) {
+            toRemoveTabIndex = index;
+          } else {
+            // This tab could be selected
+            newSelectedTabIdentifier = tab.identifier;
+            newQueryParts = tab.content.query.parts;
+          }
+        });
+        if (toRemoveTabIndex === -1) {
+          handleError("App.removeTab()", "Tab not found");
+          return;
+        }
+        // Remove the tab
+        let updatedTabs : TabData[] = [];
+        tabs.forEach((tab, index) => {
+          if (index !== toRemoveTabIndex) {
+            updatedTabs.push(tab);
+          }
+        });
+        setTabs(updatedTabs);
+        selectTab(newSelectedTabIdentifier);
+        setQueryParts(newQueryParts);
       }
 
       const getLikeStatus = (
-        tabIdentifier: string,
         recordID: number
       ) => {
-        const tab = tabs.find(tab => tab.identifier === tabIdentifier);
+        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
         if (!tab) return undefined;
         const queryParts = tab.content.query.parts;
         const isLiked = queryParts.some((part: QueryPart) => {
@@ -133,41 +212,6 @@ const App: React.FC = () => {
         return isLiked ? true : isDisliked ? false : undefined;
       }
 
-      const dislikeRecord = (imageInformations: Record<string, any>) => {
-        const recordID = imageInformations["recordID"];
-        // Add a QueryPart to the current query
-        if(selectedTabIdentifier=="N/A") return;
-        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
-        if (!tab) return;
-
-        const likeStatus = getLikeStatus(selectedTabIdentifier, recordID);
-        const queryParts = tab.content.query.parts;
-
-        if (likeStatus===false) {
-            // Remove the dislike status
-            let newQueryParts : QueryPart[] = [];
-            queryParts.forEach((part: QueryPart) => {
-              if (!(part.type==="precomputed" && part.recordID===recordID)) {
-                newQueryParts.push(part);
-              }
-            });
-            tab.content.query.parts = newQueryParts;
-            receiveQuery(tab.content.query);
-        } else {
-            // Add the dislike status
-            const newQueryPart : QueryPart = {
-              identifier: uuidv4(),
-              type: "precomputed",
-              weight: -1.0,
-              isSoft: true,
-              recordID: recordID,
-              imageInformations: imageInformations
-            };
-            tab.content.query.parts.push(newQueryPart);
-            receiveQuery(tab.content.query);
-        }
-      }
-
       const likeRecord = (imageInformations: Record<string, any>) => {
         const recordID = imageInformations["recordID"];
         // Add a QueryPart to the current query
@@ -175,7 +219,7 @@ const App: React.FC = () => {
         const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
         if (!tab) return;
 
-        const likeStatus = getLikeStatus(selectedTabIdentifier, recordID);
+        const likeStatus = getLikeStatus(recordID);
         const queryParts = tab.content.query.parts;
 
         if (likeStatus===true) {
@@ -187,8 +231,20 @@ const App: React.FC = () => {
               }
             });
             tab.content.query.parts = newQueryParts;
+            setQueryParts(tab.content.query.parts);
             receiveQuery(tab.content.query);
         } else {
+            if(likeStatus===false) {
+              // Remove the dislike status
+              let newQueryParts : QueryPart[] = [];
+              queryParts.forEach((part: QueryPart) => {
+                if (!(part.type==="precomputed" && part.recordID===recordID)) {
+                  newQueryParts.push(part);
+                }
+              });
+              tab.content.query.parts = newQueryParts;
+            }
+
             // Add the like status
             const newQueryPart : QueryPart = {
               identifier: uuidv4(),
@@ -199,31 +255,114 @@ const App: React.FC = () => {
               imageInformations: imageInformations
             };
             tab.content.query.parts.push(newQueryPart);
+            setQueryParts(tab.content.query.parts);
             receiveQuery(tab.content.query);
         }
       }
+
+      const dislikeRecord = (imageInformations: Record<string, any>) => {
+        const recordID = imageInformations["recordID"];
+        // Add a QueryPart to the current query
+        if(selectedTabIdentifier=="N/A") return;
+        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
+        if (!tab) return;
+
+        const likeStatus = getLikeStatus(recordID);
+        const queryParts = tab.content.query.parts;
+
+        if (likeStatus===false) {
+            // Remove the dislike status
+            let newQueryParts : QueryPart[] = [];
+            queryParts.forEach((part: QueryPart) => {
+              if (!(part.type==="precomputed" && part.recordID===recordID)) {
+                newQueryParts.push(part);
+              }
+            });
+            tab.content.query.parts = newQueryParts;
+            setQueryParts(tab.content.query.parts);
+            receiveQuery(tab.content.query);
+        } else {
+            if(likeStatus===true) {
+              // Remove the like status
+              let newQueryParts : QueryPart[] = [];
+              queryParts.forEach((part: QueryPart) => {
+                if (!(part.type==="precomputed" && part.recordID===recordID)) {
+                  newQueryParts.push(part);
+                }
+              });
+              tab.content.query.parts = newQueryParts;
+            }
+
+            // Add the dislike status
+            const newQueryPart : QueryPart = {
+              identifier: uuidv4(),
+              type: "precomputed",
+              weight: -1.0,
+              isSoft: true,
+              recordID: recordID,
+              imageInformations: imageInformations
+            };
+            tab.content.query.parts.push(newQueryPart);
+            setQueryParts(tab.content.query.parts);
+            receiveQuery(tab.content.query);
+        }
+      }
+
+      const updateQueryPartWeight = (queryPartIdentifier: string, newWeight: number) => {
+        if(selectedTabIdentifier=="N/A") return;
+        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
+        if (!tab) return;
+        const queryParts = tab.content.query.parts;
+        queryParts.forEach((part: QueryPart) => {
+          if (part.identifier === queryPartIdentifier) {
+            part.weight = newWeight;
+          }
+        });
+        tab.content.query.parts = queryParts;
+        setQueryParts(queryParts);
+        // Sadly, we need to re-send the query manually since a QueryPart weight is a key of a QueryPart and 
+        // therefore does not trigger a re-render of the component
+        receiveQuery(tab.content.query); 
+      }
+
+      const resetQuery = () => {
+        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
+        if (!tab) return;
+        tab.content.query.parts = [];
+        tab.content.results = [];
+        setTabs(tabs);
+        setQueryParts([]);
+      }
+
+      //return (
+      //  <div style={{
+      //    backgroundColor: 'white',
+      //  }}>
+      //    <Tree />
+      //  </div>
+      //);
 
       return (
         <div className='tabs-container'>          
           <SearchComponent 
             loading={loading}
-            receiveQuery={receiveQuery} 
+            receiveQuery={receiveQuery}
+            selectedTabIdentifier={selectedTabIdentifier}
+            queryParts={queryParts}
+            setQueryParts={setQueryParts}
+            updateQueryPartWeight={updateQueryPartWeight}
+            resetQuery={resetQuery}
           />
           { getNumberOfTabs()>0 &&
-            <>
-              { loading
-              ? <div className='loading'>
-                  <h1>Chargement...</h1>
-                </div>
-              : <TabContainer 
-                tabs={tabs} 
-                removeTab={removeTab}
-                dislikeRecord={dislikeRecord}
-                likeRecord={likeRecord}
-                getLikeStatus={getLikeStatus}
-              />
-              }
-            </>
+            <TabContainer 
+              tabs={tabs} 
+              selectedTabIdentifier={selectedTabIdentifier}
+              selectTab={selectTab}
+              removeTab={removeTab}
+              dislikeRecord={dislikeRecord}
+              likeRecord={likeRecord}
+              getLikeStatus={getLikeStatus}
+            />
           }
         </div>
       );

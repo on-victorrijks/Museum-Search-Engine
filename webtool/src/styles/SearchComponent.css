@@ -272,6 +272,17 @@ color: var(--text-color);
     background-color: var(--hover-bg);
     color: black;
 }
+.queryPartImage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    overflow: hidden;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: repeat;
+}
 /* Change MUI Slider */
 .MuiSlider-markLabel {
     width: 80px;
