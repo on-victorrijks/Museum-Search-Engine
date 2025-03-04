@@ -334,13 +334,15 @@ const App: React.FC = () => {
         setQueryParts([]);
       }
 
-      //return (
-      //  <div style={{
-      //    backgroundColor: 'white',
-      //  }}>
-      //    <Tree />
-      //  </div>
-      //);
+      return (
+        <div style={{
+          backgroundColor: 'white',
+        }}>
+          <Tree 
+            handleError={handleError}
+          />
+        </div>
+      );
 
       return (
         <div className='tabs-container'>          
