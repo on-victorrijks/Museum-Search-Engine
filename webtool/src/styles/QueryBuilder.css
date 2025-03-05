@@ -1,0 +1,383 @@
+.query-builder {
+    background: var(--background-color);
+    display: flex;
+    flex-direction: row;
+}
+.qb-blocks-selector {
+    flex-shrink: 0;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: solid 1px var(--border-color);
+}
+.qt-blocks-header{
+    padding: 10px;
+    background: var(--container-bg);
+    border-bottom: solid 1px var(--border-color);
+}
+.qt-blocks-header h3 {
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 300;
+}
+.qt-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+}
+.qt-blocks button {
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    background: var(--container-bg);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+.qt-blocks button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+.qt-blocks button:disabled:hover {
+    transform: scale(0.9);
+}
+.qt-blocks button:hover {
+    transform: scale(1);
+}
+.qt-blocks button[block-type="AND"] {
+    background: rgb(112, 25, 115);
+}
+.qt-blocks button[block-type="OR"] {
+    background: rgb(25, 64, 115);
+}
+.qt-blocks button[block-type="EQUAL"] {
+    background: rgb(25, 115, 62);
+}
+.qt-blocks button[block-type="BETWEEN"] {
+    background: rgb(100, 115, 25);
+}
+.qt-blocks button[block-type="INCLUDES"] {
+    background: rgb(25, 98, 115);
+}
+.qt-blocks button span {
+    width: 32px;
+    height: 32px;
+    color: var(--text-color);
+    font-size: 13px;
+    font-weight: bold;
+    background-color: rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.qt-blocks button h3 {
+    flex: 1;
+    color: var(--text-color);
+    font-size: 13px;
+    font-weight: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+}
+
+.qb-conditions {
+    /* https://stackoverflow.com/questions/3540194/how-to-make-a-grid-like-graph-paper-grid-with-just-css */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: solid 1px var(--border-color);
+    --line-color: rgba(255, 255, 255, 0.046);
+    --line-scale: 1px;
+    background:
+        linear-gradient(-90deg, var(--line-color) calc(var(--line-scale) * 1), transparent calc(var(--line-scale) * 1)),
+        linear-gradient(var(--line-color) calc(var(--line-scale) * 1), transparent calc(var(--line-scale) * 1)), 
+        linear-gradient(-90deg, var(--line-color) calc(var(--line-scale) * 1), transparent calc(var(--line-scale) * 1)),
+        linear-gradient(var(--line-color) calc(var(--line-scale) * 1), transparent calc(var(--line-scale) * 1)),
+        linear-gradient(transparent calc(var(--line-scale) * 3), var(--background-color) calc(var(--line-scale) * 3), var(--background-color) 78px, transparent 78px),
+        linear-gradient(-90deg, var(--background-color) calc(var(--line-scale) * 1), transparent calc(var(--line-scale) * 1)),
+        linear-gradient(-90deg, transparent calc(var(--line-scale) * 3), var(--background-color) calc(var(--line-scale) * 3), var(--background-color) 78px, transparent 78px),
+        linear-gradient(var(--background-color) calc(var(--line-scale) * 1), transparent calc(var(--line-scale) * 1)),
+        var(--background-color);
+    background-size:
+        4px 4px,
+        4px 4px,
+        100px 100px,
+        100px 100px,
+        100px 100px,
+        100px 100px,
+        100px 100px,
+        100px 100px;
+    gap: 15px;
+    padding: 30px;
+}
+
+.qb-block {
+    background: var(--container-bg);
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+.qb-block-sep{
+    width: 1px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.10);
+    flex-shrink: 0;
+}
+.qb-block[block-type="AND"] {
+    background: rgb(112, 25, 115);
+}
+.qb-block[block-type="OR"] {
+    background: rgb(25, 64, 115);
+}
+.qb-block[block-type="EQUAL"] {
+    background: rgb(25, 115, 62);
+}
+.qb-block[block-type="BETWEEN"] {
+    background: rgb(100, 115, 25);
+}
+.qb-block[block-type="INCLUDES"] {
+    background: rgb(25, 98, 115);
+}
+.qb-block-base {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+.qb-block-base-not {
+    padding: 6px 8px 6px 6px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.10);
+    border: solid 1px rgba(0, 0, 0, 0.10);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.qb-block-base-not-repr {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background: #dadada;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #4d4d4d;
+    font-size: 12px;
+}
+.qb-block-base-not h5 {
+    color: #b5b5b5;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: "Montserrat";
+    line-height: 0;
+}
+.qb-block-base-not.enabled .qb-block-base-not-repr{
+    background: #d03131;
+    color: #fff;
+}
+.qb-block-base-not.enabled h5{
+    color: #fff;
+}
+.qb-block-base h4 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: "Montserrat";
+    line-height: 0;
+}
+.qb-block-content {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex: 1;
+    align-items: center;
+}
+.qb-block-content.column {
+    flex-direction: column;
+    width: 100%;
+}
+.qd-block-row{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+select.border.rounded.p-1 {
+    padding: 8px;
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    background: white;
+    font-size: 12px;
+}
+.qb-block-input {
+    border-radius: 8px;
+    border: solid 1px var(--border-color);
+    font-size: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+.qb-block-input-br {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    width: 100%;
+}
+.qb-block-input-br input[type="text"] {
+    border: none;
+    flex: 1;
+    height: 32px;
+    padding: 8px;
+    background: white;
+}
+.qb-block-input-br input[type="text"]:disabled {
+    opacity: .7;
+    cursor: not-allowed;
+}
+.qb-block-base-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+}
+.qb-block-base-buttons button {
+    height: 32px;
+    width: 32px;
+    border-radius: 16px;
+    border: solid 1px var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background: rgb(181, 181, 181);
+    transition: all 0.2s;
+}
+.qb-block-base-buttons button:hover {
+    background: rgb(255, 255, 255);
+}
+.qb-block-input-br-prefix {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-right: solid 1px var(--border-color);
+}
+.qb-block-input-inter {
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.qb-block-input-inter h4 {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "Montserrat";
+    line-height: 0;
+}
+.qb-block-input-br button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-left: solid 1px var(--border-color);
+    background: #78ef93;
+    cursor: pointer;
+}
+.qb-block-input-br button:hover {
+    background: #4fcb63;
+}
+.qb-block-values {
+    padding: 8px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border: solid 1px var(--border-color);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.qb-block-value {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 10px 6px 12px;
+    background: var(--keyword-bg);
+    border-radius: 6px;
+    border: solid 1px var(--border-color);
+    gap: 12px;
+}
+.qb-block-value h4 {
+    font-size: 13px;
+    color: var(--keyword-text);
+}
+.qb-block-value button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--keyword-text);
+    line-height: 0;
+    height: 20px;
+}
+.qb-block-value button:hover {
+    color: white;
+}
+.qb-block-values h4 {
+    color: var(--text-color);
+    font-size: 13px;
+    font-family: "Montserrat";
+}
+.autocomplete-container {
+    width: 100%;
+    background: #eee;
+    border-top: solid 1px var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+.autocomplete-option{
+    padding: 6px;
+    background-color: rgba(0, 0, 0, 0.0);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.autocomplete-option:hover {
+    background-color: rgba(0, 0, 0, 0.10);
+}
+.autocomplete-option h3 {
+    font-size: 12px;
+    color: #424242;
+}
+.autocomplete-option h3:hover {
+    color: #000;
+}
+.autocomplete-loading{
+    padding: 6px;
+    background-color: rgba(0, 0, 0, 0.0);
+    display: flex;
+}

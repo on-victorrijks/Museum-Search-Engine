@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Import CSS
 import './styles/App.css';
 import Tree from './components/Tree';
+import QueryBuilder from './components/QueryBuilder';
 
 const App: React.FC = () => {
 
@@ -338,9 +339,7 @@ const App: React.FC = () => {
         <div style={{
           backgroundColor: 'white',
         }}>
-          <Tree 
-            handleError={handleError}
-          />
+          <QueryBuilder />
         </div>
       );
 
