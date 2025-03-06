@@ -620,10 +620,12 @@ class MockDB(AbstractDatabase):
     def evaluate_constraint(self, record, constraint) -> bool:        
         
         constraint_type = constraint["type"]
-        key             = constraint["columnName"]
+        key             = constraint["selectedColumn"]["key"]
+
         isNot           = constraint.get("isNot", False)      
         exactMatch      = constraint.get("exactMatch", False)
         caseSensitive   = constraint.get("caseSensitive", False)
+        keepNull        = constraint.get("keepNull", False)
 
         smartColumn     = self.get_smart_column_info(key)
         isInRecord      = smartColumn["isInRecord"]
@@ -638,24 +640,34 @@ class MockDB(AbstractDatabase):
         else:
             datapoint = self.iconographies[self.recordIDToIndex[recordID]]
 
+        if datapoint==smartColumn["default"]:
+            # Missing data ==> the user can choose to keep or discard the record (ignore the constraint)
+            return keepNull
+
         condition = False
 
         if constraint_type == "BETWEEN":
-            condition = castUser(constraint["from"]) <= datapoint <= castUser(constraint["to"])
+            inp_from = constraint.get("from", -1)
+            inp_to = constraint.get("to", -1)
+
+            condition = castUser(inp_from) <= datapoint <= castUser(inp_to)
  
         elif constraint_type == "EQUAL":
+            inp_equalTo = constraint.get("equalTo", None)
+
             if isinstance(datapoint, int) or isinstance(datapoint, float):
-                condition = comparator(castUser(constraint["equalTo"]), datapoint, caseSensitive, strict=exactMatch)
+                condition = comparator(castUser(inp_equalTo), datapoint, caseSensitive, strict=exactMatch)
             elif isinstance(datapoint, list):
                 for element in datapoint:
-                    if comparator(castUser(constraint["equalTo"]), element, caseSensitive, strict=exactMatch):
+                    if comparator(castUser(inp_equalTo), element, caseSensitive, strict=exactMatch):
                         condition = True
                         break
             else:
-                condition = comparator(castUser(constraint["equalTo"]), datapoint, caseSensitive, strict=exactMatch)
+                condition = comparator(castUser(inp_equalTo), datapoint, caseSensitive, strict=exactMatch)
         
         elif constraint_type == "INCLUDES":
-            includes = [castUser(include) for include in constraint["includes"]]
+            inp_values = constraint.get("values", [])
+            includes = [castUser(include) for include in inp_values]
             
             if isInRecord:
                 # We want to check if a word from includes is in the datapoint
@@ -710,7 +722,7 @@ class MockDB(AbstractDatabase):
 
         return condition if not isNot else not condition
 
-    def parse_constraints(self, record, constraints) -> bool:        
+    def DEPT__parse_constraints(self, record, constraints) -> bool:        
         bool_value = True
         nextOperation = "AND"
         for constraint in constraints:
@@ -727,6 +739,26 @@ class MockDB(AbstractDatabase):
         
         return bool_value
 
+    def parse_constraints(self, record, constraints) -> bool:
+        bool_value = True
+        nextOperation = "AND"
+        
+        for constraint in constraints:
+            if constraint["type"] == "GROUP":
+                block_bool = self.parse_constraints(record, constraint["children"])
+            elif constraint["type"] in ["AND", "OR"]:
+                nextOperation = constraint["type"]
+                continue
+            else:
+                block_bool = self.evaluate_constraint(record, constraint)
+            
+            if nextOperation == "AND":
+                bool_value = bool_value and block_bool
+            elif nextOperation == "OR":
+                bool_value = bool_value or block_bool
+        
+        return bool_value
+
     def apply_hard_constraints(self, constraints):
         """Filters data based on structured constraints."""
         recordIDs = [record["recordID"] for i, record in enumerate(self.data) if self.parse_constraints(record, constraints)]
@@ -737,15 +769,15 @@ class MockDB(AbstractDatabase):
 
         values = []
         for query in queries:
-            if query['type'] == 'term':
+            if query['type'] == 'TERM':
                 values.append(query['term'])
-            elif query['type'] == 'keyword':
+            elif query['type'] == 'KEYWORD':
                 values.append(query['keyword'])
-            elif query['type'] == 'color':
+            elif query['type'] == 'COLOR':
                 values.append(query['color'])
-            elif query['type'] == 'luminosity':
+            elif query['type'] == 'LUMINOSITY':
                 values.append(query['luminosity'])
-            elif query['type'] == 'precomputed':
+            elif query['type'] == 'PRECOMPUTED':
                 values.append(query['recordID'])
 
         embeddings = []
@@ -785,7 +817,7 @@ class MockDB(AbstractDatabase):
             precomputed = {}
 
             for i, query in enumerate(queries):
-                if query["type"] != "precomputed":
+                if query["type"] != "PRECOMPUTED":
                     continue
                 recordID = query["recordID"]
                 precomputed[i] = self.vectors[self.recordIDToIndex[recordID]]

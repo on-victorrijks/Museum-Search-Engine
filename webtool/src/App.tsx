@@ -1,21 +1,27 @@
 import React, {
   useState
 } from 'react';
-import { TabData } from './types/tab';
-import { QueryPart, Query } from './types/queries';
 import SearchComponent from './components/SearchComponent';
 import TabContainer from './components/TabContainer';
 import axios from 'axios';
 
 import ApiResponse from './types/ApiResponse';
 
+// Import types
+import { TabData } from './types/tab';
+import { 
+  Query,
+  QueryPart,
+  SoftQueryPart,
+  SoftQueryType,
+} from './types/queries';
+
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';
 
 // Import CSS
 import './styles/App.css';
-import Tree from './components/Tree';
-import QueryBuilder from './components/QueryBuilder';
+import ResizableDiv from './components/ResizableDiv';
 
 const App: React.FC = () => {
 
@@ -32,7 +38,6 @@ const App: React.FC = () => {
     }
 
     const selectTab = (tabIdentifier: string) => {
-      console.log("Selecting tab", tabIdentifier);
       // Get the QueryParts of the selected tab
       const tab = tabs.find(tab => tab.identifier === tabIdentifier);
       if (!tab) {
@@ -200,12 +205,19 @@ const App: React.FC = () => {
         const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
         if (!tab) return undefined;
         const queryParts = tab.content.query.parts;
-        const isLiked = queryParts.some((part: QueryPart) => {
-          return part.type === "precomputed" && part.recordID === recordID && part.weight > 0;
+
+        const isLiked = queryParts.some((queryPart: QueryPart) => {
+          if(!queryPart.isSoft) return false;
+          const queryPartAsSoft = queryPart as SoftQueryPart;
+          return queryPartAsSoft.type === SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID === recordID && queryPartAsSoft.weight > 0;
         });
-        const isDisliked = queryParts.some((part: QueryPart) => {
-          return part.type === "precomputed" && part.recordID === recordID && part.weight < 0;
+
+        const isDisliked = queryParts.some((queryPart: QueryPart) => {
+          if(!queryPart.isSoft) return false;
+          const queryPartAsSoft = queryPart as SoftQueryPart;
+          return queryPartAsSoft.type === SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID === recordID && queryPartAsSoft.weight < 0;
         });
+
         return isLiked ? true : isDisliked ? false : undefined;
       }
 
@@ -222,10 +234,20 @@ const App: React.FC = () => {
         if (likeStatus===true) {
             // Remove the like status
             let newQueryParts : QueryPart[] = [];
-            queryParts.forEach((part: QueryPart) => {
-              if (!(part.type==="precomputed" && part.recordID===recordID)) {
-                newQueryParts.push(part);
+            queryParts.forEach((queryPart: QueryPart) => {
+
+              // Keep the hard QueryParts
+              if(!queryPart.isSoft) {
+                newQueryParts.push(queryPart);
+                return;
               }
+
+              // Remove the like status from the matching QueryPart
+              const queryPartAsSoft = queryPart as SoftQueryPart;
+              if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
+                newQueryParts.push(queryPartAsSoft);
+              }
+
             });
             tab.content.query.parts = newQueryParts;
             setQueryParts(tab.content.query.parts);
@@ -234,18 +256,28 @@ const App: React.FC = () => {
             if(likeStatus===false) {
               // Remove the dislike status
               let newQueryParts : QueryPart[] = [];
-              queryParts.forEach((part: QueryPart) => {
-                if (!(part.type==="precomputed" && part.recordID===recordID)) {
-                  newQueryParts.push(part);
+              queryParts.forEach((queryPart: QueryPart) => {
+
+                // Keep the hard QueryParts
+                if(!queryPart.isSoft) {
+                  newQueryParts.push(queryPart);
+                  return;
                 }
+
+                // Remove the dislike status from the matching QueryPart
+                const queryPartAsSoft = queryPart as SoftQueryPart;
+                if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
+                  newQueryParts.push(queryPartAsSoft);
+                }
+
               });
               tab.content.query.parts = newQueryParts;
             }
 
             // Add the like status
-            const newQueryPart : QueryPart = {
+            const newQueryPart : SoftQueryPart = {
               identifier: uuidv4(),
-              type: "precomputed",
+              type: SoftQueryType.PRECOMPUTED,
               weight: 1.0,
               isSoft: true,
               recordID: recordID,
@@ -270,10 +302,20 @@ const App: React.FC = () => {
         if (likeStatus===false) {
             // Remove the dislike status
             let newQueryParts : QueryPart[] = [];
-            queryParts.forEach((part: QueryPart) => {
-              if (!(part.type==="precomputed" && part.recordID===recordID)) {
-                newQueryParts.push(part);
+            queryParts.forEach((queryPart: QueryPart) => {
+
+              // Keep the hard QueryParts
+              if(!queryPart.isSoft) {
+                newQueryParts.push(queryPart);
+                return;
               }
+
+              // Remove the like status from the matching QueryPart
+              const queryPartAsSoft = queryPart as SoftQueryPart;
+              if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
+                newQueryParts.push(queryPartAsSoft);
+              }
+
             });
             tab.content.query.parts = newQueryParts;
             setQueryParts(tab.content.query.parts);
@@ -282,18 +324,28 @@ const App: React.FC = () => {
             if(likeStatus===true) {
               // Remove the like status
               let newQueryParts : QueryPart[] = [];
-              queryParts.forEach((part: QueryPart) => {
-                if (!(part.type==="precomputed" && part.recordID===recordID)) {
-                  newQueryParts.push(part);
+              queryParts.forEach((queryPart: QueryPart) => {
+
+                // Keep the hard QueryParts
+                if(!queryPart.isSoft) {
+                  newQueryParts.push(queryPart);
+                  return;
                 }
+
+                // Remove the like status from the matching QueryPart
+                const queryPartAsSoft = queryPart as SoftQueryPart;
+                if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
+                  newQueryParts.push(queryPartAsSoft);
+                }
+
               });
               tab.content.query.parts = newQueryParts;
             }
 
             // Add the dislike status
-            const newQueryPart : QueryPart = {
+            const newQueryPart : SoftQueryPart = {
               identifier: uuidv4(),
-              type: "precomputed",
+              type: SoftQueryType.PRECOMPUTED,
               weight: -1.0,
               isSoft: true,
               recordID: recordID,
@@ -310,15 +362,16 @@ const App: React.FC = () => {
         const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
         if (!tab) return;
         const queryParts = tab.content.query.parts;
-        queryParts.forEach((part: QueryPart) => {
-          if (part.identifier === queryPartIdentifier) {
-            part.weight = newWeight;
+        queryParts.forEach((queryPart: QueryPart) => {
+          const queryPartAsSoft = queryPart as SoftQueryPart;
+          if (queryPartAsSoft.identifier === queryPartIdentifier) {
+            queryPartAsSoft.weight = newWeight;
           }
         });
         tab.content.query.parts = queryParts;
         setQueryParts(queryParts);
         // Sadly, we need to re-send the query manually since a QueryPart weight is a key of a QueryPart and 
-        // therefore does not trigger a re-render of the component
+        // therefore does not trigger a re-render of the component (TODO: find a way to avoid this)
         receiveQuery(tab.content.query); 
       }
 
@@ -332,16 +385,18 @@ const App: React.FC = () => {
       }
 
       return (
-        <div className='tabs-container'>          
-          <SearchComponent 
-            loading={loading}
-            receiveQuery={receiveQuery}
-            selectedTabIdentifier={selectedTabIdentifier}
-            queryParts={queryParts}
-            setQueryParts={setQueryParts}
-            updateQueryPartWeight={updateQueryPartWeight}
-            resetQuery={resetQuery}
-          />
+        <div className='tabs-container'>        
+          <ResizableDiv minWidth={300} maxWidth={800} initialWidth={400}>
+            <SearchComponent 
+              loading={loading}
+              receiveQuery={receiveQuery}
+              selectedTabIdentifier={selectedTabIdentifier}
+              queryParts={queryParts}
+              setQueryParts={setQueryParts}
+              updateQueryPartWeight={updateQueryPartWeight}
+              resetQuery={resetQuery}
+            />
+          </ResizableDiv>  
           { getNumberOfTabs()>0 &&
             <TabContainer 
               tabs={tabs} 

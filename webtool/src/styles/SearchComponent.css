@@ -1,11 +1,11 @@
 /* Content Container */
 .sb-Content {
-    max-width: 50vw;
-    width: 500px;
+    flex: 1;
     background-color: var(--background-color);
     display: flex;
     flex-direction: column;
     border-right: solid 1px var(--border-color);
+    overflow: hidden;
 }
 /* Header */
 .header {

@@ -68,6 +68,16 @@
 .qt-blocks button[block-type="INCLUDES"] {
     background: rgb(25, 98, 115);
 }
+.qt-blocks button[block-type="GROUP"] {
+    background: #7e3939;
+}
+.qb-block[block-type="GROUP"] > .qb-block-header {
+    background: var(--background-color);
+}
+.qb-block[block-type="GROUP"] > .qt-blocks {
+    border-bottom: solid 1px var(--border-color);
+}
+
 .qt-blocks button span {
     width: 32px;
     height: 32px;
@@ -156,6 +166,11 @@
 }
 .qb-block[block-type="INCLUDES"] {
     background: rgb(25, 98, 115);
+}
+.qb-block[block-type="GROUP"] {
+    background: rgb(44 44 44);
+    border-color: #a5a5a5;
+    border-right-width: 0;
 }
 .qb-block-base {
     display: flex;
@@ -252,6 +267,7 @@ select.border.rounded.p-1 {
     background: white;
     font-size: 12px;
     height: 100%;
+    max-height: 50px;
     min-width: 0;
     flex: 1;
 }
@@ -577,4 +593,30 @@ select.border.rounded.p-1 {
 }
 .qt-verif.valid .qt-verif-header h3 {
     color: #76ff76;
+}
+
+.qb-block-group-children {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    padding-right: 0;
+    width: 100%;
+}
+.qb-block-group-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.qb-block-group-children-empty{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.qb-block-group-children-empty h3 {
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 300;
 }

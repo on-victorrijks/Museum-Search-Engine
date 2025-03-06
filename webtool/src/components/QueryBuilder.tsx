@@ -5,27 +5,39 @@ import { FaBan, FaCheck, FaPlus, FaTrash } from 'react-icons/fa';
 import { RiResetLeftFill } from 'react-icons/ri';
 import axios from 'axios';
 
-import {
-    BlockType,
-    BaseBlockProps,
+import ApiResponse from '../types/ApiResponse';
+
+// Import uuid
+import { v4 as uuidv4 } from 'uuid';
+
+// Import types
+import { 
+    Query,
+    QueryPart,
+    SoftQueryPart,
+    HardQueryPart,
+    HardQueryPartControlled,
     EqualBlockProps,
     BetweenBlockProps,
     IncludesBlockProps,
-    SelectionOption
-} from '../types/blocks';
-import ApiResponse from '../types/ApiResponse';
+    ANDBlockProps,
+    ORBlockProps,
+    SelectionOption,
+    BlockType,
+    SoftQueryType,
+    GroupBlockProps,
+} from '../types/queries';
 
-const BaseButtons: React.FC<BaseBlockProps> = ({ 
+// Export
+const BaseButtons: React.FC<HardQueryPartControlled> = ({ 
     type, 
-    isNot, 
-    onToggleNot, 
-    onDelete, 
-    changeBlockType,
+    setBlockType, 
+    onDelete
  }) => (
     <div className="qb-block-base-buttons">
         { (type===BlockType.OR) &&
         <button 
-            onClick={() => changeBlockType(BlockType.AND)} 
+            onClick={() => setBlockType && setBlockType(BlockType.AND)} 
             className="long"
         >
             <h3>Remplacer par <b>{getFrenchType(BlockType.AND)}</b></h3>
@@ -33,7 +45,7 @@ const BaseButtons: React.FC<BaseBlockProps> = ({
         }
         { (type===BlockType.AND) &&
         <button 
-            onClick={() => changeBlockType(BlockType.OR)} 
+            onClick={() => setBlockType && setBlockType(BlockType.OR)} 
             className="long"
         >
             <h3>Remplacer par <b>{getFrenchType(BlockType.OR)}</b></h3>
@@ -47,8 +59,35 @@ const BaseButtons: React.FC<BaseBlockProps> = ({
     </div>
 );
 
+const isBlockDisabled = (
+    type: BlockType,
+    queryParts: QueryPart[]
+) => {
+    const hardQueryParts: HardQueryPart[] = queryParts.filter((queryPart: QueryPart) => !queryPart.isSoft) as HardQueryPart[];
+
+    let lastBlock = null;
+    if (hardQueryParts.length > 0) lastBlock = hardQueryParts[hardQueryParts.length - 1];
+    const lastBlockType = lastBlock ? lastBlock.type : null;
+
+    const RULES : Record<BlockType, (null|BlockType)[]> = {
+        // Hypothesis block type: [Allowed if last block is of type]
+        [BlockType.GROUP]: [null, BlockType.AND, BlockType.OR],
+        [BlockType.AND]: [BlockType.EQUAL, BlockType.BETWEEN, BlockType.INCLUDES, BlockType.GROUP],
+        [BlockType.OR]: [BlockType.EQUAL, BlockType.BETWEEN, BlockType.INCLUDES, BlockType.GROUP],
+        [BlockType.EQUAL]: [null, BlockType.AND, BlockType.OR],
+        [BlockType.BETWEEN]: [null, BlockType.AND, BlockType.OR],
+        [BlockType.INCLUDES]: [null, BlockType.AND, BlockType.OR],
+    }
+
+    // Check if lastBlockType is in RULES[type]
+    const RULES_FOR_TYPE : (null|BlockType)[] = RULES[type];
+    return !RULES_FOR_TYPE.includes(lastBlockType as BlockType);
+};
+
 const getFrenchType = (type: BlockType) => {
     switch (type) {
+        case BlockType.GROUP:
+            return 'GROUPE';
         case BlockType.AND:
             return 'ET';
         case BlockType.OR:
@@ -64,127 +103,205 @@ const getFrenchType = (type: BlockType) => {
     }
 };
 
-const BaseBlock: React.FC<BaseBlockProps> = ({ 
-  type, 
-  isNot, 
-  onToggleNot,
-  setExactMatch,
-  exactMatch,
-}) => {
-    const qbOptionsVisible = isNot !== undefined || (exactMatch!==undefined && setExactMatch!==undefined);
-    return (
-    <div className="qb-block-base">
-        
-        { qbOptionsVisible &&
-        <div className="qb-block-base-options">
-            { isNot !== undefined &&
-            <div className={"qb-block-base-option " + (isNot ? "enabled" : "")} onClick={onToggleNot}>
-                <div className="qb-block-base-option-repr">
-                    {isNot ? <FaCheck /> : null}
-                </div>
-                {
-                    type===BlockType.INCLUDES
-                    ? <h5>NE (CONTIENT) PAS</h5>
-                    : <h5>N'EST PAS</h5>
-                }
-            </div>
-            }
-            { (exactMatch!==undefined && setExactMatch!==undefined) &&
-            <div className={"qb-block-base-option " + (exactMatch ? "enabled" : "")} onClick={() => setExactMatch(!exactMatch)}>
-                <div className="qb-block-base-option-repr">
-                    {exactMatch ? <FaCheck /> : null}
-                </div>
-                {
-                    type===BlockType.INCLUDES
-                    ? <h5>TOUS</h5>
-                    : <h5>EXACTEMENT</h5>
-                }
-            </div>
-            }
-        </div>
-        }
+const BaseBlock: React.FC<HardQueryPartControlled> = ({ 
+    blockType,
     
-        <h4>{getFrenchType(type)}</h4>
-    </div>
+    isNot,
+
+    setIsNot,
+
+    exactMatch,
+    setExactMatch,
+
+    caseSensitive,
+    setCaseSensitive,
+
+    keepNull,
+    setKeepNull,
+}) => {
+    const qbOptionsVisible = blockType===BlockType.EQUAL || blockType===BlockType.BETWEEN || blockType===BlockType.INCLUDES;
+
+    return (
+        <div className="qb-block-base">
+            
+            { qbOptionsVisible &&
+            <div className="qb-block-base-options">
+                { isNot !== undefined &&
+                <div className={"qb-block-base-option " + (isNot ? "enabled" : "")} onClick={() => setIsNot && setIsNot(!isNot)}>
+                    <div className="qb-block-base-option-repr">
+                        {isNot ? <FaCheck /> : null}
+                    </div>
+                    {
+                        blockType===BlockType.INCLUDES
+                        ? <h5>NE (CONTIENT) PAS</h5>
+                        : <h5>N'EST PAS</h5>
+                    }
+                </div>
+                }
+                { (exactMatch!==undefined && setExactMatch!==undefined) &&
+                <div className={"qb-block-base-option " + (exactMatch ? "enabled" : "")} onClick={() => setExactMatch(!exactMatch)}>
+                    <div className="qb-block-base-option-repr">
+                        {exactMatch ? <FaCheck /> : null}
+                    </div>
+                    {
+                        blockType===BlockType.INCLUDES
+                        ? <h5>TOUS</h5>
+                        : <h5>EXACTEMENT</h5>
+                    }
+                </div>
+                }
+                { (caseSensitive!==undefined && setCaseSensitive!==undefined) &&
+                <div className={"qb-block-base-option " + (caseSensitive ? "enabled" : "")} onClick={() => setCaseSensitive(!caseSensitive)}>
+                    <div className="qb-block-base-option-repr">
+                        {caseSensitive ? <FaCheck /> : null}
+                    </div>
+                    <h5>SENSIBLE À LA CASSE</h5>
+                </div>
+                }
+                { (keepNull!==undefined && setKeepNull!==undefined) &&
+                <div className={"qb-block-base-option " + (keepNull ? "enabled" : "")} onClick={() => setKeepNull(!keepNull)}>
+                    <div className="qb-block-base-option-repr">
+                        {keepNull ? <FaCheck /> : null}
+                    </div>
+                    <h5>GARDER LES NULL</h5>
+                </div>
+                }
+            </div>
+            }
+        
+            <h4>{getFrenchType(blockType as BlockType)}</h4>
+        </div>
     );
 }
 
-const selectOptionComponent = (
-    availableColumns: SelectionOption[],
-    selectedColumn: SelectionOption | undefined, 
-    onColumnChange: (column: SelectionOption) => void
-) => (
+const SelectKey: React.FC<HardQueryPartControlled> = ({
+    ...props
+}) => (
     <select 
-          value={selectedColumn?.key || ''} 
-          onChange={(e) => {
+        value={props.selectedColumn?.key || ''} 
+        onChange={(e) => {
             // Get the selected column with the key
-            const selectedColumn = availableColumns.find(col => col.key === e.target.value);
-            if (selectedColumn) onColumnChange(selectedColumn);
-          }}  
-          className="border rounded p-1"
+            const selectedColumn = props.availableColumns?.find((col:SelectionOption) => col.key === e.target.value);
+            // Update the selected column
+            if(props.setSelectedColumn && selectedColumn) props.setSelectedColumn(selectedColumn);
+        }}  
+        className="border rounded p-1"
         >
-          <option value="">Select Column</option>
-          {availableColumns.map(col => (
+        <option value="">Select Column</option>
+        {props.availableColumns?.map((col: SelectionOption) => (
             <option key={col.key} value={col.key}>{col.userFriendlyName}</option>
-          ))}
+        ))}
     </select>
 );
 
-const EqualBlock: React.FC<EqualBlockProps> = ({
-    identifier,
-    availableColumns,
-    selectedColumn,
-    onColumnChange,
-    value,
-    onValueChange,
-    inputDisabled,
-    renderAutocomplete,
-    autocomplete,
-    autocompleteLoading,
-    queryAPIForAutocomplete,
-    resetAutocomplete,
-    lastFocusedInputID,
-    setLastFocusedInputID,
-    ...baseProps
+const GroupBlock: React.FC<GroupBlockProps> = ({
+    ...props
 }) => {
-    const input_id = `input-${identifier}`;
+    
+    const createChild = (type: BlockType) => {
+        const newQueryPart : HardQueryPart = {
+            identifier: uuidv4(),
+            type: type,
+            isSoft: false,
+
+            selectedColumn: props.availableColumns[0],
+            blockType: type,
+            isNot: false,
+            exactMatch: false,
+            caseSensitive: false,
+            keepNull: false,
+        };
+        props.onChildAdd(newQueryPart as HardQueryPartControlled);
+    }
+
+    const receiveChildUpdate = (newChildren: QueryPart[]) => {
+        props.updateBlock(props.identifier, { children: newChildren });
+    }
+
+    return (
+        <div className="qb-block" block-type={BlockType.GROUP}>
+            <div className="qb-block-header">
+                <BaseBlock {...props} />
+                <div style={{flex: 1}}></div>
+                <BaseButtons {...props} />
+            </div>  
+            <div className="qt-blocks" style={{width: '100%'}}>
+                {Object.values(BlockType).map(type => (
+                    <button
+                        key={type}
+                        block-type={type}
+                        onClick={() => createChild(type)}
+                        disabled={isBlockDisabled(type, props.children)}
+                    >
+                        <h3>{getFrenchType(type)}</h3>
+                    </button>
+                ))}
+            </div>
+            <div className="qb-block-group-children">
+                {props.children.length === 0 && 
+                <div className="qb-block-group-children-empty">
+                    <h3>Aucune contrainte</h3>
+                </div>
+                }
+                {props.children.map((child: QueryPart) => {
+                    return props.renderBlock(
+                        props.children,
+                        receiveChildUpdate,
+                        child as HardQueryPartControlled
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
+const EqualBlock: React.FC<EqualBlockProps> = ({
+    ...props
+}) => {
+    const input_id = `input-${props.identifier}`;
     return (
         <div className="qb-block" block-type={BlockType.EQUAL}>
             <div className="qb-block-header">
-                {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
-                <BaseBlock {...baseProps} />
-                <BaseButtons {...baseProps} />
+                <SelectKey {...props} />
+                <BaseBlock {...props} />
+                <BaseButtons {...props} />
             </div>
             <div className="qb-block-content">
 
-                <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
+                <div className={"qb-block-input " + (props.autocompleteLoading ? "loading" : "")}>
                     <div className="qb-block-input-br">
                         <input 
                             type="text" 
-                            value={value}
+                            value={props.equalTo}
                             onChange={(e) => {
-                                onValueChange(e.target.value);
-                                queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
+                                // Change the input's value
+                                props.setEqualTo(e.target.value);
+                                // Query the API for autocomplete
+                                if (props.selectedColumn && props.queryAPIForAutocomplete) {
+                                    props.queryAPIForAutocomplete(props.selectedColumn.key, e.target.value);
+                                }
                             }}
                             placeholder="Valeur"
-                            disabled={inputDisabled}
-                            onFocus={() => setLastFocusedInputID(input_id)}
+                            disabled={props.inputDisabled}
+                            onFocus={() => {
+                                if(props.setLastFocusedInputID) props.setLastFocusedInputID(input_id);
+                            }}
                         />
                     </div>
 
-                    { (renderAutocomplete && input_id==lastFocusedInputID) &&
+                    { (props.renderAutocomplete && input_id==props.lastFocusedInputID) &&
                     <div className="autocomplete-container">
                     { 
-                        autocompleteLoading
+                        props.autocompleteLoading
                         ? <div className="autocomplete-loading">Chargement...</div>
                         : <>
-                            {autocomplete.map((option, index) => (
+                            {props.autocomplete && props.autocomplete.map((option, index) => (
                                 <div 
                                     key={"autocomplete-" + index} 
                                     className="autocomplete-option"
                                     onClick={() => {
-                                        onValueChange(option);
-                                        resetAutocomplete();
+                                        props.setEqualTo(option.toString());
+                                        if(props.resetAutocomplete) props.resetAutocomplete();
                                     }}
                                 >
                                     <h3 is-autocomplete-option="true">{option}</h3>
@@ -202,67 +319,55 @@ const EqualBlock: React.FC<EqualBlockProps> = ({
 };
 
 const BetweenBlock: React.FC<BetweenBlockProps> = ({
-    identifier,
-    availableColumns,
-    selectedColumn,
-    onColumnChange,
-    fromValue,
-    toValue,
-    onFromValueChange,
-    onToValueChange,
-    inputDisabled,
-    renderAutocomplete,
-    autocomplete,
-    autocompleteLoading,
-    queryAPIForAutocomplete,
-    resetAutocomplete,
-    lastFocusedInputID,
-    setLastFocusedInputID,
-    ...baseProps
+    ...props
 }) => {
-    const input_before_id = `input-before-${identifier}`;
-    const input_after_id = `input-after-${identifier}`;
+    const input_before_id = `input-before-${props.identifier}`;
+    const input_after_id = `input-after-${props.identifier}`;
     return (
         <div className="qb-block" block-type={BlockType.BETWEEN}>
             <div className="qb-block-header">
-                {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
-                <BaseBlock {...baseProps} />
-                <BaseButtons {...baseProps} />
+                <SelectKey {...props} />
+                <BaseBlock {...props} />
+                <BaseButtons {...props} />
             </div>
 
             <div className="qb-block-content">
 
-                <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
+                <div className={"qb-block-input " + (props.autocompleteLoading ? "loading" : "")}>
                     <div className="qb-block-input-br">
                         <div className="qb-block-input-br-prefix">
                             <h3>{">="}</h3>
                         </div>
                         <input 
                             type="text" 
-                            value={fromValue}
+                            value={props.from}
                             onChange={(e) => {
-                                onFromValueChange(e.target.value);
-                                queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
+                                props.onFromValueChange(e.target.value);
+                                if (props.selectedColumn && props.queryAPIForAutocomplete) {
+                                    props.queryAPIForAutocomplete(props.selectedColumn.key, e.target.value);
+                                }
                             }}
                             placeholder="Valeur"
-                            disabled={inputDisabled}
-                            onFocus={() => setLastFocusedInputID(input_before_id)}
+                            disabled={props.inputDisabled}
+                            onFocus={() => {
+                                if(props.setLastFocusedInputID) props.setLastFocusedInputID(input_before_id);
+                            }}
                         />
                     </div>
 
-                    { (renderAutocomplete && lastFocusedInputID==input_before_id) &&
+                    { (props.renderAutocomplete && props.lastFocusedInputID==input_before_id) &&
                     <div className="autocomplete-container">
                     { 
-                        autocompleteLoading
+                        props.autocompleteLoading
                         ? <div className="autocomplete-loading">Chargement...</div>
                         : <>
-                            {autocomplete.map((option, index) => (
+                            {props.autocomplete && props.autocomplete.map((option, index) => (
                                 <div 
                                     key={"autocomplete-" + index} 
                                     className="autocomplete-option"
                                     onClick={() => {
-                                        onFromValueChange(option);
-                                        resetAutocomplete();
+                                        props.onFromValueChange(option.toString());
+                                        if(props.resetAutocomplete) props.resetAutocomplete();
                                     }}
                                 >
                                     <h3 is-autocomplete-option="true">{option}</h3>
@@ -274,37 +379,41 @@ const BetweenBlock: React.FC<BetweenBlockProps> = ({
                     }
                 </div>
 
-                <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
+                <div className={"qb-block-input " + (props.autocompleteLoading ? "loading" : "")}>
                     <div className="qb-block-input-br">
                         <div className="qb-block-input-br-prefix">
                             <h3>{"<="}</h3>
                         </div>
                         <input 
                             type="text" 
-                            value={toValue}
+                            value={props.to}
                             onChange={(e) => {
-                                onToValueChange(e.target.value);
-                                queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
+                                props.onToValueChange(e.target.value);
+                                if (props.selectedColumn && props.queryAPIForAutocomplete) {
+                                    props.queryAPIForAutocomplete(props.selectedColumn.key, e.target.value);
+                                }
                             }}
                             placeholder="Valeur"
-                            disabled={inputDisabled}
-                            onFocus={() => setLastFocusedInputID(input_after_id)}
+                            disabled={props.inputDisabled}
+                            onFocus={() => {
+                                if(props.setLastFocusedInputID) props.setLastFocusedInputID(input_after_id);
+                            }}
                         />
                     </div>
 
-                    { (renderAutocomplete && lastFocusedInputID==input_after_id) &&
+                    { (props.renderAutocomplete && props.lastFocusedInputID==input_after_id) &&
                     <div className="autocomplete-container">
                     { 
-                        autocompleteLoading
+                        props.autocompleteLoading
                         ? <div className="autocomplete-loading">Chargement...</div>
                         : <>
-                            {autocomplete.map((option, index) => (
+                            {props.autocomplete && props.autocomplete.map((option, index) => (
                                 <div 
                                     key={"autocomplete-" + index} 
                                     className="autocomplete-option"
                                     onClick={() => {
-                                        onToValueChange(option);
-                                        resetAutocomplete();
+                                        props.onToValueChange(option.toString());
+                                        if(props.resetAutocomplete) props.resetAutocomplete();
                                     }}
                                 >
                                     <h3 is-autocomplete-option="true">{option}</h3>
@@ -323,72 +432,59 @@ const BetweenBlock: React.FC<BetweenBlockProps> = ({
 }
 
 const IncludesBlock: React.FC<IncludesBlockProps> = ({
-    identifier,
-    availableColumns,
-    selectedColumn,
-    onColumnChange,
-    values,
-    currentValue,
-    onValueAdd,
-    onValueRemove,
-    onCurrentValueChange,
-    inputDisabled,
-    renderAutocomplete,
-    autocomplete,
-    autocompleteLoading,
-    queryAPIForAutocomplete,
-    resetAutocomplete,
-    lastFocusedInputID,
-    setLastFocusedInputID,
-    ...baseProps
+    ...props
 }) => {
-    const input_id = `input-${identifier}`;
+    const input_id = `input-${props.identifier}`;
     return (
         <div className="qb-block" block-type={BlockType.INCLUDES}>
 
             <div className="qb-block-header">
-                {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
-                <BaseBlock {...baseProps} />
-                <BaseButtons {...baseProps} />
+                <SelectKey {...props} />
+                <BaseBlock {...props} />
+                <BaseButtons {...props} />
             </div>
 
             <div className="qb-block-content">
 
                 <div className="qd-block-row">
-                    <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
+                    <div className={"qb-block-input " + (props.autocompleteLoading ? "loading" : "")}>
                         <div className="qb-block-input-br">
                             <input 
                                 type="text" 
-                                value={currentValue}
+                                value={props.currentValue}
                                 onChange={(e) => {
-                                    onCurrentValueChange(e.target.value);
-                                    queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
-                                    setLastFocusedInputID(input_id);
+                                    props.onCurrentValueChange(e.target.value);
+                                    if (props.selectedColumn && props.queryAPIForAutocomplete) {
+                                        props.queryAPIForAutocomplete(props.selectedColumn.key, e.target.value);
+                                    }
                                 }}
                                 placeholder="Valeur"
-                                disabled={inputDisabled}
+                                disabled={props.inputDisabled}
+                                onFocus={() => {
+                                    if(props.setLastFocusedInputID) props.setLastFocusedInputID(input_id);
+                                }}
                             />
                             <button 
-                                onClick={() => onValueAdd(currentValue)}
-                                disabled={currentValue.length === 0}
+                                onClick={() => props.onValueAdd(props.currentValue)}
+                                disabled={props.currentValue.length === 0}
                             >
                                 <FaPlus />
                             </button>
                         </div>
 
-                        { (renderAutocomplete && lastFocusedInputID==input_id) &&
+                        { (props.renderAutocomplete && props.lastFocusedInputID==input_id) &&
                         <div className="autocomplete-container">
                         { 
-                            autocompleteLoading
+                            props.autocompleteLoading
                             ? <div className="autocomplete-loading">Chargement...</div>
                             : <>
-                                {autocomplete.map((option, index) => (
+                                {props.autocomplete && props.autocomplete.map((option, index) => (
                                     <div 
                                         key={"autocomplete-" + index} 
                                         className="autocomplete-option"
                                         onClick={() => {
-                                            onValueAdd(option);
-                                            resetAutocomplete();
+                                            props.onCurrentValueChange(option.toString());
+                                            if(props.resetAutocomplete) props.resetAutocomplete();
                                         }}
                                     >
                                         <h3 is-autocomplete-option="true">{option}</h3>
@@ -405,11 +501,13 @@ const IncludesBlock: React.FC<IncludesBlockProps> = ({
 
                 <div className="qd-block-row">
                     <div className="qb-block-values">
-                        { values.length === 0 && <h4>Aucune valeur</h4>}
-                        {values.map((value, index) => (
+                        { props.values.length === 0 && <h4>Aucune valeur</h4>}
+                        { props.values.map((value, index) => (
                             <div key={index} className="qb-block-value">
                                 <h4>{value}</h4>
-                                <button onClick={() => onValueRemove(value)}><FaTrash /></button>
+                                <button onClick={() => props.onValueRemove(value)}>
+                                    <FaTrash />
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -420,30 +518,88 @@ const IncludesBlock: React.FC<IncludesBlockProps> = ({
     );
 };
 
-const OperationBlock: React.FC<BaseBlockProps> = ({ ...baseProps }) => (
-    <div className="qb-block-operation" block-type={baseProps.type}>
-        <BaseBlock {...baseProps} />
-        <BaseButtons {...baseProps}/>
+const ANDBlock: React.FC<ANDBlockProps> = ({ ...props }) => (
+    <div className="qb-block-operation" block-type={BlockType.AND}>
+        <BaseBlock {...props} blockType={BlockType.AND} type={BlockType.AND}/>
+        <BaseButtons {...props} blockType={BlockType.AND} type={BlockType.AND}/>
     </div>
 );
 
+const ORBlock: React.FC<ORBlockProps> = ({ ...props }) => (
+    <div className="qb-block-operation" block-type={BlockType.OR}>
+        <BaseBlock {...props} blockType={BlockType.OR} type={BlockType.OR}/>
+        <BaseButtons {...props} blockType={BlockType.OR} type={BlockType.OR}/>
+    </div>
+);
+
+const getColumns = async (
+    setAvailableColumns: (columns: SelectionOption[]) => void,
+    setColumnsLoaded: (loaded: boolean) => void
+) => {
+    try {
+        const response = await axios.get("http://127.0.0.1:5000/api/search/v2/get_columns", {
+            headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+    
+        // Parse response.data as JSON
+        const data: ApiResponse = response.data;
+        const success = data["success"];
+        if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
+        const results = data["message"];
+        setAvailableColumns(results ? results["columns"] : []);
+    } catch (error) {
+        console.error("Error making POST request:", error);
+        return { success: false, message: "An error occurred" };
+    } finally {
+        setColumnsLoaded(true);
+    }
+};
+const queryAPIForAutocomplete = async (
+    setAutocomplete: (options: string[]) => void,
+    setAutocompleteLoading: (loading: boolean) => void,
+    key: string,
+    query: string
+) => {
+    if(!key || !query || key === '' || query === '') return;
+    setAutocompleteLoading(true);
+
+    try {
+        const response = await axios.post("http://127.0.0.1:5000/api/search/v2/autocomplete", {
+            key,
+            query
+        }, {
+            headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+    
+        // Parse response.data as JSON
+        const data: ApiResponse = response.data;
+        const success = data["success"];
+        if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");        
+        setAutocomplete(data["message"] ? data["message"]["results"] : []);
+    } catch (error) {
+        console.error("Error making POST request:", error);
+        return { success: false, message: "An error occurred" };
+    } finally {
+        setAutocompleteLoading(false);
+    }
+}
+
 const QueryBuilder: React.FC<{
-    blocks: any[];
-    setBlocks: (blocks: any[]) => void;
+    queryParts: QueryPart[];
+    setQueryParts: (queryParts: QueryPart[]) => void;
     blocksValid: boolean;
-    setBlocksValid: (valid: boolean) => void;
     blocksValidMessage: string;
-    setBlocksValidMessage: (message: string) => void;
 }> = ({
-    blocks,
-    setBlocks,
+    queryParts,
+    setQueryParts,
     blocksValid,
-    setBlocksValid,
     blocksValidMessage,
-    setBlocksValidMessage
 }) => {
 
-    //const [blocks, setBlocks] = useState<any[]>([]);
     const [columnsLoaded, setColumnsLoaded] = useState<boolean>(false);
     const [availableColumns, setAvailableColumns] = useState<SelectionOption[]>([]);
 
@@ -453,34 +609,10 @@ const QueryBuilder: React.FC<{
     const wrapperRef = useRef<HTMLDivElement>(null); // Replace HTMLDivElement with the correct type
 
     useEffect(() => {
-        if (!columnsLoaded) {
-            getColumns();
-        }
+        if (!columnsLoaded) getColumns(setAvailableColumns, setColumnsLoaded);
     }, [columnsLoaded]);
 
-    const getColumns = async () => {
-        try {
-            const response = await axios.get("http://127.0.0.1:5000/api/search/v2/get_columns", {
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            });
-        
-            // Parse response.data as JSON
-            const data: ApiResponse = response.data;
-            const success = data["success"];
-            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
-            const results = data["message"];
-            setAvailableColumns(results ? results["columns"] : []);
-        } catch (error) {
-            console.error("Error making POST request:", error);
-            return { success: false, message: "An error occurred" };
-        } finally {
-            setColumnsLoaded(true);
-        }
-    };
-
-
+    // Handle click outside of the autocomplete
     const handleClickOutside = (
         event: MouseEvent
     ) => {
@@ -490,7 +622,6 @@ const QueryBuilder: React.FC<{
             setAutocomplete([]);
         }
     };
-
     React.useEffect(() => {
         document.addEventListener('click', handleClickOutside, true);
         return () => {
@@ -498,296 +629,227 @@ const QueryBuilder: React.FC<{
         };
     }, []);
 
-  const addBlock = (type: BlockType) => {
-    const newBlock = {
-      id: Date.now(),
-      type,
-      isNot: false,
-    };
-
-    if (type === BlockType.AND || type === BlockType.OR) {
-      const lastBlock = blocks[blocks.length - 1];
-      const validBlockTypes = [BlockType.EQUAL, BlockType.BETWEEN, BlockType.INCLUDES];
-      if (!lastBlock || !validBlockTypes.includes(lastBlock.type)) {
-        alert('AND/OR can only be placed after EQUAL, BETWEEN, or INCLUDES blocks');
-        return;
-      }
-    }
-
-    setBlocks([...blocks, newBlock]);
-  };
-
-  const updateBlock = (id: number, updates: Partial<any>) => {
-    setBlocks(blocks.map(block => 
-      block.id === id ? { ...block, ...updates } : block
-    ));
-  };
-
-  const deleteBlock = (id: number) => {
-    // Delete the block with the given id
-    // If by deleting this block we have the first block being AND/OR, we remove it also
-    const newBlocks : any[] = [];
-    blocks.forEach((block) => {
-        if (block.id !== id) {
-            const isAND_OR = block.type === BlockType.AND || block.type === BlockType.OR;
-            if(newBlocks.length === 0 && isAND_OR) return; // Skip the first AND/OR block
-            newBlocks.push(block);
-        }
-    });
-    setBlocks(newBlocks);
-  };
-
-  /* AAA */
-
-    const queryAPIForAutocomplete = async (
-        key: string,
-        query: string
+    const renderBlock = (
+        parents: QueryPart[],
+        setParents: (parents: QueryPart[]) => void,
+        queryPart: HardQueryPartControlled
     ) => {
-        if(!key || !query || key === '' || query === '') return;
-        setAutocompleteLoading(true);
+        const updateBlock = (
+            identifier: string,
+            newData: Record<string, any>
+        ) => {
+            setParents(parents.map((local_queryPart: QueryPart) => {
+                if(local_queryPart.identifier === identifier) {
+                    return {
+                        ...local_queryPart,
+                        ...newData
+                    }
+                }
+                return local_queryPart;
+            }));
+        };
 
-        try {
-            const response = await axios.post("http://127.0.0.1:5000/api/search/v2/autocomplete", {
-                key,
-                query
-            }, {
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            });
-        
-            // Parse response.data as JSON
-            const data: ApiResponse = response.data;
-            const success = data["success"];
-            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");        
-            setAutocomplete(data["message"] ? data["message"]["results"] : []);
-        } catch (error) {
-            console.error("Error making POST request:", error);
-            return { success: false, message: "An error occurred" };
-        } finally {
-            setAutocompleteLoading(false);
-        }
-    }
+        const commonProps = {
+            ...queryPart,
+            updateBlock: updateBlock,
+            onDelete: () => {
+                setParents(parents.filter((part: QueryPart) => part.identifier !== queryPart.identifier));
+            },
+            setKey: (key: string) => {
+                const selectedColumn = availableColumns.find((col: SelectionOption) => col.key === key);
+                if (selectedColumn && queryPart.setSelectedColumn) {
+                    queryPart.setSelectedColumn(selectedColumn);
+                }
+                updateBlock(queryPart.identifier, { selectedColumn });
+            },
+            setBlockType: (type: BlockType) => updateBlock(queryPart.identifier, { type }),
+            setIsNot: (isNot: boolean) => updateBlock(queryPart.identifier, { isNot }),
+            setExactMatch: (exactMatch: boolean) => updateBlock(queryPart.identifier, { exactMatch }),
+            setCaseSensitive: (caseSensitive: boolean) => updateBlock(queryPart.identifier, { caseSensitive }),
+            setKeepNull: (keepNull: boolean) => updateBlock(queryPart.identifier, { keepNull }),
+            availableColumns,
+            setSelectedColumn: (column: SelectionOption) => updateBlock(queryPart.identifier, { selectedColumn: column }),
+            resetAutocomplete: () => {
+                setAutocomplete([]);
+            },
+            autocomplete: autocomplete,
+            autocompleteLoading: autocompleteLoading,
+            queryAPIForAutocomplete: (key: string, query: string|number) => queryAPIForAutocomplete(setAutocomplete, setAutocompleteLoading, key, query.toString()),
+            lastFocusedInputID: lastFocusedInputID,
+            setLastFocusedInputID: setLastFocusedInputID,
+        };
 
-    const resetAutocomplete = () => {
-        setAutocomplete([]);
-    }
+        let userSelectedColumn = false;
+        let inputEmpty = false;
 
-  const renderBlock = (block: any) => {
-    const commonProps = {
-      key: block.id, // This causes an issue, but it's fine for now
-      onToggleNot: () => updateBlock(block.id, { isNot: !block.isNot }),
-      onDelete: () => deleteBlock(block.id),
-    };
+        switch (queryPart.type) {
+            case BlockType.GROUP:
 
-    switch (block.type) {
-      case BlockType.EQUAL:
-        return (
-          <EqualBlock
-            {...commonProps}
-            identifier={block.id}
-            type={BlockType.EQUAL}
-            availableColumns={availableColumns}
-            selectedColumn={block.selectedColumn}
-            onColumnChange={(selectedColumn) => {
-                resetAutocomplete();
-                updateBlock(block.id, { selectedColumn, value: '' });
-            }}
-            value={block.value || ''}
-            onValueChange={(value) => updateBlock(block.id, { value })}
-            isNot={block.isNot}
+                const deleteChildrenFromGroup = (childIdentifier: string) => {
+                    // TODO: Handle recursive deletion
+                }
 
-            inputDisabled={block.selectedColumn === undefined}
-            renderAutocomplete={block.value && block.value.length > 0 && block.selectedColumn}
-            autocomplete={autocomplete}
-            autocompleteLoading={autocompleteLoading}
-            queryAPIForAutocomplete={queryAPIForAutocomplete}
-            resetAutocomplete={resetAutocomplete}
-            lastFocusedInputID={lastFocusedInputID}
-            setLastFocusedInputID={setLastFocusedInputID}
-            changeBlockType={(type: BlockType) => {}}
-            setExactMatch={(exactMatch) => updateBlock(block.id, { exactMatch })}
-            exactMatch={block.exactMatch || false}
-          />
-        );
-      case BlockType.BETWEEN:
-        return (
-          <BetweenBlock
-            {...commonProps}
-            identifier={block.id}
-            type={BlockType.BETWEEN}
-            availableColumns={availableColumns}
-            selectedColumn={block.selectedColumn}
-            onColumnChange={(selectedColumn) => {
-                resetAutocomplete();
-                updateBlock(block.id, { selectedColumn, fromValue: '', toValue: '' });
-            }}
-            fromValue={block.fromValue || ''}
-            toValue={block.toValue || ''}
-            onFromValueChange={(fromValue) => updateBlock(block.id, { fromValue })}
-            onToValueChange={(toValue) => updateBlock(block.id, { toValue })}
-            isNot={block.isNot}
-
-            inputDisabled={block.selectedColumn === undefined}
-            renderAutocomplete={
-                (block.fromValue && block.fromValue.length > 0 && block.selectedColumn) ||
-                (block.toValue && block.toValue.length > 0 && block.selectedColumn)
-            }
-            autocomplete={autocomplete}
-            autocompleteLoading={autocompleteLoading}
-            queryAPIForAutocomplete={queryAPIForAutocomplete}
-            resetAutocomplete={resetAutocomplete}
-            lastFocusedInputID={lastFocusedInputID}
-            setLastFocusedInputID={setLastFocusedInputID}
-            changeBlockType={(type: BlockType) => {}}
-          />
-        );
-      case BlockType.INCLUDES:
-        return (
-          <IncludesBlock
-            {...commonProps}
-            identifier={block.id}
-            type={BlockType.INCLUDES}
-            availableColumns={availableColumns}
-            selectedColumn={block.selectedColumn}
-            onColumnChange={(selectedColumn) => updateBlock(block.id, { selectedColumn, values: [], currentValue: '' })}
-            values={block.values || []}
-            currentValue={block.currentValue || ''}
-            onValueAdd={(value) => updateBlock(block.id, { 
-                values: [...(block.values || []), value],
-                currentValue: ''
-            })}
-            onValueRemove={(value) => updateBlock(block.id, { 
-              values: (block.values || []).filter((v: string) => v !== value) 
-            })}
-            onCurrentValueChange={(currentValue) => updateBlock(block.id, { currentValue })}
-            isNot={block.isNot}
-
-            inputDisabled={block.selectedColumn === undefined}
-            renderAutocomplete={block.currentValue && block.currentValue.length > 0 && block.selectedColumn}
-            autocomplete={autocomplete}
-            autocompleteLoading={autocompleteLoading}
-            queryAPIForAutocomplete={queryAPIForAutocomplete}
-            resetAutocomplete={resetAutocomplete}
-            lastFocusedInputID={lastFocusedInputID}
-            setLastFocusedInputID={setLastFocusedInputID}
-            changeBlockType={(type: BlockType) => {}}
-            setExactMatch={(exactMatch) => updateBlock(block.id, { exactMatch })}
-            exactMatch={block.exactMatch || false}
-          />
-        );
-      case BlockType.AND:
-      case BlockType.OR:
-        return (
-            <OperationBlock 
-                {...commonProps}
-                type={block.type}
-                changeBlockType={(type: BlockType) => updateBlock(block.id, { type })}
-            />
-        );
-      default:
-        return null;
-    }
-  };
-
-    const isBlockDisabled = (type: BlockType) => {
-        let lastBlock = null;
-        if (blocks.length > 0) lastBlock = blocks[blocks.length - 1];
-
-        const hypoBlockIsAndOr = type === BlockType.AND || type === BlockType.OR;
-        const hypoBlockIsEqualBetweenIncludes = type === BlockType.EQUAL || type === BlockType.BETWEEN || type === BlockType.INCLUDES;
-
-        if (lastBlock === null) {
-            // No blocks yet ==> EQUAL, BETWEEN, INCLUDES can be added
-            return !hypoBlockIsEqualBetweenIncludes;
-        } else {
-            const lastBlockIsAndOr = lastBlock.type === BlockType.AND || lastBlock.type === BlockType.OR;
-            const lastBlockIsEqualBetweenIncludes = lastBlock.type === BlockType.EQUAL || lastBlock.type === BlockType.BETWEEN || lastBlock.type === BlockType.INCLUDES;
-
-            if (lastBlockIsAndOr) {
-                // Last block is AND/OR ==> EQUAL, BETWEEN, INCLUDES can be added
-                return !hypoBlockIsEqualBetweenIncludes;
-            } else if (lastBlockIsEqualBetweenIncludes) {
-                // Last block is EQUAL, BETWEEN, INCLUDES ==> AND/OR can be added
-                return !hypoBlockIsAndOr;
-            }
-        }
-        return true;
-    };
-
-    const getTypeIcon = (type: BlockType) => {
-        return null; // For now, we may add icons later
-        switch (type) {
-            case BlockType.AND:
-                return null;
-            case BlockType.OR:
-                return null;
+                const queryPart_GROUP = (queryPart as GroupBlockProps);
+                return (
+                    <GroupBlock
+                        {...commonProps}
+                        blockType={BlockType.GROUP}
+                        children={queryPart_GROUP.children || []}
+                        onChildAdd={(child: QueryPart) => updateBlock(queryPart.identifier, { children: [...(queryPart_GROUP.children || []), child] })}
+                        onChildDelete={deleteChildrenFromGroup}
+                        renderBlock={renderBlock}
+                        isBlockDisabled={isBlockDisabled}
+                    />
+                );
             case BlockType.EQUAL:
-                return <span>=</span>;
+                const queryPart_EQUAL = (queryPart as EqualBlockProps);
+                userSelectedColumn = queryPart_EQUAL.selectedColumn!==undefined;
+                inputEmpty = (queryPart_EQUAL.equalTo || '').length === 0;
+                return (
+                    <EqualBlock
+                        {...commonProps}
+                        inputDisabled={!userSelectedColumn}
+                        renderAutocomplete={userSelectedColumn && !inputEmpty}
+                        blockType={BlockType.EQUAL}
+                        equalTo={queryPart.equalTo || ''}
+                        setEqualTo={(equalTo: string) => commonProps.updateBlock(queryPart.identifier, {equalTo})}
+                    />
+                );
             case BlockType.BETWEEN:
-                return <span>⇔</span>;
+                const queryPart_BETWEEN = (queryPart as BetweenBlockProps);
+                userSelectedColumn = queryPart_BETWEEN.selectedColumn!==undefined;
+                let inputEmpty_from = (queryPart_BETWEEN.from || '').length === 0;
+                let inputEmpty_to = (queryPart_BETWEEN.to || '').length === 0;
+                inputEmpty = inputEmpty_from && inputEmpty_to;
+
+                return (
+                    <BetweenBlock
+                        {...commonProps}
+                        inputDisabled={!userSelectedColumn}
+                        renderAutocomplete={userSelectedColumn && (inputEmpty_from || inputEmpty_to)}
+                        blockType={BlockType.BETWEEN}
+                        from={queryPart_BETWEEN.from || ''}
+                        to={queryPart_BETWEEN.to || ''}
+                        onFromValueChange={(from: string) => commonProps.updateBlock(queryPart.identifier, {from})}
+                        onToValueChange={(to: string) => commonProps.updateBlock(queryPart.identifier, {to})}
+                    />
+                );
             case BlockType.INCLUDES:
-                return <span>∋</span>;
+                const queryPart_INCLUDES = (queryPart as IncludesBlockProps);
+                userSelectedColumn = queryPart_INCLUDES.selectedColumn!==undefined;
+                inputEmpty = (queryPart_INCLUDES.currentValue || '').length === 0;
+                
+                return (
+                    <IncludesBlock
+                        {...commonProps}
+                        blockType={BlockType.INCLUDES}
+                        values={queryPart_INCLUDES.values || []}
+                        currentValue={queryPart_INCLUDES.currentValue || ''}
+                        onValueAdd={(value: string) => updateBlock(queryPart.identifier, { values: [...(queryPart_INCLUDES.values || []), value], currentValue: '' })}
+                        onValueRemove={(value: string) => updateBlock(queryPart.identifier, { values: (queryPart_INCLUDES.values || []).filter((v: string) => v !== value) })}
+                        onCurrentValueChange={(currentValue: string) => updateBlock(queryPart.identifier, { currentValue })}
+                        isNot={queryPart_INCLUDES.isNot}
+                        inputDisabled={!userSelectedColumn}
+                        renderAutocomplete={userSelectedColumn && !inputEmpty}
+                    />
+                );
+            case BlockType.AND:
+                return (
+                    <ANDBlock 
+                        {...commonProps}
+                        blockType={BlockType.AND}
+                    />
+                );
+            case BlockType.OR:
+                return (
+                    <ORBlock 
+                        {...commonProps}
+                        blockType={BlockType.OR}
+                    />
+                );
             default:
-                return null;
+                return <></>
         }
+    };
+
+    const createNewBlock = (type: BlockType) => {
+        if(!availableColumns || availableColumns.length === 0) return;
+        const newQueryPart : HardQueryPart = {
+            identifier: uuidv4(),
+            type: type,
+            isSoft: false,
+
+            selectedColumn: availableColumns[0],
+            blockType: type,
+            isNot: false,
+            exactMatch: false,
+            caseSensitive: false,
+            keepNull: false,
+        };
+        setQueryParts([...queryParts, newQueryPart]);
     }
 
-  return (
-    <div className="query-builder" ref={wrapperRef}>
-      <div className="qb-blocks-selector">
-        <div className="qt-tools">
-            { blocksValid
-                ? 
-                <div className="qt-verif valid">
-                    <div className="qt-verif-header">
-                        <div className="qt-verif-icon"><FaCheck /></div>
-                        <h3>Votre contrainte est valide</h3>
+    return (
+        <div className="query-builder" ref={wrapperRef}>
+        <div className="qb-blocks-selector">
+            <div className="qt-tools">
+                { blocksValid
+                    ? 
+                    <div className="qt-verif valid">
+                        <div className="qt-verif-header">
+                            <div className="qt-verif-icon"><FaCheck /></div>
+                            <h3>Votre contrainte est valide</h3>
+                        </div>
                     </div>
-                </div>
-                :
-                <div className="qt-verif invalid">
-                    <div className="qt-verif-header">
-                        <div className="qt-verif-icon"><FaBan /></div>
-                        <h3>Votre contrainte est invalide</h3>
+                    :
+                    <div className="qt-verif invalid">
+                        <div className="qt-verif-header">
+                            <div className="qt-verif-icon"><FaBan /></div>
+                            <h3>Votre contrainte est invalide</h3>
+                        </div>
+                        <div className="qt-verif-content">
+                            <h4>{blocksValidMessage}</h4>
+                        </div>
                     </div>
-                    <div className="qt-verif-content">
-                        <h4>{blocksValidMessage}</h4>
-                    </div>
-                </div>
-            }
-            <button
-                onClick={() => setBlocks([])}
-            >
-                <div className="qt-tool-icon"><RiResetLeftFill /></div>
-            </button>
+                }
+                <button
+                    onClick={() => setQueryParts(queryParts.filter((queryPart: QueryPart) => queryPart.isSoft))}
+                >
+                    <div className="qt-tool-icon"><RiResetLeftFill /></div>
+                </button>
+            </div>
+            <div className='qt-blocks'>
+                {Object.values(BlockType).map(type => (
+                    <button
+                        key={type}
+                        block-type={type}
+                        onClick={() => createNewBlock(type)}
+                        disabled={isBlockDisabled(type, queryParts)}
+                    >   
+                        <h3>{getFrenchType(type)}</h3>
+                    </button>
+                ))}
+            </div>
         </div>
-        <div className='qt-blocks'>
-            {Object.values(BlockType).map(type => (
-            <button
-                key={type}
-                block-type={type}
-                onClick={() => addBlock(type)}
-                disabled={isBlockDisabled(type)}
-            >   
-                {getTypeIcon(type)}
-                <h3>{getFrenchType(type)}</h3>
-            </button>
-            ))}
-        </div>
-      </div>
 
-      <div className="qb-conditions">
-        { columnsLoaded
-        ? blocks.map(renderBlock)
-        : 
-        <div className="qb-loading">
-            <h3>Chargement des colonnes...</h3>
+        <div className="qb-conditions">
+            { columnsLoaded
+            ? queryParts.map((queryPart: QueryPart) => {
+                if(queryPart.isSoft) return null;
+                return renderBlock(
+                    queryParts,
+                    setQueryParts,
+                    queryPart as HardQueryPartControlled
+                );
+            })
+            : 
+            <div className="qb-loading">
+                <h3>Chargement des colonnes...</h3>
+            </div>
+            }
         </div>
-        }
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default QueryBuilder;
