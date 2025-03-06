@@ -360,8 +360,18 @@ if __name__ == "__main__":
             "success": True,
             "message": results
         })
-
-
+    
+    @app.route(
+        '/api/search/v2/get_columns', 
+        methods=['GET']
+    )
+    def get_columns():
+        return jsonify({
+            "success": True,
+            "message": {
+                "columns": ["iconography"] + DB.get_columns()
+            }
+        })
 
     # 
 

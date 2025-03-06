@@ -1,61 +1,37 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { FaX, FaChevronRight } from 'react-icons/fa6';
+import React, { useState, useRef, useEffect } from 'react';
 
 import '../styles/QueryBuilder.css';
-import { FaBan, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaBan, FaCheck, FaPlus, FaTrash } from 'react-icons/fa';
+import { RiResetLeftFill } from 'react-icons/ri';
+import axios from 'axios';
 
-enum BlockType {
-  AND = 'AND',
-  OR = 'OR',
-  EQUAL = 'EQUAL',
-  BETWEEN = 'BETWEEN', 
-  INCLUDES = 'INCLUDES'
-}
+import {
+    BlockType,
+    BaseBlockProps,
+    EqualBlockProps,
+    BetweenBlockProps,
+    IncludesBlockProps
+} from '../types/blocks';
+import ApiResponse from '../types/ApiResponse';
 
-interface BaseBlockProps {
-  type: BlockType;
-  isNot: boolean;
-  onToggleNot: () => void;
-  onDelete: () => void;
-}
-
-interface ColumnBlockProps extends BaseBlockProps {
-  availableColumns: string[];
-  selectedColumn?: string;
-  onColumnChange: (column: string) => void;
-  inputDisabled: boolean;
-  renderAutocomplete: boolean;
-  autocomplete: string[];
-  autocompleteLoading: boolean;
-  queryAPIForAutocomplete: (columnName: string, query: string) => void;
-  resetAutocomplete: () => void;
-}
-
-interface EqualBlockProps extends ColumnBlockProps {
-    value: string;
-    onValueChange: (value: string) => void;
-}
-
-interface BetweenBlockProps extends ColumnBlockProps {
-    fromValue: string;
-    toValue: string;
-    onFromValueChange: (value: string) => void;
-    onToValueChange: (value: string) => void;
-    betweenLastFocused: 'from' | 'to';
-    onBetweenLastFocusedChange: (focused: 'from' | 'to') => void;
-}
-
-interface IncludesBlockProps extends ColumnBlockProps {
-  values: string[];
-  currentValue: string;
-  onValueAdd: (value: string) => void;
-  onValueRemove: (value: string) => void;
-  onCurrentValueChange: (value: string) => void;
-  autocompleteOptions?: string[];
-}
-
-const BaseButtons: React.FC<BaseBlockProps> = ({ isNot, onToggleNot, onDelete }) => (
+const BaseButtons: React.FC<BaseBlockProps> = ({ type, isNot, onToggleNot, onDelete, changeBlockType }) => (
     <div className="qb-block-base-buttons">
+        { (type===BlockType.OR) &&
+        <button 
+            onClick={() => changeBlockType(BlockType.AND)} 
+            className="long"
+        >
+            <h3>Remplacer par <b>{getFrenchType(BlockType.AND)}</b></h3>
+        </button>        
+        }
+        { (type===BlockType.AND) &&
+        <button 
+            onClick={() => changeBlockType(BlockType.OR)} 
+            className="long"
+        >
+            <h3>Remplacer par <b>{getFrenchType(BlockType.OR)}</b></h3>
+        </button>        
+        }
         <button 
             onClick={onDelete} 
         >
@@ -88,12 +64,18 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
 }) => (
   <div className="qb-block-base">
 
+    { isNot !== undefined &&
     <div className={"qb-block-base-not " + (isNot ? "enabled" : "")} onClick={onToggleNot}>
         <div className="qb-block-base-not-repr">
             {isNot ? <FaBan /> : null}
         </div>
-        <h5>N'EST PAS</h5>
+        {
+            type===BlockType.INCLUDES
+            ? <h5>NE (CONTIENT) PAS</h5>
+            : <h5>N'EST PAS</h5>
+        }
     </div>
+    }
 
     <h4>{getFrenchType(type)}</h4>
   </div>
@@ -117,6 +99,7 @@ const selectOptionComponent = (
 );
 
 const EqualBlock: React.FC<EqualBlockProps> = ({
+    identifier,
     availableColumns,
     selectedColumn,
     onColumnChange,
@@ -128,15 +111,19 @@ const EqualBlock: React.FC<EqualBlockProps> = ({
     autocompleteLoading,
     queryAPIForAutocomplete,
     resetAutocomplete,
+    lastFocusedInputID,
+    setLastFocusedInputID,
     ...baseProps
 }) => {
+    const input_id = `input-${identifier}`;
     return (
         <div className="qb-block" block-type={BlockType.EQUAL}>
-            <BaseBlock {...baseProps} />
-            <div className="qb-block-sep"></div>
-            <div className="qb-block-content">
-
+            <div className="qb-block-header">
                 {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
+                <BaseBlock {...baseProps} />
+                <BaseButtons {...baseProps} />
+            </div>
+            <div className="qb-block-content">
 
                 <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
                     <div className="qb-block-input-br">
@@ -149,10 +136,11 @@ const EqualBlock: React.FC<EqualBlockProps> = ({
                             }}
                             placeholder="Valeur"
                             disabled={inputDisabled}
+                            onFocus={() => setLastFocusedInputID(input_id)}
                         />
                     </div>
 
-                    { renderAutocomplete &&
+                    { (renderAutocomplete && input_id==lastFocusedInputID) &&
                     <div className="autocomplete-container">
                     { 
                         autocompleteLoading
@@ -167,7 +155,7 @@ const EqualBlock: React.FC<EqualBlockProps> = ({
                                         resetAutocomplete();
                                     }}
                                 >
-                                    <h3>{option}</h3>
+                                    <h3 is-autocomplete-option="true">{option}</h3>
                                 </div>
                             ))}
                         </>
@@ -177,12 +165,12 @@ const EqualBlock: React.FC<EqualBlockProps> = ({
                 </div>
 
             </div>
-            <BaseButtons {...baseProps} />
         </div>
     );
 };
 
 const BetweenBlock: React.FC<BetweenBlockProps> = ({
+    identifier,
     availableColumns,
     selectedColumn,
     onColumnChange,
@@ -196,108 +184,114 @@ const BetweenBlock: React.FC<BetweenBlockProps> = ({
     autocompleteLoading,
     queryAPIForAutocomplete,
     resetAutocomplete,
-    betweenLastFocused,
-    onBetweenLastFocusedChange,
+    lastFocusedInputID,
+    setLastFocusedInputID,
     ...baseProps
-}) => (
-    <div className="qb-block" block-type={BlockType.BETWEEN}>
-        <BaseBlock {...baseProps} />
-        <div className="qb-block-sep"></div>
-        <div className="qb-block-content">
-
-            {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
-
-            <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
-                <div className="qb-block-input-br">
-                    <div className="qb-block-input-br-prefix">{">="}</div>
-                    <input 
-                        type="text" 
-                        value={fromValue}
-                        onChange={(e) => {
-                            onFromValueChange(e.target.value);
-                            queryAPIForAutocomplete(selectedColumn || '', e.target.value);
-                        }}
-                        placeholder="Valeur"
-                        disabled={inputDisabled}
-                        onFocus={() => onBetweenLastFocusedChange('from')}
-                    />
-                </div>
-
-                { (renderAutocomplete && betweenLastFocused=="from") &&
-                <div className="autocomplete-container">
-                { 
-                    autocompleteLoading
-                    ? <div className="autocomplete-loading">Chargement...</div>
-                    : <>
-                        {autocomplete.map((option, index) => (
-                            <div 
-                                key={"autocomplete-" + index} 
-                                className="autocomplete-option"
-                                onClick={() => {
-                                    onFromValueChange(option);
-                                    resetAutocomplete();
-                                }}
-                            >
-                                <h3>{option}</h3>
-                            </div>
-                        ))}
-                    </>
-                }                
-                </div>
-                }
+}) => {
+    const input_before_id = `input-before-${identifier}`;
+    const input_after_id = `input-after-${identifier}`;
+    return (
+        <div className="qb-block" block-type={BlockType.BETWEEN}>
+            <div className="qb-block-header">
+                {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
+                <BaseBlock {...baseProps} />
+                <BaseButtons {...baseProps} />
             </div>
 
-            <div className="qb-block-input-inter">
-                <h4>ET</h4>
-            </div>
+            <div className="qb-block-content">
 
-            <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
-                <div className="qb-block-input-br">
-                    <div className="qb-block-input-br-prefix">{"<="}</div>
-                    <input 
-                        type="text" 
-                        value={toValue}
-                        onChange={(e) => {
-                            onToValueChange(e.target.value);
-                            queryAPIForAutocomplete(selectedColumn || '', e.target.value);
-                        }}
-                        placeholder="Valeur"
-                        disabled={inputDisabled}
-                        onFocus={() => onBetweenLastFocusedChange('to')}
-                    />
+                <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
+                    <div className="qb-block-input-br">
+                        <div className="qb-block-input-br-prefix">
+                            <h3>{">="}</h3>
+                        </div>
+                        <input 
+                            type="text" 
+                            value={fromValue}
+                            onChange={(e) => {
+                                onFromValueChange(e.target.value);
+                                queryAPIForAutocomplete(selectedColumn || '', e.target.value);
+                            }}
+                            placeholder="Valeur"
+                            disabled={inputDisabled}
+                            onFocus={() => setLastFocusedInputID(input_before_id)}
+                        />
+                    </div>
+
+                    { (renderAutocomplete && lastFocusedInputID==input_before_id) &&
+                    <div className="autocomplete-container">
+                    { 
+                        autocompleteLoading
+                        ? <div className="autocomplete-loading">Chargement...</div>
+                        : <>
+                            {autocomplete.map((option, index) => (
+                                <div 
+                                    key={"autocomplete-" + index} 
+                                    className="autocomplete-option"
+                                    onClick={() => {
+                                        onFromValueChange(option);
+                                        resetAutocomplete();
+                                    }}
+                                >
+                                    <h3 is-autocomplete-option="true">{option}</h3>
+                                </div>
+                            ))}
+                        </>
+                    }                
+                    </div>
+                    }
                 </div>
 
-                { (renderAutocomplete && betweenLastFocused=="to") &&
-                <div className="autocomplete-container">
-                { 
-                    autocompleteLoading
-                    ? <div className="autocomplete-loading">Chargement...</div>
-                    : <>
-                        {autocomplete.map((option, index) => (
-                            <div 
-                                key={"autocomplete-" + index} 
-                                className="autocomplete-option"
-                                onClick={() => {
-                                    onToValueChange(option);
-                                    resetAutocomplete();
-                                }}
-                            >
-                                <h3>{option}</h3>
-                            </div>
-                        ))}
-                    </>
-                }                
+                <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
+                    <div className="qb-block-input-br">
+                        <div className="qb-block-input-br-prefix">
+                            <h3>{"<="}</h3>
+                        </div>
+                        <input 
+                            type="text" 
+                            value={toValue}
+                            onChange={(e) => {
+                                onToValueChange(e.target.value);
+                                queryAPIForAutocomplete(selectedColumn || '', e.target.value);
+                            }}
+                            placeholder="Valeur"
+                            disabled={inputDisabled}
+                            onFocus={() => setLastFocusedInputID(input_after_id)}
+                        />
+                    </div>
+
+                    { (renderAutocomplete && lastFocusedInputID==input_after_id) &&
+                    <div className="autocomplete-container">
+                    { 
+                        autocompleteLoading
+                        ? <div className="autocomplete-loading">Chargement...</div>
+                        : <>
+                            {autocomplete.map((option, index) => (
+                                <div 
+                                    key={"autocomplete-" + index} 
+                                    className="autocomplete-option"
+                                    onClick={() => {
+                                        onToValueChange(option);
+                                        resetAutocomplete();
+                                    }}
+                                >
+                                    <h3 is-autocomplete-option="true">{option}</h3>
+                                </div>
+                            ))}
+                        </>
+                    }                
+                    </div>
+                    }
+
                 </div>
-                }
 
             </div>
-
         </div>
-        <BaseButtons {...baseProps} />
-    </div>
-);
+    );
+}
 
 const IncludesBlock: React.FC<IncludesBlockProps> = ({
+    identifier,
     availableColumns,
     selectedColumn,
     onColumnChange,
@@ -312,20 +306,24 @@ const IncludesBlock: React.FC<IncludesBlockProps> = ({
     autocompleteLoading,
     queryAPIForAutocomplete,
     resetAutocomplete,
-    autocompleteOptions = [],
+    lastFocusedInputID,
+    setLastFocusedInputID,
     ...baseProps
 }) => {
-
+    const input_id = `input-${identifier}`;
     return (
         <div className="qb-block" block-type={BlockType.INCLUDES}>
-            <BaseBlock {...baseProps} />
-            <div className="qb-block-sep"></div>
-            <div className="qb-block-content column">
+
+            <div className="qb-block-header">
+                {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
+                <BaseBlock {...baseProps} />
+                <BaseButtons {...baseProps} />
+            </div>
+
+            <div className="qb-block-content">
 
                 <div className="qd-block-row">
-                    {selectOptionComponent(availableColumns, selectedColumn, onColumnChange)}
-
-                    <div className="qb-block-input">
+                    <div className={"qb-block-input " + (autocompleteLoading ? "loading" : "")}>
                         <div className="qb-block-input-br">
                             <input 
                                 type="text" 
@@ -333,17 +331,44 @@ const IncludesBlock: React.FC<IncludesBlockProps> = ({
                                 onChange={(e) => {
                                     onCurrentValueChange(e.target.value);
                                     queryAPIForAutocomplete(selectedColumn || '', e.target.value);
+                                    setLastFocusedInputID(input_id);
                                 }}
                                 placeholder="Valeur"
                                 disabled={inputDisabled}
                             />
                             <button 
                                 onClick={() => onValueAdd(currentValue)}
+                                disabled={currentValue.length === 0}
                             >
                                 <FaPlus />
                             </button>
                         </div>
+
+                        { (renderAutocomplete && lastFocusedInputID==input_id) &&
+                        <div className="autocomplete-container">
+                        { 
+                            autocompleteLoading
+                            ? <div className="autocomplete-loading">Chargement...</div>
+                            : <>
+                                {autocomplete.map((option, index) => (
+                                    <div 
+                                        key={"autocomplete-" + index} 
+                                        className="autocomplete-option"
+                                        onClick={() => {
+                                            onValueAdd(option);
+                                            resetAutocomplete();
+                                        }}
+                                    >
+                                        <h3 is-autocomplete-option="true">{option}</h3>
+                                    </div>
+                                ))}
+                            </>
+                        }                
+                        </div>
+                        }
+
                     </div>
+
                 </div>
 
                 <div className="qd-block-row">
@@ -359,27 +384,89 @@ const IncludesBlock: React.FC<IncludesBlockProps> = ({
                 </div>
 
             </div>
-            <BaseButtons {...baseProps} />
         </div>
     );
 };
 
 const OperationBlock: React.FC<BaseBlockProps> = ({ ...baseProps }) => (
-    <div className="qb-block" block-type={baseProps.type}>
-        <BaseBlock {...baseProps} onDelete={() => {}} onToggleNot={() => {}} />
-        <div style={{flex: 1}}></div>
-        <BaseButtons {...baseProps} onDelete={() => {}} onToggleNot={() => {}}/>
+    <div className="qb-block-operation" block-type={baseProps.type}>
+        <BaseBlock {...baseProps} />
+        <BaseButtons {...baseProps}/>
     </div>
 );
 
-const QueryBuilder: React.FC = () => {
-  const [blocks, setBlocks] = useState<any[]>([]);
-  const availableColumns = ['name', 'age', 'email', 'city'];
-  const autocompleteOptions = ['New York', 'Los Angeles', 'Chicago', 'Houston'];
+const QueryBuilder: React.FC<{
+    blocks: any[];
+    setBlocks: (blocks: any[]) => void;
+    blocksValid: boolean;
+    setBlocksValid: (valid: boolean) => void;
+    blocksValidMessage: string;
+    setBlocksValidMessage: (message: string) => void;
+}> = ({
+    blocks,
+    setBlocks,
+    blocksValid,
+    setBlocksValid,
+    blocksValidMessage,
+    setBlocksValidMessage
+}) => {
 
-  const [autocomplete, setAutocomplete] = useState<string[]>([]);
-  const [autocompleteLoading, setAutocompleteLoading] = useState<boolean>(false);
-  const [betweenLastFocused, setBetweenLastFocused] = useState<'from' | 'to'>('from');
+    //const [blocks, setBlocks] = useState<any[]>([]);
+    const [columnsLoaded, setColumnsLoaded] = useState<boolean>(false);
+    const [availableColumns, setAvailableColumns] = useState<string[]>([]);
+    const autocompleteOptions = ['New York', 'Los Angeles', 'Chicago', 'Houston'];
+
+    const [autocomplete, setAutocomplete] = useState<string[]>([]);
+    const [autocompleteLoading, setAutocompleteLoading] = useState<boolean>(false);
+    const [lastFocusedInputID, setLastFocusedInputID] = useState<string>('');
+    const wrapperRef = useRef<HTMLDivElement>(null); // Replace HTMLDivElement with the correct type
+
+
+    useEffect(() => {
+        if (!columnsLoaded) {
+            getColumns();
+        }
+    }, [columnsLoaded]);
+
+    const getColumns = async () => {
+        try {
+            const response = await axios.get("http://127.0.0.1:5000/api/search/v2/get_columns", {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+        
+            // Parse response.data as JSON
+            const data: ApiResponse = response.data;
+            const success = data["success"];
+            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
+            const results = data["message"];
+            setAvailableColumns(results ? results["columns"] : []);
+        } catch (error) {
+            console.error("Error making POST request:", error);
+            return { success: false, message: "An error occurred" };
+        } finally {
+            setColumnsLoaded(true);
+        }
+    };
+
+
+    const handleClickOutside = (
+        event: MouseEvent
+    ) => {
+        const target = event.target as Node;
+        const is_auto_option = target instanceof HTMLElement && target.getAttribute('is-autocomplete-option');
+        if (wrapperRef.current && !is_auto_option) {
+            setAutocomplete([]);
+        }
+    };
+
+    React.useEffect(() => {
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    }, []);
 
   const addBlock = (type: BlockType) => {
     const newBlock = {
@@ -407,7 +494,17 @@ const QueryBuilder: React.FC = () => {
   };
 
   const deleteBlock = (id: number) => {
-    setBlocks(blocks.filter(block => block.id !== id));
+    // Delete the block with the given id
+    // If by deleting this block we have the first block being AND/OR, we remove it also
+    const newBlocks : any[] = [];
+    blocks.forEach((block) => {
+        if (block.id !== id) {
+            const isAND_OR = block.type === BlockType.AND || block.type === BlockType.OR;
+            if(newBlocks.length === 0 && isAND_OR) return; // Skip the first AND/OR block
+            newBlocks.push(block);
+        }
+    });
+    setBlocks(newBlocks);
   };
 
   /* AAA */
@@ -435,11 +532,9 @@ const QueryBuilder: React.FC = () => {
         setAutocomplete([]);
     }
 
-  /* AAA */
-
   const renderBlock = (block: any) => {
     const commonProps = {
-      key: block.id,
+      key: block.id, // This causes an issue, but it's fine for now
       onToggleNot: () => updateBlock(block.id, { isNot: !block.isNot }),
       onDelete: () => deleteBlock(block.id),
     };
@@ -449,6 +544,7 @@ const QueryBuilder: React.FC = () => {
         return (
           <EqualBlock
             {...commonProps}
+            identifier={block.id}
             type={BlockType.EQUAL}
             availableColumns={availableColumns}
             selectedColumn={block.column}
@@ -466,12 +562,16 @@ const QueryBuilder: React.FC = () => {
             autocompleteLoading={autocompleteLoading}
             queryAPIForAutocomplete={queryAPIForAutocomplete}
             resetAutocomplete={resetAutocomplete}
+            lastFocusedInputID={lastFocusedInputID}
+            setLastFocusedInputID={setLastFocusedInputID}
+            changeBlockType={(type: BlockType) => {}}
           />
         );
       case BlockType.BETWEEN:
         return (
           <BetweenBlock
             {...commonProps}
+            identifier={block.id}
             type={BlockType.BETWEEN}
             availableColumns={availableColumns}
             selectedColumn={block.column}
@@ -494,14 +594,16 @@ const QueryBuilder: React.FC = () => {
             autocompleteLoading={autocompleteLoading}
             queryAPIForAutocomplete={queryAPIForAutocomplete}
             resetAutocomplete={resetAutocomplete}
-            betweenLastFocused={betweenLastFocused}
-            onBetweenLastFocusedChange={(focused) => setBetweenLastFocused(focused)}
+            lastFocusedInputID={lastFocusedInputID}
+            setLastFocusedInputID={setLastFocusedInputID}
+            changeBlockType={(type: BlockType) => {}}
           />
         );
       case BlockType.INCLUDES:
         return (
           <IncludesBlock
             {...commonProps}
+            identifier={block.id}
             type={BlockType.INCLUDES}
             availableColumns={availableColumns}
             selectedColumn={block.column}
@@ -520,11 +622,14 @@ const QueryBuilder: React.FC = () => {
             isNot={block.isNot}
 
             inputDisabled={block.column === undefined}
-            renderAutocomplete={block.value && block.value.length > 0 && block.column && block.column.length > 0}
+            renderAutocomplete={block.currentValue && block.currentValue.length > 0 && block.column && block.column.length > 0}
             autocomplete={autocomplete}
             autocompleteLoading={autocompleteLoading}
             queryAPIForAutocomplete={queryAPIForAutocomplete}
             resetAutocomplete={resetAutocomplete}
+            lastFocusedInputID={lastFocusedInputID}
+            setLastFocusedInputID={setLastFocusedInputID}
+            changeBlockType={(type: BlockType) => {}}
           />
         );
       case BlockType.AND:
@@ -533,7 +638,7 @@ const QueryBuilder: React.FC = () => {
             <OperationBlock 
                 {...commonProps}
                 type={block.type}
-                isNot={block.isNot}
+                changeBlockType={(type: BlockType) => updateBlock(block.id, { type })}
             />
         );
       default:
@@ -541,11 +646,7 @@ const QueryBuilder: React.FC = () => {
     }
   };
 
-  const isBlockDisabled = (type: BlockType) => {
-        /*
-            RULES: AND/OR can only be placed after EQUAL, BETWEEN, or INCLUDES blocks
-            EQUAL, BETWEEN, INCLUDES can only be placed after AND/OR blocks
-        */
+    const isBlockDisabled = (type: BlockType) => {
         let lastBlock = null;
         if (blocks.length > 0) lastBlock = blocks[blocks.length - 1];
 
@@ -571,6 +672,7 @@ const QueryBuilder: React.FC = () => {
     };
 
     const getTypeIcon = (type: BlockType) => {
+        return null; // For now, we may add icons later
         switch (type) {
             case BlockType.AND:
                 return null;
@@ -588,10 +690,33 @@ const QueryBuilder: React.FC = () => {
     }
 
   return (
-    <div className="query-builder">
+    <div className="query-builder" ref={wrapperRef}>
       <div className="qb-blocks-selector">
-        <div className="qt-blocks-header">
-            <h3>Blocks</h3>
+        <div className="qt-tools">
+            { blocksValid
+                ? 
+                <div className="qt-verif valid">
+                    <div className="qt-verif-header">
+                        <div className="qt-verif-icon"><FaCheck /></div>
+                        <h3>Votre contrainte est valide</h3>
+                    </div>
+                </div>
+                :
+                <div className="qt-verif invalid">
+                    <div className="qt-verif-header">
+                        <div className="qt-verif-icon"><FaBan /></div>
+                        <h3>Votre contrainte est invalide</h3>
+                    </div>
+                    <div className="qt-verif-content">
+                        <h4>{blocksValidMessage}</h4>
+                    </div>
+                </div>
+            }
+            <button
+                onClick={() => setBlocks([])}
+            >
+                <div className="qt-tool-icon"><RiResetLeftFill /></div>
+            </button>
         </div>
         <div className='qt-blocks'>
             {Object.values(BlockType).map(type => (
@@ -609,7 +734,10 @@ const QueryBuilder: React.FC = () => {
       </div>
 
       <div className="qb-conditions">
-        {blocks.map(renderBlock)}
+        { columnsLoaded
+        ? blocks.map(renderBlock)
+        : <h3>Chargement des colonnes...</h3>
+        }
       </div>
     </div>
   );

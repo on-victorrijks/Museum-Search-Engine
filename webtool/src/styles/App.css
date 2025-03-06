@@ -12,6 +12,8 @@
 
     --button-bg: #ffffff;
     --button-text: #000000;
+    --button-bg-hover: #c9c9c9;
+    --button-text-hover: #212121;
     
     --hover-bg: #bbbbbb;
     --border-color: #333333;
@@ -43,7 +45,36 @@
     --tab-handler-button-color-selected: #000000;
 
     --result-bg: var(--background-color);
+
+    --qb-block-content-bg: rgba(0, 0, 0, 0.15);
+
+    --search-selection-bg: #2c2b32;
+    --search-selection-bg-selected: #3c3b42;
 }
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #ffffff var(--background-color);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--background-color);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 2px none #ffffff;
+}
+    
+
 #root {
     height: 100vh;
     width: 100vw;

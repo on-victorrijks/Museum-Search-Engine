@@ -117,70 +117,75 @@ class MockDB(AbstractDatabase):
             iconography = iconographies.get(str(record['recordID']), {})
             self.iconographies[i] = flattenIconography(iconography)
     
-    def evaluate_constraint(self, record: Dict[str, Any], constraint: Dict) -> bool:        
-        constraint_type = constraint["type"]
-        if constraint_type=="constant":
-            return constraint["value"]
+    def getLocationFromColumn(self, columnName: str) -> str:
+        if columnName in self.get_columns():
+            return "metadatas"
+        elif columnName=="iconography":
+            return "iconography"
+        else:
+            raise ValueError(f"Column {columnName} not found in the database.")
 
-        location = constraint["location"]
+    def convertToCorrectType(self, columnName, value):
+        if columnName in ["recordID"]:
+            return int(value)
+        else:
+            return str(value)
+
+    def evaluate_constraint(self, record, constraint) -> bool:        
+        constraint_type = constraint["type"]
+        columnName = constraint["columnName"]
+        location = self.getLocationFromColumn(columnName)
         recordID = record['recordID']
+        isNot = constraint.get("isNot", False)            
 
         # Get the data point to be evaluated
         if location == "metadatas":
-            datapoint = record[constraint["column"]]
+            datapoint = record[columnName]
         elif location == "iconography":
             datapoint = self.iconographies[self.recordIDToIndex[recordID]]
-        else:
-            raise ValueError(f"Unsupported location: {location}")
 
-        if constraint_type == "interval":
-            return constraint["min"] <= datapoint <= constraint["max"]
+        datapoint = self.convertToCorrectType(columnName, datapoint)
 
-        elif constraint_type == "equal":
-            return datapoint in constraint["values"]
-
-        elif constraint_type == "not_equal":
-            return datapoint not in constraint["values"]
+        if constraint_type == "BETWEEN":
+            condition = self.convertToCorrectType(columnName, constraint["from"]) <= datapoint <= self.convertToCorrectType(columnName, constraint["to"])
+ 
+        elif constraint_type == "EQUAL":
+            condition = self.convertToCorrectType(columnName, constraint["equalTo"])==datapoint
         
-        elif constraint_type == "contains":
-            if isinstance(datapoint, str):
-                datapoint = [datapoint]
-            return constraint["term"] in datapoint
+        elif constraint_type == "INCLUDES":
+            includes = constraint["includes"]
+            condition = False
+            for include in includes:
+                if self.convertToCorrectType(columnName, include) in datapoint:
+                    condition = True
+                    break
 
         else:
             raise ValueError(f"Unsupported constraint type: {constraint_type}")
+        
+        return condition if not isNot else not condition
 
-    def parse_constraints(self, record: Dict[str, Any], constraints: Any) -> bool:        
-        """Recursively evaluates nested constraints on a record."""
-        if isinstance(constraints, dict):  # Single constraint
-            
-            return self.evaluate_constraint(record, constraints)
+    def parse_constraints(self, record, constraints) -> bool:        
+        bool_value = True
+        nextOperation = "AND"
+        for constraint in constraints:
+            if constraint["type"] == "AND":
+                nextOperation = "AND"
+            elif constraint["type"] == "OR":
+                nextOperation = "OR"
+            else:
+                block_bool = self.evaluate_constraint(record, constraint)
+                if nextOperation == "AND":
+                    bool_value = bool_value and block_bool
+                elif nextOperation == "OR":
+                    bool_value = bool_value or block_bool
+        
+        return bool_value
 
-        elif isinstance(constraints, tuple):  # Nested structure
-            
-            if len(constraints)==1:
-                return self.parse_constraints(record, constraints[0])
-            elif len(constraints)==2:
-                operator = constraints[0]
-                if operator == "NOT":
-                    return not self.parse_constraints(record, constraints[1])
-                else:
-                    raise ValueError(f"(2) Unsupported operator: {operator}")
-            elif len(constraints)==3:
-                operator = constraints[1]  # AND, OR, NOT
-                if operator == "AND":
-                    return self.parse_constraints(record, constraints[0]) and self.parse_constraints(record, constraints[2])
-                elif operator == "OR":
-                    return self.parse_constraints(record, constraints[0]) or self.parse_constraints(record, constraints[2])
-                else:
-                    raise ValueError(f"(3) Unsupported operator: {operator}")
-
-        else:
-            raise ValueError("Invalid constraint format")
-
-    def apply_hard_constraints(self, constraints: Any) -> List[int]:
+    def apply_hard_constraints(self, constraints):
         """Filters data based on structured constraints."""
-        return [i for i, record in enumerate(self.data) if self.parse_constraints(record, constraints)]
+        recordIDs = [record["recordID"] for i, record in enumerate(self.data) if self.parse_constraints(record, constraints)]
+        return recordIDs
     
     def get_queries_embedding(self, queries, precomputed={}, version="classic"):
         weights = [query['weight'] for query in queries]
@@ -229,7 +234,7 @@ class MockDB(AbstractDatabase):
     def apply_soft_constraints(
             self, 
             queries: List[Dict[str, Any]], 
-            indices: List[int],
+            valid_recordIDs: List[int],
             version: str,
         ) -> List[Tuple[int, float]]:   
             precomputed = {}
@@ -240,34 +245,46 @@ class MockDB(AbstractDatabase):
                 recordID = query["recordID"]
                 precomputed[i] = self.vectors[self.recordIDToIndex[recordID]]
                 
+            subset_vectors = []
+            for recordID in valid_recordIDs:
+                i = self.recordIDToIndex[recordID]
+                subset_vectors.append(self.vectors[i])
+            subset_vectors = np.array(subset_vectors)
+
             queries_embedding = self.get_queries_embedding(queries, precomputed=precomputed, version=version)
-            sims = cosine_similarity(queries_embedding, self.vectors).squeeze()
-            indices = np.argsort(sims)[::-1]
+            sims = cosine_similarity(queries_embedding, subset_vectors)[0]
+            indexes = np.argsort(sims)[::-1]
         
-            return [(i, sims[i]) for i in indices]
+            return [(valid_recordIDs[i], sims[i]) for i in indexes]
 
     def query(
             self, 
-            filters: Dict[str, Tuple[Any, Any]], 
+            filters,
             queries: List[Dict[str, Any]], 
             page: int, 
             page_size: int,
             version: str="classic"
         ) -> List[Dict[str, Any]]:
 
-        if not filters:
-            valid_indices = list(range(len(self.data)))
-        else:
-            valid_indices = self.apply_hard_constraints(filters)
+        filters = filters or []
+        queries = queries or []
 
-        if queries is None:
-            ranked_results = [(i, 0) for i in valid_indices]
+        if len(filters) == 0:
+            valid_recordIDs = [record["recordID"] for record in self.data]
         else:
-            ranked_results = self.apply_soft_constraints(queries, valid_indices, version)
+            valid_recordIDs = self.apply_hard_constraints(filters)
+
+        if len(valid_recordIDs) == 0:
+            return []
         
+        if len(queries) == 0:
+            ranked_results = [(recordID, 0) for recordID in valid_recordIDs]
+        else:
+            ranked_results = self.apply_soft_constraints(queries, valid_recordIDs, version)
+
         # Verify that the page is within bounds
         num_pages = len(ranked_results) // page_size
-        if page >= num_pages:
+        if page > num_pages:
             return []
 
         # Normalize the similarity scores to [0, 1]
@@ -280,9 +297,16 @@ class MockDB(AbstractDatabase):
             for i in range(len(ranked_results)):
                 ranked_results[i] = (ranked_results[i][0], (ranked_results[i][1] - min_similarity) / (max_similarity - min_similarity))
 
+        # TODO: PAGINATION
+
         paginated_results = []
-        for result_index in range(page * page_size, min((page + 1) * page_size, len(ranked_results))):
-            i, similarity = ranked_results[result_index]
+        for result_index, ranked_result in enumerate(ranked_results):
+            if result_index > page_size:
+                break
+
+            recordID, similarity = ranked_result
+            i = self.recordIDToIndex[recordID]
+
             data = self.data[i]
             data["iconography"] = self.iconographies[i]
             data["similarity"] = float(similarity)

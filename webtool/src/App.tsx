@@ -7,11 +7,7 @@ import SearchComponent from './components/SearchComponent';
 import TabContainer from './components/TabContainer';
 import axios from 'axios';
 
-// Define the expected response type
-interface ApiResponse {
-  success: boolean;
-  message?: Record<string, any>;
-}
+import ApiResponse from './types/ApiResponse';
 
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';
@@ -334,14 +330,6 @@ const App: React.FC = () => {
         setTabs(tabs);
         setQueryParts([]);
       }
-
-      return (
-        <div style={{
-          backgroundColor: 'white',
-        }}>
-          <QueryBuilder />
-        </div>
-      );
 
       return (
         <div className='tabs-container'>          

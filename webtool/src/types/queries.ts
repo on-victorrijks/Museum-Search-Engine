@@ -10,6 +10,21 @@ interface QueryPart {
     recordID?: number;
     imageInformations?: Record<string, any>;
 };
+interface HardQueryPartOperation extends QueryPart {
+    operation: "OR" | "AND";
+}
+interface HardQueryPartLeaf extends QueryPart {
+    isNot: boolean;
+
+    columnName: string;
+
+    equalTo?: string;
+
+    from?: string;
+    to?: string;
+
+    includes?: string[];
+}
 
 interface Query {
     identifier: string;
@@ -19,5 +34,7 @@ interface Query {
 
 export type {
     QueryPart,
-    Query
+    HardQueryPartOperation,
+    HardQueryPartLeaf,
+    Query,
 };

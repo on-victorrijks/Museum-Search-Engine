@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/SearchComponent.css';
 import { TabData } from '../types/tab';
-import { QueryPart, Query } from '../types/queries';
+import { QueryPart, Query, HardQueryPartOperation, HardQueryPartLeaf } from '../types/queries';
 
 // Use react-icons
 import { FaSearch, FaMicrophone, FaAngleUp, FaAngleDown, FaPlus, FaTimes, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
@@ -9,7 +9,10 @@ import { FaSearch, FaMicrophone, FaAngleUp, FaAngleDown, FaPlus, FaTimes, FaThum
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';
 
+import { BlockType } from '../types/blocks';
+
 import Slider from '@mui/material/Slider';
+import QueryBuilder from './QueryBuilder';
 
 const keywords = [
     "Portrait", "Autoportrait", "Femme", "Homme", "Enfant", "Couple", 
@@ -75,6 +78,65 @@ interface SearchComponent {
     resetQuery: () => void;
 }
 
+// TO EXPORT
+const SearchButton: React.FC<{
+    loading: boolean,
+    blocks: any[],
+    blocksValid: boolean,
+    queryParts: QueryPart[],
+    compileIntoTab: (isNewSearch: boolean) => void
+}> = ({ 
+    loading,
+    blocks, 
+    blocksValid, 
+    queryParts, 
+    compileIntoTab
+}) => {
+    const hard_valid = blocks.length > 0 && blocksValid;
+    const soft_valid = blocksValid && queryParts.length > 0;
+    const canSearch = !loading && (hard_valid || soft_valid);
+    return (
+        <button
+            className="primary"
+            onClick={() => compileIntoTab(false)}
+            disabled={!canSearch}
+        >
+            Rechercher
+        </button>
+    );
+}
+
+const NewQueryButton: React.FC<{
+    loading: boolean,
+    blocks: any[],
+    blocksValid: boolean,
+    queryParts: QueryPart[],
+    compileIntoTab: (isNewSearch: boolean) => void
+}> = ({ 
+    loading,
+    blocks, 
+    blocksValid, 
+    queryParts, 
+    compileIntoTab
+}) => {
+
+    const hard_valid = blocks.length > 0 && blocksValid;
+    const soft_valid = blocksValid && queryParts.length > 0;
+    const canSearch = !loading && (hard_valid || soft_valid);
+
+    return (
+        <button
+            className="secondary"
+            onClick={() => compileIntoTab(true)}
+            disabled={!canSearch}
+        >
+            Nouvel onglet
+        </button>
+    );
+}
+
+
+//
 const SearchComponent: React.FC<SearchComponent> = ({
     loading,
     receiveQuery,
@@ -85,9 +147,128 @@ const SearchComponent: React.FC<SearchComponent> = ({
     resetQuery
 }) => {
 
+    const [blocks, setBlocks] = useState<any[]>([]);
+    const [blocksValid, setBlocksValid] = useState<boolean>(true);
+    const [blocksValidMessage, setBlocksValidMessage] = useState<string>('');
+
+    const [searchSelection, setSearchSelection] = useState<"HARD"|"SOFT">("SOFT");
+
     const [keywordsVisible, setKeywordsVisible] = useState<boolean>(false);
     const [localSearchTerm, setLocalSearchTerm] = useState<string>('');
     const [isAutoSearchEnabled, setIsAutoSearchEnabled] = useState<boolean>(true);
+
+    const validateSingleBlock = (block: any) => {
+        if (block.type === BlockType.AND || block.type === BlockType.OR) {
+            return true;
+        } else if (block.type === BlockType.EQUAL) {
+            return block.column && block.column.length > 0 && block.value && block.value.length > 0;
+        } else if (block.type === BlockType.BETWEEN) {
+            return block.column && block.column.length > 0 && block.fromValue && block.fromValue.length > 0 && block.toValue && block.toValue.length > 0;
+        } else if (block.type === BlockType.INCLUDES) {
+            return block.column && block.column.length > 0 && block.values && block.values.length > 0;
+        }
+        return false;
+    };
+
+    const validateBlocks = () => {
+        /*
+            RULES: 
+            AND/OR can only be placed after EQUAL, BETWEEN, or INCLUDES blocks
+            EQUAL, BETWEEN, INCLUDES can only be placed after AND/OR blocks (except when it is the first block !)
+            AND/OR cannot be placed last
+            
+            Obviously, each block must be filled with the required data
+        */
+            let lastBlock = null;
+            let valid = true;
+            let message = '';
+    
+            for (let i=0; i<blocks.length; i++) {
+                
+                if(!validateSingleBlock(blocks[i])){
+                    valid = false;
+                    message = 'Chaque block doit être rempli avec les données requises';
+                    break;
+                }
+    
+                const block = blocks[i];
+                if (block.type === BlockType.AND || block.type === BlockType.OR) {
+                    if(i === (blocks.length - 1)) {
+                        valid = false;
+                        message = 'ET/OU ne peut être placé en dernier';
+                        break;
+                    } else if (
+                        (lastBlock === null ) || 
+                        (lastBlock.type !== BlockType.EQUAL && lastBlock.type !== BlockType.BETWEEN && lastBlock.type !== BlockType.INCLUDES)
+                    ) {
+                        valid = false;
+                        message = 'ET/OU ne peut être placé qu\'après des blocs ÉGAL, ENTRE ou CONTIENT';
+                        break;
+                    }
+                } else if (block.type === BlockType.EQUAL || block.type === BlockType.BETWEEN || block.type === BlockType.INCLUDES) {
+                    if (
+                        (lastBlock !== null && i>0) && 
+                        lastBlock.type !== BlockType.AND && lastBlock.type !== BlockType.OR
+                    ) {
+                        valid = false;
+                        message = 'ÉGAL, ENTRE, CONTIENT ne peut être placé qu\'après des blocs ET/OU';
+                        break;
+                    }
+                }
+                lastBlock = block;
+            }
+    
+            setBlocksValid(valid);
+            setBlocksValidMessage(message);
+
+            if(valid) {
+                updateQueryPartsFromBlocks();
+            }
+    }
+
+    const updateQueryPartsFromBlocks = () => {
+        const softQueryParts = queryParts.filter(q => q.isSoft);
+        const hardQueryParts = blocks.map(block => {
+            const isOperation = block.type === BlockType.AND || block.type === BlockType.OR;
+            if (isOperation) {
+                const newQueryPart : HardQueryPartOperation = {
+                    identifier: uuidv4(),
+                    type: block.type,
+                    isSoft: false,
+                    operation: block.type,
+                    weight: 1
+                };
+                return newQueryPart;
+            } else {
+                const newQueryPart : HardQueryPartLeaf= {
+                    identifier: uuidv4(),
+                    type: block.type,
+                    isSoft: false,
+                    columnName: block.column,
+                    weight: 1,
+                    isNot: block.isNot ? true : false
+                };
+                if (block.type === BlockType.EQUAL) {
+                    newQueryPart.equalTo = block.value;
+                } else if (block.type === BlockType.BETWEEN) {
+                    newQueryPart.from = block.fromValue;
+                    newQueryPart.to = block.toValue;
+                } else if (block.type === BlockType.INCLUDES) {
+                    newQueryPart.includes = block.values;
+                }
+                return newQueryPart;
+            }
+        });
+        
+        const newQueryParts = [...softQueryParts, ...hardQueryParts];
+        console.log(newQueryParts);
+        setQueryParts(newQueryParts);
+    }
+
+    useEffect(() => {
+        // Validate blocks
+        validateBlocks();
+    }, [blocks]);
 
     const toggleKeywords = () => {
         setKeywordsVisible(!keywordsVisible);
@@ -277,6 +458,10 @@ const SearchComponent: React.FC<SearchComponent> = ({
     }
 
     const renderQueryPart = (queryPart: QueryPart) => {
+        if(!queryPart.isSoft) {
+            return null;
+        }
+
         const formatType = (type: string) => {
             switch(type) {
                 case 'term':
@@ -352,6 +537,27 @@ const SearchComponent: React.FC<SearchComponent> = ({
         setQueryParts([]);
     }
 
+    const BottomButtons = () => {
+        return (
+        <div className="buttons">
+            <SearchButton 
+                loading={loading}
+                blocks={blocks}
+                blocksValid={blocksValid}
+                queryParts={queryParts}
+                compileIntoTab={compileIntoTab}
+            />
+            <NewQueryButton 
+                loading={loading}
+                blocks={blocks}
+                blocksValid={blocksValid}
+                queryParts={queryParts}
+                compileIntoTab={compileIntoTab} 
+            />
+        </div>
+        );
+    }
+
     return (
         <div className="sb-Content">
         {/* Header */}
@@ -359,50 +565,78 @@ const SearchComponent: React.FC<SearchComponent> = ({
             <img src="./src/assets/logo.svg" alt="Logo" />
         </div>
 
-        <div className='search-section'>
-                    {/* Search via Text */}
-        <div className="searchSection">
-            <h1>Rechercher via du texte</h1>
-            <div className="textForm">
-                <input 
-                    type="text" 
-                    placeholder="Un homme avec un chien"
-                    value={localSearchTerm}
-                    onChange={(e) => setLocalSearchTerm(e.target.value)}
-                />
-                <button
-                    className='microphone'
-                    onClick={() => startAudioRecording()}
-                >
-                    <FaMicrophone />
-                </button>
-                <button
-                    onClick={() => addTermToSearch()}
-                >
-                    <FaPlus />
-                </button>
-            </div>                
+        <div className="search-selections">
+            <div 
+                className={"search-selection " + (searchSelection === 'HARD' ? 'selected' : '')}
+                onClick={() => setSearchSelection('HARD')}
+            >
+                <h1>Contraintes d'exclusion</h1>
+            </div>
+            <div 
+                className={"search-selection " + (searchSelection === 'SOFT' ? 'selected' : '')}
+                onClick={() => setSearchSelection('SOFT')}
+            >
+                <h1>Contraintes de tri</h1>
+            </div>
         </div>
 
-        {/* Search via Keywords */}
-        <div className="searchSection">
+        { searchSelection === 'HARD' &&
+            <QueryBuilder 
+                blocks={blocks}
+                setBlocks={setBlocks}
+                blocksValid={blocksValid}
+                setBlocksValid={setBlocksValid}
+                blocksValidMessage={blocksValidMessage}
+                setBlocksValidMessage={setBlocksValidMessage}
+            />
+        }
 
-            <div className="dropHeader" id="dropHeader" onClick={toggleKeywords}>
-                <h1>Rechercher via des mots-clés</h1>
-                <div className="drop">
-                    {
-                        keywordsVisible ? 
-                        <FaAngleUp /> : 
-                        <FaAngleDown />
-                    }
+        { searchSelection === 'SOFT' &&
+        <>
+            <div className='search-section'>
+            {/* Search via Text */}
+            <div className="searchSection">
+                <h1>Rechercher via du texte</h1>
+                <div className="textForm">
+                    <input 
+                        type="text" 
+                        placeholder="Un homme avec un chien"
+                        value={localSearchTerm}
+                        onChange={(e) => setLocalSearchTerm(e.target.value)}
+                    />
+                    <button
+                        className='microphone'
+                        onClick={() => startAudioRecording()}
+                    >
+                        <FaMicrophone />
+                    </button>
+                    <button
+                        onClick={() => addTermToSearch()}
+                    >
+                        <FaPlus />
+                    </button>
+                </div>                
+            </div>
+
+            {/* Search via Keywords */}
+            <div className="searchSection">
+
+                <div className="dropHeader" id="dropHeader" onClick={toggleKeywords}>
+                    <h1>Rechercher via des mots-clés</h1>
+                    <div className="drop">
+                        {
+                            keywordsVisible ? 
+                            <FaAngleUp /> : 
+                            <FaAngleDown />
+                        }
+                    </div>
                 </div>
-            </div>
 
-            {keywordsVisible && 
-            <div className="container" id="keywords_container">
-                { keywords.map(keyword => renderKeyword(keyword)) }    
-            </div>
-            }
+                {keywordsVisible && 
+                <div className="container" id="keywords_container">
+                    { keywords.map(keyword => renderKeyword(keyword)) }    
+                </div>
+                }
 
             </div>
 
@@ -422,53 +656,26 @@ const SearchComponent: React.FC<SearchComponent> = ({
                 </div>
             </div>
 
-        </div>
-
-        {/* Queries Container */}
-        <div className="queries">
-            <div className='queryPartsHeader'>
-                <h1>Vos filtres - {selectedTabIdentifier}</h1>
             </div>
-            <div className='queries_container'>
-            {
-                queryParts.length > 0 
-                ? queryParts.map(queryPart => renderQueryPart(queryPart))
-                : <EmptyQueryParts />
-            }
-            </div>
-        </div>
 
-        {/* Buttons */}
-        <div className="buttons">
-            <button
-                className="primary"
-                onClick={() => compileIntoTab(false)}
-                disabled={loading || queryParts.length === 0}
-            >
-                Rechercher
-            </button>
-            <button
-                className="secondary"
-                onClick={() => compileIntoTab(true)}
-                disabled={loading || queryParts.length === 0}
-            >
-                Nouvelle recherche
-            </button>
-            <button
-                className="secondary"
-                onClick={() => clearAll()}
-                disabled={loading || queryParts.length === 0}
-            >
-                Réinitialiser
-            </button>
-            <button
-                className="secondary"
-                onClick={() => setIsAutoSearchEnabled(!isAutoSearchEnabled)}
-                disabled={loading}
-            >
-                {isAutoSearchEnabled ? 'Désactiver' : 'Activer'} la recherche automatique
-            </button>
-        </div>
+            {/* Queries Container */}
+            <div className="queries">
+                <div className='queryPartsHeader'>
+                    <h1>Vos filtres - {selectedTabIdentifier}</h1>
+                </div>
+                <div className='queries_container'>
+                {
+                    queryParts.length > 0 
+                    ? queryParts.map(queryPart => renderQueryPart(queryPart))
+                    : <EmptyQueryParts />
+                }
+                </div>
+            </div>
+        </>
+        }
+
+    
+        <BottomButtons />
 
         </div>
     );
