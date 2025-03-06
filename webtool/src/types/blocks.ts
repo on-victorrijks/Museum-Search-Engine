@@ -12,13 +12,20 @@ interface BaseBlockProps {
   onToggleNot: () => void;
   onDelete: () => void;
   changeBlockType: (type: BlockType) => void;
+  setExactMatch?: (value: boolean) => void;
+  exactMatch?: boolean;
+}
+
+interface SelectionOption extends Record<string, string> {
+  key: string;
+  userFriendlyName: string;
 }
 
 interface ColumnBlockProps extends BaseBlockProps {
     identifier: string;
-    availableColumns: string[];
-    selectedColumn?: string;
-    onColumnChange: (column: string) => void;
+    availableColumns: SelectionOption[];
+    selectedColumn?: SelectionOption;
+    onColumnChange: (column: SelectionOption) => void;
     inputDisabled: boolean;
     renderAutocomplete: boolean;
     autocomplete: string[];
@@ -51,5 +58,5 @@ interface IncludesBlockProps extends ColumnBlockProps {
 }
 
 // Export all
-export type { BaseBlockProps, ColumnBlockProps, EqualBlockProps, BetweenBlockProps, IncludesBlockProps };
+export type { BaseBlockProps, ColumnBlockProps, EqualBlockProps, BetweenBlockProps, IncludesBlockProps, SelectionOption };
 export { BlockType };

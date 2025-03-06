@@ -365,13 +365,47 @@ if __name__ == "__main__":
         '/api/search/v2/get_columns', 
         methods=['GET']
     )
-    def get_columns():
+    def get_columns():        
         return jsonify({
             "success": True,
             "message": {
-                "columns": ["iconography"] + DB.get_columns()
+                "columns": DB.get_selection_columns()
             }
         })
+
+    @app.route(
+        '/api/search/v2/autocomplete', 
+        methods=['POST']
+    )
+    def autocomplete():
+        data = request.json
+        key = data["key"]
+        query = data["query"]
+
+        if not key:
+            return jsonify({
+                "success": False,
+                "message": "No key provided."
+            })
+
+        if not query:
+            return jsonify({
+                "success": False,
+                "message": "No query provided."
+            })
+
+        try:
+            return jsonify({
+                "success": True,
+                "message": {
+                    "results": DB.autocomplete(key, query)
+                }
+            })
+        except Exception as e:
+            return jsonify({
+                "success": False,
+                "message": str(e)
+            })
 
     # 
 

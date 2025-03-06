@@ -10,11 +10,18 @@ import {
     BaseBlockProps,
     EqualBlockProps,
     BetweenBlockProps,
-    IncludesBlockProps
+    IncludesBlockProps,
+    SelectionOption
 } from '../types/blocks';
 import ApiResponse from '../types/ApiResponse';
 
-const BaseButtons: React.FC<BaseBlockProps> = ({ type, isNot, onToggleNot, onDelete, changeBlockType }) => (
+const BaseButtons: React.FC<BaseBlockProps> = ({ 
+    type, 
+    isNot, 
+    onToggleNot, 
+    onDelete, 
+    changeBlockType,
+ }) => (
     <div className="qb-block-base-buttons">
         { (type===BlockType.OR) &&
         <button 
@@ -60,40 +67,65 @@ const getFrenchType = (type: BlockType) => {
 const BaseBlock: React.FC<BaseBlockProps> = ({ 
   type, 
   isNot, 
-  onToggleNot 
-}) => (
-  <div className="qb-block-base">
-
-    { isNot !== undefined &&
-    <div className={"qb-block-base-not " + (isNot ? "enabled" : "")} onClick={onToggleNot}>
-        <div className="qb-block-base-not-repr">
-            {isNot ? <FaBan /> : null}
+  onToggleNot,
+  setExactMatch,
+  exactMatch,
+}) => {
+    const qbOptionsVisible = isNot !== undefined || (exactMatch!==undefined && setExactMatch!==undefined);
+    return (
+    <div className="qb-block-base">
+        
+        { qbOptionsVisible &&
+        <div className="qb-block-base-options">
+            { isNot !== undefined &&
+            <div className={"qb-block-base-option " + (isNot ? "enabled" : "")} onClick={onToggleNot}>
+                <div className="qb-block-base-option-repr">
+                    {isNot ? <FaCheck /> : null}
+                </div>
+                {
+                    type===BlockType.INCLUDES
+                    ? <h5>NE (CONTIENT) PAS</h5>
+                    : <h5>N'EST PAS</h5>
+                }
+            </div>
+            }
+            { (exactMatch!==undefined && setExactMatch!==undefined) &&
+            <div className={"qb-block-base-option " + (exactMatch ? "enabled" : "")} onClick={() => setExactMatch(!exactMatch)}>
+                <div className="qb-block-base-option-repr">
+                    {exactMatch ? <FaCheck /> : null}
+                </div>
+                {
+                    type===BlockType.INCLUDES
+                    ? <h5>TOUS</h5>
+                    : <h5>EXACTEMENT</h5>
+                }
+            </div>
+            }
         </div>
-        {
-            type===BlockType.INCLUDES
-            ? <h5>NE (CONTIENT) PAS</h5>
-            : <h5>N'EST PAS</h5>
         }
+    
+        <h4>{getFrenchType(type)}</h4>
     </div>
-    }
-
-    <h4>{getFrenchType(type)}</h4>
-  </div>
-);
+    );
+}
 
 const selectOptionComponent = (
-    availableColumns: string[], 
-    selectedColumn: string | undefined, 
-    onColumnChange: (column: string) => void
+    availableColumns: SelectionOption[],
+    selectedColumn: SelectionOption | undefined, 
+    onColumnChange: (column: SelectionOption) => void
 ) => (
     <select 
-          value={selectedColumn || ''} 
-          onChange={(e) => onColumnChange(e.target.value)}
+          value={selectedColumn?.key || ''} 
+          onChange={(e) => {
+            // Get the selected column with the key
+            const selectedColumn = availableColumns.find(col => col.key === e.target.value);
+            if (selectedColumn) onColumnChange(selectedColumn);
+          }}  
           className="border rounded p-1"
         >
           <option value="">Select Column</option>
           {availableColumns.map(col => (
-            <option key={col} value={col}>{col}</option>
+            <option key={col.key} value={col.key}>{col.userFriendlyName}</option>
           ))}
     </select>
 );
@@ -132,7 +164,7 @@ const EqualBlock: React.FC<EqualBlockProps> = ({
                             value={value}
                             onChange={(e) => {
                                 onValueChange(e.target.value);
-                                queryAPIForAutocomplete(selectedColumn || '', e.target.value);
+                                queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
                             }}
                             placeholder="Valeur"
                             disabled={inputDisabled}
@@ -210,7 +242,7 @@ const BetweenBlock: React.FC<BetweenBlockProps> = ({
                             value={fromValue}
                             onChange={(e) => {
                                 onFromValueChange(e.target.value);
-                                queryAPIForAutocomplete(selectedColumn || '', e.target.value);
+                                queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
                             }}
                             placeholder="Valeur"
                             disabled={inputDisabled}
@@ -252,7 +284,7 @@ const BetweenBlock: React.FC<BetweenBlockProps> = ({
                             value={toValue}
                             onChange={(e) => {
                                 onToValueChange(e.target.value);
-                                queryAPIForAutocomplete(selectedColumn || '', e.target.value);
+                                queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
                             }}
                             placeholder="Valeur"
                             disabled={inputDisabled}
@@ -330,7 +362,7 @@ const IncludesBlock: React.FC<IncludesBlockProps> = ({
                                 value={currentValue}
                                 onChange={(e) => {
                                     onCurrentValueChange(e.target.value);
-                                    queryAPIForAutocomplete(selectedColumn || '', e.target.value);
+                                    queryAPIForAutocomplete(selectedColumn?.key || '', e.target.value);
                                     setLastFocusedInputID(input_id);
                                 }}
                                 placeholder="Valeur"
@@ -413,14 +445,12 @@ const QueryBuilder: React.FC<{
 
     //const [blocks, setBlocks] = useState<any[]>([]);
     const [columnsLoaded, setColumnsLoaded] = useState<boolean>(false);
-    const [availableColumns, setAvailableColumns] = useState<string[]>([]);
-    const autocompleteOptions = ['New York', 'Los Angeles', 'Chicago', 'Houston'];
+    const [availableColumns, setAvailableColumns] = useState<SelectionOption[]>([]);
 
     const [autocomplete, setAutocomplete] = useState<string[]>([]);
     const [autocompleteLoading, setAutocompleteLoading] = useState<boolean>(false);
     const [lastFocusedInputID, setLastFocusedInputID] = useState<string>('');
     const wrapperRef = useRef<HTMLDivElement>(null); // Replace HTMLDivElement with the correct type
-
 
     useEffect(() => {
         if (!columnsLoaded) {
@@ -510,22 +540,33 @@ const QueryBuilder: React.FC<{
   /* AAA */
 
     const queryAPIForAutocomplete = async (
-        columnName: string,
+        key: string,
         query: string
     ) => {
-        if(columnName === '' || query === '') return;
-        
-        // Simulate API call
+        if(!key || !query || key === '' || query === '') return;
         setAutocompleteLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setAutocomplete([
-            `${columnName}+${query}1`,
-            `${columnName}+${query}2`,
-            `${columnName}+${query}3`,
-            `${columnName}+${query}4`,
-            `${columnName}+${query}5`,
-        ]);
-        setAutocompleteLoading(false);
+
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/api/search/v2/autocomplete", {
+                key,
+                query
+            }, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+        
+            // Parse response.data as JSON
+            const data: ApiResponse = response.data;
+            const success = data["success"];
+            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");        
+            setAutocomplete(data["message"] ? data["message"]["results"] : []);
+        } catch (error) {
+            console.error("Error making POST request:", error);
+            return { success: false, message: "An error occurred" };
+        } finally {
+            setAutocompleteLoading(false);
+        }
     }
 
     const resetAutocomplete = () => {
@@ -547,17 +588,17 @@ const QueryBuilder: React.FC<{
             identifier={block.id}
             type={BlockType.EQUAL}
             availableColumns={availableColumns}
-            selectedColumn={block.column}
-            onColumnChange={(column) => {
+            selectedColumn={block.selectedColumn}
+            onColumnChange={(selectedColumn) => {
                 resetAutocomplete();
-                updateBlock(block.id, { column, value: '' });
+                updateBlock(block.id, { selectedColumn, value: '' });
             }}
             value={block.value || ''}
             onValueChange={(value) => updateBlock(block.id, { value })}
             isNot={block.isNot}
 
-            inputDisabled={block.column === undefined}
-            renderAutocomplete={block.value && block.value.length > 0 && block.column && block.column.length > 0}
+            inputDisabled={block.selectedColumn === undefined}
+            renderAutocomplete={block.value && block.value.length > 0 && block.selectedColumn}
             autocomplete={autocomplete}
             autocompleteLoading={autocompleteLoading}
             queryAPIForAutocomplete={queryAPIForAutocomplete}
@@ -565,6 +606,8 @@ const QueryBuilder: React.FC<{
             lastFocusedInputID={lastFocusedInputID}
             setLastFocusedInputID={setLastFocusedInputID}
             changeBlockType={(type: BlockType) => {}}
+            setExactMatch={(exactMatch) => updateBlock(block.id, { exactMatch })}
+            exactMatch={block.exactMatch || false}
           />
         );
       case BlockType.BETWEEN:
@@ -574,10 +617,10 @@ const QueryBuilder: React.FC<{
             identifier={block.id}
             type={BlockType.BETWEEN}
             availableColumns={availableColumns}
-            selectedColumn={block.column}
-            onColumnChange={(column) => {
+            selectedColumn={block.selectedColumn}
+            onColumnChange={(selectedColumn) => {
                 resetAutocomplete();
-                updateBlock(block.id, { column, fromValue: '', toValue: '' });
+                updateBlock(block.id, { selectedColumn, fromValue: '', toValue: '' });
             }}
             fromValue={block.fromValue || ''}
             toValue={block.toValue || ''}
@@ -585,10 +628,10 @@ const QueryBuilder: React.FC<{
             onToValueChange={(toValue) => updateBlock(block.id, { toValue })}
             isNot={block.isNot}
 
-            inputDisabled={block.column === undefined}
+            inputDisabled={block.selectedColumn === undefined}
             renderAutocomplete={
-                (block.fromValue && block.fromValue.length > 0 && block.column && block.column.length > 0) ||
-                (block.toValue && block.toValue.length > 0 && block.column && block.column.length > 0)
+                (block.fromValue && block.fromValue.length > 0 && block.selectedColumn) ||
+                (block.toValue && block.toValue.length > 0 && block.selectedColumn)
             }
             autocomplete={autocomplete}
             autocompleteLoading={autocompleteLoading}
@@ -606,8 +649,8 @@ const QueryBuilder: React.FC<{
             identifier={block.id}
             type={BlockType.INCLUDES}
             availableColumns={availableColumns}
-            selectedColumn={block.column}
-            onColumnChange={(column) => updateBlock(block.id, { column, values: [], currentValue: '' })}
+            selectedColumn={block.selectedColumn}
+            onColumnChange={(selectedColumn) => updateBlock(block.id, { selectedColumn, values: [], currentValue: '' })}
             values={block.values || []}
             currentValue={block.currentValue || ''}
             onValueAdd={(value) => updateBlock(block.id, { 
@@ -618,11 +661,10 @@ const QueryBuilder: React.FC<{
               values: (block.values || []).filter((v: string) => v !== value) 
             })}
             onCurrentValueChange={(currentValue) => updateBlock(block.id, { currentValue })}
-            autocompleteOptions={autocompleteOptions}
             isNot={block.isNot}
 
-            inputDisabled={block.column === undefined}
-            renderAutocomplete={block.currentValue && block.currentValue.length > 0 && block.column && block.column.length > 0}
+            inputDisabled={block.selectedColumn === undefined}
+            renderAutocomplete={block.currentValue && block.currentValue.length > 0 && block.selectedColumn}
             autocomplete={autocomplete}
             autocompleteLoading={autocompleteLoading}
             queryAPIForAutocomplete={queryAPIForAutocomplete}
@@ -630,6 +672,8 @@ const QueryBuilder: React.FC<{
             lastFocusedInputID={lastFocusedInputID}
             setLastFocusedInputID={setLastFocusedInputID}
             changeBlockType={(type: BlockType) => {}}
+            setExactMatch={(exactMatch) => updateBlock(block.id, { exactMatch })}
+            exactMatch={block.exactMatch || false}
           />
         );
       case BlockType.AND:
@@ -736,7 +780,10 @@ const QueryBuilder: React.FC<{
       <div className="qb-conditions">
         { columnsLoaded
         ? blocks.map(renderBlock)
-        : <h3>Chargement des colonnes...</h3>
+        : 
+        <div className="qb-loading">
+            <h3>Chargement des colonnes...</h3>
+        </div>
         }
       </div>
     </div>

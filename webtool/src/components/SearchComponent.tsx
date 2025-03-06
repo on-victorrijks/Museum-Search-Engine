@@ -9,7 +9,7 @@ import { FaSearch, FaMicrophone, FaAngleUp, FaAngleDown, FaPlus, FaTimes, FaThum
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';
 
-import { BlockType } from '../types/blocks';
+import { BetweenBlockProps, BlockType, ColumnBlockProps, EqualBlockProps, IncludesBlockProps } from '../types/blocks';
 
 import Slider from '@mui/material/Slider';
 import QueryBuilder from './QueryBuilder';
@@ -161,11 +161,11 @@ const SearchComponent: React.FC<SearchComponent> = ({
         if (block.type === BlockType.AND || block.type === BlockType.OR) {
             return true;
         } else if (block.type === BlockType.EQUAL) {
-            return block.column && block.column.length > 0 && block.value && block.value.length > 0;
+            return block.selectedColumn && block.value && block.value.length > 0;
         } else if (block.type === BlockType.BETWEEN) {
-            return block.column && block.column.length > 0 && block.fromValue && block.fromValue.length > 0 && block.toValue && block.toValue.length > 0;
+            return block.selectedColumn && block.fromValue && block.fromValue.length > 0 && block.toValue && block.toValue.length > 0;
         } else if (block.type === BlockType.INCLUDES) {
-            return block.column && block.column.length > 0 && block.values && block.values.length > 0;
+            return block.selectedColumn && block.values && block.values.length > 0;
         }
         return false;
     };
@@ -228,9 +228,8 @@ const SearchComponent: React.FC<SearchComponent> = ({
 
     const updateQueryPartsFromBlocks = () => {
         const softQueryParts = queryParts.filter(q => q.isSoft);
-        const hardQueryParts = blocks.map(block => {
-            const isOperation = block.type === BlockType.AND || block.type === BlockType.OR;
-            if (isOperation) {
+        const hardQueryParts = blocks.map((block: EqualBlockProps|BetweenBlockProps|IncludesBlockProps) => {
+            if (block.type === BlockType.AND || block.type === BlockType.OR) {
                 const newQueryPart : HardQueryPartOperation = {
                     identifier: uuidv4(),
                     type: block.type,
@@ -240,28 +239,36 @@ const SearchComponent: React.FC<SearchComponent> = ({
                 };
                 return newQueryPart;
             } else {
+                
                 const newQueryPart : HardQueryPartLeaf= {
                     identifier: uuidv4(),
                     type: block.type,
                     isSoft: false,
-                    columnName: block.column,
+                    columnName: block.selectedColumn?.key || '', // This should be always filled
                     weight: 1,
-                    isNot: block.isNot ? true : false
+                    isNot: block.isNot ? true : false,
+                    exactMatch: block.exactMatch ? true : false,
                 };
+
                 if (block.type === BlockType.EQUAL) {
-                    newQueryPart.equalTo = block.value;
+                    // We know that block is of type EqualBlockProps, we can cast it
+                    const castedBlock = block as EqualBlockProps;
+                    newQueryPart.equalTo = castedBlock.value;
                 } else if (block.type === BlockType.BETWEEN) {
-                    newQueryPart.from = block.fromValue;
-                    newQueryPart.to = block.toValue;
+                    // We know that block is of type BetweenBlockProps, we can cast it
+                    const castedBlock = block as BetweenBlockProps;
+                    newQueryPart.from = castedBlock.fromValue;
+                    newQueryPart.to = castedBlock.toValue;
                 } else if (block.type === BlockType.INCLUDES) {
-                    newQueryPart.includes = block.values;
+                    // We know that block is of type IncludesBlockProps, we can cast it
+                    const castedBlock = block as IncludesBlockProps;
+                    newQueryPart.includes = castedBlock.values;
                 }
                 return newQueryPart;
             }
         });
         
         const newQueryParts = [...softQueryParts, ...hardQueryParts];
-        console.log(newQueryParts);
         setQueryParts(newQueryParts);
     }
 

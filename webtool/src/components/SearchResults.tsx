@@ -30,12 +30,11 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
         let title = result["objectWork.titleText"];
         let author = result["objectWork.creatorDescription"];
         let iconography = result["iconography"];
-        let creationDate = result["objectWork.creationDateDescription"];
+        let creationDate = (result["creation.earliestDate"] || "?") + " - " + (result["creation.latestDate"] || "?");
 
         if (!title) title = "Titre inconnu";
         if (!author) author = "Auteur inconnu";
         if (!iconography) iconography = [];
-        if (!creationDate) creationDate = "Date inconnue";
 
         const imageURL = "http://127.0.0.1:5000/images/" + recordID;
 

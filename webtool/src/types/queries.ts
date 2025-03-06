@@ -1,3 +1,5 @@
+import { BlockType } from "./blocks";
+
 interface QueryPart {
     identifier: string;
     type: string;
@@ -11,7 +13,7 @@ interface QueryPart {
     imageInformations?: Record<string, any>;
 };
 interface HardQueryPartOperation extends QueryPart {
-    operation: "OR" | "AND";
+    operation: BlockType.OR | BlockType.AND;
 }
 interface HardQueryPartLeaf extends QueryPart {
     isNot: boolean;
@@ -24,6 +26,8 @@ interface HardQueryPartLeaf extends QueryPart {
     to?: string;
 
     includes?: string[];
+
+    exactMatch?: boolean;
 }
 
 interface Query {
