@@ -112,7 +112,7 @@ class GameEngine:
         # Load the weights of the model
         weights_path = os.path.join(self.MODELS_FOLDER, "2025-02-05 17_09_07_allFocus_5.pt")
         # Load the weights of the model
-        model.load_state_dict(torch.load(weights_path))
+        model.load_state_dict(torch.load(weights_path, map_location=self.device))
         
         self.model = model
         self.processor = processor

@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     /* Change font family */
-    font-family: 'Roboto', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 300;
 }
 :root {
@@ -186,10 +187,6 @@
 .tab-content {
     flex: 1;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     overflow-x: hidden;
     overflow-y: auto;
     padding: 10px;
@@ -202,28 +199,26 @@
 
 .result {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: calc(100% - 20px);
-    height: 250px;
+    width: 100%;
+    max-height: 400px;
     overflow: hidden;
     background-color: var(--result-bg);
     border: solid 1px var(--border-color);
-    border-radius: 8px;
     flex-shrink: 0;
+    position: relative;
+    background: rgb(0,0,0);
 }
 .result-image {
-    flex: 1;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0;
-    height: 100%;
-    border-right: solid 1px var(--border-color);
     position: relative;
+    width: 100%;
 }
 .result-image img {
     width: 100%;
@@ -231,16 +226,33 @@
     object-fit: contain;
 }
 .result-content {
-    flex: 2;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     flex-direction: column;
     padding: 10px;
     flex-shrink: 0;
-    gap: 4px;
     overflow-y: hidden;
-    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0;
+    transition: opacity .3s;
+}
+.result[is-liked="true"] {
+    border-color: green;
+}
+.result[is-liked="false"] {
+    border-color: red;
+}
+.result:hover {
+    border: solid 1px var(--hover-bg);
+}
+.result:hover .result-content {
+    opacity: 1;
 }
 .result-content h2 {
     font-size: 19px;
@@ -257,6 +269,11 @@
     justify-content: flex-start;
     align-items: center;
     margin: 4px 0;
+    flex-wrap: wrap;
+}
+.result-header-sec {
+    flex-shrink: 0;
+    height: 32px;
 }
 .result-infos h3 {
     font-size: 15px;
@@ -269,6 +286,7 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
+    flex-shrink: 0;
 }
 .result-iconography-container {
     display: flex;
@@ -313,8 +331,9 @@ span.result-iconography:hover {
     display: flex;
     flex-direction: row;
     gap: 8px;
-    width: 100%;
     flex-wrap: wrap;
+    flex-shrink: 0;
+    width: 100%;
 }
 .result-buttons button {
     padding: 8px;
@@ -322,26 +341,13 @@ span.result-iconography:hover {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    background-color: var(--border-color);
+    color: var(--text-color);
     gap: 8px;
     border-radius: 4px;
     border: unset;
     cursor: pointer;
     height: 36px;
-}
-.result-buttons button.square {
-    width: 36px;
-    height: 36px;
-    border: solid 1px var(--border-color);
-    background: transparent;
-    color: white;
-}
-.result-buttons button.enabled {
-    background: white;
-    color: black;
-}
-.result-buttons button {
-    font-weight: 400;
-    color: #282828;
 }
 .result-buttons button:hover {
     opacity: .7;
@@ -350,6 +356,37 @@ span.result-iconography:hover {
     width: 100%;
     height: 1px;
     margin: 5px 0;
+}
+.result-interactions{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    z-index: 8;
+    height: 32px;
+}
+.result-interactions button {
+    background: var(--border-color);
+    color: #777777;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.result-interactions button:hover {
+    background: #777777;
+    color: #ffffff;
+}
+.result-interactions button.enabled {
+    background: #ffffff;
+    color: #000000;
 }
 
 .empty-query{
