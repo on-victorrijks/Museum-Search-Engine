@@ -1,4 +1,5 @@
 import React, {
+  useEffect,
   useState
 } from 'react';
 import SearchComponent from './components/SearchComponent';
@@ -178,9 +179,14 @@ const App: React.FC = () => {
           if (tab.identifier === tabIdentifier) {
             toRemoveTabIndex = index;
           } else {
-            // This tab could be selected
-            newSelectedTabIdentifier = tab.identifier;
-            newQueryParts = tab.content.query.parts;
+            // Verify if this tab is selectable (i.e. has QueryParts)
+            if (
+              tab.content.query && tab.content.query.parts
+            ) {
+              // This tab could be selected
+              newSelectedTabIdentifier = tab.identifier;
+              newQueryParts = tab.content.query.parts;
+            }
           }
         });
         if (toRemoveTabIndex === -1) {
@@ -384,8 +390,12 @@ const App: React.FC = () => {
         setQueryParts([]);
       }
 
+      const addTab = (newTab: TabData) => {
+        setTabs([...tabs, newTab]);
+      }
+
       return (
-        <div className='tabs-container'>        
+        <div className='tabs-container'>     
           <ResizableDiv minWidth={300} maxWidth={800} initialWidth={400}>
             <SearchComponent 
               loading={loading}
@@ -402,6 +412,7 @@ const App: React.FC = () => {
               tabs={tabs} 
               selectedTabIdentifier={selectedTabIdentifier}
               selectTab={selectTab}
+              addTab={addTab}
               removeTab={removeTab}
               dislikeRecord={dislikeRecord}
               likeRecord={likeRecord}

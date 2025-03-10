@@ -8,11 +8,13 @@ import { FaTimes } from 'react-icons/fa';
 import SearchResults from './SearchResults';
 import { FaPenToSquare } from 'react-icons/fa6';
 import { Query } from '../types/queries';
+import ArtPieceProfile from './ArtPieceProfile';
 
 interface TabContainer {
     tabs: TabData[];
     selectedTabIdentifier: string;
     selectTab: (tabIdentifier: string) => void;
+    addTab: (tab: TabData) => void;
     removeTab: (tabIdentifier: string) => void;
     dislikeRecord: (imageInformations: Record<string, any>) => void;
     likeRecord: (imageInformations: Record<string, any>) => void;
@@ -25,6 +27,7 @@ const TabContainer: React.FC<TabContainer> = ({
     tabs,
     selectedTabIdentifier,
     selectTab,
+    addTab,
     removeTab,
     dislikeRecord,
     likeRecord,
@@ -82,8 +85,14 @@ const TabContainer: React.FC<TabContainer> = ({
                                     dislikeRecord={dislikeRecord}
                                     likeRecord={likeRecord}
                                     getLikeStatus={(recordID) => getLikeStatus(recordID)}
+                                    addTab={addTab}
                                 />
                             </>
+                        }
+                        { tab.type === 'artpiece-profile' && 
+                            <ArtPieceProfile 
+                                tab={tab}
+                            />
                         }
                     </div>
                 </div>

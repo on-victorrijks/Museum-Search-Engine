@@ -40,39 +40,16 @@ const keywords = [
 
 const colors = [
     { id: 'Noir et blanc', style: 'linear-gradient(45deg, #000000, #ffffff)' },
-    { id: 'Couleurs vives', style: 'conic-gradient(#ff5733, #ffc300, #28a745, #17a2b8, #6f42c1, #ff5733)' },
+    { id: 'Couleurs vives, coloré, couleurs intenses', style: 'conic-gradient(#ff5733, #ffc300, #28a745, #17a2b8, #6f42c1, #ff5733)' },
     { id: 'Couleurs sombres', style: 'conic-gradient(#4a322f, #3f522d, #2d4a4a, #2f2f4a, #4a2d4a, #4a322f)' },
-    { id: 'Teinte rouge', style: 'linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.8))' },
-    { id: 'Teinte bleue', style: 'linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(0, 0, 255, 0.8))' },
-    { id: 'Teinte verte', style: 'linear-gradient(to right, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.8))' },
+    { id: 'Couleur rouge, ton rouge, rouge', style: 'linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.8))' },
+    { id: 'Couleur bleue, ton bleu, bleu', style: 'linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(0, 0, 255, 0.8))' },
+    { id: 'Couleur verte, ton vert, vert', style: 'linear-gradient(to right, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.8))' },
 ];
 
 const luminosities = [
     { id: 'Image sombre', color: '#000', text: 'Sombre', textColor: '#fff' },
     { id: 'Image claire', color: '#ababab', text: 'Clair', textColor: '#000' },
-];
-
-const weights = [
-    {
-      value: -2,
-      label: "Je ne veux pas du tout voir cela",
-    },
-    {
-      value: -1,
-      label: "Je n'aimerai pas voir ca"
-    },
-    {
-      value: 0,
-      label: 'Neutre'
-    },
-    {
-      value: 1,
-      label: "J'aimerai voir ca"
-    },
-    {
-      value: 2,
-      label: "Je veux absolument voir cela"
-    }
 ];
 
 const formatType = (type: string) => {
@@ -296,6 +273,7 @@ const SearchComponent: React.FC<{
     const [blocksValidMessage, setBlocksValidMessage] = useState<string>('');
 
     const validateBlocks = (callback: (blocksValidDirect: boolean) => void) => {
+        // TODO: Validate the blocks
         console.log(queryParts);
         callback(true);
     };

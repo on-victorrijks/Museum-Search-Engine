@@ -8,6 +8,9 @@ import React, {
 import { FaArrowRight, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import { TabData } from '../types/tab';
+// Import uuid
+import { v4 as uuidv4 } from 'uuid';
 
 const MIN_COLUMN_WIDTH = 300;
 
@@ -17,6 +20,7 @@ interface SearchResultsArgs {
     dislikeRecord: (imageInformations: Record<string, any>) => void;
     likeRecord: (imageInformations: Record<string, any>) => void;
     getLikeStatus: (recordID: number) => boolean | undefined;
+    addTab: (tab: TabData) => void;
 }
 
 const SearchResults: React.FC<SearchResultsArgs> = ({
@@ -24,7 +28,8 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
     results,
     dislikeRecord,
     likeRecord,
-    getLikeStatus
+    getLikeStatus,
+    addTab,
 }) => {
 
 
@@ -127,9 +132,11 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
 
                     <div className='result-buttons'>
                         <button
-                            onClick={() => {
-                                console.log("Viewing record", recordID);
-                            }}
+                            onClick={() => addTab({
+                                type: 'artpiece-profile',
+                                identifier: uuidv4(),
+                                content: result
+                            })}
                         >
                             <h3>Plus de détails</h3>
                             <FaArrowRight />

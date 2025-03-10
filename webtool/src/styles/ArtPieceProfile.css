@@ -1,0 +1,118 @@
+.ap-profile-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.ap-profile-header {
+    display: flex;
+    flex-direction: column;
+    background: var(--container-bg);
+    border-right: solid 1px var(--border-color);
+}
+.ap-profile-header-image {
+    max-height: 50vh;
+    background: rgba(0, 0, 0, 0.1);
+    border-bottom: solid 1px var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ap-profile-header-main-infos {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px;
+}
+.ap-profile-header-main-infos h1 {
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 500;
+}
+.ap-profile-header-main-infos h2 {
+    color: var(--text-color);
+    opacity: .9;
+    font-size: 16px;
+}
+.ap-profile-header-mi-date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.ap-profile-header-mi-date h2 {
+    color: var(--text-color);
+    opacity: .9;
+    font-size: 14px;
+}
+.ap-profile-header-mi-date .bubble {
+    color: var(--text-color);
+    opacity: .9;
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+.ap-profile-stabs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.ap-profile-stabs-selector {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-top: solid 1px var(--border-color);
+    border-bottom: solid 1px var(--border-color);
+}
+.ap-profile-stabs-selector button {
+    flex: 1;
+    padding: 15px 10px;
+    font-size: 15px;
+    font-weight: 500;
+    background: var(--stabs-selectable-bg);
+    border: none;
+    color: #959595;
+    border-bottom: solid 2px var(--border-color);
+    cursor: pointer;
+    transition: all .2s;
+}
+.ap-profile-stabs-selector button:hover {
+    background-color: var(--stabs-selectable-bg-selected);
+    color: var(--text-color);
+    border-bottom: solid 2px var(--text-color);
+}
+.ap-profile-stabs-selector button[is-selected="true"] {
+    background-color: var(--stabs-selectable-bg-selected);
+    color: var(--text-color);
+    border-bottom: solid 2px var(--text-color);
+}
+.ap-profile-stabs-content {
+    display: flex;
+    flex-direction: column;
+}
+.ap-profile-info-list-element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.ap-profile-info-list-element-label {
+    width: 30%;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: solid 1px var(--border-color);
+    height: 100%;
+}
+.ap-profile-info-list-element-label h2 {
+    color: var(--text-color);
+    font-size: 17px;
+}
+.ap-profile-info-list-element-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+}
