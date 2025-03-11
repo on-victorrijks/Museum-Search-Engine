@@ -32,6 +32,10 @@
     color: var(--text-color);
     opacity: .9;
     font-size: 16px;
+    cursor: pointer;
+}
+.ap-profile-header-main-infos h2:hover {
+    text-decoration: underline;
 }
 .ap-profile-header-mi-date {
     display: flex;

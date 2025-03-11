@@ -176,6 +176,7 @@
 }
 .tab.selected .tab-handler h1 {
     color: var(--tab-handler-text-selected);
+    font-weight: 500;
 }
 .tab.selected .tab-handler button {
     border-color: var(--tab-handler-button-border-selected);
@@ -200,6 +201,8 @@
 }
 .search-results {
     padding: 10px;
+    height: -webkit-fill-available;
+    min-height: 100%;
 }
 
 .result {
@@ -286,6 +289,13 @@
     font-weight: 500;
     text-align: left;
 }
+.result-infos h3.clickable {
+    cursor: pointer;
+}
+.result-infos h3.clickable:hover {
+    color: #c5c5c5;
+    text-decoration: underline;
+}
 .result-infos .bubble {
     background: #9b9b9b;
     width: 5px;
@@ -304,13 +314,18 @@
     overflow-y: auto;
 }
 span.result-iconography {
-    border: solid 1px var(--border-color);
     padding: 4px 8px;
     border-radius: 2px;
-    background: var(--border-color);
-    color: #c5c5c5;
+    border: solid 1px var(--border-color);
+    background: var(--keyword-bg);
+    color: var(--keyword-text);
     font-size: 12px;
     cursor: pointer;
+    font-weight: 500;
+}
+span.result-iconography[is-in-query="true"] {
+    background: var(--keyword-bg-enabled);
+    color: var(--keyword-text-enabled);
 }
 span.result-iconography:hover {
     opacity: .7;
@@ -405,7 +420,7 @@ span.result-iconography:hover {
 .empty-query h2 {
     color: #646464;
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .empty-query, .no-results{
@@ -419,7 +434,7 @@ span.result-iconography:hover {
 .empty-query h2, .no-results h2 {
     color: #646464;
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 500;
 }
 .resizeHandle {
     height: 100%;
@@ -469,4 +484,15 @@ span.result-iconography:hover {
 .switch[is-enabled="true"] .switch-handler {
     left: calc(100% - 16px);
     background-color: #0f7c0f;
+}
+.empty-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.empty-tabs h2 {
+    color: #646464;
+    font-size: 20px;
+    font-weight: 500;
 }

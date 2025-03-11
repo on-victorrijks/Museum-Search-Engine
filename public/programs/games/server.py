@@ -467,6 +467,38 @@ if __name__ == "__main__":
                 "data": data
             }
         })
+    
+    @app.route(
+        '/api/search/v2/getArtistData',
+        methods=['POST']
+    )
+    def getArtistData():
+        data = request.json
+        recordID = data["recordID"]
+
+        if not recordID:
+            return jsonify({
+                "success": False,
+                "message": "No recordID provided."
+            })
+    
+        try:
+            recordID = int(recordID)
+        except:
+            return jsonify({
+                "success": False,
+                "message": "Invalid recordID."
+            })
+        
+        data = DB.get_artist_data_from_recordID(recordID)
+        return jsonify({
+            "success": True,
+            "message": {
+                "data": data
+            }
+        })
+
+    
 
     # 
 

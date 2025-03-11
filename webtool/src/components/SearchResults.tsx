@@ -14,22 +14,29 @@ import { v4 as uuidv4 } from 'uuid';
 
 const MIN_COLUMN_WIDTH = 300;
 
-interface SearchResultsArgs {
+const SearchResults: React.FC<{
     isEmptyQuery: boolean;
     results: Record<string, any>[];
+
     dislikeRecord: (imageInformations: Record<string, any>) => void;
     likeRecord: (imageInformations: Record<string, any>) => void;
     getLikeStatus: (recordID: number) => boolean | undefined;
-    addTab: (tab: TabData) => void;
-}
 
-const SearchResults: React.FC<SearchResultsArgs> = ({
+    addTermFromIconography: (term: string) => void;
+    getTermStatusInQuery: (term: string) => boolean;
+
+    addTab: (tab: TabData) => void;
+    openArtistProfile: (recordID: number) => void;
+}> = ({
     isEmptyQuery,
     results,
     dislikeRecord,
     likeRecord,
     getLikeStatus,
+    addTermFromIconography,
+    getTermStatusInQuery,
     addTab,
+    openArtistProfile
 }) => {
 
     const componentRef = useRef<HTMLDivElement>(null);
@@ -113,13 +120,18 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
 
                     <h2>{title}</h2>
                     <div className='result-infos'>
-                        <h3>{author}</h3>
+                        <h3 className="clickable" onClick={() => openArtistProfile(recordID)}>{author}</h3>
                         <div className='bubble'></div>
                         <h3>{creationDate}</h3>
                     </div>
                     <div className='result-iconography-container'>
                         { iconography.map((icon: string, index: number) => (
-                            <span key={recordID + "-ico-" + index} className='result-iconography'>
+                            <span 
+                                onClick={() => addTermFromIconography(icon)}
+                                is-in-query={getTermStatusInQuery(icon) ? "true" : "false"}
+                                key={recordID + "-ico-" + index} 
+                                className='result-iconography'
+                            >
                                 {icon}
                             </span>
                         ))}

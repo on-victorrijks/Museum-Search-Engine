@@ -34,12 +34,16 @@ interface ArtPieceData {
     creatorNationality: string;
 }
 
-const ArtPieceHeader: React.FC<{data: ArtPieceData;
-}> = ({ data }) => {
+const ArtPieceHeader: React.FC<{
+    data: ArtPieceData,
+    openArtistProfile: (recordID: number) => void;
+}> = ({ data, openArtistProfile }) => {
     return (
         <div className="ap-profile-header-main-infos">
             <h1>{data.title=="" ? "Titre inconnu" : data.title}</h1>
-            <h2>{data.author=="" ? "Auteur inconnue" : data.author}</h2>
+            <h2 onClick={() => openArtistProfile(data.recordID)}>
+                {data.author=="" ? "Auteur inconnue" : data.author}
+            </h2>
             <div className="ap-profile-header-mi-date">
                 <h2>{data.earliestDate}</h2>
                 <div className="bubble"></div>
@@ -245,10 +249,12 @@ const ArtPieceProfile: React.FC<{
     recordID: number;
     tab: TabData;
     openArtPieceProfile: (recordID: number) => void;
+    openArtistProfile: (recordID: number) => void;
 }> = ({
     recordID,
     tab,
-    openArtPieceProfile
+    openArtPieceProfile,
+    openArtistProfile
 }) => {
 
     const [subtab, setSubtab] = useState<Subtabs>(Subtabs.OBJECTS_PRESENTS);
@@ -307,7 +313,7 @@ const ArtPieceProfile: React.FC<{
             <>
             <div className="ap-profile-header">
                 <ArtPieceImage data={data}/>
-                <ArtPieceHeader data={data}/>
+                <ArtPieceHeader data={data} openArtistProfile={openArtistProfile}/>
             </div>
 
             <div className="ap-profile-stabs">

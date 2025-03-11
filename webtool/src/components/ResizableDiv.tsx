@@ -54,6 +54,7 @@ const ResizableDiv: React.FC<ResizableDivProps> = ({
             minWidth: minWidth,
             maxWidth: maxWidth,
             overflow: 'hidden',
+            flexShrink: 0,
         }}
     >
         {children}

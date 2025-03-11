@@ -220,6 +220,7 @@ class MockDB(AbstractDatabase):
 
         self.indexToRecordID = {}
         self.recordIDToIndex = {}
+        self.artistFullNameToRecordID = {}
 
         self.smartColumns = {
             # Iconography
@@ -470,6 +471,8 @@ class MockDB(AbstractDatabase):
             - columnType=="number" -> "1" -> 1
             - columnType=="string" -> "hello" -> "hello"
         """
+        self.artistFullNameToRecordID = {}
+
         print("Casting columns...")
         f_data = []
         for i, record in enumerate(self.data):
@@ -487,6 +490,13 @@ class MockDB(AbstractDatabase):
                     
                     record[newColumnName] = castedValue
             f_data.append(record)
+
+            # Get the artist name
+            artistFullName = record["objectWork.creatorDescription"]
+            if artistFullName not in self.artistFullNameToRecordID:
+                self.artistFullNameToRecordID[artistFullName] = set()
+            
+            self.artistFullNameToRecordID[artistFullName].add(record["recordID"])
         self.data = f_data
         print("Columns casted !")
 
@@ -951,3 +961,32 @@ class MockDB(AbstractDatabase):
         }
 
         return formattedData
+    
+    def get_artist_data_from_recordID(self, recordID):
+        # Temporary, in the future, each artist will have a unique ArtistID
+        # Get the data of that recordID
+        if recordID not in self.recordIDToIndex:
+            raise Exception({
+                "type": "RECORD_NOT_FOUND",
+                "message": f"Le recordID {recordID} n'existe pas."
+            })
+        
+        index = self.recordIDToIndex[recordID]
+        data = self.data[index]
+        artistFullName = data["objectWork.creatorDescription"]
+
+        # Get all the recordIDs of that artist
+        recordIDs = self.artistFullNameToRecordID[artistFullName]
+        data = {
+            "recordID": int(recordID),
+            "fullName": str(artistFullName),
+            "firstName": str(data["creator.firstNameCreator"]),
+            "lastName": str(data["creator.lastNameCreator"]),
+            "birthDate": str(data["creator.birthDateCreator"]),
+            "deathDate": str(data["creator.deathDateCreator"]),
+            "birthDeathPlace": str(data["creator.birthDeathDatesPlacesCreatorDescription"]),
+            "nationality": str(data["creator.nationalityCreator"]),
+            "artpiecesRecordIDs": list(recordIDs)
+        }
+
+        return data

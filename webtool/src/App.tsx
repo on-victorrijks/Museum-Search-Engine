@@ -11,8 +11,12 @@ import ApiResponse from './types/ApiResponse';
 // Import types
 import { TabData } from './types/tab';
 import { 
+  BlockType,
+  HardQueryPart,
+  IncludesBlockProps,
   Query,
   QueryPart,
+  SelectionOption,
   SoftQueryPart,
   SoftQueryType,
 } from './types/queries';
@@ -59,7 +63,7 @@ const App: React.FC = () => {
           "soft": query.parts.filter((part: QueryPart) => part.isSoft),
           "version": "power",
           "page": 0,
-          "page_size": 25
+          "page_size": 50
         };
         body["soft"] = body["soft"].map((part: QueryPart) => {
           return {
@@ -424,9 +428,150 @@ const App: React.FC = () => {
         }
       }
 
+      const openArtistProfileWrapper = (
+        fromTabIdentifier: string,
+        recordID: number, 
+        isNewTab: boolean
+      ) => {
+        if(isNewTab) {
+          // Create a new tab with the ArtistProfile
+          const newTab : TabData = {
+            type: 'artist-profile',
+            identifier: uuidv4(),
+            content: {
+              recordID: recordID,
+              data: undefined
+            }
+          };
+          addTab(newTab);
+        } else {
+          // Modify the current tab so it displays the ArtistProfile
+          setTabs(tabs.map((tab) => {
+            if(tab.identifier === fromTabIdentifier) {
+              // This is the tab we want to modify
+              tab.type = 'artist-profile';
+              tab.content.recordID = recordID;
+              tab.content.data = undefined;
+            }
+            return tab;
+          }));          
+        }
+      }
+
+      const getTermStatusInQuery = (term: string) => {
+        /* Is there a query part that:
+          - is hard
+          - type==blockType.INCLUDES
+          - exactMatch==true
+          - isNot==false
+          - selectecColumn.key=="iconography"
+          - contains term in values
+        */
+        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
+        if (!tab) return false;
+
+        const queryParts = tab.content.query.parts;
+
+        const matchingQueryPart = queryParts.find((queryPart: QueryPart) => {
+          if(queryPart.isSoft) return false;
+          const queryPartAsHard = queryPart as HardQueryPart;
+          
+          if(
+            queryPartAsHard.type === BlockType.INCLUDES &&
+            queryPartAsHard.exactMatch === true &&
+            queryPartAsHard.isNot === false &&
+            queryPartAsHard.selectedColumn &&
+            queryPartAsHard.selectedColumn.key === "iconography"
+          ) {
+            const queryPartAsIncludes = queryPartAsHard as IncludesBlockProps;
+            if (queryPartAsIncludes.values && queryPartAsIncludes.values.includes(term)) {
+              return true;
+            }
+          }
+          return false;
+        });
+
+        return matchingQueryPart!==undefined;
+      }
+
+      const addTermFromIconography = (term: string) => {
+        /* Is there a query part that:
+          - is hard
+          - type==blockType.INCLUDES
+          - exactMatch==true
+          - isNot==false
+          - selectecColumn.key=="iconography"
+        */
+        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
+        if (!tab) return;
+
+        const queryParts = tab.content.query.parts;
+        let matchingQueryPartIdentifier = uuidv4();
+
+        const matchingQueryPart = queryParts.find((queryPart: QueryPart) => {
+          if(queryPart.isSoft) return false;
+          const queryPartAsHard = queryPart as HardQueryPart;
+          return (
+            queryPartAsHard.type === BlockType.INCLUDES &&
+            queryPartAsHard.exactMatch === true &&
+            queryPartAsHard.isNot === false &&
+            queryPartAsHard.selectedColumn &&
+            queryPartAsHard.selectedColumn.key === "iconography"
+          );
+        });
+
+        let shouldPush = true;
+        if (matchingQueryPart!==undefined) {
+          matchingQueryPartIdentifier = matchingQueryPart.identifier;
+          // Check if the term is already in the values
+          const queryPartAsIncludes = matchingQueryPart as IncludesBlockProps;
+          if (queryPartAsIncludes.values && queryPartAsIncludes.values.includes(term)) {
+            // The term is already in the values ==> We remove !
+            shouldPush = false;
+          }
+        }
+
+        let newQueryParts : QueryPart[] = queryParts;
+
+        if (matchingQueryPart===undefined) {
+          // Create a new QueryPart
+          const newQueryPart : HardQueryPart = {
+            identifier: matchingQueryPartIdentifier,
+            type: BlockType.INCLUDES,
+            blockType: BlockType.INCLUDES,
+            keepNull: false,
+            caseSensitive: false,
+            exactMatch: true,
+            isNot: false,
+            isSoft: false,
+            selectedColumn: {
+              key: "iconography",
+              userFriendlyName: "Objects présents"
+            } as SelectionOption
+          };
+          newQueryParts.push(newQueryPart);
+        }
+
+        // Modify the existing QueryPart by adding the term
+        setQueryParts(newQueryParts.map((queryPart: QueryPart) => {
+          if (queryPart.identifier === matchingQueryPartIdentifier) {
+            const queryPartAsHard = queryPart as IncludesBlockProps;
+            if (!queryPartAsHard.values) queryPartAsHard.values = [];
+            if (shouldPush) {
+              queryPartAsHard.values.push(term);
+            } else {
+              queryPartAsHard.values = queryPartAsHard.values.filter((value: string) => value!==term);
+            }
+          }
+          return queryPart;
+        }));
+      
+      }
+
+
       return (
         <div className='tabs-container'>     
-          <ResizableDiv minWidth={300} maxWidth={800} initialWidth={400}>
+          <ResizableDiv minWidth={300} maxWidth={800} initialWidth={500}>
             <SearchComponent 
               loading={loading}
               receiveQuery={receiveQuery}
@@ -437,19 +582,32 @@ const App: React.FC = () => {
               resetQuery={resetQuery}
             />
           </ResizableDiv>  
-          { getNumberOfTabs()>0 &&
+
+          { getNumberOfTabs()==0
+          ?
+          <div className="empty-tabs">
+            <h2>Effectuez une recherche pour voir des oeuvres !</h2>
+          </div>
+          :
             <TabContainer 
               tabs={tabs} 
               selectedTabIdentifier={selectedTabIdentifier}
               selectTab={selectTab}
               addTab={addTab}
               removeTab={removeTab}
+
               dislikeRecord={dislikeRecord}
               likeRecord={likeRecord}
               getLikeStatus={getLikeStatus}
+
+              addTermFromIconography={addTermFromIconography}
+              getTermStatusInQuery={getTermStatusInQuery}
+
               openArtPieceProfileWrapper={openArtPieceProfileWrapper}
+              openArtistProfileWrapper={openArtistProfileWrapper}
             />
           }
+
         </div>
       );
 };

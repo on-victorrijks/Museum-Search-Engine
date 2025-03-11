@@ -52,6 +52,7 @@
     color: var(--input-text);
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    font-weight: 500;
 }
 
 .textForm button {
@@ -349,6 +350,7 @@ color: var(--text-color);
     flex: 1;
     cursor: pointer;
     background-color: var(--search-selection-bg);
+    height: 100%;
 }
 .search-selection:hover {
     background: var(--search-selection-bg-selected);

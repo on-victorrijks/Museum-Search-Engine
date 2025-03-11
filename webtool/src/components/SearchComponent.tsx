@@ -602,7 +602,7 @@ const SearchComponent: React.FC<{
             {/* Queries Container */}
             <div className="queries">
                 <div className='queryPartsHeader'>
-                    <h1>Vos filtres - {selectedTabIdentifier}</h1>
+                    <h1>Vos filtres</h1>
                 </div>
                 <div className='queries_container'>
                 {

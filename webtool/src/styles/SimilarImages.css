@@ -5,21 +5,3 @@
     overflow: hidden;
     flex-wrap: wrap;
 }
-.similar-images-neighbour {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.2);
-    opacity: 1;
-    transition: opacity 0.3s;
-    cursor: pointer;
-    position: relative;
-}
-.similar-images-neighbour:hover {
-    opacity: 0.5;
-}
-.similar-images-neighbour img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-}

@@ -1,33 +1,14 @@
 import React, {
     useState,
-    useEffect,  
-    useRef,
+    useEffect
 } from 'react';
 // Import uuid
 import axios from 'axios';
 import ApiResponse from '../types/ApiResponse';
 
 import "../styles/SimilarImages.css";
-import Masonry from "react-responsive-masonry"
+import ArtPiecesGallery from './ArtPiecesGallery';
 
-const MIN_COLUMN_WIDTH = 150;
-
-const RenderNeighbour : React.FC<{
-    neighbour: Record<string, any>,
-    index: number,
-    openArtPieceProfile: (recordID: number) => void;
-}> = ({
-    neighbour,
-    index,
-    openArtPieceProfile
-}) => {
-    const imageURL = "http://127.0.0.1:5000/images/" + neighbour["recordID"];
-    return (
-        <div key={index} className="similar-images-neighbour" onClick={() => openArtPieceProfile(neighbour["recordID"])}>
-            <img src={imageURL} alt="Similar image" />
-        </div>
-    );
-}
 
 const SimilarImages: React.FC<{
     recordID: number;
@@ -39,41 +20,6 @@ const SimilarImages: React.FC<{
 
     const [loading, setLoading] = useState<boolean>(false);
     const [neighbours, setNeighbours] = useState<Record<string, any>[]>([]);
-
-    const componentRef = useRef<HTMLDivElement>(null);
-    const [size, setSize] = useState<{ width: number; height: number } | null>(null);
-  
-    useEffect(() => {
-        const observer = new ResizeObserver((entries) => {
-            const entry = entries[0];
-            if (entry) {
-            setSize({
-                width: entry.contentRect.width,
-                height: entry.contentRect.height,
-            });
-            }
-        });
-    
-        if (componentRef.current) {
-            observer.observe(componentRef.current);
-        }
-    
-        return () => {
-            if (componentRef.current) {
-            observer.disconnect();
-            }
-        };
-    }, []);
-
-    useEffect(() => {
-        if (size) {
-            const width = size.width;
-            const columns = Math.floor(width / MIN_COLUMN_WIDTH);
-            setNumberOfColumns(columns);
-        }
-    }, [size]);
-
-    const [numberOfColums, setNumberOfColumns] = useState(3); 
 
     const fetchNeighbours = async(recordID: number) => {
         const body = {
@@ -109,20 +55,17 @@ const SimilarImages: React.FC<{
     }, [recordID]);
 
     return (
-        <div className="similar-images" ref={componentRef}>
+        <div className="similar-images">
             { loading 
             ? 
             <div className="loading">
                 <h3>Chargement des images similaires...</h3>
             </div>
             :
-            <Masonry 
-                columnsCount={numberOfColums} 
-                gutter="10px"
-                sequential={true}
-            >
-                {neighbours.map((neighbour, index) => <RenderNeighbour key={index} neighbour={neighbour} index={index} openArtPieceProfile={openArtPieceProfile} />)}
-            </Masonry>
+            <ArtPiecesGallery 
+                recordIDs={neighbours.map(neighbour => neighbour["recordID"])}
+                openArtPieceProfile={openArtPieceProfile}
+            />
             }
         </div>
     );
