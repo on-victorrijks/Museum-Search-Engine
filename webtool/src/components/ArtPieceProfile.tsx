@@ -5,109 +5,229 @@ import React, {
 } from 'react';
 import { TabData } from '../types/tab';
 import "../styles/ArtPieceProfile.css";
+import { FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
+import SimilarImages from './SimilarImages';
 
-/*
-MAIN INFOS:
-<option value="title">Titre de l'oeuvre</option>
-<option value="earliestDate">Date de création (est. basse)</option>
-<option value="latestDate">Date de création (est. haute)</option>
-<option value="creator">Nom de l'artiste</option>
+import axios from 'axios';
+import ApiResponse from '../types/ApiResponse';
 
+interface ArtPieceData {
+    recordID: number;
+    workID: string;
+    title: string;
+    earliestDate: string;
+    latestDate: string;
+    iconography: string[];
+    classification: string;
+    objectType: string;
+    materials: string[];
+    inscription: string;
+    height: string;
+    width: string;
+    imageColor: string;
+    author: string;
+    creatorFirstName: string;
+    creatorLastName: string;
+    creatorBirthDate: string;
+    creatorDeathDate: string;
+    creatorBirthDeathPlace: string;
+    creatorNationality: string;
+}
 
-MORE INFOS:
-    OBJECTS PRESENTS:
-<option value="iconography">Objects présents</option>
-
-    ART PIECE:
-<option value="classification">Classification</option>
-<option value="objectType">Type d'objet</option>
-<option value="materials">Matériaux</option>
-<option value="inscription">Inscription</option>
-<option value="measurements_0">Hauteur</option>
-<option value="measurements_1">Largeur</option>
-<option value="imageColor">Couleur de l'image</option>
-
-    CREATOR:
-<option value="creatorFirstName">Prénom de l'artiste</option>
-<option value="creatorLastName">Nom de famille de l'artiste</option>
-<option value="creatorBirthDate">Date de naissance de l'artiste</option>
-<option value="creatorDeathDate">Date de décès de l'artiste</option>
-<option value="creatorBirthDeathPlace">Lieu de naissance et de décès de l'artiste</option>
-<option value="creatorNationality">Nationalité de l'artiste</option></select>
-
-    IDENTIFIERS:
-<option value="recordID">ID</option>
-<option value="workID">workID</option>
-*/
-
-const ArtPieceHeader: React.FC<{
-    title: string,
-    earliestDate: string,
-    latestDate: string,
-    creator: string,
-}> = ({ 
-    title,
-    earliestDate,
-    latestDate,
-    creator,
-}) => (
-    <div className="ap-profile-header-main-infos">
-        <h1>{title}</h1>
-        <h2>{creator}</h2>
-        <div className="ap-profile-header-mi-date">
-            <h2>{earliestDate}</h2>
-            <div className="bubble"></div>
-            <h2>{latestDate}</h2>
+const ArtPieceHeader: React.FC<{data: ArtPieceData;
+}> = ({ data }) => {
+    return (
+        <div className="ap-profile-header-main-infos">
+            <h1>{data.title=="" ? "Titre inconnu" : data.title}</h1>
+            <h2>{data.author=="" ? "Auteur inconnue" : data.author}</h2>
+            <div className="ap-profile-header-mi-date">
+                <h2>{data.earliestDate}</h2>
+                <div className="bubble"></div>
+                <h2>{data.latestDate}</h2>
+            </div>
         </div>
-    </div>
-);
+    );
+}
+
+const ArtPieceImage: React.FC<{
+    data: ArtPieceData;
+}> = ({ data }) => {
+    const imageURL = "http://127.0.0.1:5000/images/" + data.recordID;
+    return (
+        <div className="ap-profile-header-image">
+            <img src={imageURL} />
+        </div>
+    );
+}
 
 const InfoListElement: React.FC<{
     title: string,
     list: string[],
-}> = ({ title, list }) => (
-    <div className="ap-profile-info-list-element">
-        <div className="ap-profile-info-list-element-label">
-            <h2>{title}</h2>
-        </div>
-        <div className="ap-profile-info-list-element-content">
-        {list.map((item, index) => (
-            <div 
-                className="ap-profile-info-list-element-content-item"
-                key={index}
-            >
-                <h3>{item}</h3>
+}> = ({ title, list }) => {
+
+    const isListEmpty = list.length == 0;
+
+    return (
+        <div className="ap-profile-info-list-element">
+            <div className="ap-profile-info-list-element-label">
+                <h2>{title}</h2>
             </div>
-        ))}
+            <div className="ap-profile-info-list-element-content">
+            {isListEmpty && <h4>Aucune information disponible</h4>}
+            {list.map((item, index) => (
+                <div 
+                    className="ap-profile-info-list-element-content-item"
+                    key={index}
+                >
+                    <h3>{item}</h3>
+                </div>
+            ))}
+            </div>
         </div>
-    </div>
-);
+    );
+}
+
+const InfoElement: React.FC<{
+    title: string,
+    element: any
+}> = ({ title, element }) => {
+
+    const isElementEmpty = element == "";
+
+    return (
+        <div className="ap-profile-info-element">
+            <div className="ap-profile-info-element-label">
+                <h2>{title}</h2>
+            </div>
+            <div className="ap-profile-info-element-content">
+                { isElementEmpty 
+                ? <h4>Aucune information disponible</h4>
+                : <h3>{element}</h3>
+                }
+            </div>
+        </div>
+    );
+}
 
 const Subtab_ObjectsPresents: React.FC<{
-    tab: TabData;
-}> = (tab) => (
+    data: ArtPieceData;
+}> = ({data}) => (
     <>
         <InfoListElement 
             title="Iconographie"
-            list={["test1", "test2", "test3"]}
+            list={data.iconography}
         />
     </>
 );
 
+const Subtab_ArtPiece: React.FC<{
+    data: ArtPieceData;
+}> = ({data}) => (
+    <>
+        <InfoElement 
+            title="Classification"
+            element={data.classification}
+        />
+        <InfoElement // SHOULD BE LISt ??
+            title="Type d'objet"
+            element={data.objectType}
+        />
+        <InfoListElement 
+            title="Matériaux"
+            list={data.materials}
+        />
+        <InfoElement 
+            title="Inscription"
+            element={data.inscription}
+        />
+        <InfoElement 
+            title="Hauteur"
+            element={data.height}
+        />
+        <InfoElement 
+            title="Largeur"
+            element={data.width}
+        />
+        <InfoElement 
+            title="Couleur de l'image"
+            element={data.imageColor}
+        />
+    </>
+);
+
+const Subtab_Creator: React.FC<{
+    data: ArtPieceData;
+}> = ({data}) => ( 
+    <>
+        <InfoElement
+            title="Prénom de l'artiste"
+            element={data.creatorFirstName}
+        />
+        <InfoElement
+            title="Nom de famille de l'artiste"
+            element={data.creatorLastName}
+        />
+        <InfoElement
+            title="Date de naissance de l'artiste"
+            element={data.creatorBirthDate}
+        />
+        <InfoElement
+            title="Date de décès de l'artiste"
+            element={data.creatorDeathDate}
+        />
+        <InfoElement
+            title="Lieu de naissance et de décès de l'artiste"
+            element={data.creatorBirthDeathPlace}
+        />
+        <InfoElement
+            title="Nationalité de l'artiste"
+            element={data.creatorNationality}
+        />
+    </>
+);
+
+const Subtab_Identifiers: React.FC<{
+    data: ArtPieceData;
+}> = ({data}) => (
+    <>
+        <InfoElement
+            title="RecordID"
+            element={data.recordID}
+        />
+        <InfoElement
+            title="workID"
+            element={data.workID}
+        />
+    </>
+);
+
+const Subtab_Neighbours: React.FC<{
+    data: ArtPieceData;
+    openArtPieceProfile: (recordID: number) => void;
+}> = ({data, openArtPieceProfile}) => (
+    <SimilarImages 
+        recordID={data.recordID}
+        openArtPieceProfile={openArtPieceProfile}
+    />
+);
+
 const RenderSubTab: React.FC<{
-    tab: TabData;
+    data: ArtPieceData;
     subtab: Subtabs;
-}> = ({ tab, subtab }) => {
+    openArtPieceProfile: (recordID: number) => void;
+}> = ({ data, subtab, openArtPieceProfile }) => {
     
     switch(subtab) {
         case Subtabs.OBJECTS_PRESENTS:
-            return <Subtab_ObjectsPresents tab={tab}/>;
+            return <Subtab_ObjectsPresents data={data}/>;
         case Subtabs.ART_PIECE:
-            return <div>ART PIECE</div>;
+            return <Subtab_ArtPiece data={data}/>;
         case Subtabs.CREATOR:
-            return <div>CREATOR</div>;
+            return <Subtab_Creator data={data}/>;
         case Subtabs.IDENTIFIERS:
-            return <div>IDENTIFIERS</div>;
+            return <Subtab_Identifiers data={data}/>;
+        case Subtabs.NEIGHBOURS:
+            return <Subtab_Neighbours data={data} openArtPieceProfile={openArtPieceProfile}/>;
         default:
             return <></>
     }
@@ -118,34 +238,76 @@ enum Subtabs {
     ART_PIECE = "Oeuvre",
     CREATOR = "Artiste",
     IDENTIFIERS = "Identifiants",
+    NEIGHBOURS = "Images imilaires",
 }
 
 const ArtPieceProfile: React.FC<{
+    recordID: number;
     tab: TabData;
+    openArtPieceProfile: (recordID: number) => void;
 }> = ({
-    tab
+    recordID,
+    tab,
+    openArtPieceProfile
 }) => {
 
     const [subtab, setSubtab] = useState<Subtabs>(Subtabs.OBJECTS_PRESENTS);
-    
-    useEffect(() => {
-        console.log(tab);
-    }, [tab])
+    const [dataLoaded, setDataLoaded] = useState<boolean>(false);
+    const [data, setData] = useState<ArtPieceData|undefined>(undefined);
 
+    const fetchData = async () => {
+        const body = {
+            "recordID": recordID,
+        };
+
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/api/search/v2/getData", body, {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+        
+            // Parse response.data as JSON
+            const data: ApiResponse = response.data;
+            const success = data["success"];
+            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
+            const results = data["message"];
+            if (!results) throw new Error("No results found");
+            if (!results["data"]) throw new Error("No data found");
+            setData(results["data"]);
+            setDataLoaded(true);
+        } catch (error) {
+            console.error("Error making POST request:", error);
+            return { success: false, message: "An error occurred" };
+        }
+    }
+
+    useEffect(() => {
+        if (!dataLoaded) {
+            // This is a new tab
+            fetchData();
+        } else {
+            // We check if the recordID has changed
+            if (data && data.recordID != recordID) {
+                setDataLoaded(false);
+                fetchData();
+            }
+        }
+    }, [tab, recordID]);
     
     return (
         <div className="ap-profile-container">
 
+            { !dataLoaded || data==undefined 
+            ? 
+            <div className="ap-profile-loading">
+                <h1>Chargement des données...</h1>
+            </div>
+            : 
+            <>
             <div className="ap-profile-header">
-                <div className="ap-profile-header-image">
-                    <img src="" />
-                </div>
-                <ArtPieceHeader 
-                    title="Titre de l'oeuvre"
-                    earliestDate="Date de création (est. basse)"
-                    latestDate="Date de création (est. haute)"
-                    creator="Nom de l'artiste"
-                />
+                <ArtPieceImage data={data}/>
+                <ArtPieceHeader data={data}/>
             </div>
 
             <div className="ap-profile-stabs">
@@ -162,11 +324,14 @@ const ArtPieceProfile: React.FC<{
                 </div>
                 <div className="ap-profile-stabs-content">
                     <RenderSubTab 
-                        tab={tab}
+                        data={data}
                         subtab={subtab}
+                        openArtPieceProfile={openArtPieceProfile}
                     />
                 </div>
             </div>
+            </>
+            }
 
         </div>
     );

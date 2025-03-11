@@ -407,6 +407,67 @@ if __name__ == "__main__":
                 "message": str(e)
             })
 
+    @app.route(
+        '/api/search/v2/neighbours',
+        methods=['POST']
+    )
+    def getNeighbours():
+        data = request.json
+        recordID = data["recordID"]
+        if not recordID:
+            return jsonify({
+                "success": False,
+                "message": "No recordID provided."
+            })
+        
+        k = 20
+        try:
+            recordID = int(recordID)
+        except:
+            return jsonify({
+                "success": False,
+                "message": "Invalid recordID."
+            })
+        
+        neighbours = DB.get_k_closest_neighbors(recordID, k)
+
+        return jsonify({
+            "success": True,
+            "message": {
+                "neighbours": neighbours
+            }
+        })
+    
+    @app.route(
+        '/api/search/v2/getData',
+        methods=['POST']
+    )
+    def getData():
+        data = request.json
+        recordID = data["recordID"]
+
+        if not recordID:
+            return jsonify({
+                "success": False,
+                "message": "No recordID provided."
+            })
+    
+        try:
+            recordID = int(recordID)
+        except:
+            return jsonify({
+                "success": False,
+                "message": "Invalid recordID."
+            })
+        
+        data = DB.get_data(recordID)
+        return jsonify({
+            "success": True,
+            "message": {
+                "data": data
+            }
+        })
+
     # 
 
     # By default, Flask will serve at http://127.0.0.1:5000/

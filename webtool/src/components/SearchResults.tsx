@@ -32,8 +32,6 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
     addTab,
 }) => {
 
-
-
     const componentRef = useRef<HTMLDivElement>(null);
     const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   
@@ -81,9 +79,8 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
         let iconography = result["iconography"];
         let creationDate = (result["creation.earliestDate"] || "?") + " - " + (result["creation.latestDate"] || "?");
 
-        if (!title) title = "Titre inconnu";
-        if (!author) author = "Auteur inconnu";
-        if (!iconography) iconography = [];
+        if (title=="") title = "Titre inconnu";
+        if (author=="") author = "Auteur inconnu";
 
         const imageURL = "http://127.0.0.1:5000/images/" + recordID;
 
@@ -135,7 +132,10 @@ const SearchResults: React.FC<SearchResultsArgs> = ({
                             onClick={() => addTab({
                                 type: 'artpiece-profile',
                                 identifier: uuidv4(),
-                                content: result
+                                content: {
+                                    recordID: recordID,
+                                    data: result
+                                }
                             })}
                         >
                             <h3>Plus de détails</h3>

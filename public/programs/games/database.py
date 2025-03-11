@@ -896,3 +896,58 @@ class MockDB(AbstractDatabase):
             paginated_results.append(data)
         
         return paginated_results
+    
+    def get_k_closest_neighbors(self, recordID, k):
+        i = self.recordIDToIndex[recordID]
+        record_vector = self.vectors[i]
+        sims = cosine_similarity([record_vector], self.vectors)[0]
+        indexes = np.argsort(sims)[::-1]
+        
+        neighbors = []
+        for i in indexes[1:k+1]:
+            recordID = self.indexToRecordID[i]
+            data = self.data[i]
+            data["iconography"] = self.iconographies[i]
+
+            neighbors.append({
+                "recordID": int(recordID),
+                "similarity": float(sims[i])
+            })
+
+        return neighbors
+    
+    def get_data(self, recordID):
+        if recordID not in self.recordIDToIndex:
+            raise Exception({
+                "type": "RECORD_NOT_FOUND",
+                "message": f"Le recordID {recordID} n'existe pas."
+            })
+
+        data = self.data[self.recordIDToIndex[recordID]]
+        index = self.recordIDToIndex[recordID]
+        iconography = self.iconographies[index]
+
+        formattedData = {
+            "recordID": int(data["recordID"]),
+            "workID": str(data["objectWork.workID"]),
+            "title": str(data["objectWork.titleText"]),
+            "earliestDate": str(data["creation.earliestDate"]),
+            "latestDate": str(data["creation.latestDate"]),
+            "iconography": iconography,
+            "classification": str(data["objectWork.termClassification"]),
+            "objectType": data["objectWork.objectWorkType"],
+            "materials": data["objectWork.termMaterialsTech"],
+            "inscription": str(data["objectWork.inscriptionDescription"]),
+            "height": str(data["height"]),
+            "width": str(data["width"]),
+            "imageColor": str(data["imageColor"]),
+            "author": str(data["objectWork.creatorDescription"]),
+            "creatorFirstName": str(data["creator.firstNameCreator"]),
+            "creatorLastName": str(data["creator.lastNameCreator"]),
+            "creatorBirthDate": str(data["creator.birthDateCreator"]),
+            "creatorDeathDate": str(data["creator.deathDateCreator"]),
+            "creatorBirthDeathPlace": str(data["creator.birthDeathDatesPlacesCreatorDescription"]),
+            "creatorNationality": str(data["creator.nationalityCreator"])
+        }
+
+        return formattedData

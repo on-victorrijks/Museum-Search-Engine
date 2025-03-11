@@ -394,6 +394,36 @@ const App: React.FC = () => {
         setTabs([...tabs, newTab]);
       }
 
+      const openArtPieceProfileWrapper = (
+        fromTabIdentifier: string,
+        recordID: number, 
+        isNewTab: boolean
+      ) => {
+        if(isNewTab) {
+          // Create a new tab with the ArtPieceProfile
+          const newTab : TabData = {
+            type: 'artpiece-profile',
+            identifier: uuidv4(),
+            content: {
+              recordID: recordID,
+              data: undefined
+            }
+          };
+          addTab(newTab);
+        } else {
+          // Modify the current tab so it displays the ArtPieceProfile
+          setTabs(tabs.map((tab) => {
+            if(tab.identifier === fromTabIdentifier) {
+              // This is the tab we want to modify
+              tab.type = 'artpiece-profile';
+              tab.content.recordID = recordID;
+              tab.content.data = undefined;
+            }
+            return tab;
+          }));          
+        }
+      }
+
       return (
         <div className='tabs-container'>     
           <ResizableDiv minWidth={300} maxWidth={800} initialWidth={400}>
@@ -417,6 +447,7 @@ const App: React.FC = () => {
               dislikeRecord={dislikeRecord}
               likeRecord={likeRecord}
               getLikeStatus={getLikeStatus}
+              openArtPieceProfileWrapper={openArtPieceProfileWrapper}
             />
           }
         </div>
