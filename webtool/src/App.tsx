@@ -26,9 +26,17 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Import CSS
 import './styles/App.css';
+import "./styles/Modals/Modals.css"
+
 import ResizableDiv from './components/ResizableDiv';
+import CollectionPanel from './components/CollectionPanel';
+import ModalCreateCollection from './components/Modals/ModalCreateCollection';
 
 const App: React.FC = () => {
+
+    const [modalCreateCollectionIsOpen, setModalCreateCollectionIsOpen] = useState<boolean>(true);
+
+    const [isCollectionOpened, setIsCollectionOpened] = useState<boolean>(false);
 
     const [tabs, setTabs] = useState<TabData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -570,6 +578,15 @@ const App: React.FC = () => {
 
 
       return (
+        <>
+
+          { modalCreateCollectionIsOpen &&
+          <div className="modals-container">
+            <ModalCreateCollection askToClose={() => setModalCreateCollectionIsOpen(false)} />
+          </div>
+          }
+
+
         <div className='tabs-container'>     
           <ResizableDiv minWidth={300} maxWidth={800} initialWidth={500}>
             <SearchComponent 
@@ -608,7 +625,14 @@ const App: React.FC = () => {
             />
           }
 
+          <CollectionPanel 
+            isOpened={isCollectionOpened}
+            togglePanel={() => setIsCollectionOpened(!isCollectionOpened)}
+            openCollectionCreationModal={() => setModalCreateCollectionIsOpen(true)}
+          />
+
         </div>
+        </>
       );
 };
 

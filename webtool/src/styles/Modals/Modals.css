@@ -1,0 +1,110 @@
+.modals-container {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 15;
+}
+.modal {
+    max-width: 1200px;
+    width: 50%;
+    min-width: 400px;
+    background: var(--background-color);
+    border: solid 1px var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.modal-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    background: var(--container-bg);
+    border-bottom: solid 1px var(--border-color);
+}
+.modal-header h1 {
+    font-size: 18px;
+    color: var(--text-color);
+    font-weight: 500;
+    flex: 1;
+}
+.modal-header button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 1;
+    line-height: 0;
+    height: 32px;
+    width: 32px;
+}
+.modal-header button:hover {
+    opacity: 0.5;
+}
+.modal-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.modal-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+.modal-input label {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 300;
+}
+.modal-input input[type="text"] {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+}
+.modal-input textarea {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 200px;
+    min-height: 100px;
+    resize: vertical;
+}
+.modal-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+}
+.modal-buttons button {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+}
+.modal-buttons button:hover {
+    background: var(--button-bg-hover);
+}
+.modal-buttons button[disabled] {
+    background-color: #646464;
+    color: #acacac;
+    cursor: not-allowed;
+}
