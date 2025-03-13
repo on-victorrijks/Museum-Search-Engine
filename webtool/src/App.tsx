@@ -33,9 +33,9 @@ import ModalCreateCollection from './components/Modals/ModalCreateCollection';
 import CollectionData from './types/Collections';
 import ArtPieceData from './types/ArtPiece';
 import ModalAugmentCollection from './components/Modals/ModalAugmentCollection';
-import ModalSlideshowSettings from './components/Modals/ModalSlideShowSettings';
 import SlideShowData from './types/Slideshow';
 import Slideshow from './components/Slideshow';
+import ModalSlideshowSettings from './components/Modals/ModalSlideshowSettings';
 
 const App: React.FC = () => {
 
