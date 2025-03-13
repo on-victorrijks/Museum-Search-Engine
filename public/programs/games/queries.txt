@@ -1,0 +1,3718 @@
+[
+    {
+        "current_time": "2025-03-13 01:31:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Un homme est un chien",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 6381
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:32:15",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme avec un chapeau rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:32:20",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme avec un chapeau rouge",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 2106
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:50:49",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une maison avec une chemin\u00e9e",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:51:01",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une maison avec une chemin\u00e9e",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 854
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:51:25",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 854
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:52:11",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:52:18",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Un jouet",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:52:25",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Un jouet",
+                "weight": 1.25
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:52:27",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Un jouet",
+                "weight": 1.25
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5048
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:52:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Deux hommes qui se tiennent debout et qui regarde la foule",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:52:56",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Deux hommes qui se tiennent debout et qui regarde la foule",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 10357
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:53:46",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:53:47",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Yeux",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:53:50",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Yeux",
+                "weight": 1
+            },
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:05",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Yeux",
+                "weight": 1
+            },
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:06",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:13",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Un homme avec des yeux bleus",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:23",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Un homme avec des yeux bleus",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 11348
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:31",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 11348
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:36",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "F\u00eate",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:37",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "F\u00eate",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nuages",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:38",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "F\u00eate",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nuages",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Cr\u00e9puscule",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:42",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "F\u00eate",
+                "weight": 1.5
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nuages",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Cr\u00e9puscule",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:43",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "F\u00eate",
+                "weight": 1.75
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nuages",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Cr\u00e9puscule",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:54:46",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "F\u00eate",
+                "weight": 1.75
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nuages",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Cr\u00e9puscule",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1665
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:57:34",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Fen\u00eatre",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:57:36",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Fen\u00eatre",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Couronne",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:57:49",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Fen\u00eatre",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Couronne",
+                "weight": 1.5
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:57:54",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Fen\u00eatre",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Couronne",
+                "weight": 1.5
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 206
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:58:19",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "For\u00eat",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:58:22",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "For\u00eat",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Aube",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:58:29",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "For\u00eat",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Aube",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8266
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:58:41",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Rivi\u00e8re",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:58:44",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Rivi\u00e8re",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Colonne",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:58:49",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Rivi\u00e8re",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:59:14",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une montagne avec un sapin et une rivi\u00e8re",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:59:17",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une montagne avec un sapin et une rivi\u00e8re",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 552
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:59:18",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une montagne avec un sapin et une rivi\u00e8re",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 552
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8437
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 01:59:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une montagne avec un sapin et une rivi\u00e8re",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 552
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8437
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8438
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 13:49:47",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 13:50:02",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "en vol"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 13:50:16",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "en vol",
+                    "arc-en-ciel"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 13:50:19",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "arc-en-ciel"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 13:50:37",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "arc-en-ciel"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 13:50:50",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 3958
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "arc-en-ciel"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 13:51:43",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 3958
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "arc-en-ciel"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 13:51:44",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "arc-en-ciel"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:03:29",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:16:25",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:16:56",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:17:45",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:25:44",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur verte, ton vert, vert",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:35:00",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:43:19",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur verte, ton vert, vert",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:46:46",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur verte, ton vert, vert",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Enfant",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:46:47",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Enfant",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:46:57",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Un enfant qui joue",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:48:04",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Un enfant qui joue",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:48:36",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Des jouets",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:48:44",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Des jouets",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1842
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:48:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Des jouets",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1842
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5283
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:07",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Des jouets",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1842
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5283
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": -1,
+                "recordID": 7426
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:23",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Des jouets",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1842
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5283
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": -1,
+                "recordID": 7426
+            },
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:24",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1842
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5283
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": -1,
+                "recordID": 7426
+            },
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:25",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5283
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": -1,
+                "recordID": 7426
+            },
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:26",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": -1,
+                "recordID": 7426
+            },
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:26",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:30",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 433
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:39",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 433
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 216
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:44",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une maman et son fils",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 433
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 216
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1173
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:56",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 433
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 216
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1173
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:57",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 216
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1173
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:49:58",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1173
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:50:05",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Quand j'allais \u00e0 l'\u00e9cole quand j'\u00e9tais petit",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:50:17",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Quand j'allais \u00e0 l'\u00e9cole quand j'\u00e9tais petit",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5103
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:50:23",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Quand j'allais \u00e0 l'\u00e9cole quand j'\u00e9tais petit",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5103
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7287
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:50:34",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Quand j'allais \u00e0 l'\u00e9cole quand j'\u00e9tais petit",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5103
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7287
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7224
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 14:50:45",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Quand j'allais \u00e0 l'\u00e9cole quand j'\u00e9tais petit",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5103
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7287
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7224
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:50:47",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5103
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7287
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7224
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:50:48",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7287
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7224
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:50:49",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7224
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:50:50",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:50:56",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on",
+                    "enfant"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:51:01",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1155
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on",
+                    "enfant"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 14:51:15",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "gar\u00e7on",
+                    "enfant"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 18:57:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Jardin",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 19:05:45",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Ciel",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 19:05:52",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Dragon",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 19:38:30",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 19:49:05",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 20:16:23",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 20:24:38",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 20:25:19",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 20:26:34",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 20:27:34",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:01:52",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:02:02",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Paysage",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:02:03",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Paysage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "France",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:03:45",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Paysage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "France",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 6179
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:05:54",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:08:40",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chat",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:08:47",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chat",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 2021
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:09:01",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chat",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 2021
+            },
+            {
+                "type": "TERM",
+                "term": "Un animal",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:09:04",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chat",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Un animal",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:09:05",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chat",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "Un animal",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:09:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chat",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "Un animal",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "cat",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:09:21",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chat",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "cat",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:09:21",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "cat",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:09:35",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "cat",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chat"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 21:09:37",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chat"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 21:15:20",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:23:42",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:26:44",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:47:11",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:47:12",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            },
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:47:28",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            },
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:47:58",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur verte, ton vert, vert",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:51:33",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:51:36",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8522
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:51:43",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8522
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:51:57",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8522
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:52:48",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs vives, color\u00e9, couleurs intenses",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:52:50",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs vives, color\u00e9, couleurs intenses",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 114
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:53:01",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:53:23",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:53:56",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:54:00",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 3704
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:57:26",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 21:57:38",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "li\u00e8vre"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 21:58:39",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur rouge, ton rouge, rouge",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:03:27",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:01",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Tour eiffel",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:08",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Tour eiffel",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Paris",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:09",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Paris",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:21",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Paris",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 6179
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:26",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Paris",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 6179
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 4286
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:39",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 6179
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 4286
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:39",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 4286
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:10:45",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Soldat francais",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:12:38",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Animaux de compagnie",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:12:55",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Animaux de compagnie",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7106
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:12:59",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Animaux de compagnie",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 2,
+                "recordID": 7106
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:13:14",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Animaux de compagnie",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 2,
+                "recordID": 7106
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:16",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Animaux de compagnie",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:17",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:26",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": []
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:27",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "c"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:27",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "ch"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:27",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "cha"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:27",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "chat"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:27",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "chats"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:29",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chats"
+                ],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:30",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chats"
+                ],
+                "currentValue": "c"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:30",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chats"
+                ],
+                "currentValue": "ch"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:31",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chats"
+                ],
+                "currentValue": "cha"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:31",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chats"
+                ],
+                "currentValue": "chat"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:31",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chats"
+                ],
+                "currentValue": "chat"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:32",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chats",
+                    "chat"
+                ],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:33",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chat"
+                ],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:41",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "a"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "ab"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "abn"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "ab"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "a"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "an"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:44",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "ani"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:44",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "anim"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:44",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "anima"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:44",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "animau"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:44",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "animaux"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:46",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "a"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:46",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "an"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:46",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "ani"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:47",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "anim"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:47",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "anima"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:47",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "animal"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:48",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "animal"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:13:48",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "animal"
+                ],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:14:22",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:14:25",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "t\u00eate"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:14:26",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "t\u00eate",
+                    "figure"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:14:26",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "t\u00eate"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:14:41",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "t\u00eate"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 22:14:44",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:14:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:14:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 2
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:15:00",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "Visage",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:15:14",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 579
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:15:37",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 579
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7963
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:15:49",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 579
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7963
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 4213
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:15:52",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une personne heureuse",
+                "weight": 2
+            },
+            {
+                "type": "TERM",
+                "term": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 579
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 7963
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 4213
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 1661
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:16:33",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Visage d'une femme heureuse",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:16:35",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Visage d'une femme heureuse",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:16:43",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Visage d'une femme heureuse",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:03",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:07",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Joie",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:12",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Joie",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Sourire",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:13",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Sourire",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:14",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Sourire",
+                "weight": 1.75
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:21",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Sourire",
+                "weight": 1.75
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 429
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:51",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 22:17:55",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Visage",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 23:02:07",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs vives, color\u00e9, couleurs intenses",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 23:02:12",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs vives, color\u00e9, couleurs intenses",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 8137
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 23:06:49",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleur bleue, ton bleu, bleu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 23:07:44",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Arbre",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 23:08:38",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 23:08:39",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "arc-en-ciel"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 23:08:40",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs sombres",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": []
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-13 23:15:54",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Un chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-13 23:16:04",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Un chien",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 314
+            }
+        ],
+        "hard_part": []
+    }
+]

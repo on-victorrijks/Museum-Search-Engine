@@ -1,0 +1,68 @@
+.modal-collection-create {
+    border: solid 2px var(--text-color);
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 1;
+}
+.modal-collection-create:hover {
+    opacity: 0.5;
+}
+.modal-collection-create h1 {
+    color: var(--text-color);
+    font-size: 24px;
+    line-height: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-collection-create h2 {
+    color: var(--text-color);
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 25px;
+    flex: 1;
+}
+
+.modal-collection-item{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: var(--container-bg);
+    border: solid 1px var(--border-color);
+    border-radius: 8px;
+    gap: 4px;
+    opacity: 1;
+    cursor: pointer;
+    width: 100%;
+}
+.modal-collection-item:hover {
+    opacity: 0.5;
+}
+.modal-collection-item h2 {
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 500;
+    width: 100%;
+}
+.modal-collection-item p {
+    color: var(--text-color);
+    opacity: .8;
+    font-size: 15px;
+    font-weight: 300;
+    width: 100%;
+}
+.modal-collection-item p {
+    color: var(--text-color);
+    opacity: .8;
+    font-size: 15px;
+    font-weight: 300;
+    width: 100%;
+}

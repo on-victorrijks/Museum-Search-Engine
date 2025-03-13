@@ -3,6 +3,7 @@ from typing import List, Dict, Any, Tuple
 from abc import ABC, abstractmethod
 from sklearn.metrics.pairwise import cosine_similarity
 import difflib
+import random
 
 class AbstractDatabase(ABC):
     @abstractmethod
@@ -894,8 +895,7 @@ class MockDB(AbstractDatabase):
             recordID, similarity = ranked_result
             i = self.recordIDToIndex[recordID]
 
-            data = self.data[i]
-            data["iconography"] = self.iconographies[i]
+            data = self.get_data(recordID)
             data["similarity"] = float(similarity)
 
             # Convert nan to None
@@ -990,3 +990,86 @@ class MockDB(AbstractDatabase):
         }
 
         return data
+    
+    def get_augmented_collection(
+            self, 
+            recordIDs, 
+            k, 
+            min_cosine_similarity=0.7,
+            decay_cosine_similarity=0.75,
+            max_patience=10
+    ):
+        """
+            The goal is to find k images that are similar to the recordIDs and that are not in recordIDs.
+            The naive approach would be to find the k closest images to the centroid of the recordIDs,
+            but in my opinion this would not be very interesting since the centroid would be a mix of all the images.
+
+            The approach I chose is to select two recordIDs at random (they can be equal !), then get the closest image to the intersection of the two images.
+            I repeat this process k times to get k images. 
+        """
+
+        available_recordIDs = set(self.recordIDToIndex.keys())
+        recordIDs = set(recordIDs)
+        available_recordIDs = available_recordIDs - recordIDs
+
+        recordIDs = list(recordIDs) # To keep the order
+        available_recordIDs = list(available_recordIDs) # To keep the order
+
+        augmented_collection = []
+
+        i = 0
+        patience = 0
+        patiences = []
+        original_min_cosine_similarity = min_cosine_similarity
+
+        while i < k:
+            patiences.append(patience)
+
+            recordID1 = random.choice(recordIDs)
+            recordID2 = random.choice(recordIDs)
+
+            index1 = self.recordIDToIndex[recordID1]
+            index2 = self.recordIDToIndex[recordID2]
+
+            vector1 = self.vectors[index1]
+            vector2 = self.vectors[index2]
+
+            # Get the cosine similarity between the two vectors
+            similarity = cosine_similarity([vector1], [vector2])[0][0]
+            if similarity < min_cosine_similarity:
+                # The two images are too different for the intersection to be interesting
+                patience += 1
+                min_cosine_similarity *= decay_cosine_similarity
+                
+                if patience < max_patience:
+                    continue
+                else:
+                    # We continue anyways because we reached the max_patience
+                    pass
+
+            # We reset the patience and min_cosine_similarity because we found a good intersection (or we reached the max_patience)
+            patience = 0
+            min_cosine_similarity = original_min_cosine_similarity
+
+            centroid = (vector1 + vector2) / 2
+
+            available_vectors = []
+            for recordID in available_recordIDs:
+                available_vectors.append(self.vectors[self.recordIDToIndex[recordID]])
+
+            sims = cosine_similarity([centroid], available_vectors)[0]
+            index = np.argmax(sims)
+
+            recordID = available_recordIDs[index] # New recordID
+            
+            # We remove the recordID from the available_recordIDs
+            available_recordIDs.remove(recordID)
+            augmented_collection.append(recordID)
+
+            i += 1
+
+        print(patiences)
+
+        return augmented_collection
+
+

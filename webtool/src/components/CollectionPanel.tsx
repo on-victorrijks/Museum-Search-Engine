@@ -2,61 +2,30 @@
     useEffect,
     useState,
 } from 'react';
-import "../styles/ArtistProfile.css";
 
 import { useCookies } from 'react-cookie';
-
-import axios from 'axios';
-import ApiResponse from '../types/ApiResponse';
-import { Query } from '../types/queries';
 
 import "../styles/CollectionPanel.css";
 import { FaChevronLeft, FaChevronRight, FaPlus } from 'react-icons/fa';
 import CollectionData from '../types/Collections';
-import { FaC } from 'react-icons/fa6';
-
-const CollectionItem : React.FC<{
-    data: CollectionData,
-    removeCollection: (identifier: string) => void,
-}> = ({
-    data,
-    removeCollection
-}) => {
-    return (
-        <div className="collection-item">
-            <h2>{data.name}</h2>
-            <p>{data.description}</p>
-            <p>{data.recordIDs.length} enregistrements</p>
-            <div className="collection-buttons">
-                <button
-                    onClick={() => {}}
-                >
-                    Modifier
-                </button>
-                <button
-                    onClick={() => {}}
-                    disabled={data.recordIDs.length === 0}
-                >
-                    Slideshow
-                </button>
-                <button 
-                    onClick={() => removeCollection(data.identifier)}
-                >
-                    Supprimer
-                </button>
-            </div>
-        </div>
-    );
-};
+import CollectionItem from './CollectionItem';
 
 const CollectionPanel: React.FC<{
     isOpened: boolean,
     togglePanel: () => void,
+    openCollectionInTab: (collectionData: CollectionData) => void,
     openCollectionCreationModal: () => void,
+    setCollectionDataForSlideShow: (collectionData: CollectionData) => void,
+    selectedCollection: CollectionData|undefined
+    setSelectedCollection: (collectionData: CollectionData) => void
 }> = ({
     isOpened,
     togglePanel,
-    openCollectionCreationModal
+    openCollectionInTab,
+    openCollectionCreationModal,
+    setCollectionDataForSlideShow,
+    selectedCollection,
+    setSelectedCollection
 }) => {
     
     const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
@@ -90,8 +59,8 @@ const CollectionPanel: React.FC<{
                 >
                     {
                         isOpened
-                        ? <FaChevronLeft />
-                        : <FaChevronRight />
+                        ? <FaChevronRight />
+                        : <FaChevronLeft />
                     }
                 </div>
                 <h1>Vos collections</h1>
@@ -104,7 +73,15 @@ const CollectionPanel: React.FC<{
                 :
                     <>
                         {parsedCollections.map((collection, index) => (
-                            <CollectionItem key={index} data={collection} removeCollection={removeCollection} />
+                            <CollectionItem 
+                                key={index} 
+                                data={collection} 
+                                openCollectionInTab={openCollectionInTab}
+                                removeCollection={removeCollection} 
+                                setCollectionDataForSlideShow={setCollectionDataForSlideShow}
+                                selectedCollection={selectedCollection}
+                                setSelectedCollection={setSelectedCollection}
+                            />
                         ))}
                         <div 
                             className="collection-create"

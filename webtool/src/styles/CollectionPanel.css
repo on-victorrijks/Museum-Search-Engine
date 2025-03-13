@@ -2,22 +2,24 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: fixed;
     width: 400px;
     right: 0;
     background: var(--background-color);
     border-left: solid 1px var(--border-color);
+    transition: right 0.5s ease;
 }
 .collection-panel[is-opened="false"] {
-    width: calc(32px + 30px);
+    right: -350px;
+    box-shadow: -2px 10px 20px 0px rgba(0, 0, 0, 0.00);
 }
 .collection-panel[is-opened="true"] {
-    width: 400px;
+    right: 0;
+    box-shadow: -2px 10px 20px 0px rgba(0, 0, 0, 0.20);
 }
 .collection-header {
-    padding: 15px;
     display: flex;
     flex-direction: row;
-    gap: 15px;
     justify-content: center;
     align-items: center;
     background: var(--container-bg);
@@ -30,8 +32,8 @@
     flex: 1;
 }
 .collection-toggler {
-    width: 32px;
-    height: 32px;
+    width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -83,54 +85,4 @@
     font-weight: 500;
     line-height: 25px;
     flex: 1;
-}
-.collection-item {
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    background: var(--container-bg);
-    border: solid 1px var(--border-color);
-    border-radius: 8px;
-    gap: 8px;
-}
-.collection-item h2 {
-    color: var(--text-color);
-    font-size: 20px;
-    font-weight: 500;
-    width: 100%;
-}
-.collection-item p {
-    color: var(--text-color);
-    opacity: .8;
-    font-size: 15px;
-    font-weight: 300;
-    width: 100%;
-}
-.collection-buttons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    gap: 8px;
-    margin-top: 8px;
-}
-.collection-buttons button {
-    background: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    padding: 8px;
-    text-align: center;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    flex: 1;
-}
-.collection-buttons button:hover {
-    background: var(--button-bg-hover);
-}
-.collection-buttons button[disabled] {
-    background-color: #646464;
-    color: #acacac;
-    cursor: not-allowed;
 }

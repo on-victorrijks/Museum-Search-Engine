@@ -56,6 +56,7 @@
     --stabs-selectable-bg-selected: #3c3b42;
 }
 
+
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 * {
@@ -377,37 +378,6 @@ span.result-iconography:hover {
     height: 1px;
     margin: 5px 0;
 }
-.result-interactions{
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    display: flex;
-    flex-direction: row;
-    gap: 4px;
-    align-items: center;
-    z-index: 8;
-    height: 32px;
-}
-.result-interactions button {
-    background: var(--border-color);
-    color: #777777;
-    border: none;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    cursor: pointer;
-}
-.result-interactions button:hover {
-    background: #777777;
-    color: #ffffff;
-}
-.result-interactions button.enabled {
-    background: #ffffff;
-    color: #000000;
-}
 
 .empty-query{
     display: flex;
@@ -495,4 +465,7 @@ span.result-iconography:hover {
     color: #646464;
     font-size: 20px;
     font-weight: 500;
+}
+.collections-panel-ghost{
+    width: 50px;
 }

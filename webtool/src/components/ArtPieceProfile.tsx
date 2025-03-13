@@ -10,34 +10,36 @@ import SimilarImages from './SimilarImages';
 
 import axios from 'axios';
 import ApiResponse from '../types/ApiResponse';
+import ArtPieceInteractions from './ArtPieceInteractions';
+import CollectionData from '../types/Collections';
+import ArtPieceData from '../types/ArtPiece';
+import { useCookies } from 'react-cookie';
 
-interface ArtPieceData {
-    recordID: number;
-    workID: string;
-    title: string;
-    earliestDate: string;
-    latestDate: string;
-    iconography: string[];
-    classification: string;
-    objectType: string;
-    materials: string[];
-    inscription: string;
-    height: string;
-    width: string;
-    imageColor: string;
-    author: string;
-    creatorFirstName: string;
-    creatorLastName: string;
-    creatorBirthDate: string;
-    creatorDeathDate: string;
-    creatorBirthDeathPlace: string;
-    creatorNationality: string;
-}
+
 
 const ArtPieceHeader: React.FC<{
     data: ArtPieceData,
     openArtistProfile: (recordID: number) => void;
-}> = ({ data, openArtistProfile }) => {
+    isLiked: boolean|undefined,
+    isAddedToACollection: boolean,
+    removeFromSelectedCollection: (recordID: number) => void,
+    addToSelectedCollection: (recordID: number) => void,
+    likeRecord: (data: ArtPieceData) => void,
+    dislikeRecord: (data: ArtPieceData) => void,
+    selectedCollection: CollectionData|undefined,
+    canLike: boolean,
+}> = ({ 
+    data, 
+    openArtistProfile,
+    isLiked,
+    isAddedToACollection,
+    removeFromSelectedCollection,
+    addToSelectedCollection,
+    likeRecord,
+    dislikeRecord,
+    selectedCollection,
+    canLike
+}) => {
     return (
         <div className="ap-profile-header-main-infos">
             <h1>{data.title=="" ? "Titre inconnu" : data.title}</h1>
@@ -49,6 +51,17 @@ const ArtPieceHeader: React.FC<{
                 <div className="bubble"></div>
                 <h2>{data.latestDate}</h2>
             </div>
+            <ArtPieceInteractions
+                recordID={data.recordID}
+                isLiked={isLiked}
+                isAddedToACollection={isAddedToACollection}
+                removeFromSelectedCollection={removeFromSelectedCollection}
+                addToSelectedCollection={addToSelectedCollection}
+                likeRecord={() => likeRecord(data)}
+                dislikeRecord={() => dislikeRecord(data)}
+                selectedCollection={selectedCollection}
+                canLike={canLike}
+            />
         </div>
     );
 }
@@ -250,11 +263,25 @@ const ArtPieceProfile: React.FC<{
     tab: TabData;
     openArtPieceProfile: (recordID: number) => void;
     openArtistProfile: (recordID: number) => void;
+
+    selectedCollection: CollectionData|undefined
+
+    dislikeRecord: (imageInformations: ArtPieceData) => void;
+    likeRecord: (imageInformations: ArtPieceData) => void;
+    getLikeStatus: (recordID: number) => boolean | undefined;
+
+    canLike: boolean;
+    
 }> = ({
     recordID,
     tab,
     openArtPieceProfile,
-    openArtistProfile
+    openArtistProfile,
+    selectedCollection,
+    dislikeRecord,
+    likeRecord,
+    getLikeStatus,
+    canLike
 }) => {
 
     const [subtab, setSubtab] = useState<Subtabs>(Subtabs.OBJECTS_PRESENTS);
@@ -300,6 +327,68 @@ const ArtPieceProfile: React.FC<{
             }
         }
     }, [tab, recordID]);
+
+    // COLLECTIONS
+    const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
+
+    useEffect(() => {
+        setLoading(true);
+        if (collections['fab-seg-collections']) {
+            const collectionsData: CollectionData[] = collections['fab-seg-collections'] as CollectionData[];
+            setParsedCollections(collectionsData);
+        }
+        setLoading(false);
+    }, [collections]);
+
+    const addToSelectedCollection = (recordID: number) => {
+        if(selectedCollection === undefined) {
+            return;
+        }
+
+        setCollections('fab-seg-collections', parsedCollections.map((collection: CollectionData) => {
+            if (collection.identifier === selectedCollection.identifier) {
+                return {
+                    ...collection,
+                    recordIDs: [...collection.recordIDs, recordID],
+                };
+            } else {
+                return collection;
+            }
+        }));
+
+    }
+
+    const removeFromSelectedCollection = (recordID: number) => {
+        if(selectedCollection === undefined) {
+            return;
+        }
+
+        setCollections('fab-seg-collections', parsedCollections.map((collection: CollectionData) => {
+            if (collection.identifier === selectedCollection.identifier) {
+                return {
+                    ...collection,
+                    recordIDs: collection.recordIDs.filter((id) => id !== recordID),
+                };
+            } else {
+                return collection;
+            }
+        }));
+    }
+
+    const getIsAddedToACollection = (recordID: number) => {
+        if(selectedCollection === undefined) {
+            return false;
+        }
+        // selectedCollection has no guarantee to be up to date (wrong coding ! #TODO)
+        // We have to check the parsedCollections
+        const collection = parsedCollections.find((collection) => collection.identifier === selectedCollection.identifier);
+        if(collection === undefined) {
+            return false;
+        }
+        return collection.recordIDs.includes(recordID); 
+    }
     
     return (
         <div className="ap-profile-container">
@@ -313,7 +402,18 @@ const ArtPieceProfile: React.FC<{
             <>
             <div className="ap-profile-header">
                 <ArtPieceImage data={data}/>
-                <ArtPieceHeader data={data} openArtistProfile={openArtistProfile}/>
+                <ArtPieceHeader 
+                    data={data} 
+                    openArtistProfile={openArtistProfile}
+                    isLiked={getLikeStatus(data.recordID)}
+                    isAddedToACollection={getIsAddedToACollection(data.recordID)}
+                    removeFromSelectedCollection={removeFromSelectedCollection}
+                    addToSelectedCollection={addToSelectedCollection}
+                    likeRecord={likeRecord}
+                    dislikeRecord={dislikeRecord}
+                    selectedCollection={selectedCollection}
+                    canLike={canLike}
+                />
             </div>
 
             <div className="ap-profile-stabs">

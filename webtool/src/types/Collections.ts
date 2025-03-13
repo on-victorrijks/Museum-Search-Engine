@@ -12,7 +12,7 @@ interface CollectionData {
         minute: number,
         second: number,
     },
-    recordIDs: string[],
+    recordIDs: number[],
 }
 
 export default CollectionData;

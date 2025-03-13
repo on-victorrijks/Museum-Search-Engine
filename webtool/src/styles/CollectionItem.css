@@ -1,0 +1,125 @@
+.collection-item {
+    display: flex;
+    flex-direction: column;
+    background: var(--container-bg);
+    border: solid 1px var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    width: 100%;
+}
+.collection-item[already-in-collection="true"] {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.collection-item[already-in-collection="true"] .collection-item-image img {
+    filter: grayscale(1);
+    opacity: .5;
+}
+.collection-item[already-in-collection="true"] .collection-item-text {
+    opacity: .5;
+}
+
+.collection-item-image{
+    width: 100%;
+    max-height: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: solid 1px var(--border-color);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.collection-item-image img {
+    flex: 1;
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+.collection-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px;
+}
+.collection-item-text h2 {
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 500;
+    width: 100%;
+}
+.collection-item-text p {
+    color: var(--text-color);
+    opacity: .8;
+    font-size: 15px;
+    font-weight: 300;
+    width: 100%;
+}
+.collection-item-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    padding: 10px;
+    padding-top: 0;
+}
+
+.collection-item-buttons button {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 6px 8px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+    border: solid 2px transparent;
+}
+.collection-item-buttons button[is-selected="true"] {
+    border-color: var(--button-bg);
+    color: var(--button-bg);
+    background: var(--button-text);
+
+}
+.collection-item-button-icon{
+    font-size: 15px;
+    line-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.collection-item-buttons button:hover {
+    background: var(--button-bg-hover);
+}
+.collection-item-buttons button[is-selected="true"]:hover {
+    background: var(--button-text);
+    color: var(--button-bg);
+}
+.collection-item-buttons button[disabled] {
+    background-color: #646464;
+    color: #acacac;
+    cursor: not-allowed;
+}
+.collection-info {
+    background: var(--button-bg);
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.collection-info h2 {
+    color: var(--button-text);
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+}
+
+.collection-item[is-selected="true"] {
+    border-color: var(--button-bg);
+}

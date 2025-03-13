@@ -1,5 +1,4 @@
 import React, {
-  useEffect,
   useState
 } from 'react';
 import SearchComponent from './components/SearchComponent';
@@ -31,10 +30,36 @@ import "./styles/Modals/Modals.css"
 import ResizableDiv from './components/ResizableDiv';
 import CollectionPanel from './components/CollectionPanel';
 import ModalCreateCollection from './components/Modals/ModalCreateCollection';
+import CollectionData from './types/Collections';
+import ArtPieceData from './types/ArtPiece';
+import ModalAugmentCollection from './components/Modals/ModalAugmentCollection';
+import ModalSlideshowSettings from './components/Modals/ModalSlideShowSettings';
+import SlideShowData from './types/Slideshow';
+import Slideshow from './components/Slideshow';
 
 const App: React.FC = () => {
 
-    const [modalCreateCollectionIsOpen, setModalCreateCollectionIsOpen] = useState<boolean>(true);
+    const [modalCreateCollectionIsOpen, setModalCreateCollectionIsOpen] = useState<boolean>(false);
+
+    const [modalAugmentCollectionIsOpen, setModalAugmentCollectionIsOpen] = useState<boolean>(false);
+    const [collectionDataForAugment, setCollectionDataForAugment] = useState<CollectionData|undefined>(undefined);
+    const setCollectionDataForAugmentWrapper = (collectionData: CollectionData) => {
+      setCollectionDataForAugment(collectionData);
+      setModalAugmentCollectionIsOpen(true);
+    }
+
+    const [ModalSlideshowSettingsIsOpen, setModalSlideshowSettingsIsOpen] = useState<boolean>(false);
+    const [collectionDataForSlideShow, setCollectionDataForSlideShow] = useState<CollectionData|undefined>(undefined);
+    const setCollectionDataForSlideShowWrapper = (collectionData: CollectionData) => {
+      setCollectionDataForSlideShow(collectionData);
+      setModalSlideshowSettingsIsOpen(true);
+    }
+
+    const [slideShowData, setSlideShowData] = useState<SlideShowData|undefined>(undefined);
+
+
+
+    const [selectedCollection, setSelectedCollection] = useState<CollectionData|undefined>(undefined);
 
     const [isCollectionOpened, setIsCollectionOpened] = useState<boolean>(false);
 
@@ -57,9 +82,13 @@ const App: React.FC = () => {
         handleError("App.selectTab()", "Tab not found");
         return;
       }
-      const queryParts = tab.content.query.parts;
-      // Set the QueryParts
-      setQueryParts(queryParts);
+      if(tab.type==="results") {
+        // This is a results tab
+        const queryParts = tab.content.query.parts;
+        // Set the QueryParts
+        setQueryParts(queryParts);
+      }
+
       // Select the tab
       setSelectedTabIdentifier(tabIdentifier);
     }
@@ -92,7 +121,7 @@ const App: React.FC = () => {
           const success = data["success"];
           if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
           const results = data["message"];
-          updatedTabs[tabIndex].content.results = results;
+          updatedTabs[tabIndex].content.results = results as ArtPieceData[];
           setTabs(updatedTabs);
         } catch (error) {
           console.error("Error making POST request:", error);
@@ -239,7 +268,7 @@ const App: React.FC = () => {
         return isLiked ? true : isDisliked ? false : undefined;
       }
 
-      const likeRecord = (imageInformations: Record<string, any>) => {
+      const likeRecord = (imageInformations: ArtPieceData) => {
         const recordID = imageInformations["recordID"];
         // Add a QueryPart to the current query
         if(selectedTabIdentifier=="N/A") return;
@@ -307,7 +336,7 @@ const App: React.FC = () => {
         }
       }
 
-      const dislikeRecord = (imageInformations: Record<string, any>) => {
+      const dislikeRecord = (imageInformations: ArtPieceData) => {
         const recordID = imageInformations["recordID"];
         // Add a QueryPart to the current query
         if(selectedTabIdentifier=="N/A") return;
@@ -576,13 +605,70 @@ const App: React.FC = () => {
       
       }
 
+      const openCollectionInTab = (collectionData: CollectionData) => {
+        // Create a tab for this collection if it does not exist
+        const tab = tabs.find(tab => {
+          const tabType = tab.type;
+          return tabType==="collection" && tab.content.collectionIdentifier===collectionData.identifier;
+        });
+
+        if(tab) {
+          // The tab already exists, we select it
+          selectTab(tab.identifier);
+        } else {
+          // The tab does not exist, we create it
+          const newTab : TabData = {
+            type: 'collection',
+            identifier: uuidv4(),
+            content: {
+              collectionIdentifier: collectionData.identifier
+            }
+          };
+          addTab(newTab);
+        }
+      }
+
+      const canLike = () => {
+        // If the selected tab is a results tab, we can like (we can modify the query)
+        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
+        if (!tab) return false;
+        return tab.type==="results";
+      }
 
       return (
         <>
 
-          { modalCreateCollectionIsOpen &&
+          { slideShowData!==undefined &&
+            <Slideshow
+              collectionData={slideShowData.collectionData}
+              automaticSlideshow={slideShowData.automaticSlideshow}
+              slideshowInterval={slideShowData.slideshowInterval}
+              infiniteSlideshow={slideShowData.infiniteSlideshow}
+              exitSlideshow={() => setSlideShowData(undefined)}
+            />
+          }
+
+          { (modalCreateCollectionIsOpen || modalAugmentCollectionIsOpen || ModalSlideshowSettingsIsOpen) &&
           <div className="modals-container">
-            <ModalCreateCollection askToClose={() => setModalCreateCollectionIsOpen(false)} />
+            {
+              modalCreateCollectionIsOpen &&
+              <ModalCreateCollection
+                askToClose={() => setModalCreateCollectionIsOpen(false)}
+              />
+            }
+            { modalAugmentCollectionIsOpen &&
+              <ModalAugmentCollection
+                askToClose={() => setModalAugmentCollectionIsOpen(false)}
+                collectionData={collectionDataForAugment}
+              />
+            }
+            { (ModalSlideshowSettingsIsOpen && collectionDataForSlideShow) &&
+              <ModalSlideshowSettings
+                askToClose={() => setModalSlideshowSettingsIsOpen(false)}
+                collectionData={collectionDataForSlideShow}
+                launchSlideshow={(slideShowData: SlideShowData) => setSlideShowData(slideShowData)}
+              />
+            }
           </div>
           }
 
@@ -622,13 +708,27 @@ const App: React.FC = () => {
 
               openArtPieceProfileWrapper={openArtPieceProfileWrapper}
               openArtistProfileWrapper={openArtistProfileWrapper}
+              
+              setCollectionDataForAugment={setCollectionDataForAugmentWrapper}
+
+              selectedCollection={selectedCollection}
+
+              canLike={canLike()}
+
+              setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
             />
           }
+
+          <div className="collections-panel-ghost"></div>
 
           <CollectionPanel 
             isOpened={isCollectionOpened}
             togglePanel={() => setIsCollectionOpened(!isCollectionOpened)}
+            openCollectionInTab={openCollectionInTab}
             openCollectionCreationModal={() => setModalCreateCollectionIsOpen(true)}
+            selectedCollection={selectedCollection}
+            setSelectedCollection={setSelectedCollection}
+            setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
           />
 
         </div>

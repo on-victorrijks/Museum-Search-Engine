@@ -10,6 +10,9 @@ import { FaPenToSquare } from 'react-icons/fa6';
 import { Query } from '../types/queries';
 import ArtPieceProfile from './ArtPieceProfile';
 import ArtistProfile from './ArtistProfile';
+import CollectionTab from './CollectionTab';
+import CollectionData from '../types/Collections';
+import ArtPieceData from '../types/ArtPiece';
 
 const TabContainer: React.FC<{
     tabs: TabData[];
@@ -18,8 +21,8 @@ const TabContainer: React.FC<{
     addTab: (tab: TabData) => void;
     removeTab: (tabIdentifier: string) => void;
 
-    dislikeRecord: (imageInformations: Record<string, any>) => void;
-    likeRecord: (imageInformations: Record<string, any>) => void;
+    dislikeRecord: (imageInformations: ArtPieceData) => void;
+    likeRecord: (imageInformations: ArtPieceData) => void;
     getLikeStatus: (
         recordID: number
     ) => boolean | undefined;
@@ -29,6 +32,13 @@ const TabContainer: React.FC<{
 
     openArtPieceProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void;
     openArtistProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void;
+
+    setCollectionDataForAugment: (collectionData: CollectionData) => void;
+    setCollectionDataForSlideShow: (collectionData: CollectionData) => void;
+
+    selectedCollection: CollectionData|undefined;
+
+    canLike: boolean;
 }> = ({
     tabs,
     selectedTabIdentifier,
@@ -41,7 +51,11 @@ const TabContainer: React.FC<{
     addTermFromIconography,
     getTermStatusInQuery,
     openArtPieceProfileWrapper,
-    openArtistProfileWrapper
+    openArtistProfileWrapper,
+    setCollectionDataForAugment,
+    setCollectionDataForSlideShow,
+    selectedCollection,
+    canLike
 }) => {
 
     const [openInNewTabPerTab, setOpenInNewTabPerTab] = useState<Record<string, boolean>>({});
@@ -54,6 +68,8 @@ const TabContainer: React.FC<{
                 return 'Profil d\'oeuvre';
             case 'artist-profile':
                 return 'Profil d\'artiste';
+            case 'collection':
+                return 'Collection';
             default:
                 return 'Tab';
         }
@@ -131,6 +147,10 @@ const TabContainer: React.FC<{
                                     recordID,
                                     getOpenInNewTabStatut(tab.identifier)
                                 )}
+
+                                selectedCollection={selectedCollection}
+
+                                canLike={canLike}
                             />
                         }
                         { tab.type === 'artpiece-profile' && 
@@ -149,6 +169,14 @@ const TabContainer: React.FC<{
                                         getOpenInNewTabStatut(tab.identifier)
                                     );
                                 }}
+
+                                dislikeRecord={dislikeRecord}
+                                likeRecord={likeRecord}
+                                getLikeStatus={(recordID) => getLikeStatus(recordID)}
+
+                                selectedCollection={selectedCollection}
+
+                                canLike={canLike}
                             />
                         }
                         { tab.type === 'artist-profile' &&
@@ -160,6 +188,13 @@ const TabContainer: React.FC<{
                                     recordID,
                                     getOpenInNewTabStatut(tab.identifier)
                                 )}
+                            />
+                        }
+                        { tab.type === 'collection' &&
+                            <CollectionTab
+                                collectionIdentifier={tab.content.collectionIdentifier}
+                                setCollectionDataForAugment={setCollectionDataForAugment}
+                                setCollectionDataForSlideShow={setCollectionDataForSlideShow}
                             />
                         }
                     </div>

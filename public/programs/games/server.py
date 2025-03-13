@@ -8,6 +8,7 @@ import torch
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+import datetime
 
 # Import from folder engine
 from engine import GameEngine
@@ -48,6 +49,40 @@ def QuelleEstLoeuvre(
         "robot_questions": robot_questions,
         "user_questions": user_questions
     }
+
+keysToRemove = [
+    "identifier",
+    "isSoft",
+]
+
+def remove_useless_keys(d):
+    for entry in d:
+        for key in keysToRemove:
+            if key in entry:
+                del entry[key]
+    return d
+
+def save_query_from_user(query):
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    soft_part = query["soft"]
+    hard_part = query["hard"]
+    data = {
+        "current_time": current_time,
+        "soft_part": remove_useless_keys(soft_part),
+        "hard_part": remove_useless_keys(hard_part)
+    }
+    # The file queries.txt is a json file with a list of dictionaries
+    # We want to read the file, append the new query and write it back
+    path = "./queries.txt"
+    with open(path, "r") as file:
+        try:
+            queries = json.load(file)
+        except:
+            queries = []
+
+    queries.append(data)
+    with open(path, "w") as file:
+        json.dump(queries, file, indent=4)
 
 if __name__ == "__main__":
 
@@ -348,6 +383,9 @@ if __name__ == "__main__":
 
         page_size = max(1, page_size)
  
+        # Save query
+        save_query_from_user(data)
+
         # Query the database
         results = DB.query(
             filters=hard,
@@ -495,6 +533,42 @@ if __name__ == "__main__":
             "success": True,
             "message": {
                 "data": data
+            }
+        })
+    
+    @app.route(
+        '/api/search/v2/augmentCollection',
+        methods=['POST']
+    )
+    def getAugmentedCollection():
+        data = request.json
+
+
+        try:
+            recordIDs = [int(x) for x in data["recordIDs"]]
+            numberOfImages = max(1, min(50, int(data["numberOfImages"])))
+            min_cosine_similarity = max(0.0, min(1.0, float(data["min_cosine_similarity"])))
+            decay_cosine_similarity = max(0.0, min(1.0, float(data["decay_cosine_similarity"])))
+            max_patience = min(50, int(data["max_patience"]))
+            recordIDs[0] # Check if the list is not empty
+        except Exception as e:
+            return jsonify({
+                "success": False,
+                "message": "Invalid parameters."
+            })
+
+        data = DB.get_augmented_collection(
+            recordIDs, 
+            numberOfImages,
+            min_cosine_similarity,
+            decay_cosine_similarity,
+            max_patience
+        )
+
+        return jsonify({
+            "success": True,
+            "message": {
+                "augmentedRecordIDs": data
             }
         })
 

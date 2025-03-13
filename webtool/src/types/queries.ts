@@ -1,4 +1,5 @@
 import { JSX } from 'react';
+import ArtPieceData from './ArtPiece';
 
 // Type definitions for queries
 interface Query {
@@ -21,7 +22,7 @@ interface SoftQueryPart extends QueryPart {
     color?: string;
     luminosity?: string;
     recordID?: number;
-    imageInformations?: Record<string, any>;
+    imageInformations?: ArtPieceData;
 }
 //// The type of soft queries
 enum SoftQueryType {

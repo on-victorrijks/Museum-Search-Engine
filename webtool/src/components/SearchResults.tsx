@@ -1,25 +1,27 @@
 import React, {
-    use,
     useState,
     useEffect,  
     useRef,
-    useCallback
 } from 'react';
-import { FaArrowRight, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
+import { FaArrowRight, FaBookmark, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import Masonry from "react-responsive-masonry"
 import { TabData } from '../types/tab';
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';
+import CollectionData from '../types/Collections';
+import { useCookies } from 'react-cookie';
+import ArtPieceInteractions from './ArtPieceInteractions';
+import ArtPieceData from '../types/ArtPiece';
 
 const MIN_COLUMN_WIDTH = 300;
 
 const SearchResults: React.FC<{
     isEmptyQuery: boolean;
-    results: Record<string, any>[];
+    results: ArtPieceData[];
 
-    dislikeRecord: (imageInformations: Record<string, any>) => void;
-    likeRecord: (imageInformations: Record<string, any>) => void;
+    dislikeRecord: (imageInformations: ArtPieceData) => void;
+    likeRecord: (imageInformations: ArtPieceData) => void;
     getLikeStatus: (recordID: number) => boolean | undefined;
 
     addTermFromIconography: (term: string) => void;
@@ -27,6 +29,10 @@ const SearchResults: React.FC<{
 
     addTab: (tab: TabData) => void;
     openArtistProfile: (recordID: number) => void;
+
+    selectedCollection: CollectionData|undefined;
+
+    canLike: boolean;
 }> = ({
     isEmptyQuery,
     results,
@@ -36,7 +42,9 @@ const SearchResults: React.FC<{
     addTermFromIconography,
     getTermStatusInQuery,
     addTab,
-    openArtistProfile
+    openArtistProfile,
+    selectedCollection,
+    canLike
 }) => {
 
     const componentRef = useRef<HTMLDivElement>(null);
@@ -75,22 +83,86 @@ const SearchResults: React.FC<{
     const [numberOfColums, setNumberOfColumns] = useState(3); 
 
 
-    const renderResult = (result: Record<string, any>, index: number) => {
-        const recordID = result["recordID"];
-        let similarity = result["similarity"];
+
+    const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
+
+    useEffect(() => {
+        setLoading(true);
+        if (collections['fab-seg-collections']) {
+            const collectionsData: CollectionData[] = collections['fab-seg-collections'] as CollectionData[];
+            setParsedCollections(collectionsData);
+        }
+        setLoading(false);
+    }, [collections]);
+
+    const addToSelectedCollection = (recordID: number) => {
+        if(selectedCollection === undefined) {
+            return;
+        }
+
+        setCollections('fab-seg-collections', parsedCollections.map((collection: CollectionData) => {
+            if (collection.identifier === selectedCollection.identifier) {
+                return {
+                    ...collection,
+                    recordIDs: [...collection.recordIDs, recordID],
+                };
+            } else {
+                return collection;
+            }
+        }));
+
+    }
+
+    const removeFromSelectedCollection = (recordID: number) => {
+        if(selectedCollection === undefined) {
+            return;
+        }
+
+        setCollections('fab-seg-collections', parsedCollections.map((collection: CollectionData) => {
+            if (collection.identifier === selectedCollection.identifier) {
+                return {
+                    ...collection,
+                    recordIDs: collection.recordIDs.filter((id) => id !== recordID),
+                };
+            } else {
+                return collection;
+            }
+        }));
+    }
+
+    const getIsAddedToACollection = (recordID: number) => {
+        if(selectedCollection === undefined) {
+            return false;
+        }
+        // selectedCollection has no guarantee to be up to date (wrong coding ! #TODO)
+        // We have to check the parsedCollections
+        const collection = parsedCollections.find((collection) => collection.identifier === selectedCollection.identifier);
+        if(collection === undefined) {
+            return false;
+        }
+        return collection.recordIDs.includes(recordID); 
+    }
+
+
+    const renderResult = (result: ArtPieceData, index: number) => {
+        const recordID = result.recordID;
+        let similarity = result.similarity || 0;
         // Round similarity to 3 decimals
         similarity = Math.round(similarity * 1000) / 1000;
 
-        let title = result["objectWork.titleText"];
-        let author = result["objectWork.creatorDescription"];
+        let title = result.title;
+        let author = result.author;
         let iconography = result["iconography"];
-        let creationDate = (result["creation.earliestDate"] || "?") + " - " + (result["creation.latestDate"] || "?");
+        let creationDate = (result.earliestDate || "?") + " - " + (result.latestDate || "?");
 
         if (title=="") title = "Titre inconnu";
         if (author=="") author = "Auteur inconnu";
 
         const imageURL = "http://127.0.0.1:5000/images/" + recordID;
 
+        const isAddedToACollection = getIsAddedToACollection(recordID);
         const isLiked = getLikeStatus(recordID);
         const isLikedStr = isLiked === true ? "true" : isLiked === false ? "false" : "none";
         
@@ -101,20 +173,19 @@ const SearchResults: React.FC<{
                 </div>
                 <div className='result-content'>
 
-                    <div className="result-interactions">
-                        <button
-                            className={`square ${isLiked===true && 'enabled'}`}
-                            onClick={() => likeRecord(result)}
-                        >
-                            <FaThumbsUp />
-                        </button>
-                        <button
-                            className={`square ${isLiked===false && 'enabled'}`}
-                            onClick={() => dislikeRecord(result)}
-                        >
-                            <FaThumbsDown />
-                        </button>
-                    </div>
+                    <ArtPieceInteractions
+                        recordID={recordID}
+                        isLiked={isLiked}
+                        isAddedToACollection={isAddedToACollection}
+                        removeFromSelectedCollection={removeFromSelectedCollection}
+                        addToSelectedCollection={addToSelectedCollection}
+                        likeRecord={() => likeRecord(result)}
+                        dislikeRecord={() => dislikeRecord(result)}
+                        selectedCollection={selectedCollection}
+                        absolutePosition={true}
+                        small={true}
+                        canLike={canLike}
+                    />
 
                     <div className="result-header-sec"></div>
 
