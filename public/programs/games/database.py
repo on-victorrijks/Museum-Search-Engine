@@ -804,7 +804,7 @@ class MockDB(AbstractDatabase):
             for i in range(len(embeddings)):
                 embeddings[i] *= weights[i]
         elif version == "power":
-           # Multiply each embedding by the power of its weight
+            # Multiply each embedding by the power of its weight
             for i in range(len(embeddings)):
                 sign = 1 if weights[i] >= 0 else -1
                 embeddings[i] *= np.power(weights[i], 2) * sign

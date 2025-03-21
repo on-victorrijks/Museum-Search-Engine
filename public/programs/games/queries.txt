@@ -10653,5 +10653,4265 @@
             }
         ],
         "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 14:19:16",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 14:19:47",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:19:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "h"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:19:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "ho"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:19:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "hom"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:19:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "homm"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:19:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "homme"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:19:52",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:09",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:14",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:18",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:20",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:20",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "10"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:20",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "100"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:20",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:22",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "1"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:22",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "19"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:22",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "192"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:22",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "19200"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:23",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "1920"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:24",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "190"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:24",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "1900"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:33",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "1900"
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:33",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "1900"
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "GROUP",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "GROUP",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:45",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "1900"
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:46",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "BETWEEN",
+                "selectedColumn": {
+                    "key": "earliestDate",
+                    "userFriendlyName": "Date de cr\u00e9ation (est. basse)"
+                },
+                "blockType": "BETWEEN",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "from": "1000",
+                "to": "1900"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:46",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:47",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "homme"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:20:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 14:20:56",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme et une fille",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 14:21:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme et une fille",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "enfant"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:21:21",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Une femme et une fille",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "enfant",
+                    "femme"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:22:45",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "enfant",
+                    "femme"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:22:47",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "enfant",
+                    "femme"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 14:22:51",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 14:23:06",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Ville",
+                "weight": 1
+            },
+            {
+                "type": "COLOR",
+                "color": "Couleurs vives, color\u00e9, couleurs intenses",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 14:24:43",
+        "soft_part": [
+            {
+                "type": "COLOR",
+                "color": "Couleurs vives, color\u00e9, couleurs intenses",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:11:26",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:11:33",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:11:34",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": -1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:11:36",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": -1.25
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:11:48",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": -1.25
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Bataille",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:12:05",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Bataille",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:12:06",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": 1.5
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Bataille",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:12:54",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": 1.5
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Bataille",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 5006
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:13:29",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": 1.5
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Bataille",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 2,
+                "recordID": 5006
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:14:00",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "KEYWORD",
+                "keyword": "Nu",
+                "weight": 1.5
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 2,
+                "recordID": 5006
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:14:00",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 2,
+                "recordID": 5006
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:14:01",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 2,
+                "recordID": 5006
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:14:17",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Pas un homme",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:14:23",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Pas un homme",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Homme",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:14:24",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Pas un homme",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Homme",
+                "weight": -1.25
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:14:25",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Homme",
+                "weight": -1.25
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:15:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:15:34",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:15:35",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "c"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:15:36",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "ch"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:15:36",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "chi"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:15:36",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "chien"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:15:57",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:16:02",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:04",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Chien",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien",
+                    "animal"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:06",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien",
+                    "animal"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:37",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:38",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": []
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:39",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "c"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:39",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "ch"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:39",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "chi"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:39",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "chien"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [],
+                "currentValue": "chien"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:50",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ],
+                "currentValue": "a"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:50",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ],
+                "currentValue": "aa"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:52",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien",
+                    "aa"
+                ],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:54",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "chien"
+                ],
+                "currentValue": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:16:56",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:04",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "b"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:04",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "bat"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:04",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "bateau"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:07",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:08",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "b"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:08",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "bat"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:08",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "batea"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:09",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:10",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "b"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:10",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "bat"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:11",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "batea"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:12",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:14",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:15",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:17",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:18",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "a"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:19",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:19",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "b"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:19",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "bat"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:19",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "OR",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "bate"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:24",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "OR",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "bateau"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:42",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            },
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "bateau"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:43",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:47",
+        "soft_part": [],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:17:52",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:16",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": true,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:17",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:18",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "B",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:18",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "Be",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:18",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "B",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "Bat",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "Bate",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:19",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "Bateaux",
+                "values": [
+                    "bateau"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:20",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:22",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": true,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:27",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:34",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:37",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:37",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:45",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": false,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:46",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": true,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:18:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:19:02",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "b",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:19:02",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "bar",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:19:02",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "barq",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:19:02",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "barque",
+                "values": [
+                    "bateau",
+                    "Bateaux"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:19:04",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "INCLUDES",
+                "isNot": true,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "currentValue": "",
+                "values": [
+                    "bateau",
+                    "Bateaux",
+                    "barque"
+                ]
+            },
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:45",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "AND",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "AND",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            },
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:46",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "INCLUDES",
+                "blockType": "INCLUDES",
+                "keepNull": false,
+                "caseSensitive": false,
+                "exactMatch": false,
+                "isNot": true,
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "values": [
+                    "bateau \u00e0 voiles"
+                ]
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:46",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:39:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:53",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:53",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "R"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:54",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "Ro"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:54",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "R"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:54",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": ""
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:55",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "Toi"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:39:55",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "title",
+                    "userFriendlyName": "Titre de l'oeuvre"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "Toison"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:42:55",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:45:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "bateau",
+                "weight": 1
+            },
+            {
+                "type": "TERM",
+                "term": "Toison d'or",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:45:50",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Toison d'or",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:46:30",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Toison d'or",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:46:31",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Toison d'or",
+                "weight": 1
+            }
+        ],
+        "hard_part": [
+            {
+                "type": "EQUAL",
+                "selectedColumn": {
+                    "key": "iconography",
+                    "userFriendlyName": "Objects pr\u00e9sents"
+                },
+                "blockType": "EQUAL",
+                "isNot": false,
+                "exactMatch": false,
+                "caseSensitive": false,
+                "keepNull": false,
+                "equalTo": "Toison d'or"
+            }
+        ]
+    },
+    {
+        "current_time": "2025-03-17 15:46:48",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "Toison d'or",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:47:44",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:47:54",
+        "soft_part": [
+            {
+                "type": "KEYWORD",
+                "keyword": "Homme",
+                "weight": 1
+            },
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 10216
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:49:01",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 1,
+                "recordID": 10216
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:49:13",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": -1,
+                "recordID": 10216
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:49:15",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": -1.25,
+                "recordID": 10216
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:49:16",
+        "soft_part": [
+            {
+                "type": "PRECOMPUTED",
+                "weight": 2,
+                "recordID": 10216
+            }
+        ],
+        "hard_part": []
+    },
+    {
+        "current_time": "2025-03-17 15:53:22",
+        "soft_part": [
+            {
+                "type": "TERM",
+                "term": "ville",
+                "weight": 1
+            }
+        ],
+        "hard_part": []
     }
 ]
