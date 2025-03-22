@@ -8,12 +8,13 @@ PARENT = "./../../"
 DB_INPUT_ARTPIECES = PARENT + os.getenv("DB_INPUT_ARTPIECES")
 DB_INPUT_ARTISTS = PARENT + os.getenv("DB_INPUT_ARTISTS")
 DB_INPUT_SUBJECTMATTER = PARENT + os.getenv("DB_INPUT_SUBJECTMATTER")
+FILE_SUBJECTMATTERS_PARSED = PARENT + os.getenv("FILE_SUBJECTMATTERS_PARSED")
 
 def get_paths():
     return {
         "artpieces": DB_INPUT_ARTPIECES,
         "artists": DB_INPUT_ARTISTS,
-        "subjectmatter": DB_INPUT_SUBJECTMATTER,
+        "subjectmatter": FILE_SUBJECTMATTERS_PARSED,
         "embeddings": [
             {
                 "name": "february_finetuned",
@@ -28,7 +29,8 @@ def get_paths():
                     {"name": "Acc@10", "value": 0.98}
                 ]
             }
-        ]
+        ],
+        "images": PARENT + os.getenv("IMAGES_FOLDER")
     }
 
 def get_db_config():
@@ -39,4 +41,7 @@ def get_db_config():
         "user": os.getenv("DB_USER"),
         "password": os.getenv("DB_PASSWORD"),
     }
+
+def is_development():
+    return os.getenv("ENVIRONMENT") == "development"
 
