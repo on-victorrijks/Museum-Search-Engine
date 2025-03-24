@@ -42,6 +42,20 @@ def get_db_config():
         "password": os.getenv("DB_PASSWORD"),
     }
 
+# Testing
+def get_db_config_test():
+    return {
+        "host": os.getenv("DB_HOST"),
+        "port": os.getenv("DB_PORT"),
+        "name": "test_db",
+        "user": os.getenv("DB_USER"),
+        "password": os.getenv("DB_PASSWORD"),
+    }
+
+def get_paths_test():
+    # TODO: In the future, we should use subsets of the data to populate the database (or synthetic data)
+    return get_paths()   
+
 def is_development():
     return os.getenv("ENVIRONMENT") == "development"
 

@@ -29,6 +29,74 @@ subject_matter_to_table_name = {
     "subjectMatterSpecificSubjectIdentification": "SpecificSubjectIdentification"
 }
 
+column_mapping = {
+    # Artwork
+    "recordID": "a.recordID",
+    "workID": "a.workID",
+    "language": "a.language",
+    "title": "a.title",
+    "objectType": "a.objectWorkType",
+    "classification": "a.termClassification",
+    "materials": "a.materials",
+    "inscription": "a.signatureFullDescription",
+    "creationEarliestDate": "a.creationEarliestDate",
+    "creationLatestDate": "a.creationLatestDate",
+    "creator": "a.creatorFullDescription",
+    "physicalAppearance": "a.physicalAppearanceDescription",
+    "imageType": "a.imageType",
+    "imageColor": "a.imageColor",
+    "imageLowResFilename": "a.imageLowResFilename",
+    "imageHighResFilename": "a.imageHighResFilename",
+    "imageCopyright": "a.imageCopyright",
+    "imageStyle": "a.formalDescriptionTermStylesPeriods",
+    "height": "a.height",
+    "width": "a.width",
+    "ratio": "a.ratio",
+    
+    # Artist
+    "creatorID": "ar.creatorID",
+    "creatorFirstName": "ar.creatorFirstName",
+    "creatorLastName": "ar.creatorLastName",
+    "creatorBirthDate": "ar.creatorBirthDate",
+    "creatorDeathDate": "ar.creatorDeathDate",
+    "creatorBirthDeathPlace": "ar.creatorBirthAndDeathDescription",
+    "creatorNationality": "ar.creatorNationality",
+
+    # ConceptualTerms_Flat
+    "CFT_values": "CFT.values",
+
+    # IconographicTerms_Flat
+    "IFT_values": "IFT.values",
+
+    # SubjectTerms_Flat
+    "STF_values": "STF.values",
+
+    # SubjectTerms_Tree
+    "STT_tree": "STT.tree",
+
+    # IconographicInterpretation
+    "II_value": "II.value",
+
+    # GeneralSubjectDescription
+    "GSD_value": "GSD.value",
+
+    # SpecificSubjectIdentification
+    "SSI_value": "SSI.value",
+}
+column_is_list = {
+    # Artwork
+    "objectWorkType": True,
+    "materials": True,
+    "formalDescriptionTermStylesPeriods": True,
+    
+    # ConceptualTerms_Flat
+    "CFT_values": True,
+    # IconographicTerms_Flat
+    "IFT_values": True,
+    # SubjectTerms_Flat
+    "STF_values": True,
+}
+
 class DatabaseManager:
     def __init__(
         self, 
@@ -177,8 +245,8 @@ class DatabaseManager:
                         materials TEXT[],
                         signatureFullDescription TEXT,
                         creationFullDescription TEXT,
-                        creationEarliestDate TEXT,
-                        creationLatestDate TEXT,
+                        creationEarliestDate INTEGER,
+                        creationLatestDate INTEGER,
                         creatorFullDescription TEXT,
                         physicalAppearanceDescription TEXT,
                         imageType TEXT,
@@ -460,15 +528,10 @@ class DatabaseManager:
                 results = cur.fetchall()
                 return [{"recordID": row[0], "distance": float(row[1])} for row in results]
 
-    def apply_hard_constraints(self, constraints):
-        if not constraints:
-            with self._connect() as conn:
-                with conn.cursor() as cur:
-                    cur.execute("SELECT recordID FROM Artwork")
-                    return [row[0] for row in cur.fetchall()]
-
+    def get_hard_query(self, constraints):
         base_query = """
-            SELECT DISTINCT a.recordID
+            SELECT
+            *
             FROM Artwork a
             JOIN Artist ar ON a.creatorID = ar.creatorID
             LEFT JOIN ConceptualTerms_Flat CFT ON a.recordID = CFT.recordID
@@ -480,149 +543,129 @@ class DatabaseManager:
             LEFT JOIN IconographicInterpretation II ON a.recordID = II.recordID
             LEFT JOIN GeneralSubjectDescription GSD ON a.recordID = GSD.recordID
             LEFT JOIN SpecificSubjectIdentification SSI ON a.recordID = SSI.recordID
+            JOIN Embedding e ON a.recordID = e.recordID
             WHERE 1=1
         """
 
-        where_conditions = []
-        params = []
+        if not constraints:
+            return base_query, []
 
-        for constraint in constraints:
+        def parse_constraint(constraint):
             constraint_type = constraint["type"]
-            key = constraint["selectedColumn"]["key"]
+
+            selected_column = constraint.get("selectedColumn", {})
+            key = selected_column.get("key", None)
+
             is_not = constraint.get("isNot", False)
             exact_match = constraint.get("exactMatch", False)
             case_sensitive = constraint.get("caseSensitive", False)
             keep_null = constraint.get("keepNull", False)
 
-            column_mapping = {
-                # Artwork
-                "recordID": "a.recordID",
-                "workID": "a.workID",
-                "language": "a.language",
-                "title": "a.title",
-                "objectType": "a.objectWorkType",
-                "classification": "a.termClassification",
-                "materials": "a.materials",
-                "inscription": "a.signatureFullDescription",
-                "creationEarliestDate": "a.creationEarliestDate",
-                "creationLatestDate": "a.creationLatestDate",
-                "creator": "a.creatorFullDescription",
-                "physicalAppearance": "a.physicalAppearanceDescription",
-                "imageType": "a.imageType",
-                "imageColor": "a.imageColor",
-                "imageLowResFilename": "a.imageLowResFilename",
-                "imageHighResFilename": "a.imageHighResFilename",
-                "imageCopyright": "a.imageCopyright",
-                "imageStyle": "a.formalDescriptionTermStylesPeriods",
-                "height": "a.height",
-                "width": "a.width",
-                "ratio": "a.ratio",
-                
-                # Artist
-                "creatorID": "ar.creatorID",
-                "creatorFirstName": "ar.creatorFirstName",
-                "creatorLastName": "ar.creatorLastName",
-                "creatorBirthDate": "ar.creatorBirthDate",
-                "creatorDeathDate": "ar.creatorDeathDate",
-                "creatorBirthDeathPlace": "ar.creatorBirthAndDeathDescription",
-                "creatorNationality": "ar.creatorNationality",
+            column = ""
+            isColumnAList = False
 
-                # ConceptualTerms_Flat
-                "CFT_values": "CFT.values",
+            if constraint_type not in ["AND", "OR", "GROUP"]:
+                if key not in column_mapping:
+                    return "", []
+                column = column_mapping[key]
+                isColumnAList = column_is_list.get(key, False)
 
-                # IconographicTerms_Flat
-                "IFT_values": "IFT.values",
+            not_prefix = "NOT " if is_not else ""
+            not_prefix = f" OR {column} IS NULL" if keep_null else ""
+            suffix = " "
 
-                # SubjectTerms_Flat
-                "STF_values": "STF.values",
+            if constraint_type == "AND":
+                return "AND" + suffix, []
+            elif constraint_type == "OR":
+                return "OR" + suffix, []
+            elif constraint_type == "GROUP":
+                subquery = ""
+                subparams = []
 
-                # SubjectTerms_Tree
-                "STT_tree": "STT.tree",
+                for child in constraint["children"]:
+                    subquery_temp, subparams_temp = parse_constraint(child)
+                    subquery += subquery_temp
+                    subparams.extend(subparams_temp)
 
-                # IconographicInterpretation
-                "II_value": "II.value",
-
-                # GeneralSubjectDescription
-                "GSD_value": "GSD.value",
-
-                # SpecificSubjectIdentification
-                "SSI_value": "SSI.value",
-            }
-
-            if key not in column_mapping:
-                continue
-
-            column = column_mapping[key]
-
-            if constraint_type == "BETWEEN":
+                return not_prefix + "(" + subquery + ")" + suffix, subparams
+            elif constraint_type == "EQUAL":
+                """
+                ==> "column = %s", [value] if exact_match and case_sensitive
+                ==> "LOWER(column) = LOWER(%s)", [value] if exact_match and not case_sensitive
+                ==> "LIKE", ["%value%"] if not exact_match and case_sensitive
+                ==> "LOWER(column) LIKE LOWER(%s)", ["%value%"] if not exact_match and not case_sensitive
+                """
+                inp_equalTo = constraint.get("equalTo", None)
+                if exact_match:
+                    if case_sensitive:
+                        return not_prefix + f"{column} = %s" + suffix, [inp_equalTo]
+                    else:
+                        return not_prefix + f"LOWER({column}) = LOWER(%s)" + suffix, [inp_equalTo]
+                else:
+                    if case_sensitive:
+                        return not_prefix + f"{column} LIKE %s" + suffix, [f"%{inp_equalTo}%"]
+                    else:
+                        return not_prefix + f"LOWER({column}) LIKE LOWER(%s)" + suffix, [f"%{inp_equalTo}%"]
+            elif constraint_type == "BETWEEN":
+                """
+                ==> "column BETWEEN %s AND %s", [value1, value2] if case_sensitive
+                ==> "LOWER(column) BETWEEN LOWER(%s) AND LOWER(%s)", [value1, value2] if not case_sensitive (and column is text)
+                """
                 inp_from = constraint.get("from", -1)
                 inp_to = constraint.get("to", -1)
-                condition = f"{column} BETWEEN %s AND %s"
-                params.extend([inp_from, inp_to])
-
-            elif constraint_type == "EQUAL":
-                inp_equal_to = constraint.get("equalTo", None)
-                if inp_equal_to is None:
-                    continue
-
-                if exact_match:
-                    if case_sensitive:
-                        condition = f"{column} = %s"
-                    else:
-                        condition = f"LOWER({column}) = LOWER(%s)"
-                    params.append(inp_equal_to)
+                if isColumnAList:
+                    return suffix
                 else:
                     if case_sensitive:
-                        condition = f"{column} LIKE %s"
+                        q, params = f"{column} BETWEEN %s AND %s", [inp_from, inp_to]
                     else:
-                        condition = f"LOWER({column}) LIKE LOWER(%s)"
-                    params.append(f"%{inp_equal_to}%")
-
+                        q, params = f"LOWER({column}) BETWEEN LOWER(%s) AND LOWER(%s)", [inp_from, inp_to]
+                    if is_not:
+                        q = f"NOT ({q}) "
+                    return q + suffix, params
             elif constraint_type == "INCLUDES":
+                """
+                Includes uses the exact_match differently, if exact match is set to true, it means that every query term
+                must be present in the selected column.
+                If exact match is set to false, it means that at least one query term must be present in the selected column.
+
+                If the selected column is a list, we want && operator (at least one term must be present) and the "@>" (all terms must be present) operator:
+                    ==> "column @> ARRAY[%s]" AND "column @> ARRAY[%s]", ["value1", "value2", ...] if exact_match 
+                    ==> "column && ARRAY[%s]" OR "column && ARRAY[%s]", ["value1", "value2", ...] if not exact_match
+                    # TODO: Add case sensitive and not case sensitive versions (maybe one table for lower and one for upper ? Faster queries ?)
+                If the selected column is not a list:
+                    ==> "column LIKE %s" AND "column LIKE %s", ["%value1%", "%value2%"], ... if exact_match and case_sensitive
+                    ==> "LOWER(column) LIKE LOWER(%s)" AND "LOWER(column) LIKE LOWER(%s)", ["%value1%", "%value2%"], ... if exact_match and not case_sensitive
+                    ==> "column LIKE %s" OR "column LIKE %s", ["%value1%", "%value2%"], ... if not exact_match and case_sensitive
+                    ==> "LOWER(column) LIKE LOWER(%s)" OR "LOWER(column) LIKE LOWER(%s)", ["%value1%", "%value2%"], ... if not exact_match and not case_sensitive
+                """
                 inp_values = constraint.get("values", [])
-                if not inp_values:
-                    continue
-
-                if exact_match:
-                    # Tous les termes doivent être présents
-                    conditions = []
-                    for value in inp_values:
-                        if case_sensitive:
-                            conditions.append(f"{column} = %s")
-                        else:
-                            conditions.append(f"LOWER({column}) = LOWER(%s)")
-                        params.append(value)
-                    condition = " AND ".join(conditions)
+                if isColumnAList:
+                    if exact_match:
+                        return not_prefix + f"{column} @> ARRAY[%s]" + suffix, [inp_values]
+                    else:
+                        return not_prefix + f"{column} && ARRAY[%s]" + suffix, [inp_values]
                 else:
-                    # Au moins un terme doit être présent
-                    conditions = []
+                    per_term_queries = []
                     for value in inp_values:
                         if case_sensitive:
-                            conditions.append(f"{column} = %s")
+                            per_term_queries.append(not_prefix + f"{column} LIKE %s")
                         else:
-                            conditions.append(f"LOWER({column}) = LOWER(%s)")
-                        params.append(value)
-                    condition = " OR ".join(conditions)
+                            per_term_queries.append(not_prefix + f"LOWER({column}) LIKE LOWER(%s)")
+                    return not_prefix + " AND ".join(per_term_queries) + suffix, [f"%{value}%" for value in inp_values]
+                
+            # If the constraint is not supported, return an empty string and an empty list
+            # We should maybe raise an error instead and log it #TODO
+            return "", []
 
-            else:
-                continue
+        conditions = ""
+        params = []
+        for constraint in constraints:
+            new_condition, new_params = parse_constraint(constraint)
+            conditions += new_condition
+            params.extend(new_params)
 
-            if is_not:
-                condition = f"NOT ({condition})"
-
-            if keep_null:
-                condition = f"({condition} OR {column} IS NULL)"
-
-            where_conditions.append(condition)
-
-        if where_conditions:
-            base_query += " AND " + " AND ".join(where_conditions)
-
-        with self._connect() as conn:
-            with conn.cursor() as cur:
-                cur.execute(base_query, params)
-                recordIDs = [row[0] for row in cur.fetchall()]
-                return recordIDs
+        return base_query + " AND " + conditions, params
 
     def get_embedding_from_recordID(self, recordID: int):
         with self._connect() as conn:
@@ -635,7 +678,8 @@ class DatabaseManager:
 
     def get_nearest_artworks_to_embedding_from_subset(
         self,
-        recordIDs,
+        base_query,
+        params,
         query_embedding,
         page,
         page_size,
@@ -643,20 +687,17 @@ class DatabaseManager:
         offset = (page - 1) * page_size
         with self._connect() as conn:
             with conn.cursor() as cur:
-                # To allow for IN clause
-                recordIDs_tuple = tuple(recordIDs)
-                if len(recordIDs_tuple) == 1:
-                    recordIDs_tuple = (recordIDs_tuple[0],)
-                
+                params_full = []
+                params_full.extend(params)
+                params_full.append(query_embedding)
+                params_full.append(page_size)
+                params_full.append(offset)
                 cur.execute(
-                    """
-                    SELECT recordID, embedding_vector <#> %s as distance 
-                    FROM Embedding 
-                    WHERE recordID IN %s
-                    ORDER BY distance
+                    base_query + """
+                    ORDER BY e.embedding_vector <#> %s
                     LIMIT %s OFFSET %s;
                     """,
-                    (query_embedding, recordIDs_tuple, page_size, offset)
+                    tuple(params_full)
                 )
                 results = cur.fetchall()
                 recordIDs = [row[0] for row in results]
@@ -669,11 +710,8 @@ class DatabaseManager:
         page: int,
         page_size: int,
     ):
-        # Apply hard constraints
-        recordIDs = self.apply_hard_constraints(hard_constraints)
-
-        if len(recordIDs)==0:
-            return []
+        # Get the base query and the params
+        base_query, params = self.get_hard_query(hard_constraints)
 
         # Soft constraints are a list of text, colors, keywords, ... and recordIDs
         # that will form a query embedding using the model.
@@ -684,9 +722,10 @@ class DatabaseManager:
         if query_embedding==None:
             return []
         
-        # Get the page_size nearest artworks to the query embedding with the offset page that are in recordIDs
+        # Get the page_size nearest artworks to the query embedding with the offset page
         nearest_artworks = self.get_nearest_artworks_to_embedding_from_subset(
-            recordIDs,
+            base_query,
+            params,
             query_embedding,
             page,
             page_size,
@@ -697,19 +736,23 @@ class DatabaseManager:
         return artworks
 
     # Populate the tables
-    def populate(self,):
-        print("Populating artist table")
-        self.populate_artist_table(self.paths["artists"])
-        print("Done populating artist table")
-        print("Populating artwork table")
-        self.populate_artwork_table(self.paths["artpieces"])
-        print("Done populating artwork table")
-        print("Populating subject matter table")
-        self.populate_subject_matter_table(self.paths["subjectmatter"])
-        print("Done populating subject matter table")
-        print("Populating embeddings table")
-        self.populate_embeddings_table(self.paths["embeddings"])
-        print("Done populating embeddings table")
+    def populate(self, artists=True, artworks=True, embeddings=True, subjectmatter=True):
+        if artists:
+            print("Populating artist table")
+            self.populate_artist_table(self.paths["artists"])
+            print("Done populating artist table")
+        if artworks:
+            print("Populating artwork table")
+            self.populate_artwork_table(self.paths["artpieces"])
+            print("Done populating artwork table")
+        if subjectmatter:
+            print("Populating subject matter table")
+            self.populate_subject_matter_table(self.paths["subjectmatter"])
+            print("Done populating subject matter table")
+        if embeddings:
+            print("Populating embeddings table")
+            self.populate_embeddings_table(self.paths["embeddings"])
+            print("Done populating embeddings table")
 
     def populate_embeddings_table(self, embeddingsData):
         """

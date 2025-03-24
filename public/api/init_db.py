@@ -5,5 +5,7 @@ from database.db import DatabaseManager
 DB_MANAGER = DatabaseManager(get_db_config(), get_paths())
 
 if __name__ == "__main__":
-    DB_MANAGER.reset(full_reset=True)
-    DB_MANAGER.populate()
+    yesno = input("Are you sure you want to reset the database? (y/n): ")
+    if yesno == "y":
+        DB_MANAGER.reset(full_reset=True)
+        DB_MANAGER.populate()
