@@ -191,7 +191,7 @@ const renderSoftQueryPart = (
 ) => {
     let imageURL;
     if (queryPart.imageInformations) {
-        imageURL = "http://127.0.0.1:5000/images/" + queryPart.imageInformations["recordID"];
+        imageURL = "http://127.0.0.1:5000/api/artwork/" + queryPart.imageInformations["recordID"] + "/image";
     }
 
     return (

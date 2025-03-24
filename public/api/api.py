@@ -223,7 +223,8 @@ def query_artworks():
             ],
             "soft_constraints": [],
             "page": 1,
-            "page_size": 10
+            "page_size": 10,
+            "model_name": "february_finetuned"
         }
     """
     try:
@@ -247,6 +248,32 @@ def query_artworks():
             success=False,
             python_error=e,
             user_error="An error occurred while querying artworks",
+            error_code=500
+        )
+
+@app.route('/api/get_columns', methods=['GET'])
+def get_columns():
+    try:
+        columns = DB_MANAGER.get_columns()
+        return formatReturn(success=True, data=columns)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="An error occurred while fetching columns",
+            error_code=500
+        )
+
+@app.route('/api/get_models', methods=['GET'])
+def get_models():
+    try:
+        models = DB_MANAGER.get_models()
+        return formatReturn(success=True, data=models)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="An error occurred while fetching models",
             error_code=500
         )
 

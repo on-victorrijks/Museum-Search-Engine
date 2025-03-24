@@ -81,6 +81,9 @@ column_mapping = {
     # SubjectTerms_Tree
     "STT_tree": "STT.tree",
 
+    # IconographicTerms_Tree
+    "IFT_tree": "IFT.tree",
+
     # IconographicInterpretation
     "II_value": "II.value",
 
@@ -103,6 +106,111 @@ column_is_list = {
     # SubjectTerms_Flat
     "STF_values": True,
 }
+blockType_per_column = {
+    # Artwork
+    "recordID": ["EQUAL", "BETWEEN", "INCLUDES"],
+    "workID": ["EQUAL", "INCLUDES"],
+    "language": ["EQUAL", "INCLUDES"],
+    "title": ["EQUAL", "INCLUDES"],
+    "objectType": ["EQUAL", "INCLUDES"],
+    "classification": ["EQUAL", "INCLUDES"],
+    "materials": ["EQUAL", "INCLUDES"],
+    "inscription": ["EQUAL", "INCLUDES"],
+    "creationEarliestDate": ["EQUAL", "BETWEEN"],
+    "creationLatestDate": ["EQUAL", "BETWEEN"],
+    "creator": ["EQUAL", "INCLUDES"],
+    "physicalAppearance": ["EQUAL", "INCLUDES"],
+    "imageType": ["EQUAL", "INCLUDES"],
+    "imageColor": ["EQUAL", "INCLUDES"],
+    "imageCopyright": ["EQUAL", "INCLUDES"],
+    "imageStyle": ["EQUAL", "INCLUDES"],
+    "height": ["EQUAL", "BETWEEN"],
+    "width": ["EQUAL", "BETWEEN"],
+    "ratio": ["EQUAL", "BETWEEN"],
+    
+    # Artist
+    "creatorID": ["EQUAL", "INCLUDES"],
+    "creatorFirstName": ["EQUAL", "INCLUDES"],
+    "creatorLastName": ["EQUAL", "INCLUDES"],
+    "creatorBirthDate": ["EQUAL", "BETWEEN"],
+    "creatorDeathDate": ["EQUAL", "BETWEEN"],
+    "creatorBirthDeathPlace": ["EQUAL", "INCLUDES"],
+    "creatorNationality": ["EQUAL", "INCLUDES"],
+
+    # ConceptualTerms_Flat
+    "CFT_values": ["EQUAL", "INCLUDES"],
+
+    # IconographicTerms_Flat
+    "IFT_values": ["EQUAL", "INCLUDES"],
+
+    # SubjectTerms_Flat
+    "STF_values": ["EQUAL", "INCLUDES"],
+
+    # IconographicInterpretation
+    "II_value": ["EQUAL", "INCLUDES"],
+
+    # GeneralSubjectDescription
+    "GSD_value": ["EQUAL", "INCLUDES"],
+
+    # SpecificSubjectIdentification
+    "SSI_value": ["EQUAL", "INCLUDES"],
+}
+userFriendlyName_per_column = {
+    # Artwork
+    "recordID": "recordID",
+    "workID": "workID",
+    "language": "Langue",
+    "title": "Titre",
+    "objectType": "Type d'objet",
+    "classification": "Classification",
+    "materials": "Matériaux",
+    "inscription": "Inscription",
+    "creationEarliestDate": "Date de création (plus ancienne)",
+    "creationLatestDate": "Date de création (plus récente)",
+    "creator": "Créateur",
+    "physicalAppearance": "Apparence physique",
+    "imageType": "Type d'image",
+    "imageColor": "Couleur de l'image",
+    "imageCopyright": "Copyright de l'image",
+    "imageStyle": "Style de l'image",
+    "height": "Hauteur",
+    "width": "Largeur",
+    "ratio": "Ratio (hauteur/largeur)",
+    
+    # Artist
+    "creatorID": "ID du créateur",
+    "creatorFirstName": "Prénom du créateur",
+    "creatorLastName": "Nom du créateur",
+    "creatorBirthDate": "Date de naissance du créateur",
+    "creatorDeathDate": "Date de décès du créateur",
+    "creatorBirthDeathPlace": "Lieu de naissance et de décès du créateur",
+    "creatorNationality": "Nationalité du créateur",
+
+    # ConceptualTerms_Flat
+    "CFT_values": "Concepts",
+
+    # IconographicTerms_Flat
+    "IFT_values": "Termes iconographiques",
+
+    # SubjectTerms_Flat
+    "STF_values": "Sujets",
+
+    # IconographicInterpretation
+    "II_value": "Interprétation iconographique",
+
+    # GeneralSubjectDescription
+    "GSD_value": "Description générale du sujet",
+
+    # SpecificSubjectIdentification
+    "SSI_value": "Identification spécifique du sujet",
+}
+columnsData = []
+for column, block_types in blockType_per_column.items():
+    columnsData.append({
+        "key": column,
+        "compatibleBlockTypes": block_types,
+        "userFriendlyName": userFriendlyName_per_column[column]
+    })
 
 class DatabaseManager:
     def __init__(
@@ -626,6 +734,8 @@ class DatabaseManager:
                 ==> "LOWER(column) LIKE LOWER(%s)", ["%value%"] if not exact_match and not case_sensitive
                 """
                 inp_equalTo = constraint.get("equalTo", None)
+                if inp_equalTo is None:
+                    return "", []
                 if exact_match:
                     if case_sensitive:
                         return not_prefix + f"{column} = %s" + suffix, [inp_equalTo]
@@ -641,8 +751,10 @@ class DatabaseManager:
                 ==> "column BETWEEN %s AND %s", [value1, value2] if case_sensitive
                 ==> "LOWER(column) BETWEEN LOWER(%s) AND LOWER(%s)", [value1, value2] if not case_sensitive (and column is text)
                 """
-                inp_from = constraint.get("from", -1)
-                inp_to = constraint.get("to", -1)
+                inp_from = constraint.get("from", None)
+                inp_to = constraint.get("to", None)
+                if inp_from is None or inp_to is None:
+                    return "", []
                 if isColumnAList:
                     return suffix
                 else:
@@ -669,12 +781,14 @@ class DatabaseManager:
                     ==> "column LIKE %s" OR "column LIKE %s", ["%value1%", "%value2%"], ... if not exact_match and case_sensitive
                     ==> "LOWER(column) LIKE LOWER(%s)" OR "LOWER(column) LIKE LOWER(%s)", ["%value1%", "%value2%"], ... if not exact_match and not case_sensitive
                 """
-                inp_values = constraint.get("values", [])
+                inp_values = constraint.get("values", None)
+                if inp_values is None:
+                    return "", []
                 if isColumnAList:
                     if exact_match:
-                        return not_prefix + f"{column} @> ARRAY[%s]" + suffix, [inp_values]
+                        return not_prefix + f"{column} @> %s" + suffix, [inp_values]
                     else:
-                        return not_prefix + f"{column} && ARRAY[%s]" + suffix, [inp_values]
+                        return not_prefix + f"{column} && %s" + suffix, [inp_values]
                 else:
                     per_term_queries = []
                     for value in inp_values:
@@ -694,8 +808,11 @@ class DatabaseManager:
             new_condition, new_params = parse_constraint(constraint)
             conditions += new_condition
             params.extend(new_params)
-
-        return base_query + " AND " + conditions, params
+        
+        if len(conditions) > 0:
+            return base_query + " AND " + conditions, params
+        else:
+            return base_query, []
 
     def get_embedding_from_recordID(self, recordID: int, model_name: str):
         with self._connect() as conn:
@@ -869,7 +986,17 @@ class DatabaseManager:
         embeddings /= np.linalg.norm(embeddings)
 
         return embeddings
-        
+
+    def get_models(self):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT model_name FROM Model")
+                return [row[0] for row in cur.fetchall()]
+
+    def get_columns(self):
+        # Return the columns that the hard constraints can be applied to
+        return columnsData
+
     # Populate the tables
     def populate(self, artists=True, artworks=True, embeddings=True, subjectmatter=True):
         if artists:

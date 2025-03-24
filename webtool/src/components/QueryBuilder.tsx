@@ -537,7 +537,7 @@ const getColumns = async (
     setColumnsLoaded: (loaded: boolean) => void
 ) => {
     try {
-        const response = await axios.get("http://127.0.0.1:5000/api/search/v2/get_columns", {
+        const response = await axios.get("http://127.0.0.1:5000/api/get_columns", {
             headers: {
             'Content-Type': 'application/json',
             },
@@ -546,9 +546,9 @@ const getColumns = async (
         // Parse response.data as JSON
         const data: ApiResponse = response.data;
         const success = data["success"];
-        if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
-        const results = data["message"];
-        setAvailableColumns(results ? results["columns"] : []);
+        if (!success) throw new Error(data["error_message"] ? data["error_message"].toString() : "An error occurred");
+        const results = data["data"];
+        setAvailableColumns(results ? results : []);
     } catch (error) {
         console.error("Error making POST request:", error);
         return { success: false, message: "An error occurred" };
@@ -578,8 +578,8 @@ const queryAPIForAutocomplete = async (
         // Parse response.data as JSON
         const data: ApiResponse = response.data;
         const success = data["success"];
-        if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");        
-        setAutocomplete(data["message"] ? data["message"]["results"] : []);
+        //if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");        
+        //setAutocomplete(data["message"] ? data["message"]["results"] : []);
     } catch (error) {
         console.error("Error making POST request:", error);
         return { success: false, message: "An error occurred" };

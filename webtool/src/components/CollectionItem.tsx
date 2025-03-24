@@ -54,7 +54,7 @@ const CollectionItem: React.FC<{
                     data.recordIDs.slice(0, maxImages).map((recordID) => (
                         <img 
                             key={recordID}
-                            src={"http://127.0.0.1:5000/images/" + recordID}
+                            src={"http://127.0.0.1:5000/api/artwork/" + recordID + "/image"}
                             alt=""
                         />
                     ))

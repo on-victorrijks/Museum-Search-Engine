@@ -147,20 +147,20 @@ const SearchResults: React.FC<{
 
 
     const renderResult = (result: ArtPieceData, index: number) => {
-        const recordID = result.recordID;
+        const recordID = result.recordid;
         let similarity = result.similarity || 0;
         // Round similarity to 3 decimals
         similarity = Math.round(similarity * 1000) / 1000;
 
         let title = result.title;
-        let author = result.author;
-        let iconography = result["iconography"];
-        let creationDate = (result.earliestDate || "?") + " - " + (result.latestDate || "?");
+        let author = result.creatorfirstname + " " + result.creatorlastname;
+        let iconography = result.stf_values;
+        let creationDate = (result.creationearliestdate || "?") + " - " + (result.creationlatestdate || "?");
 
         if (title=="") title = "Titre inconnu";
         if (author=="") author = "Auteur inconnu";
 
-        const imageURL = "http://127.0.0.1:5000/images/" + recordID;
+        const imageURL = "http://127.0.0.1:5000/api/artwork/" + recordID + "/image";
 
         const isAddedToACollection = getIsAddedToACollection(recordID);
         const isLiked = getLikeStatus(recordID);

@@ -21,7 +21,7 @@ const RenderImage : React.FC<{
     openArtPieceProfile,
     deleteFromCollection,
 }) => {
-    const imageURL = "http://127.0.0.1:5000/images/" + recordID;
+    const imageURL = "http://127.0.0.1:5000/api/artwork/" + recordID + "/image";
     return (
         <div 
             key={index} 

@@ -1,6 +1,8 @@
 interface ApiResponse {
     success: boolean;
-    message?: Record<string, any>;
+    error_code?: number;
+    error_message?: string;
+    data?: any;
 }
   
 export default ApiResponse;

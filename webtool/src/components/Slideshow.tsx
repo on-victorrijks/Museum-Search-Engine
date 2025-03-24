@@ -114,7 +114,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
 
       <div className={`slideshow-image-container ${fadeOut ? 'fade-out' : 'fade-in'}`}>
         <img
-          src={"http://127.0.0.1:5000/images/" + collectionData.recordIDs[currentIndex]}
+          src={"http://127.0.0.1:5000/api/artwork/" + collectionData.recordIDs[currentIndex] + "/image"}
           alt={`Slide ${currentIndex + 1}`}
         />
       </div>

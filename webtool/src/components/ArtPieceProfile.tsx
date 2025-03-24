@@ -69,7 +69,7 @@ const ArtPieceHeader: React.FC<{
 const ArtPieceImage: React.FC<{
     data: ArtPieceData;
 }> = ({ data }) => {
-    const imageURL = "http://127.0.0.1:5000/images/" + data.recordID;
+    const imageURL = "http://127.0.0.1:5000/api/artwork/" + data.recordID + "/image";
     return (
         <div className="ap-profile-header-image">
             <img src={imageURL} />

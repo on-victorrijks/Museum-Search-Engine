@@ -96,13 +96,13 @@ const App: React.FC = () => {
     const queryServer = async (tabIndex: number, updatedTabs: TabData[], query: Query) => {
         // Send the query
         const body = {
-          "hard": query.parts.filter((part: QueryPart) => !part.isSoft),
-          "soft": query.parts.filter((part: QueryPart) => part.isSoft),
-          "version": "power",
-          "page": 0,
+          "hard_constraints": query.parts.filter((part: QueryPart) => !part.isSoft),
+          "soft_constraints": query.parts.filter((part: QueryPart) => part.isSoft),
+          "model_name": "february_finetuned",
+          "page": 1,
           "page_size": 50
         };
-        body["soft"] = body["soft"].map((part: QueryPart) => {
+        body["soft_constraints"] = body["soft_constraints"].map((part: QueryPart) => {
           return {
             ...part,
             imageInformations: undefined
@@ -110,7 +110,7 @@ const App: React.FC = () => {
         });
 
         try {
-          const response = await axios.post("http://127.0.0.1:5000/api/search/v2/query", body, {
+          const response = await axios.post("http://127.0.0.1:5000/api/query", body, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -119,8 +119,11 @@ const App: React.FC = () => {
           // Parse response.data as JSON
           const data: ApiResponse = response.data;
           const success = data["success"];
-          if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
-          const results = data["message"];
+          if (!success) {
+            handleError("App.queryServer()", data["error_message"] ? data["error_message"].toString() : "An error occurred");
+            return;
+          }
+          const results = data["data"];
           updatedTabs[tabIndex].content.results = results as ArtPieceData[];
           setTabs(updatedTabs);
         } catch (error) {
@@ -269,7 +272,7 @@ const App: React.FC = () => {
       }
 
       const likeRecord = (imageInformations: ArtPieceData) => {
-        const recordID = imageInformations["recordID"];
+        const recordID = imageInformations.recordid;
         // Add a QueryPart to the current query
         if(selectedTabIdentifier=="N/A") return;
         const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
@@ -337,7 +340,7 @@ const App: React.FC = () => {
       }
 
       const dislikeRecord = (imageInformations: ArtPieceData) => {
-        const recordID = imageInformations["recordID"];
+        const recordID = imageInformations.recordid;
         // Add a QueryPart to the current query
         if(selectedTabIdentifier=="N/A") return;
         const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
@@ -537,7 +540,7 @@ const App: React.FC = () => {
           - type==blockType.INCLUDES
           - exactMatch==true
           - isNot==false
-          - selectecColumn.key=="iconography"
+          - selectecColumn.key=="stf_values"
         */
         const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
         if (!tab) return;
@@ -553,7 +556,7 @@ const App: React.FC = () => {
             queryPartAsHard.exactMatch === true &&
             queryPartAsHard.isNot === false &&
             queryPartAsHard.selectedColumn &&
-            queryPartAsHard.selectedColumn.key === "iconography"
+            queryPartAsHard.selectedColumn.key === "stf_values"
           );
         });
 

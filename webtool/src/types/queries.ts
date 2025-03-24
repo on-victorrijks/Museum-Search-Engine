@@ -44,8 +44,9 @@ enum BlockType {
     GROUP = 'GROUP',
 }
 //// The options available for a selection
-interface SelectionOption extends Record<string, string> {
+interface SelectionOption {
     key: string;
+    compatibleBlockTypes: BlockType[];
     userFriendlyName: string;
 }
 //// The type of hard queries
