@@ -11,7 +11,7 @@ class TestDatabaseManager(unittest.TestCase):
         cls.paths = get_paths_test()
         assert cls.config["name"] == "test_db"
 
-        cls.db = DatabaseManager(cls.config, cls.paths)
+        cls.db = DatabaseManager(cls.config, cls.paths, {})
 
         cls.base_query = """
             SELECT
@@ -87,11 +87,6 @@ class TestDatabaseManager(unittest.TestCase):
         expected_params = ["%un%", 1500, 2000, ["femme", "homme"]]
 
         generated_query, generated_params = self.db.get_hard_query(constraints)
-
-        print(expected_query)
-        print("")
-        print(generated_query)
-
         # Verify the params
         self.assertEqual(generated_params, expected_params)
         

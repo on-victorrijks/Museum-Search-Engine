@@ -20,8 +20,12 @@ def get_paths():
                 "name": "february_finetuned",
                 "path_embeddings": PARENT + os.getenv("february_finetuned_path_embeddings"),
                 "path_index_to_recordID": PARENT + os.getenv("february_finetuned_path_index_to_recordID"),
-                "text_dim": 768,
+                "path_keywords": PARENT + os.getenv("february_finetuned_path_keywords_embeddings"),
+                "path_term_to_index": PARENT + os.getenv("february_finetuned_path_keywords_term_to_index"),
+                "text_dim": 768,    
                 "img_dim": 768,
+                "base_name": os.getenv("february_finetuned_model_name"),
+                "weights_path": PARENT + os.getenv("february_finetuned_weights_path"),
                 "description": "February finetuned embeddings",
                 "metrics": [
                     {"name": "Acc@1", "value": 0.7},

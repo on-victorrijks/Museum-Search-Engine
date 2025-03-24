@@ -5,7 +5,9 @@ from flask_limiter.util import get_remote_address
 import os
 from database.db import DatabaseManager
 from settings import get_db_config, get_paths, is_development
+from engine.model import Model
 import math
+import torch
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes in development
@@ -38,8 +40,18 @@ def formatReturn(
     response.headers['Content-Type'] = 'application/json; charset=utf-8'
     return response
 
+# Initialize models
+MODELS = {}
+for embedding in get_paths()["embeddings"]:
+    MODELS[embedding["name"]] = Model(
+        embedding["name"],
+        embedding["base_name"],
+        embedding["weights_path"],
+        device="cuda" if torch.cuda.is_available() else "cpu"
+    )
+
 # Initialize database manager
-DB_MANAGER = DatabaseManager(get_db_config(), get_paths())
+DB_MANAGER = DatabaseManager(get_db_config(), get_paths(), MODELS)
 
 MIN_PAGE_SIZE = 1
 MAX_PAGE_SIZE = 100
@@ -128,15 +140,15 @@ def get_artwork(record_id):
 @limiter.limit("120 per minute")  # Rate limit for image serving
 def get_artwork_image(record_id):
     try:
-        artwork = DB_MANAGER.get_artwork_by_recordID(record_id)
-        if artwork is None:
+        image_path = DB_MANAGER.get_image_path_by_recordID(record_id)
+        if image_path is None:
             return formatReturn(
                 success=False,
                 error_message="Artwork not found",
                 error_code=404
             )
             
-        image_path = get_paths()["images"] + artwork["imagelowresfilename"]
+        image_path = get_paths()["images"] + image_path
         if not os.path.exists(image_path):
             return formatReturn(
                 success=False,
@@ -218,6 +230,7 @@ def query_artworks():
         data = request.json
         hard_constraints = data.get('hard_constraints', [])
         soft_constraints = data.get('soft_constraints', [])
+        model_name = data.get('model_name', "february_finetuned")
         page = data.get('page', 1)
         page_size = data.get('page_size', 10)
 
@@ -225,7 +238,8 @@ def query_artworks():
             hard_constraints,
             soft_constraints,
             page,
-            page_size
+            page_size,
+            model_name
         )
         return formatReturn(success=True, data=results)
     except Exception as e:
@@ -239,4 +253,4 @@ def query_artworks():
 
 if __name__ == '__main__':
     # Development server
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)

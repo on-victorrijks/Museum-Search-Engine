@@ -20,6 +20,13 @@ def betterList(x):
         return []
     return x.split('|')
 
+def convert_embedding_to_numpy(embedding: str):
+    # pgvector stores the embedding as a string
+    embedding_string = embedding.strip('[]')
+    embedding_list = [float(x.strip()) for x in embedding_string.split(',')]
+    embedding_array = np.array(embedding_list)
+    return embedding_array
+
 subject_matter_to_table_name = {
     "subjectMatterSubjectTerms": "SubjectTerms",
     "subjectMatterIconographicTerms": "IconographicTerms",
@@ -102,6 +109,7 @@ class DatabaseManager:
         self, 
         config,
         paths,
+        models,
     ):
         self.db_host = config["host"]
         self.db_port = config["port"]
@@ -111,7 +119,8 @@ class DatabaseManager:
         self.enable_pgvector()
         self.initialize_tables()
         self.paths = paths
-
+        self.models = models
+    
     def _connect(self):
         return psycopg2.connect(
             host=self.db_host,
@@ -137,6 +146,19 @@ class DatabaseManager:
         self._create_structured_subject_matter_tables("SubjectTerms")
         self._create_structured_subject_matter_tables("IconographicTerms")
         self._create_structured_subject_matter_tables("ConceptualTerms")
+
+        self._create_keywords_table()
+
+    def _create_keywords_table(self):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""CREATE TABLE IF NOT EXISTS Keywords (
+                    id SERIAL PRIMARY KEY, 
+                    keyword TEXT, 
+                    modelID INTEGER REFERENCES Model(modelID),
+                    embedding VECTOR
+                )""")
+                conn.commit()
 
     def rebuild_subject_matter_tables(self):
         with self._connect() as conn:
@@ -268,10 +290,11 @@ class DatabaseManager:
                 cur.execute("""
                     CREATE TABLE IF NOT EXISTS Model (
                         modelID SERIAL PRIMARY KEY,
-                        model_name TEXT,
+                        model_name TEXT UNIQUE,
                         text_dim INTEGER,
                         img_dim INTEGER,
-                        description TEXT
+                        description TEXT,
+                        base_name TEXT
                     )
                 """)
                 conn.commit()
@@ -406,8 +429,6 @@ class DatabaseManager:
                         Artwork.physicalAppearanceDescription,
                         Artwork.imageType,
                         Artwork.imageColor,
-                        Artwork.imageLowResFilename,
-                        Artwork.imageHighResFilename,
                         Artwork.imageCopyright,
                         Artwork.formalDescriptionTermStylesPeriods,
                         Artwork.height,
@@ -451,8 +472,17 @@ class DatabaseManager:
                 result = cur.fetchone()
                 if result:
                     columns = [desc[0] for desc in cur.description]
-                    return dict(zip(columns, result))
+                    results = dict(zip(columns, result))
+                    results["image_url"] = f"http://127.0.0.1:5000/api/artwork/{recordID}/image"
+                    return results
                 return None
+
+    def get_image_path_by_recordID(self, recordID: int):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT imageLowResFilename FROM Artwork WHERE recordID = %s", (recordID,))
+                result = cur.fetchone()
+                return result[0] if result else None
 
     def get_artist_by_creatorID(self, creatorID: int):
         with self._connect() as conn:
@@ -667,13 +697,19 @@ class DatabaseManager:
 
         return base_query + " AND " + conditions, params
 
-    def get_embedding_from_recordID(self, recordID: int):
+    def get_embedding_from_recordID(self, recordID: int, model_name: str):
         with self._connect() as conn:
             with conn.cursor() as cur:
-                cur.execute("SELECT embedding_vector FROM Embedding WHERE recordID = %s", (recordID,))
+                cur.execute("""
+                    SELECT embedding_vector
+                    FROM Embedding e
+                    JOIN Model m ON e.modelID = m.modelID
+                    WHERE e.recordID = %s AND m.model_name = %s
+                    """,
+                    (recordID, model_name))
                 result = cur.fetchone()
                 if result:
-                    return result[0]
+                    return convert_embedding_to_numpy(result[0])
                 return None
 
     def get_nearest_artworks_to_embedding_from_subset(
@@ -687,21 +723,39 @@ class DatabaseManager:
         offset = (page - 1) * page_size
         with self._connect() as conn:
             with conn.cursor() as cur:
-                params_full = []
-                params_full.extend(params)
-                params_full.append(query_embedding)
-                params_full.append(page_size)
-                params_full.append(offset)
-                cur.execute(
-                    base_query + """
-                    ORDER BY e.embedding_vector <#> %s
-                    LIMIT %s OFFSET %s;
-                    """,
-                    tuple(params_full)
-                )
-                results = cur.fetchall()
-                recordIDs = [row[0] for row in results]
-                return recordIDs
+
+                if query_embedding is None:
+                    # Not soft constraints, we just get the artworks with the hard constraints
+                    params_full = []
+                    params_full.extend(params)
+                    params_full.append(page_size)
+                    params_full.append(offset)
+                    cur.execute(
+                        base_query + """
+                        LIMIT %s OFFSET %s;
+                        """,
+                        tuple(params_full)
+                    )
+                    results = cur.fetchall()
+                    recordIDs = [row[0] for row in results]
+                    return recordIDs
+                else:
+                    # Soft constraints, we get the artworks ordered by the query embedding
+                    params_full = []
+                    params_full.extend(params)
+                    params_full.append(query_embedding)
+                    params_full.append(page_size)
+                    params_full.append(offset)
+                    cur.execute(
+                        base_query + """
+                        ORDER BY e.embedding_vector <#> %s
+                        LIMIT %s OFFSET %s;
+                        """,
+                        tuple(params_full)
+                    )
+                    results = cur.fetchall()
+                    recordIDs = [row[0] for row in results]
+                    return recordIDs
 
     def query(
         self,
@@ -709,18 +763,14 @@ class DatabaseManager:
         soft_constraints,
         page: int,
         page_size: int,
+        model_name: str,
     ):
         # Get the base query and the params
         base_query, params = self.get_hard_query(hard_constraints)
 
         # Soft constraints are a list of text, colors, keywords, ... and recordIDs
         # that will form a query embedding using the model.
-        # This will be implemented later.
-        # For now just us the embedding of a select recordID
-        recordID = 478
-        query_embedding = self.get_embedding_from_recordID(recordID)
-        if query_embedding==None:
-            return []
+        query_embedding = self.get_query_embedding(soft_constraints, model_name)
         
         # Get the page_size nearest artworks to the query embedding with the offset page
         nearest_artworks = self.get_nearest_artworks_to_embedding_from_subset(
@@ -735,6 +785,91 @@ class DatabaseManager:
         artworks = [self.get_artwork_by_recordID(recordID) for recordID in nearest_artworks]
         return artworks
 
+    def get_keyword_embedding(self, keyword: str, model_name: str):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT embedding
+                    FROM Keywords k
+                    JOIN Model m ON k.modelID = m.modelID
+                    WHERE LOWER(k.keyword) = LOWER(%s) AND m.model_name = %s
+                    """,
+                    (keyword, model_name)
+                )
+                result = cur.fetchone()
+                if result:
+                    return convert_embedding_to_numpy(result[0])
+                return None
+
+    def get_query_embedding(
+        self, 
+        soft_constraints, 
+        model_name: str,
+        version: str = "power"
+    ):
+        if model_name not in self.models:
+            raise Exception(f"Model {model_name} not found")
+        
+        model = self.models[model_name]
+        
+        embeddings = []
+        weights = []
+        for constraint in soft_constraints:
+            weight = constraint.get("weight", 0)
+
+            if constraint['type'] == 'TERM':
+                # A term can be anything that the user inputs
+                text = constraint.get("term", "")
+                if len(text) > 0 and weight != 0:
+                    text_embedding = model.encode_text(text)
+                    embeddings.append(text_embedding)
+                    weights.append(weight)
+
+            elif constraint['type'] == 'KEYWORD':
+                # A keyword is a precomputed embedding that we should be able to retrieve from the database
+                keyword = constraint.get("keyword", "")
+                if len(keyword) > 0 and weight != 0:
+                    keyword_embedding = self.get_keyword_embedding(keyword, model_name)
+                    if keyword_embedding is not None:
+                        embeddings.append(keyword_embedding)
+                        weights.append(weight)
+
+            elif constraint['type'] == 'PRECOMPUTED':
+                # A precomputed is a recordID of an artwork that we should be able to retrieve from the database
+                # We should use the embedding of the artwork to form the query embedding
+                recordID = constraint.get("recordID", None)
+                if recordID is not None and weight != 0:
+                    artwork_embedding = self.get_embedding_from_recordID(recordID, model_name)
+                    if artwork_embedding is not None:
+                        embeddings.append(artwork_embedding)
+                        weights.append(weight)
+
+        if len(embeddings) == 0:
+            return None
+
+        embeddings = np.array(embeddings)   # Convert to numpy array
+        weights = np.array(weights)         # Convert to numpy array
+
+        if version == "classic":
+            # Multiply each embedding by its weight
+            for i in range(len(embeddings)):
+                embeddings[i] *= weights[i]
+        elif version == "power":
+            # Multiply each embedding by the power of its weight
+            for i in range(len(embeddings)):
+                sign = 1 if weights[i] >= 0 else -1
+                embeddings[i] *= np.power(weights[i], 2) * sign
+        else:
+            raise Exception("Unknown version")
+
+        # Sum all the embeddings
+        embeddings = np.sum(embeddings, axis=0)
+
+        # Normalize
+        embeddings /= np.linalg.norm(embeddings)
+
+        return embeddings
+        
     # Populate the tables
     def populate(self, artists=True, artworks=True, embeddings=True, subjectmatter=True):
         if artists:
@@ -761,6 +896,8 @@ class DatabaseManager:
                 "name": "model_1",
                 "path_embeddings": "path/to/embeddings.npy",
                 "path_index_to_recordID": "path/to/index_to_recordID.json",
+                "path_keywords": "path/to/keywords.npy",
+                "path_term_to_index": "path/to/term_to_index.json",
                 "text_dim": 300,
                 "img_dim": 2048,
                 "description": "This is a description of the model.",
@@ -788,6 +925,28 @@ class DatabaseManager:
                 modelID,
                 embedding["metrics"]
             )
+            self.populate_keywords_table(
+                modelID,
+                embedding["path_keywords"],
+                embedding["path_term_to_index"]
+            )
+
+    def populate_keywords_table(
+        self,
+        modelID,
+        path_keywords,
+        path_term_to_index
+    ):
+        keywords_embeddings = np.load(path_keywords)
+        term_to_index = json.load(open(path_term_to_index))
+
+        # Insert the keywords into the database 
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                for keyword, index in term_to_index.items():
+                    embedding = keywords_embeddings[index]
+                    cur.execute("INSERT INTO Keywords (keyword, modelID, embedding) VALUES (%s, %s, %s)", (keyword, modelID, embedding))
+                    conn.commit()
 
     def populate_metrics(self, modelID, metrics):
         with self._connect() as conn:
