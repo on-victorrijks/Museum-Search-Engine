@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 
 import { CookiesProvider } from 'react-cookie';
+import { NotificationProvider } from './contexts/NotificationContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <CookiesProvider defaultSetOptions={{ path: '/' }}>
-        <App />
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
       </CookiesProvider>
   </StrictMode>,
 )

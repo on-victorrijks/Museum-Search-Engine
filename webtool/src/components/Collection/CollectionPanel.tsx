@@ -6,21 +6,17 @@
 import { useCookies } from 'react-cookie';
 
 import "../../styles/CollectionPanel.css";
-import { FaChevronLeft, FaChevronRight, FaPlus } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import CollectionData from '../../types/Collections';
 import CollectionItem from './CollectionItem';
 
 const CollectionPanel: React.FC<{
-    isOpened: boolean,
-    togglePanel: () => void,
     openCollectionInTab: (collectionData: CollectionData) => void,
     openCollectionCreationModal: () => void,
     setCollectionDataForSlideShow: (collectionData: CollectionData) => void,
     selectedCollection: CollectionData|undefined
     setSelectedCollection: (collectionData: CollectionData) => void
 }> = ({
-    isOpened,
-    togglePanel,
     openCollectionInTab,
     openCollectionCreationModal,
     setCollectionDataForSlideShow,
@@ -50,28 +46,20 @@ const CollectionPanel: React.FC<{
     }
 
     return (
-        <div className="collection-panel" is-opened={isOpened.toString()}>
-
-            <div className="collection-header">
-                <div
-                    className="collection-toggler"
-                    onClick={togglePanel}
-                >
-                    {
-                        isOpened
-                        ? <FaChevronRight />
-                        : <FaChevronLeft />
-                    }
-                </div>
-                <h1>Vos collections</h1>
-            </div>
-
+        <div className="collection-panel">
             <div className="collection-content">
                 { loading 
                 ?
                     <p>Chargement...</p>
                 :
                     <>
+                        <div 
+                            className="collection-create"
+                            onClick={openCollectionCreationModal}
+                        >
+                            <h1><FaPlus /></h1>
+                            <h2>Créer une nouvelle collection</h2>
+                        </div>
                         {parsedCollections.map((collection, index) => (
                             <CollectionItem 
                                 key={index} 
@@ -83,13 +71,6 @@ const CollectionPanel: React.FC<{
                                 setSelectedCollection={setSelectedCollection}
                             />
                         ))}
-                        <div 
-                            className="collection-create"
-                            onClick={openCollectionCreationModal}
-                        >
-                            <h1><FaPlus /></h1>
-                            <h2>Créer une nouvelle collection</h2>
-                        </div>
                     </>
                 }
             </div>

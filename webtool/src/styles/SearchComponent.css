@@ -6,21 +6,8 @@
     flex-direction: column;
     border-right: solid 1px var(--border-color);
     overflow: hidden;
+    height: 100%;
 }
-/* Header */
-.header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 25px 10px;
-    background: var(--container-bg);
-}
-.header img {
-    width: 80%;
-    max-width: 300px;
-    filter: invert(1);
-}
-
 /* Search Section */
 .search-section {
     display: flex;

@@ -27,8 +27,6 @@ import { v4 as uuidv4 } from 'uuid';
 import './styles/App.css';
 import "./styles/Modals/Modals.css"
 
-import ResizableDiv from './components/ResizableDiv';
-import CollectionPanel from './components/Collection/CollectionPanel';
 import ModalCreateCollection from './components/Modals/ModalCreateCollection';
 import CollectionData from './types/Collections';
 import ArtPieceData from './types/ArtPiece';
@@ -36,7 +34,11 @@ import ModalAugmentCollection from './components/Modals/ModalAugmentCollection';
 import SlideShowData from './types/Slideshow';
 import Slideshow from './components/Slideshow';
 import ModalSlideshowSettings from './components/Modals/ModalSlideshowSettings';
-import { NotificationProvider } from './contexts/NotificationContext';
+import { useNotification } from './contexts/NotificationContext';
+import { NotificationType } from './types/Notification';
+import { FaExclamationTriangle } from 'react-icons/fa';
+import { dislikeRecord, getLikeStatus, likeRecord } from './logic/LikingSystem';
+import SidePanel from './components/SidePanel/SidePanel';
 
 const App: React.FC = () => {
 
@@ -58,11 +60,9 @@ const App: React.FC = () => {
 
     const [slideShowData, setSlideShowData] = useState<SlideShowData|undefined>(undefined);
 
-
+    const { showNotification } = useNotification();
 
     const [selectedCollection, setSelectedCollection] = useState<CollectionData|undefined>(undefined);
-
-    const [isCollectionOpened, setIsCollectionOpened] = useState<boolean>(false);
 
     const [tabs, setTabs] = useState<TabData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -73,7 +73,14 @@ const App: React.FC = () => {
     const getNumberOfTabs = () => tabs.length;
 
     const handleError = (sPath: string, message: string) => {
-      console.log(message);
+      console.error(sPath, message);
+      showNotification({
+        type: NotificationType.ERROR,
+        title: 'Erreur',
+        text: message,
+        icon: <FaExclamationTriangle />,
+        buttons: []
+      });
     }
 
     const selectTab = (tabIdentifier: string) => {
@@ -247,164 +254,6 @@ const App: React.FC = () => {
         setTabs(updatedTabs);
         selectTab(newSelectedTabIdentifier);
         setQueryParts(newQueryParts);
-      }
-
-      const getLikeStatus = (
-        recordID: number
-      ) => {
-        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
-        if (!tab) return undefined;
-        const queryParts = tab.content.query.parts;
-
-        const isLiked = queryParts.some((queryPart: QueryPart) => {
-          if(!queryPart.isSoft) return false;
-          const queryPartAsSoft = queryPart as SoftQueryPart;
-          return queryPartAsSoft.type === SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID === recordID && queryPartAsSoft.weight > 0;
-        });
-
-        const isDisliked = queryParts.some((queryPart: QueryPart) => {
-          if(!queryPart.isSoft) return false;
-          const queryPartAsSoft = queryPart as SoftQueryPart;
-          return queryPartAsSoft.type === SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID === recordID && queryPartAsSoft.weight < 0;
-        });
-
-        return isLiked ? true : isDisliked ? false : undefined;
-      }
-
-      const likeRecord = (imageInformations: ArtPieceData) => {
-        const recordID = imageInformations.recordid;
-        // Add a QueryPart to the current query
-        if(selectedTabIdentifier=="N/A") return;
-        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
-        if (!tab) return;
-
-        const likeStatus = getLikeStatus(recordID);
-        const queryParts = tab.content.query.parts;
-
-        if (likeStatus===true) {
-            // Remove the like status
-            let newQueryParts : QueryPart[] = [];
-            queryParts.forEach((queryPart: QueryPart) => {
-
-              // Keep the hard QueryParts
-              if(!queryPart.isSoft) {
-                newQueryParts.push(queryPart);
-                return;
-              }
-
-              // Remove the like status from the matching QueryPart
-              const queryPartAsSoft = queryPart as SoftQueryPart;
-              if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
-                newQueryParts.push(queryPartAsSoft);
-              }
-
-            });
-            tab.content.query.parts = newQueryParts;
-            setQueryParts(tab.content.query.parts);
-            receiveQuery(tab.content.query);
-        } else {
-            if(likeStatus===false) {
-              // Remove the dislike status
-              let newQueryParts : QueryPart[] = [];
-              queryParts.forEach((queryPart: QueryPart) => {
-
-                // Keep the hard QueryParts
-                if(!queryPart.isSoft) {
-                  newQueryParts.push(queryPart);
-                  return;
-                }
-
-                // Remove the dislike status from the matching QueryPart
-                const queryPartAsSoft = queryPart as SoftQueryPart;
-                if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
-                  newQueryParts.push(queryPartAsSoft);
-                }
-
-              });
-              tab.content.query.parts = newQueryParts;
-            }
-
-            // Add the like status
-            const newQueryPart : SoftQueryPart = {
-              identifier: uuidv4(),
-              type: SoftQueryType.PRECOMPUTED,
-              weight: 1.0,
-              isSoft: true,
-              recordID: recordID,
-              imageInformations: imageInformations
-            };
-            tab.content.query.parts.push(newQueryPart);
-            setQueryParts(tab.content.query.parts);
-            receiveQuery(tab.content.query);
-        }
-      }
-
-      const dislikeRecord = (imageInformations: ArtPieceData) => {
-        const recordID = imageInformations.recordid;
-        // Add a QueryPart to the current query
-        if(selectedTabIdentifier=="N/A") return;
-        const tab = tabs.find(tab => tab.identifier === selectedTabIdentifier);
-        if (!tab) return;
-
-        const likeStatus = getLikeStatus(recordID);
-        const queryParts = tab.content.query.parts;
-
-        if (likeStatus===false) {
-            // Remove the dislike status
-            let newQueryParts : QueryPart[] = [];
-            queryParts.forEach((queryPart: QueryPart) => {
-
-              // Keep the hard QueryParts
-              if(!queryPart.isSoft) {
-                newQueryParts.push(queryPart);
-                return;
-              }
-
-              // Remove the like status from the matching QueryPart
-              const queryPartAsSoft = queryPart as SoftQueryPart;
-              if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
-                newQueryParts.push(queryPartAsSoft);
-              }
-
-            });
-            tab.content.query.parts = newQueryParts;
-            setQueryParts(tab.content.query.parts);
-            receiveQuery(tab.content.query);
-        } else {
-            if(likeStatus===true) {
-              // Remove the like status
-              let newQueryParts : QueryPart[] = [];
-              queryParts.forEach((queryPart: QueryPart) => {
-
-                // Keep the hard QueryParts
-                if(!queryPart.isSoft) {
-                  newQueryParts.push(queryPart);
-                  return;
-                }
-
-                // Remove the like status from the matching QueryPart
-                const queryPartAsSoft = queryPart as SoftQueryPart;
-                if (!(queryPartAsSoft.type===SoftQueryType.PRECOMPUTED && queryPartAsSoft.recordID===recordID)) {
-                  newQueryParts.push(queryPartAsSoft);
-                }
-
-              });
-              tab.content.query.parts = newQueryParts;
-            }
-
-            // Add the dislike status
-            const newQueryPart : SoftQueryPart = {
-              identifier: uuidv4(),
-              type: SoftQueryType.PRECOMPUTED,
-              weight: -1.0,
-              isSoft: true,
-              recordID: recordID,
-              imageInformations: imageInformations
-            };
-            tab.content.query.parts.push(newQueryPart);
-            setQueryParts(tab.content.query.parts);
-            receiveQuery(tab.content.query);
-        }
       }
 
       const updateQueryPartWeight = (queryPartIdentifier: string, newWeight: number) => {
@@ -639,7 +488,6 @@ const App: React.FC = () => {
       }
 
       return (
-        <NotificationProvider>
             <>
                 { slideShowData!==undefined &&
                     <Slideshow
@@ -676,18 +524,23 @@ const App: React.FC = () => {
                 }
 
 
-            <div className='tabs-container'>     
-                <ResizableDiv minWidth={300} maxWidth={800} initialWidth={500}>
-                    <SearchComponent 
-                        loading={loading}
-                        receiveQuery={receiveQuery}
-                        selectedTabIdentifier={selectedTabIdentifier}
-                        queryParts={queryParts}
-                        setQueryParts={setQueryParts}
-                        updateQueryPartWeight={updateQueryPartWeight}
-                        resetQuery={resetQuery}
-                    />
-                </ResizableDiv>  
+            <div className='tabs-container'>
+
+                <SidePanel 
+                    loading={loading}
+                    receiveQuery={receiveQuery}
+                    selectedTabIdentifier={selectedTabIdentifier}
+                    queryParts={queryParts}
+                    setQueryParts={setQueryParts}
+                    updateQueryPartWeight={updateQueryPartWeight}
+                    resetQuery={resetQuery}
+                    openCollectionInTab={openCollectionInTab}
+                    setModalCreateCollectionIsOpen={setModalCreateCollectionIsOpen}
+                    selectedCollection={selectedCollection}
+                    setSelectedCollection={setSelectedCollection}
+                    setCollectionDataForSlideShowWrapper={setCollectionDataForSlideShowWrapper}
+                />
+              
 
                 { getNumberOfTabs()==0
                 ?
@@ -696,15 +549,17 @@ const App: React.FC = () => {
                 </div>
                 :
                     <TabContainer 
+                      loading={loading}
+
                         tabs={tabs} 
                         selectedTabIdentifier={selectedTabIdentifier}
                         selectTab={selectTab}
                         addTab={addTab}
                         removeTab={removeTab}
 
-                        dislikeRecord={dislikeRecord}
-                        likeRecord={likeRecord}
-                        getLikeStatus={getLikeStatus}
+                        dislikeRecord={(imageInformations: ArtPieceData) => dislikeRecord(tabs, selectedTabIdentifier, setQueryParts, receiveQuery, imageInformations)}
+                        likeRecord={(imageInformations: ArtPieceData) => likeRecord(tabs, selectedTabIdentifier, setQueryParts, receiveQuery, imageInformations)}
+                        getLikeStatus={(recordID: number) => getLikeStatus(tabs, selectedTabIdentifier, recordID)}
 
                         addTermFromIconography={addTermFromIconography}
                         getTermStatusInQuery={getTermStatusInQuery}
@@ -722,21 +577,8 @@ const App: React.FC = () => {
                     />
                 }
 
-                <div className="collections-panel-ghost"></div>
-
-                <CollectionPanel 
-                    isOpened={isCollectionOpened}
-                    togglePanel={() => setIsCollectionOpened(!isCollectionOpened)}
-                    openCollectionInTab={openCollectionInTab}
-                    openCollectionCreationModal={() => setModalCreateCollectionIsOpen(true)}
-                    selectedCollection={selectedCollection}
-                    setSelectedCollection={setSelectedCollection}
-                    setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
-                />
-
             </div>
-            </>
-        </NotificationProvider>
+          </>
       );
 };
 

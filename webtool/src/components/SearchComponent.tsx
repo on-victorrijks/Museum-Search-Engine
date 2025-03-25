@@ -193,7 +193,7 @@ const renderSoftQueryPart = (
 ) => {
     let imageURL;
     if (queryPart.imageInformations) {
-        imageURL = "http://127.0.0.1:5000/api/artwork/" + queryPart.imageInformations["recordID"] + "/image";
+        imageURL = "http://127.0.0.1:5000/api/artwork/" + queryPart.imageInformations.recordid + "/image";
     }
 
     return (
@@ -211,7 +211,7 @@ const renderSoftQueryPart = (
                     {queryPart.luminosity && <h2>{queryPart.luminosity}</h2>}
                     {queryPart.imageInformations && <>
                         <h2>
-                            {queryPart.imageInformations["objectWork.titleText"]} - {queryPart.imageInformations["objectWork.creatorDescription"]}
+                            {queryPart.imageInformations.title} - {queryPart.imageInformations.creatorfirstname} {queryPart.imageInformations.creatorlastname}
                         </h2>
                     </>}
                 </div>
@@ -272,7 +272,6 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
 
     const validateBlocks = (callback: (blocksValidDirect: boolean) => void) => {
         // TODO: Validate the blocks
-        console.log(queryParts);
         callback(true);
     };
 
@@ -489,10 +488,6 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
 
     return (
         <div className="sb-Content">
-        {/* Header */}
-        <div className="header">
-            <img src="./src/assets/logo.svg" alt="Logo" />
-        </div>
 
         <div className="search-selections">
             <div 
