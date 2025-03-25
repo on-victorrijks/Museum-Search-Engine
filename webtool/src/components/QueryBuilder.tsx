@@ -5,16 +5,14 @@ import { FaBan, FaCheck, FaPlus, FaTrash } from 'react-icons/fa';
 import { RiResetLeftFill } from 'react-icons/ri';
 import axios from 'axios';
 
-import ApiResponse from '../types/ApiResponses';
+import {ApiResponse} from '../types/ApiResponses';
 
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';
 
 // Import types
 import { 
-    Query,
     QueryPart,
-    SoftQueryPart,
     HardQueryPart,
     HardQueryPartControlled,
     EqualBlockProps,
@@ -24,9 +22,10 @@ import {
     ORBlockProps,
     SelectionOption,
     BlockType,
-    SoftQueryType,
     GroupBlockProps,
 } from '../types/queries';
+import { NotificationData, NotificationType } from '../types/Notification';
+import { useNotification } from '../contexts/NotificationContext';
 
 // Export
 const BaseButtons: React.FC<HardQueryPartControlled> = ({ 
@@ -534,7 +533,8 @@ const ORBlock: React.FC<ORBlockProps> = ({ ...props }) => (
 
 const getColumns = async (
     setAvailableColumns: (columns: SelectionOption[]) => void,
-    setColumnsLoaded: (loaded: boolean) => void
+    setColumnsLoaded: (loaded: boolean) => void,
+    showNotification: (notification: NotificationData) => void
 ) => {
     try {
         const response = await axios.get("http://127.0.0.1:5000/api/get_columns", {
@@ -550,7 +550,13 @@ const getColumns = async (
         const results = data["data"];
         setAvailableColumns(results ? results : []);
     } catch (error) {
-        console.error("Error making POST request:", error);
+        showNotification({
+            type: NotificationType.ERROR,
+            title: "Erreur lors de la récupération des colonnes",
+            text: "Une erreur est survenue lors de la récupération des colonnes",
+            buttons: [],
+            timeout: 5000
+        });
         return { success: false, message: "An error occurred" };
     } finally {
         setColumnsLoaded(true);
@@ -560,7 +566,8 @@ const queryAPIForAutocomplete = async (
     setAutocomplete: (options: string[]) => void,
     setAutocompleteLoading: (loading: boolean) => void,
     key: string,
-    query: string
+    query: string,
+    showNotification: (notification: NotificationData) => void
 ) => {
     if(!key || !query || key === '' || query === '') return;
     setAutocompleteLoading(true);
@@ -581,7 +588,13 @@ const queryAPIForAutocomplete = async (
         //if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");        
         //setAutocomplete(data["message"] ? data["message"]["results"] : []);
     } catch (error) {
-        console.error("Error making POST request:", error);
+        showNotification({
+            type: NotificationType.ERROR,
+            title: "Erreur lors de la récupération des suggestions",
+            text: "Une erreur est survenue lors de la récupération des suggestions",
+            buttons: [],
+            timeout: 5000
+        });
         return { success: false, message: "An error occurred" };
     } finally {
         setAutocompleteLoading(false);
@@ -600,6 +613,8 @@ const QueryBuilder: React.FC<{
     blocksValidMessage,
 }) => {
 
+    const { showNotification } = useNotification();
+
     const [columnsLoaded, setColumnsLoaded] = useState<boolean>(false);
     const [availableColumns, setAvailableColumns] = useState<SelectionOption[]>([]);
 
@@ -609,7 +624,7 @@ const QueryBuilder: React.FC<{
     const wrapperRef = useRef<HTMLDivElement>(null); // Replace HTMLDivElement with the correct type
 
     useEffect(() => {
-        if (!columnsLoaded) getColumns(setAvailableColumns, setColumnsLoaded);
+        if (!columnsLoaded) getColumns(setAvailableColumns, setColumnsLoaded, showNotification);
     }, [columnsLoaded]);
 
     // Handle click outside of the autocomplete
@@ -674,7 +689,13 @@ const QueryBuilder: React.FC<{
             },
             autocomplete: autocomplete,
             autocompleteLoading: autocompleteLoading,
-            queryAPIForAutocomplete: (key: string, query: string|number) => queryAPIForAutocomplete(setAutocomplete, setAutocompleteLoading, key, query.toString()),
+            queryAPIForAutocomplete: (key: string, query: string|number) => queryAPIForAutocomplete(
+                setAutocomplete, 
+                setAutocompleteLoading, 
+                key, 
+                query.toString(),
+                showNotification
+            ),
             lastFocusedInputID: lastFocusedInputID,
             setLastFocusedInputID: setLastFocusedInputID,
         };

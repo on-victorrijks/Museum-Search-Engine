@@ -75,7 +75,7 @@ def get_similar_artworks(record_id):
         if page > max_page:
             return formatReturn(
                 success=False,
-                user_error="Page out of bounds",
+                user_error="Page hors limites",
                 error_code=400
             )
 
@@ -91,7 +91,7 @@ def get_similar_artworks(record_id):
         if results is None:
             return formatReturn(
                 success=False,
-                user_error="Artwork not found",
+                user_error="Oeuvre non trouvée",
                 error_code=404
             )
             
@@ -108,7 +108,7 @@ def get_similar_artworks(record_id):
         return formatReturn(
             success=False,
             python_error=e,
-            user_error="An error occurred while fetching similar artworks",
+            user_error="Une erreur est survenue lors de la récupération des oeuvres similaires",
             error_code=500
         )
 
@@ -132,7 +132,7 @@ def get_artwork(record_id):
         return formatReturn(
             success=False,
             python_error=e,
-            user_error="An error occurred while fetching artwork details",
+            user_error="Une erreur est survenue lors de la récupération des informations de l'oeuvre",
             error_code=500
         )
 
@@ -165,7 +165,7 @@ def get_artwork_image(record_id):
         return formatReturn(
             success=False,
             python_error=e,
-            user_error="An error occurred while fetching artwork image",
+            user_error="Une erreur est survenue lors de la récupération de l'image de l'oeuvre",
             error_code=500
         )
 
@@ -179,7 +179,7 @@ def get_artist(creator_id):
         return formatReturn(
             success=False,
             python_error=e,
-            user_error="An error occurred while fetching artist details",
+            user_error="Une erreur est survenue lors de la récupération des informations de l'artiste",
             error_code=500
         )
 
@@ -247,7 +247,7 @@ def query_artworks():
         return formatReturn(
             success=False,
             python_error=e,
-            user_error="An error occurred while querying artworks",
+            user_error="Une erreur est survenue lors de la requête",
             error_code=500
         )
 
@@ -260,7 +260,7 @@ def get_columns():
         return formatReturn(
             success=False,
             python_error=e,
-            user_error="An error occurred while fetching columns",
+            user_error="Une erreur est survenue lors de la récupération des colonnes",
             error_code=500
         )
 
@@ -273,7 +273,20 @@ def get_models():
         return formatReturn(
             success=False,
             python_error=e,
-            user_error="An error occurred while fetching models",
+            user_error="Une erreur est survenue lors de la récupération des modèles",
+            error_code=500
+        )
+
+@app.route('/api/get_keywords', methods=['GET'])
+def get_keywords():
+    try:
+        keywords = DB_MANAGER.get_keywords()
+        return formatReturn(success=True, data=keywords)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de la récupération des mots-clés",
             error_code=500
         )
 

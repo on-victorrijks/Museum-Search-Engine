@@ -228,6 +228,8 @@ class DatabaseManager:
         self.initialize_tables()
         self.paths = paths
         self.models = models
+        self.preloaded_keywords = None
+        self.preload_keywords()
     
     def _connect(self):
         return psycopg2.connect(
@@ -433,7 +435,19 @@ class DatabaseManager:
                 """)
                 conn.commit()
 
+    # Preload data (for small datasets)
+    def preload_keywords(self):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT keyword FROM Keywords")
+                self.preloaded_keywords = [row[0] for row in cur.fetchall()]
+
     # Methods to fetch
+    def get_keywords(self):
+        if self.preloaded_keywords is None:
+            raise Exception("Keywords are not preloaded")
+        return self.preloaded_keywords
+
     def get_tables(self):
         with self._connect() as conn:
             with conn.cursor() as cur:
@@ -605,8 +619,8 @@ class DatabaseManager:
                         ar.creatorNationality,
                         ar.creatorDeathDate,
                         ar.creatorBirthDate,
-                        STRING_AGG(a.recordID::TEXT, ', ') AS artworkRecordIDs
-                    FROM Artist ar
+                        ARRAY_AGG(a.recordID) AS artworkrecordids
+                        FROM Artist ar
                     LEFT JOIN Artwork a ON ar.creatorID = a.creatorID
                     WHERE ar.creatorID = %s
                     GROUP BY ar.creatorID;

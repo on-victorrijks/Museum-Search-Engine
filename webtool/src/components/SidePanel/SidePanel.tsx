@@ -3,14 +3,16 @@ import '../../styles/SidePanel.css';
 import ResizableDiv from '../ResizableDiv';
 import CollectionPanel from '../Collection/CollectionPanel';
 import SearchComponent from '../SearchComponent';
-import { FaFolder, FaSearch } from 'react-icons/fa';
+import { FaExclamationTriangle, FaFolder, FaSearch } from 'react-icons/fa';
 import { QueryPart } from '../../types/queries';
 import { Query } from '../../types/queries';
 import CollectionData from '../../types/Collections';
+import { useNotification } from '../../contexts/NotificationContext';
 
 enum SidePanelMode {
     SEARCH = "SEARCH",
-    COLLECTION = "COLLECTION"
+    COLLECTION = "COLLECTION",
+    ERROR_LOGS = "ERROR_LOGS"
 }
 
 const SidePanelHeader: React.FC<{
@@ -51,6 +53,8 @@ const SidePanel: React.FC<{
     setCollectionDataForSlideShowWrapper,
 }) => {
 
+    const { getErrorLogs } = useNotification();
+
     const [mode, setMode] = useState<SidePanelMode>(SidePanelMode.SEARCH);
 
     return (
@@ -75,6 +79,13 @@ const SidePanel: React.FC<{
                             onClick={() => setMode(SidePanelMode.COLLECTION)}
                         >
                             <FaFolder />
+                        </div>
+                        <div 
+                            is-selected={(mode === SidePanelMode.ERROR_LOGS).toString()}
+                            className="icons-selector-item"
+                            onClick={() => setMode(SidePanelMode.ERROR_LOGS)}
+                        >
+                            <FaExclamationTriangle />
                         </div>
                     </div>
                     <div className="side-pannel-selector-icon-bar"></div>
@@ -107,6 +118,23 @@ const SidePanel: React.FC<{
                         />
                     </>
                     } 
+                    {mode === SidePanelMode.ERROR_LOGS &&
+                    <>
+                        <SidePanelHeader title="Erreurs" />
+                        <div className="side-panel-content-error-logs">
+                            {getErrorLogs().length === 0 &&
+                            <div className="side-panel-content-error-logs-empty">
+                                <h3>Aucune erreur</h3>
+                            </div>
+                            }
+                            {getErrorLogs().map((errorLog: string, index: number) => (
+                                <div key={index} className="side-panel-content-error-log">
+                                    <h3>{errorLog}</h3>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                    }
                 </div>
             </div>
         </ResizableDiv>

@@ -29,12 +29,13 @@ const renderTab = (
     addTermFromIconography: (term: string) => void,
     getTermStatusInQuery: (term: string) => boolean,
     addTab: (tab: TabData) => void,
-    openArtistProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void,
+    openArtistProfileWrapper: (fromTabIdentifier: string, creatorid: string, openInNewTab: boolean) => void,
     openArtPieceProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void,
     selectedCollection: CollectionData|undefined,
     canLike: boolean,
     setCollectionDataForAugment: (collectionData: CollectionData) => void,
     setCollectionDataForSlideShow: (collectionData: CollectionData) => void,
+    askForMoreResults: () => void,
 ) => {
 
     const is_selected = selectedTabIdentifier === tab.identifier;
@@ -90,15 +91,17 @@ const renderTab = (
                     getTermStatusInQuery={getTermStatusInQuery}
 
                     addTab={addTab}
-                    openArtistProfile={(recordID: number) => openArtistProfileWrapper(
+                    openArtistProfile={(creatorid: string) => openArtistProfileWrapper(
                         tab.identifier,
-                        recordID,
+                        creatorid,
                         getOpenInNewTabStatut(tab.identifier)
                     )}
 
                     selectedCollection={selectedCollection}
 
                     canLike={canLike}
+
+                    askForMoreResults={askForMoreResults}
                 />
             }
             { tab.type === 'artpiece-profile' && 
@@ -110,10 +113,10 @@ const renderTab = (
                         recordID, 
                         getOpenInNewTabStatut(tab.identifier)
                     )}
-                    openArtistProfile={(recordID: number) => {
+                    openArtistProfile={(creatorid: string) => {
                         openArtistProfileWrapper(
                             tab.identifier,
-                            recordID,
+                            creatorid,
                             getOpenInNewTabStatut(tab.identifier)
                         );
                     }}
@@ -129,7 +132,7 @@ const renderTab = (
             }
             { tab.type === 'artist-profile' &&
                 <ArtistProfile
-                    recordID={tab.content.recordID}
+                    creatorid={tab.content.creatorid}
                     tab={tab}
                     openArtPieceProfile={(recordID: number) => openArtPieceProfileWrapper(
                         tab.identifier,
@@ -168,7 +171,7 @@ const TabContainer: React.FC<{
     getTermStatusInQuery: (term: string) => boolean;
 
     openArtPieceProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void;
-    openArtistProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void;
+    openArtistProfileWrapper: (fromTabIdentifier: string, creatorid: string, openInNewTab: boolean) => void;
 
     setCollectionDataForAugment: (collectionData: CollectionData) => void;
     setCollectionDataForSlideShow: (collectionData: CollectionData) => void;
@@ -176,6 +179,8 @@ const TabContainer: React.FC<{
     selectedCollection: CollectionData|undefined;
 
     canLike: boolean;
+
+    askForMoreResults: () => void;
 }> = ({
     loading,
     tabs,
@@ -193,7 +198,8 @@ const TabContainer: React.FC<{
     setCollectionDataForAugment,
     setCollectionDataForSlideShow,
     selectedCollection,
-    canLike
+    canLike,
+    askForMoreResults
 }) => {
 
     const [openInNewTabPerTab, setOpenInNewTabPerTab] = useState<Record<string, boolean>>({});
@@ -257,7 +263,8 @@ const TabContainer: React.FC<{
                 selectedCollection,
                 canLike,
                 setCollectionDataForAugment,
-                setCollectionDataForSlideShow
+                setCollectionDataForSlideShow,
+                askForMoreResults
             ))}
 
         </>

@@ -98,7 +98,7 @@ const ArtPiecesGallery: React.FC<{
                 gutter="10px"
                 sequential={true}
             >
-                {recordIDs.map((recordID, index) => 
+                {recordIDs && recordIDs.map((recordID, index) => 
                 <RenderImage 
                     key={index} 
                     recordID={recordID} 

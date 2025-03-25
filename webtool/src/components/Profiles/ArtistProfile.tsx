@@ -6,48 +6,11 @@ import { TabData } from '../../types/tab';
 import "../../styles/ArtistProfile.css";
 
 import axios from 'axios';
-import { ApiResponse } from '../../types/ApiResponses';
+import { ApiResponse, SuccessfulArtistDataResponse } from '../../types/ApiResponses';
 import ArtPiecesGallery from '../Artwork/ArtPiecesGallery';
-
-interface ArtistData {
-    recordID: number;
-    fullName: string;
-    firstName: string;
-    lastName: string;
-    birthDate: string;
-    deathDate: string;
-    birthDeathPlace: string;
-    nationality: string;
-    artpiecesRecordIDs: number[];
-}
-
-
-const InfoListElement: React.FC<{
-    title: string,
-    list: string[],
-}> = ({ title, list }) => {
-
-    const isListEmpty = list.length == 0;
-
-    return (
-        <div className="artist-profile-info-list-element">
-            <div className="artist-profile-info-list-element-label">
-                <h2>{title}</h2>
-            </div>
-            <div className="artist-profile-info-list-element-content">
-            {isListEmpty && <h4>Aucune information disponible</h4>}
-            {list.map((item, index) => (
-                <div 
-                    className="artist-profile-info-list-element-content-item"
-                    key={index}
-                >
-                    <h3>{item}</h3>
-                </div>
-            ))}
-            </div>
-        </div>
-    );
-}
+import { NotificationType } from '../../types/Notification';
+import { useNotification } from '../../contexts/NotificationContext';
+import ArtistData from '../../types/ArtistData';
 
 const InfoElement: React.FC<{
     title: string,
@@ -77,31 +40,31 @@ const SubTabBio: React.FC<{
     <>
         <InfoElement
             title="Nom complet"
-            element={data.fullName}
+            element={data.creatorfirstname + " " + data.creatorlastname}
         />
         <InfoElement
             title="Prénom"
-            element={data.firstName}
+            element={data.creatorfirstname}
         />
         <InfoElement
             title="Nom de famille"
-            element={data.lastName}
+            element={data.creatorlastname}
         />
         <InfoElement
             title="Date de naissance"
-            element={data.birthDate}
+            element={data.creatorbirthdate}
         />
         <InfoElement
             title="Date de décès"
-            element={data.deathDate}
+            element={data.creatordeathdate}
         />
         <InfoElement
             title="Lieu de naissance et de décès"
-            element={data.birthDeathPlace}
+            element={data.creatorbirthanddeathdescription}
         />
         <InfoElement
             title="Nationalité"
-            element={data.nationality}
+            element={data.creatornationality}
         />
     </>
 );
@@ -110,12 +73,10 @@ const SubTabOeuvres: React.FC<{
     data: ArtistData;
     openArtPieceProfile: (recordID: number) => void;
 }> = ({ data, openArtPieceProfile }) => (
-    <>
-        <ArtPiecesGallery
-            recordIDs={data.artpiecesRecordIDs}
-            openArtPieceProfile={openArtPieceProfile}
-        />
-    </>
+    <ArtPiecesGallery
+        recordIDs={data.artworkrecordids}
+        openArtPieceProfile={openArtPieceProfile}
+    />
 );
 
 const RenderSubTab: React.FC<{
@@ -140,42 +101,43 @@ enum Subtabs_Artist {
 }
 
 const ArtistProfile: React.FC<{
-    recordID: number;
+    creatorid: string;
     tab: TabData;
     openArtPieceProfile: (recordID: number) => void;
 }> = ({
-    recordID,
+    creatorid,
     tab,
     openArtPieceProfile
 }) => {
+
+    const { showNotification } = useNotification();
 
     const [subtab, setSubtab] = useState<Subtabs_Artist>(Subtabs_Artist.BIOGRAPHIE);
     const [dataLoaded, setDataLoaded] = useState<boolean>(false);
     const [data, setData] = useState<ArtistData|undefined>(undefined);
 
     const fetchData = async () => {
-        const body = {
-            "recordID": recordID,
-        };
 
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/search/v2/getArtistData", body, {
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            });
+            const response = await axios.get("http://127.0.0.1:5000/api/artist/" + creatorid);
         
             // Parse response.data as JSON
             const data: ApiResponse = response.data;
             const success = data["success"];
-            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
-            const results = data["message"];
-            if (!results) throw new Error("No results found");
-            if (!results["data"]) throw new Error("No data found");
-            setData(results["data"]);
+            if (!success) throw new Error(data["error_message"] ? data["error_message"].toString() : "An error occurred");    
+            const results = data as SuccessfulArtistDataResponse;
+            if (!results) throw new Error("No data found");
+            if (!results.data) throw new Error("No data found");
+            setData(results.data);
             setDataLoaded(true);
         } catch (error) {
-            console.error("Error making POST request:", error);
+            showNotification({
+                type: NotificationType.ERROR,
+                title: "Erreur lors de la récupération des données",
+                text: "Une erreur est survenue lors de la récupération des données",
+                buttons: [],
+                timeout: 5000
+            });
             return { success: false, message: "An error occurred" };
         }
     }
@@ -186,12 +148,12 @@ const ArtistProfile: React.FC<{
             fetchData();
         } else {
             // We check if the recordID has changed
-            if (data && data.recordID != recordID) {
+            if (data && data.creatorid != creatorid) {
                 setDataLoaded(false);
                 fetchData();
             }
         }
-    }, [tab, recordID]);
+    }, [tab, creatorid]);
     
     return (
         <div className="artist-profile-container">
@@ -205,7 +167,7 @@ const ArtistProfile: React.FC<{
             <>
             <div className="artist-profile-header">
                 <h3>Profil de l'artiste</h3>
-                <h1>{data.fullName}</h1>
+                <h1>{data.creatorfirstname + " " + data.creatorlastname}</h1>
             </div>
 
             <div className="artist-profile-stabs">

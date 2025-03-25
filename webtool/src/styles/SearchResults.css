@@ -1,0 +1,30 @@
+.results-bottom {
+    width: 100%;
+    padding: 60px;
+    padding-top: 100px;
+    padding-bottom: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.results-bottom button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 22px;
+    font-weight: bold;
+}
+.results-bottom button h3 {
+    margin: 0;
+    font-weight: 500;
+}
+.results-bottom button:hover {
+    opacity: 0.8;
+}
+

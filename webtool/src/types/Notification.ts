@@ -19,6 +19,7 @@ export interface NotificationButton {
 }
 
 export interface NotificationData {
+    identifier?: string;
     type: NotificationType;
     title: string;
     icon?: React.ReactNode;

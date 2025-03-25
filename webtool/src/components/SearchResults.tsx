@@ -3,7 +3,7 @@ import React, {
     useEffect,  
     useRef,
 } from 'react';
-import { FaArrowRight, FaBookmark, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
+import { FaArrowDown, FaArrowRight } from 'react-icons/fa';
 
 import Masonry from "react-responsive-masonry"
 import { TabData } from '../types/tab';
@@ -14,10 +14,7 @@ import { useCookies } from 'react-cookie';
 import ArtPieceInteractions from './Artwork/ArtPieceInteractions';
 import ArtPieceData from '../types/ArtPiece';
 
-import { useNotification } from '../contexts/NotificationContext';
-import { NotificationButtonType, NotificationType } from '../types/Notification';
-import { FaCableCar } from 'react-icons/fa6';
-
+import '../styles/SearchResults.css';
 
 const MIN_COLUMN_WIDTH = 300;
 
@@ -33,11 +30,13 @@ const SearchResults: React.FC<{
     getTermStatusInQuery: (term: string) => boolean;
 
     addTab: (tab: TabData) => void;
-    openArtistProfile: (recordID: number) => void;
+    openArtistProfile: (creatorid: string) => void;
 
     selectedCollection: CollectionData|undefined;
 
     canLike: boolean;
+
+    askForMoreResults: () => void;
 }> = ({
     isEmptyQuery,
     results,
@@ -49,7 +48,8 @@ const SearchResults: React.FC<{
     addTab,
     openArtistProfile,
     selectedCollection,
-    canLike
+    canLike,
+    askForMoreResults
 }) => {
 
     const componentRef = useRef<HTMLDivElement>(null);
@@ -88,8 +88,7 @@ const SearchResults: React.FC<{
     const [numberOfColums, setNumberOfColumns] = useState(3); 
 
 
-    const { showNotification } = useNotification();
-    const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
+    const [collections, setCollections] = useCookies(['fab-seg-collections']);
     const [loading, setLoading] = useState<boolean>(true);
     const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
 
@@ -196,7 +195,7 @@ const SearchResults: React.FC<{
 
                     <h2>{title}</h2>
                     <div className='result-infos'>
-                        <h3 className="clickable" onClick={() => openArtistProfile(recordID)}>{author}</h3>
+                        <h3 className="clickable" onClick={() => openArtistProfile(result.creatorid)}>{author}</h3>
                         <div className='bubble'></div>
                         <h3>{creationDate}</h3>
                     </div>
@@ -256,6 +255,13 @@ const SearchResults: React.FC<{
             >
                 {results.map((result, index) => renderResult(result, index))}
             </Masonry>
+            <div className='results-bottom'>
+                <button onClick={askForMoreResults}>
+                    <h3>Afficher plus</h3>
+                    <FaArrowDown />
+                </button>
+
+            </div>
         </div>
     );
 }

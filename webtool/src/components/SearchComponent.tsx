@@ -12,41 +12,24 @@ import {
     Query,
     QueryPart,
     SoftQueryPart,
-    HardQueryPart,
-    HardQueryPartControlled,
-    EqualBlockProps,
-    BetweenBlockProps,
-    IncludesBlockProps,
-    SelectionOption,
-    BlockType,
     SoftQueryType,
 } from '../types/queries';
 
 import Slider from '@mui/material/Slider';
 import QueryBuilder from './QueryBuilder';
-import { NotificationType } from '../types/Notification';
 import { useNotification } from '../contexts/NotificationContext';
+import axios from 'axios';
+import { ApiResponse, SuccessfulKeywordsResponse } from '../types/ApiResponses';
+import { NotificationType } from '../types/Notification';
 
-const keywords = [
-    "Portrait", "Autoportrait", "Femme", "Homme", "Enfant", "Couple", 
-    "Nu", "Silhouette", "Visage", "Mains", "Corps", "Yeux", "Regard",
-    "Paysage", "Nature morte", "Scène de rue", "Intérieur", "Vie quotidienne",
-    "Rêverie", "Fête", "Bataille", "Mythologie", "Religion", "Danse", "Musique",
-    "Mer", "Montagne", "Rivière", "Forêt", "Ciel", "Nuages", "Soleil", "Lune", 
-    "Nuit", "Aube", "Crépuscule", "Saisons", "Neige", "Fleurs", "Arbre", "Vent",
-    "Cathédrale", "Château", "Colonne", "Voûte", "Fresque", "Mosaïque", 
-    "Ruines", "Fenêtre",
-    "Ange", "Démon", "Sirène", "Centaure", "Dragon", "Masque", "Squelette", 
-    "Crâne", "Couronne", "Clé", "Échelle", "Labyrinthe"
-];
 
 const colors = [
     { id: 'Noir et blanc', style: 'linear-gradient(45deg, #000000, #ffffff)' },
-    { id: 'Couleurs vives, coloré, couleurs intenses', style: 'conic-gradient(#ff5733, #ffc300, #28a745, #17a2b8, #6f42c1, #ff5733)' },
+    { id: 'Couleurs vives', style: 'conic-gradient(#ff5733, #ffc300, #28a745, #17a2b8, #6f42c1, #ff5733)' },
     { id: 'Couleurs sombres', style: 'conic-gradient(#4a322f, #3f522d, #2d4a4a, #2f2f4a, #4a2d4a, #4a322f)' },
-    { id: 'Couleur rouge, ton rouge, rouge', style: 'linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.8))' },
-    { id: 'Couleur bleue, ton bleu, bleu', style: 'linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(0, 0, 255, 0.8))' },
-    { id: 'Couleur verte, ton vert, vert', style: 'linear-gradient(to right, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.8))' },
+    { id: 'Rouge', style: 'linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.8))' },
+    { id: 'Bleu', style: 'linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(0, 0, 255, 0.8))' },
+    { id: 'Vert', style: 'linear-gradient(to right, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.8))' },
 ];
 
 const luminosities = [
@@ -269,6 +252,32 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
     // Are blocks valid
     const [blocksValid, setBlocksValid] = useState<boolean>(true);
     const [blocksValidMessage, setBlocksValidMessage] = useState<string>('');
+
+    // Keywords
+    const [keywords, setKeywords] = useState<string[]>([]);
+    const [keywordLoaded, setKeywordLoaded] = useState<boolean>(false);
+
+    useEffect(() => {
+        const fetchKeywords = async () => {
+            const response: ApiResponse = (await axios.get('http://127.0.0.1:5000/api/get_keywords')).data;
+            if (response.success) {
+                const data = (response as SuccessfulKeywordsResponse).data;
+                setKeywords(data);
+                setKeywordLoaded(true);
+            } else {
+                showNotification({
+                    type: NotificationType.ERROR,
+                    title: "Erreur lors de la récupération des mots-clés",
+                    text: response.error_message ?? "",
+                    buttons: [],
+                    timeout: 5000
+                });
+            }
+        };
+        if (!keywordLoaded) {
+            fetchKeywords();
+        }
+    }, []);
 
     const validateBlocks = (callback: (blocksValidDirect: boolean) => void) => {
         // TODO: Validate the blocks
@@ -556,11 +565,11 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
 
                 {keywordsVisible && 
                 <div className="container" id="keywords_container">
-                    { keywords.map(keyword => renderKeyword(
+                    { keywordLoaded && keywords.map(keyword => renderKeyword(
                         getKeywordStatus(keyword),
                         toggleKeyword,
                         keyword
-                    )) }    
+                    )) }
                 </div>
                 }
 

@@ -118,8 +118,11 @@
     background-color: var(--keyword-bg);
     color: var(--keyword-text);
     border: solid 1px var(--border-color);
-    font-size: 10px;
+    font-size: 12px;
     cursor: pointer;
+}
+.keyword h3 {
+    font-weight: 500;
 }
 .keyword.enabled{
     background-color: var(--keyword-bg-enabled);
@@ -236,8 +239,9 @@ color: var(--text-color);
     gap: 0;
 }
 .queryPartText h4 {
-    font-size: 12px;
+    font-size: 13px;
     color: #acacac;
+    font-weight: 500;
 }
 .queryPartText h2 {
     font-size: 18px;
@@ -348,8 +352,8 @@ color: var(--text-color);
 .search-selection h1 {
     font-size: 14px;
     color: #acacac;
+    font-weight: 500;
 }
 .search-selection.selected h1{
     color: #fff;
-    font-weight: bold;
 }

@@ -1,7 +1,6 @@
 import React, {
   useState
 } from 'react';
-import SearchComponent from './components/SearchComponent';
 import TabContainer from './components/TabContainer';
 import axios from 'axios';
 
@@ -17,7 +16,6 @@ import {
   QueryPart,
   SelectionOption,
   SoftQueryPart,
-  SoftQueryType,
 } from './types/queries';
 
 // Import uuid
@@ -36,7 +34,6 @@ import Slideshow from './components/Slideshow';
 import ModalSlideshowSettings from './components/Modals/ModalSlideshowSettings';
 import { useNotification } from './contexts/NotificationContext';
 import { NotificationType } from './types/Notification';
-import { FaExclamationTriangle } from 'react-icons/fa';
 import { dislikeRecord, getLikeStatus, likeRecord } from './logic/LikingSystem';
 import SidePanel from './components/SidePanel/SidePanel';
 
@@ -72,22 +69,17 @@ const App: React.FC = () => {
 
     const getNumberOfTabs = () => tabs.length;
 
-    const handleError = (sPath: string, message: string) => {
-      console.error(sPath, message);
-      showNotification({
-        type: NotificationType.ERROR,
-        title: 'Erreur',
-        text: message,
-        icon: <FaExclamationTriangle />,
-        buttons: []
-      });
-    }
-
     const selectTab = (tabIdentifier: string) => {
       // Get the QueryParts of the selected tab
       const tab = tabs.find(tab => tab.identifier === tabIdentifier);
       if (!tab) {
-        handleError("App.selectTab()", "Tab not found");
+        showNotification({
+          type: NotificationType.ERROR,
+          title: "Erreur",
+          text: "Tab non trouvé",
+          buttons: [],
+          timeout: 5000
+        });
         return;
       }
       if(tab.type==="results") {
@@ -101,14 +93,60 @@ const App: React.FC = () => {
       setSelectedTabIdentifier(tabIdentifier);
     }
 
-    const queryServer = async (tabIndex: number, updatedTabs: TabData[], query: Query) => {
+    const askForMoreResults = () => {
+      // Get the selected tab
+      const tabIndex = tabs.findIndex(tab => tab.identifier === selectedTabIdentifier);
+      if (tabIndex === -1) {
+        showNotification({
+          type: NotificationType.ERROR,
+          title: "Erreur",
+          text: "Une erreur est survenue lors de la récupération du tab sélectionné",
+          buttons: [],
+          timeout: 5000
+        });
+        return;
+      }
+
+      const tab = tabs[tabIndex];
+      if (!tab) {
+        showNotification({
+          type: NotificationType.ERROR,
+          title: "Erreur",
+          text: "Une erreur est survenue lors de la récupération du tab sélectionné",
+          buttons: [],
+          timeout: 5000
+        });
+        return;
+      }
+
+      // Increment the page
+      const updatedTabs = tabs.map((tab, index) => {
+        if (index === tabIndex) {
+          tab.page = (tab.page ?? 1) + 1; // Increment the page
+          return tab;
+        }
+        return tab;
+      });
+
+      // Send the query
+      setLoading(true);
+      queryServer(tabIndex, updatedTabs, tab.content.query);
+    }
+
+    const queryServer = async (
+      tabIndex: number, 
+      updatedTabs: TabData[], 
+      query: Query
+    ) => {
+        const isFollowingOfPreviousQuery = updatedTabs[tabIndex].page && updatedTabs[tabIndex].page > 1;
+        const isFirstPage = updatedTabs[tabIndex].page === 1;
         // Send the query
         const body = {
           "hard_constraints": query.parts.filter((part: QueryPart) => !part.isSoft),
           "soft_constraints": query.parts.filter((part: QueryPart) => part.isSoft),
           "model_name": "february_finetuned",
-          "page": 1,
-          "page_size": 50
+          "page": updatedTabs[tabIndex].page,
+          "page_size": isFirstPage ? 50 : 10
         };
         body["soft_constraints"] = body["soft_constraints"].map((part: QueryPart) => {
           return {
@@ -128,13 +166,36 @@ const App: React.FC = () => {
           const data: ApiResponse = response.data;
           const success = data["success"];
           if (!success) {
-            handleError("App.queryServer()", data["error_message"] ? data["error_message"].toString() : "An error occurred");
+            showNotification({
+              type: NotificationType.ERROR,
+              title: "Erreur",
+              text: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
+              buttons: [],
+              timeout: 5000
+            });
             return;
           }
-          updatedTabs[tabIndex].content.results = (data as SuccessfulQueryResponse).data;
+
+          if (isFollowingOfPreviousQuery) {
+            // We are following the previous query ==> We add the new results to the existing results
+            updatedTabs[tabIndex].content.results = [
+              ...updatedTabs[tabIndex].content.results,
+              ...(data as SuccessfulQueryResponse).data
+            ];
+          } else {
+            // We are not following the previous query ==> We replace the existing results
+            updatedTabs[tabIndex].content.results = (data as SuccessfulQueryResponse).data;
+          }
+
           setTabs(updatedTabs);
         } catch (error) {
-          console.error("Error making POST request:", error);
+          showNotification({
+            type: NotificationType.ERROR,
+            title: "Erreur lors de la récupération des résultats",
+            text: "Une erreur est survenue lors de la récupération des résultats",
+            buttons: [],
+            timeout: 5000
+          });
           return { success: false, message: "An error occurred" };
         } finally {
           setLoading(false);
@@ -179,7 +240,8 @@ const App: React.FC = () => {
             content: {
               query: query,
               results: []
-            }
+            },
+            page: 1
           }];
           newTabIndex = updatedTabs.length - 1;
 
@@ -195,6 +257,7 @@ const App: React.FC = () => {
           }
         } else {
 
+          tab.page = 1;
           tab.content.query = query;
           
           // Update the tab with the new query
@@ -241,7 +304,13 @@ const App: React.FC = () => {
           }
         });
         if (toRemoveTabIndex === -1) {
-          handleError("App.removeTab()", "Tab not found");
+          showNotification({
+            type: NotificationType.ERROR,
+            title: "Erreur",
+            text: "Tab non trouvé",
+            buttons: [],
+            timeout: 5000
+          });
           return;
         }
         // Remove the tab
@@ -319,7 +388,7 @@ const App: React.FC = () => {
 
       const openArtistProfileWrapper = (
         fromTabIdentifier: string,
-        recordID: number, 
+        creatorid: string, 
         isNewTab: boolean
       ) => {
         if(isNewTab) {
@@ -328,7 +397,7 @@ const App: React.FC = () => {
             type: 'artist-profile',
             identifier: uuidv4(),
             content: {
-              recordID: recordID,
+              creatorid: creatorid,
               data: undefined
             }
           };
@@ -339,7 +408,7 @@ const App: React.FC = () => {
             if(tab.identifier === fromTabIdentifier) {
               // This is the tab we want to modify
               tab.type = 'artist-profile';
-              tab.content.recordID = recordID;
+              tab.content.creatorid = creatorid;
               tab.content.data = undefined;
             }
             return tab;
@@ -405,7 +474,7 @@ const App: React.FC = () => {
             queryPartAsHard.exactMatch === true &&
             queryPartAsHard.isNot === false &&
             queryPartAsHard.selectedColumn &&
-            queryPartAsHard.selectedColumn.key === "stf_values"
+            queryPartAsHard.selectedColumn.key === "STF_values"
           );
         });
 
@@ -434,8 +503,8 @@ const App: React.FC = () => {
             isNot: false,
             isSoft: false,
             selectedColumn: {
-              key: "iconography",
-              userFriendlyName: "Objects présents"
+              key: "STF_values",
+              userFriendlyName: "Sujets"
             } as SelectionOption
           };
           newQueryParts.push(newQueryPart);
@@ -574,6 +643,8 @@ const App: React.FC = () => {
                         canLike={canLike()}
 
                         setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
+
+                        askForMoreResults={askForMoreResults}
                     />
                 }
 

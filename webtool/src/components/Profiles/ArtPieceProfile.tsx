@@ -1,25 +1,25 @@
 import React, {
-    use,
     useEffect,
     useState,
 } from 'react';
 import { TabData } from '../../types/tab';
 import "../../styles/ArtPieceProfile.css";
-import { FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 import SimilarImages from '../Artwork/SimilarImages';
 
 import axios from 'axios';
-import { ApiResponse } from '../../types/ApiResponses';
+import { ApiResponse, SuccessfulArtPieceDataResponse } from '../../types/ApiResponses';
 import ArtPieceInteractions from '../Artwork/ArtPieceInteractions';
 import CollectionData from '../../types/Collections';
 import ArtPieceData from '../../types/ArtPiece';
 import { useCookies } from 'react-cookie';
+import { NotificationType } from '../../types/Notification';
+import { useNotification } from '../../contexts/NotificationContext';
 
 
 
 const ArtPieceHeader: React.FC<{
     data: ArtPieceData,
-    openArtistProfile: (recordID: number) => void;
+    openArtistProfile: (creatorid: string) => void;
     isLiked: boolean|undefined,
     isAddedToACollection: boolean,
     removeFromSelectedCollection: (recordID: number) => void,
@@ -43,16 +43,16 @@ const ArtPieceHeader: React.FC<{
     return (
         <div className="ap-profile-header-main-infos">
             <h1>{data.title=="" ? "Titre inconnu" : data.title}</h1>
-            <h2 onClick={() => openArtistProfile(data.recordID)}>
-                {data.author=="" ? "Auteur inconnue" : data.author}
+            <h2 onClick={() => openArtistProfile(data.creatorid)}>
+                {data.creatorfirstname=="" ? "Auteur inconnue" : data.creatorfirstname + " " + data.creatorlastname}
             </h2>
             <div className="ap-profile-header-mi-date">
-                <h2>{data.earliestDate}</h2>
+                <h2>{data.creationearliestdate}</h2>
                 <div className="bubble"></div>
-                <h2>{data.latestDate}</h2>
+                <h2>{data.creationlatestdate}</h2>
             </div>
             <ArtPieceInteractions
-                recordID={data.recordID}
+                recordID={data.recordid}
                 isLiked={isLiked}
                 isAddedToACollection={isAddedToACollection}
                 removeFromSelectedCollection={removeFromSelectedCollection}
@@ -69,7 +69,7 @@ const ArtPieceHeader: React.FC<{
 const ArtPieceImage: React.FC<{
     data: ArtPieceData;
 }> = ({ data }) => {
-    const imageURL = "http://127.0.0.1:5000/api/artwork/" + data.recordID + "/image";
+    const imageURL = "http://127.0.0.1:5000/api/artwork/" + data.recordid + "/image";
     return (
         <div className="ap-profile-header-image">
             <img src={imageURL} />
@@ -126,16 +126,26 @@ const InfoElement: React.FC<{
     );
 }
 
-const Subtab_ObjectsPresents: React.FC<{
-    data: ArtPieceData;
-}> = ({data}) => (
-    <>
-        <InfoListElement 
-            title="Iconographie"
-            list={data.iconography}
-        />
-    </>
+const Subtab_Values: React.FC<{
+    title: string;
+    values: any[]
+}> = ({title, values}) => (
+    <InfoListElement 
+        title={title}
+        list={values}
+    />
 );
+
+const Subtab_UniqueValue: React.FC<{
+    title: string;
+    value: string;
+}> = ({title, value}) => (
+    <InfoElement 
+        title={title}
+        element={value}
+    />
+);
+
 
 const Subtab_ArtPiece: React.FC<{
     data: ArtPieceData;
@@ -143,11 +153,11 @@ const Subtab_ArtPiece: React.FC<{
     <>
         <InfoElement 
             title="Classification"
-            element={data.classification}
+            element={data.termclassification}
         />
         <InfoElement // SHOULD BE LISt ??
             title="Type d'objet"
-            element={data.objectType}
+            element={data.objectworktype}
         />
         <InfoListElement 
             title="Matériaux"
@@ -155,7 +165,7 @@ const Subtab_ArtPiece: React.FC<{
         />
         <InfoElement 
             title="Inscription"
-            element={data.inscription}
+            element={data.signaturefulldescription}
         />
         <InfoElement 
             title="Hauteur"
@@ -167,7 +177,7 @@ const Subtab_ArtPiece: React.FC<{
         />
         <InfoElement 
             title="Couleur de l'image"
-            element={data.imageColor}
+            element={data.imagecolor}
         />
     </>
 );
@@ -178,27 +188,27 @@ const Subtab_Creator: React.FC<{
     <>
         <InfoElement
             title="Prénom de l'artiste"
-            element={data.creatorFirstName}
+            element={data.creatorfirstname}
         />
         <InfoElement
             title="Nom de famille de l'artiste"
-            element={data.creatorLastName}
+            element={data.creatorlastname}
         />
         <InfoElement
             title="Date de naissance de l'artiste"
-            element={data.creatorBirthDate}
+            element={data.creatorbirthdate}
         />
         <InfoElement
             title="Date de décès de l'artiste"
-            element={data.creatorDeathDate}
+            element={data.creatordeathdate}
         />
         <InfoElement
             title="Lieu de naissance et de décès de l'artiste"
-            element={data.creatorBirthDeathPlace}
+            element={data.creatorbirthanddeathdescription}
         />
         <InfoElement
             title="Nationalité de l'artiste"
-            element={data.creatorNationality}
+            element={data.creatornationality}
         />
     </>
 );
@@ -209,11 +219,11 @@ const Subtab_Identifiers: React.FC<{
     <>
         <InfoElement
             title="RecordID"
-            element={data.recordID}
+            element={data.recordid}
         />
         <InfoElement
             title="workID"
-            element={data.workID}
+            element={data.workid}
         />
     </>
 );
@@ -223,7 +233,7 @@ const Subtab_Neighbours: React.FC<{
     openArtPieceProfile: (recordID: number) => void;
 }> = ({data, openArtPieceProfile}) => (
     <SimilarImages 
-        recordID={data.recordID}
+        recordID={data.recordid}
         openArtPieceProfile={openArtPieceProfile}
     />
 );
@@ -235,8 +245,6 @@ const RenderSubTab: React.FC<{
 }> = ({ data, subtab, openArtPieceProfile }) => {
     
     switch(subtab) {
-        case Subtabs.OBJECTS_PRESENTS:
-            return <Subtab_ObjectsPresents data={data}/>;
         case Subtabs.ART_PIECE:
             return <Subtab_ArtPiece data={data}/>;
         case Subtabs.CREATOR:
@@ -245,24 +253,45 @@ const RenderSubTab: React.FC<{
             return <Subtab_Identifiers data={data}/>;
         case Subtabs.NEIGHBOURS:
             return <Subtab_Neighbours data={data} openArtPieceProfile={openArtPieceProfile}/>;
+        case Subtabs.CFT_VALUES:
+            return <Subtab_Values title="Concepts" values={data.cft_values}/>;
+        case Subtabs.IFT_VALUES:
+            return <Subtab_Values title="Termes iconographiques" values={data.ift_values}/>;
+        case Subtabs.STF_VALUES:
+            return <Subtab_Values title="Sujets" values={data.stf_values}/>;
+        case Subtabs.II_VALUE:
+            return <Subtab_UniqueValue title="Interprétation iconographique" value={data.ii_value}/>;
+        case Subtabs.GSD_VALUE:
+            return <Subtab_UniqueValue title="Description générale du sujet" value={data.gsd_value}/>;
+        case Subtabs.SSI_VALUE:
+            return <Subtab_UniqueValue title="Identification spécifique du sujet" value={data.ssi_value}/>;
         default:
             return <></>
     }
 }
 
+/*
+<select class="border rounded p-1"><option value="">Select Column</option><option value="recordID">recordID</option><option value="workID">workID</option><option value="language">Langue</option><option value="title">Titre</option><option value="objectType">Type d'objet</option><option value="classification">Classification</option><option value="materials">Matériaux</option><option value="inscription">Inscription</option><option value="creationEarliestDate">Date de création (plus ancienne)</option><option value="creationLatestDate">Date de création (plus récente)</option><option value="creator">Créateur</option><option value="physicalAppearance">Apparence physique</option><option value="imageType">Type d'image</option><option value="imageColor">Couleur de l'image</option><option value="imageCopyright">Copyright de l'image</option><option value="imageStyle">Style de l'image</option><option value="height">Hauteur</option><option value="width">Largeur</option><option value="ratio">Ratio (hauteur/largeur)</option><option value="creatorID">ID du créateur</option><option value="creatorFirstName">Prénom du créateur</option><option value="creatorLastName">Nom du créateur</option><option value="creatorBirthDate">Date de naissance du créateur</option><option value="creatorDeathDate">Date de décès du créateur</option><option value="creatorBirthDeathPlace">Lieu de naissance et de décès du créateur</option><option value="creatorNationality">Nationalité du créateur</option><option value="CFT_values">Concepts</option><option value="IFT_values">Termes iconographiques</option><option value="STF_values">Sujets</option><option value="II_value">Interprétation iconographique</option><option value="GSD_value">Description générale du sujet</option><option value="SSI_value">Identification spécifique du sujet</option></select>
+*/
+
 enum Subtabs {
-    OBJECTS_PRESENTS = "Objects présents",
     ART_PIECE = "Oeuvre",
     CREATOR = "Artiste",
     IDENTIFIERS = "Identifiants",
     NEIGHBOURS = "Images imilaires",
+    CFT_VALUES = "Concepts",
+    IFT_VALUES = "Termes iconographiques",
+    STF_VALUES = "Sujets",
+    II_VALUE = "Interprétation iconographique",
+    GSD_VALUE = "Description générale du sujet",
+    SSI_VALUE = "Identification spécifique du sujet",
 }
 
 const ArtPieceProfile: React.FC<{
     recordID: number;
     tab: TabData;
     openArtPieceProfile: (recordID: number) => void;
-    openArtistProfile: (recordID: number) => void;
+    openArtistProfile: (creatorid: string) => void;
 
     selectedCollection: CollectionData|undefined
 
@@ -284,33 +313,34 @@ const ArtPieceProfile: React.FC<{
     canLike
 }) => {
 
-    const [subtab, setSubtab] = useState<Subtabs>(Subtabs.OBJECTS_PRESENTS);
+    const { showNotification } = useNotification();
+
+    const [subtab, setSubtab] = useState<Subtabs>(Subtabs.NEIGHBOURS);
     const [dataLoaded, setDataLoaded] = useState<boolean>(false);
     const [data, setData] = useState<ArtPieceData|undefined>(undefined);
 
     const fetchData = async () => {
-        const body = {
-            "recordID": recordID,
-        };
 
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/search/v2/getData", body, {
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            });
+            const response = await axios.get("http://127.0.0.1:5000/api/artwork/" + recordID);
         
             // Parse response.data as JSON
             const data: ApiResponse = response.data;
             const success = data["success"];
-            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
-            const results = data["message"];
+            if (!success) throw new Error(data["error_message"] ? data["error_message"].toString() : "An error occurred");
+            const results = data as SuccessfulArtPieceDataResponse;
             if (!results) throw new Error("No results found");
-            if (!results["data"]) throw new Error("No data found");
-            setData(results["data"]);
+            if (!results.data) throw new Error("No data found");
+            setData(results.data);
             setDataLoaded(true);
         } catch (error) {
-            console.error("Error making POST request:", error);
+            showNotification({
+                type: NotificationType.ERROR,
+                title: "Erreur lors de la récupération des données",
+                text: "Une erreur est survenue lors de la récupération des données",
+                buttons: [],
+                timeout: 5000
+            });
             return { success: false, message: "An error occurred" };
         }
     }
@@ -321,7 +351,7 @@ const ArtPieceProfile: React.FC<{
             fetchData();
         } else {
             // We check if the recordID has changed
-            if (data && data.recordID != recordID) {
+            if (data && data.recordid != recordID) {
                 setDataLoaded(false);
                 fetchData();
             }
@@ -329,7 +359,7 @@ const ArtPieceProfile: React.FC<{
     }, [tab, recordID]);
 
     // COLLECTIONS
-    const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
+    const [collections, setCollections] = useCookies(['fab-seg-collections']);
     const [loading, setLoading] = useState<boolean>(true);
     const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
 
@@ -393,7 +423,7 @@ const ArtPieceProfile: React.FC<{
     return (
         <div className="ap-profile-container">
 
-            { !dataLoaded || data==undefined 
+            { loading || !dataLoaded || data==undefined 
             ? 
             <div className="ap-profile-loading">
                 <h1>Chargement des données...</h1>
@@ -405,8 +435,8 @@ const ArtPieceProfile: React.FC<{
                 <ArtPieceHeader 
                     data={data} 
                     openArtistProfile={openArtistProfile}
-                    isLiked={getLikeStatus(data.recordID)}
-                    isAddedToACollection={getIsAddedToACollection(data.recordID)}
+                    isLiked={getLikeStatus(data.recordid)}
+                    isAddedToACollection={getIsAddedToACollection(data.recordid)}
                     removeFromSelectedCollection={removeFromSelectedCollection}
                     addToSelectedCollection={addToSelectedCollection}
                     likeRecord={likeRecord}

@@ -1,6 +1,4 @@
-import React, {
-    useState,
-} from 'react';
+import React from 'react';
 
 import "../../styles/ArtPieceInteractions.css";
 import { FaBookmark, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';

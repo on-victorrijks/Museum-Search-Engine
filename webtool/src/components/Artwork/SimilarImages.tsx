@@ -2,13 +2,13 @@ import React, {
     useState,
     useEffect
 } from 'react';
-// Import uuid
 import axios from 'axios';
-import ApiResponse from '../../types/ApiResponse';
+import { ApiResponse, SuccessfulNeighboursResponse } from '../../types/ApiResponses';
 
 import "../../styles/SimilarImages.css";
 import ArtPiecesGallery from './../Artwork/ArtPiecesGallery';
-
+import { NotificationType } from '../../types/Notification';
+import { useNotification } from '../../contexts/NotificationContext';
 
 const SimilarImages: React.FC<{
     recordID: number;
@@ -18,30 +18,32 @@ const SimilarImages: React.FC<{
     openArtPieceProfile
 }) => {
 
+    const { showNotification } = useNotification();
+
     const [loading, setLoading] = useState<boolean>(false);
     const [neighbours, setNeighbours] = useState<Record<string, any>[]>([]);
 
     const fetchNeighbours = async(recordID: number) => {
-        const body = {
-            "recordID": recordID,
-        };
 
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/search/v2/neighbours", body, {
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            });
+            const response = await axios.get("http://127.0.0.1:5000/api/artwork/" + recordID + "/similar");
         
             // Parse response.data as JSON
             const data: ApiResponse = response.data;
             const success = data["success"];
-            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
-            const results = data["message"];
-            if (!results) throw new Error("No results found");
-            setNeighbours(results["neighbours"]);
+            if (!success) throw new Error(data["error_message"] ? data["error_message"].toString() : "An error occurred");    
+            const neighbours = data as SuccessfulNeighboursResponse;
+            if (!neighbours) throw new Error("No data found");
+            if (!neighbours.data) throw new Error("No data found");
+            setNeighbours(neighbours.data.results);
         } catch (error) {
-            console.error("Error making POST request:", error);
+            showNotification({
+                type: NotificationType.ERROR,
+                title: "Erreur lors de la récupération des images similaires",
+                text: "Une erreur est survenue lors de la récupération des images similaires",
+                buttons: [],
+                timeout: 5000
+            });
             return { success: false, message: "An error occurred" };
         } finally {
             setLoading(false);

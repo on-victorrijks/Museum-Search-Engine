@@ -68,18 +68,21 @@
     width: 100%;
     border-top: solid 1px var(--border-color);
     border-bottom: solid 1px var(--border-color);
+    overflow-x: auto;
 }
 .ap-profile-stabs-selector button {
     flex: 1;
-    padding: 15px 10px;
+    padding: 8px;
     font-size: 15px;
     font-weight: 500;
     background: var(--stabs-selectable-bg);
     border: none;
     color: #959595;
+    border-right: solid 1px var(--border-color);
     border-bottom: solid 2px var(--border-color);
     cursor: pointer;
     transition: all .2s;
+    min-width: 200px;
 }
 .ap-profile-stabs-selector button:hover {
     background-color: var(--stabs-selectable-bg-selected);

@@ -6,11 +6,12 @@ import { FaTimes } from 'react-icons/fa';
 import CollectionData from '../../types/Collections';
 
 import axios from "axios";
-import ApiResponse from '../../types/ApiResponses';
+import { ApiResponse } from '../../types/ApiResponses';
 
 import Slider from '@mui/material/Slider';
 import { useCookies } from 'react-cookie';
-
+import { NotificationType } from '../../types/Notification';
+import { useNotification } from '../../contexts/NotificationContext';
 const ModalAugmentCollection: React.FC<{
     askToClose: () => void;
     collectionData: CollectionData|undefined
@@ -18,6 +19,8 @@ const ModalAugmentCollection: React.FC<{
     askToClose,
     collectionData
 }) => {
+
+    const { showNotification } = useNotification();
 
     const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
     const [loading, setLoading] = useState<boolean>(true);
@@ -61,7 +64,7 @@ const ModalAugmentCollection: React.FC<{
             // Parse response.data as JSON
             const data: ApiResponse = response.data;
             const success = data["success"];
-            if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");
+            if (!success) throw new Error(data["error_message"] ? data["error_message"].toString() : "An error occurred");
             const results = data["message"];
             if(!results) throw new Error("No results returned");
 
@@ -79,7 +82,13 @@ const ModalAugmentCollection: React.FC<{
             }));
 
         } catch (error) {
-            console.error("Error making POST request:", error);
+            showNotification({
+                type: NotificationType.ERROR,
+                title: "Erreur lors de l'augmentation de la collection",
+                text: "Une erreur est survenue lors de l'augmentation de la collection",
+                buttons: [],
+                timeout: 5000
+            });
             return { success: false, message: "An error occurred" };
         } finally {
             setAIAugmentedLoading(false);

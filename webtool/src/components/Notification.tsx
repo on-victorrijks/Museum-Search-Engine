@@ -37,6 +37,7 @@ const Notification: React.FC<NotificationProps> = ({ notification, onClose }) =>
                     <FaTimes />
                 </button>
             </div>
+            { (notification.text.length > 0 || notification.buttons.length > 0) &&
             <div className="notification-content">
                 <p>{notification.text}</p>
                 { notification.buttons.length > 0 &&
@@ -49,6 +50,7 @@ const Notification: React.FC<NotificationProps> = ({ notification, onClose }) =>
                     </div>
                 }
             </div>
+            }
         </div>
     );
 };
