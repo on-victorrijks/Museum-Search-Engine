@@ -1,3 +1,4 @@
+import { ErrorLog } from "./Error";
 
 export enum NotificationType {
     ERROR = 'ERROR',
@@ -20,10 +21,19 @@ export interface NotificationButton {
 
 export interface NotificationData {
     identifier?: string;
+    timestamp?: number;
     type: NotificationType;
+    errorContext?: ErrorLog;
     title: string;
     icon?: React.ReactNode;
     text: string;
     buttons: NotificationButton[];
     timeout?: number;
 } 
+
+
+// This forrces an error notification to have an error context
+export interface NotificationDataError extends NotificationData {
+    type: NotificationType.ERROR;
+    errorContext: ErrorLog;
+}

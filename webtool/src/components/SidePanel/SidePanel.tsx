@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/SidePanel.css';
 import ResizableDiv from '../ResizableDiv';
 import CollectionPanel from '../Collection/CollectionPanel';
@@ -8,6 +8,8 @@ import { QueryPart } from '../../types/queries';
 import { Query } from '../../types/queries';
 import CollectionData from '../../types/Collections';
 import { useNotification } from '../../contexts/NotificationContext';
+import { ErrorLog } from '../../types/Error';
+import { NotificationType } from '../../types/Notification';
 
 enum SidePanelMode {
     SEARCH = "SEARCH",
@@ -23,6 +25,11 @@ const SidePanelHeader: React.FC<{
             <h1>{title}</h1>
         </div>
     );
+}
+
+const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
 }
 
 const SidePanel: React.FC<{
@@ -53,9 +60,24 @@ const SidePanel: React.FC<{
     setCollectionDataForSlideShowWrapper,
 }) => {
 
-    const { getErrorLogs } = useNotification();
+    const { getErrorLogs, showNotification } = useNotification();
 
     const [mode, setMode] = useState<SidePanelMode>(SidePanelMode.SEARCH);
+
+    const generateErrorLogsForTesting = () => {
+        const i = 0;
+        showNotification({
+            type: NotificationType.ERROR,
+            title: "Test error : " + i,
+            text: "Test explanation " + i,
+            buttons: [],
+            errorContext: {
+                timestamp: Date.now(),
+                message: "Test error " + i,
+                origin: "generateErrorLogsForTesting():" + i
+            }
+        });
+    }
 
     return (
         <ResizableDiv minWidth={300} maxWidth={800} initialWidth={500}>
@@ -88,7 +110,7 @@ const SidePanel: React.FC<{
                             <FaExclamationTriangle />
                         </div>
                     </div>
-                    <div className="side-pannel-selector-icon-bar"></div>
+                    <div className="side-pannel-selector-icon-bar" onClick={() => generateErrorLogsForTesting()}></div>
                 </div>
                 
                 <div className="side-panel-content">
@@ -127,9 +149,13 @@ const SidePanel: React.FC<{
                                 <h3>Aucune erreur</h3>
                             </div>
                             }
-                            {getErrorLogs().map((errorLog: string, index: number) => (
+                            {getErrorLogs().map((errorLog: ErrorLog, index: number) => (
                                 <div key={index} className="side-panel-content-error-log">
-                                    <h3>{errorLog}</h3>
+                                    <h4>{formatDate(errorLog.timestamp)}</h4>
+                                    <p>{errorLog.message}</p>
+                                    <div className="side-panel-content-error-log-origin">
+                                        <p>{errorLog.origin}</p>
+                                    </div>
                                 </div>
                             ))}
                         </div>

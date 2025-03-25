@@ -112,14 +112,35 @@
 .side-panel-content-error-log {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 15px;
     border-radius: 8px;
     background-color: var(--container-bg);
 }
-.side-panel-content-error-log h3 {
+.side-panel-content-error-log h4 {
     color: var(--text-color);
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
+    opacity: .7;
+    padding: 10px;
 }
+.side-panel-content-error-log > p {
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px;
+    padding-top: 0;
+}
+.side-panel-content-error-log-origin {
+    color: var(--text-color);
+    font-size: 13px;
+    font-weight: 500;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+}
+.side-panel-content-error-log-origin p {
+    color: var(--text-color);
+    font-size: 13px;
+    font-weight: 300;
+    opacity: .7;
+}
+
 
