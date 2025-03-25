@@ -5,7 +5,7 @@ import SearchComponent from './components/SearchComponent';
 import TabContainer from './components/TabContainer';
 import axios from 'axios';
 
-import ApiResponse from './types/ApiResponse';
+import { ApiResponse, SuccessfulQueryResponse } from './types/ApiResponses';
 
 // Import types
 import { TabData } from './types/tab';
@@ -28,7 +28,7 @@ import './styles/App.css';
 import "./styles/Modals/Modals.css"
 
 import ResizableDiv from './components/ResizableDiv';
-import CollectionPanel from './components/CollectionPanel';
+import CollectionPanel from './components/Collection/CollectionPanel';
 import ModalCreateCollection from './components/Modals/ModalCreateCollection';
 import CollectionData from './types/Collections';
 import ArtPieceData from './types/ArtPiece';
@@ -36,6 +36,7 @@ import ModalAugmentCollection from './components/Modals/ModalAugmentCollection';
 import SlideShowData from './types/Slideshow';
 import Slideshow from './components/Slideshow';
 import ModalSlideshowSettings from './components/Modals/ModalSlideshowSettings';
+import { NotificationProvider } from './contexts/NotificationContext';
 
 const App: React.FC = () => {
 
@@ -123,8 +124,7 @@ const App: React.FC = () => {
             handleError("App.queryServer()", data["error_message"] ? data["error_message"].toString() : "An error occurred");
             return;
           }
-          const results = data["data"];
-          updatedTabs[tabIndex].content.results = results as ArtPieceData[];
+          updatedTabs[tabIndex].content.results = (data as SuccessfulQueryResponse).data;
           setTabs(updatedTabs);
         } catch (error) {
           console.error("Error making POST request:", error);
@@ -639,103 +639,104 @@ const App: React.FC = () => {
       }
 
       return (
-        <>
+        <NotificationProvider>
+            <>
+                { slideShowData!==undefined &&
+                    <Slideshow
+                        collectionData={slideShowData.collectionData}
+                        automaticSlideshow={slideShowData.automaticSlideshow}
+                        slideshowInterval={slideShowData.slideshowInterval}
+                        infiniteSlideshow={slideShowData.infiniteSlideshow}
+                        exitSlideshow={() => setSlideShowData(undefined)}
+                    />
+                }
 
-          { slideShowData!==undefined &&
-            <Slideshow
-              collectionData={slideShowData.collectionData}
-              automaticSlideshow={slideShowData.automaticSlideshow}
-              slideshowInterval={slideShowData.slideshowInterval}
-              infiniteSlideshow={slideShowData.infiniteSlideshow}
-              exitSlideshow={() => setSlideShowData(undefined)}
-            />
-          }
-
-          { (modalCreateCollectionIsOpen || modalAugmentCollectionIsOpen || ModalSlideshowSettingsIsOpen) &&
-          <div className="modals-container">
-            {
-              modalCreateCollectionIsOpen &&
-              <ModalCreateCollection
-                askToClose={() => setModalCreateCollectionIsOpen(false)}
-              />
-            }
-            { modalAugmentCollectionIsOpen &&
-              <ModalAugmentCollection
-                askToClose={() => setModalAugmentCollectionIsOpen(false)}
-                collectionData={collectionDataForAugment}
-              />
-            }
-            { (ModalSlideshowSettingsIsOpen && collectionDataForSlideShow) &&
-              <ModalSlideshowSettings
-                askToClose={() => setModalSlideshowSettingsIsOpen(false)}
-                collectionData={collectionDataForSlideShow}
-                launchSlideshow={(slideShowData: SlideShowData) => setSlideShowData(slideShowData)}
-              />
-            }
-          </div>
-          }
+                { (modalCreateCollectionIsOpen || modalAugmentCollectionIsOpen || ModalSlideshowSettingsIsOpen) &&
+                <div className="modals-container">
+                    {
+                        modalCreateCollectionIsOpen &&
+                        <ModalCreateCollection
+                            askToClose={() => setModalCreateCollectionIsOpen(false)}
+                        />
+                    }
+                    { modalAugmentCollectionIsOpen &&
+                        <ModalAugmentCollection
+                            askToClose={() => setModalAugmentCollectionIsOpen(false)}
+                            collectionData={collectionDataForAugment}
+                        />
+                    }
+                    { (ModalSlideshowSettingsIsOpen && collectionDataForSlideShow) &&
+                        <ModalSlideshowSettings
+                            askToClose={() => setModalSlideshowSettingsIsOpen(false)}
+                            collectionData={collectionDataForSlideShow}
+                            launchSlideshow={(slideShowData: SlideShowData) => setSlideShowData(slideShowData)}
+                        />
+                    }
+                </div>
+                }
 
 
-        <div className='tabs-container'>     
-          <ResizableDiv minWidth={300} maxWidth={800} initialWidth={500}>
-            <SearchComponent 
-              loading={loading}
-              receiveQuery={receiveQuery}
-              selectedTabIdentifier={selectedTabIdentifier}
-              queryParts={queryParts}
-              setQueryParts={setQueryParts}
-              updateQueryPartWeight={updateQueryPartWeight}
-              resetQuery={resetQuery}
-            />
-          </ResizableDiv>  
+            <div className='tabs-container'>     
+                <ResizableDiv minWidth={300} maxWidth={800} initialWidth={500}>
+                    <SearchComponent 
+                        loading={loading}
+                        receiveQuery={receiveQuery}
+                        selectedTabIdentifier={selectedTabIdentifier}
+                        queryParts={queryParts}
+                        setQueryParts={setQueryParts}
+                        updateQueryPartWeight={updateQueryPartWeight}
+                        resetQuery={resetQuery}
+                    />
+                </ResizableDiv>  
 
-          { getNumberOfTabs()==0
-          ?
-          <div className="empty-tabs">
-            <h2>Effectuez une recherche pour voir des oeuvres !</h2>
-          </div>
-          :
-            <TabContainer 
-              tabs={tabs} 
-              selectedTabIdentifier={selectedTabIdentifier}
-              selectTab={selectTab}
-              addTab={addTab}
-              removeTab={removeTab}
+                { getNumberOfTabs()==0
+                ?
+                <div className="empty-tabs">
+                    <h2>Effectuez une recherche pour voir des oeuvres !</h2>
+                </div>
+                :
+                    <TabContainer 
+                        tabs={tabs} 
+                        selectedTabIdentifier={selectedTabIdentifier}
+                        selectTab={selectTab}
+                        addTab={addTab}
+                        removeTab={removeTab}
 
-              dislikeRecord={dislikeRecord}
-              likeRecord={likeRecord}
-              getLikeStatus={getLikeStatus}
+                        dislikeRecord={dislikeRecord}
+                        likeRecord={likeRecord}
+                        getLikeStatus={getLikeStatus}
 
-              addTermFromIconography={addTermFromIconography}
-              getTermStatusInQuery={getTermStatusInQuery}
+                        addTermFromIconography={addTermFromIconography}
+                        getTermStatusInQuery={getTermStatusInQuery}
 
-              openArtPieceProfileWrapper={openArtPieceProfileWrapper}
-              openArtistProfileWrapper={openArtistProfileWrapper}
-              
-              setCollectionDataForAugment={setCollectionDataForAugmentWrapper}
+                        openArtPieceProfileWrapper={openArtPieceProfileWrapper}
+                        openArtistProfileWrapper={openArtistProfileWrapper}
+                        
+                        setCollectionDataForAugment={setCollectionDataForAugmentWrapper}
 
-              selectedCollection={selectedCollection}
+                        selectedCollection={selectedCollection}
 
-              canLike={canLike()}
+                        canLike={canLike()}
 
-              setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
-            />
-          }
+                        setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
+                    />
+                }
 
-          <div className="collections-panel-ghost"></div>
+                <div className="collections-panel-ghost"></div>
 
-          <CollectionPanel 
-            isOpened={isCollectionOpened}
-            togglePanel={() => setIsCollectionOpened(!isCollectionOpened)}
-            openCollectionInTab={openCollectionInTab}
-            openCollectionCreationModal={() => setModalCreateCollectionIsOpen(true)}
-            selectedCollection={selectedCollection}
-            setSelectedCollection={setSelectedCollection}
-            setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
-          />
+                <CollectionPanel 
+                    isOpened={isCollectionOpened}
+                    togglePanel={() => setIsCollectionOpened(!isCollectionOpened)}
+                    openCollectionInTab={openCollectionInTab}
+                    openCollectionCreationModal={() => setModalCreateCollectionIsOpen(true)}
+                    selectedCollection={selectedCollection}
+                    setSelectedCollection={setSelectedCollection}
+                    setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
+                />
 
-        </div>
-        </>
+            </div>
+            </>
+        </NotificationProvider>
       );
 };
 

@@ -5,7 +5,7 @@ import { FaBan, FaCheck, FaPlus, FaTrash } from 'react-icons/fa';
 import { RiResetLeftFill } from 'react-icons/ri';
 import axios from 'axios';
 
-import ApiResponse from '../types/ApiResponse';
+import ApiResponse from '../types/ApiResponses';
 
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';

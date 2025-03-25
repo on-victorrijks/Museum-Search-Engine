@@ -5,9 +5,9 @@
 
 import { useCookies } from 'react-cookie';
 
-import "../styles/CollectionPanel.css";
+import "../../styles/CollectionPanel.css";
 import { FaChevronLeft, FaChevronRight, FaPlus } from 'react-icons/fa';
-import CollectionData from '../types/Collections';
+import CollectionData from '../../types/Collections';
 import CollectionItem from './CollectionItem';
 
 const CollectionPanel: React.FC<{

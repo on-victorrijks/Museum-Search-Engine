@@ -3,16 +3,16 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { TabData } from '../types/tab';
-import "../styles/ArtPieceProfile.css";
+import { TabData } from '../../types/tab';
+import "../../styles/ArtPieceProfile.css";
 import { FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
-import SimilarImages from './SimilarImages';
+import SimilarImages from '../Artwork/SimilarImages';
 
 import axios from 'axios';
-import ApiResponse from '../types/ApiResponse';
-import ArtPieceInteractions from './ArtPieceInteractions';
-import CollectionData from '../types/Collections';
-import ArtPieceData from '../types/ArtPiece';
+import { ApiResponse } from '../../types/ApiResponses';
+import ArtPieceInteractions from '../Artwork/ArtPieceInteractions';
+import CollectionData from '../../types/Collections';
+import ArtPieceData from '../../types/ArtPiece';
 import { useCookies } from 'react-cookie';
 
 

@@ -11,8 +11,13 @@ import { TabData } from '../types/tab';
 import { v4 as uuidv4 } from 'uuid';
 import CollectionData from '../types/Collections';
 import { useCookies } from 'react-cookie';
-import ArtPieceInteractions from './ArtPieceInteractions';
+import ArtPieceInteractions from './Artwork/ArtPieceInteractions';
 import ArtPieceData from '../types/ArtPiece';
+
+import { useNotification } from '../contexts/NotificationContext';
+import { NotificationButtonType, NotificationType } from '../types/Notification';
+import { FaCableCar } from 'react-icons/fa6';
+
 
 const MIN_COLUMN_WIDTH = 300;
 
@@ -83,7 +88,7 @@ const SearchResults: React.FC<{
     const [numberOfColums, setNumberOfColumns] = useState(3); 
 
 
-
+    const { showNotification } = useNotification();
     const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
     const [loading, setLoading] = useState<boolean>(true);
     const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);

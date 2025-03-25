@@ -2,12 +2,12 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { TabData } from '../types/tab';
-import "../styles/ArtistProfile.css";
+import { TabData } from '../../types/tab';
+import "../../styles/ArtistProfile.css";
 
 import axios from 'axios';
-import ApiResponse from '../types/ApiResponse';
-import ArtPiecesGallery from './ArtPiecesGallery';
+import { ApiResponse } from '../../types/ApiResponses';
+import ArtPiecesGallery from '../Artwork/ArtPiecesGallery';
 
 interface ArtistData {
     recordID: number;

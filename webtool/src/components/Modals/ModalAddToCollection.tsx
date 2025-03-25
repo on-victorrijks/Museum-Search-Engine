@@ -10,7 +10,7 @@ import CollectionData from '../../types/Collections';
 import { useCookies } from 'react-cookie';
 
 // Import uuid
-import CollectionItem from '../CollectionItem';
+import CollectionItem from '../Collection/CollectionItem';
 
 
 const ModalAddToCollection: React.FC<{

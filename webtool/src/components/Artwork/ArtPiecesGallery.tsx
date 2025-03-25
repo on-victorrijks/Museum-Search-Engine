@@ -4,7 +4,7 @@ import React, {
     useRef,
 } from 'react';
 
-import "../styles/APG.css";
+import "../../styles/APG.css";
 import Masonry from "react-responsive-masonry"
 import { FaTimes } from 'react-icons/fa';
 

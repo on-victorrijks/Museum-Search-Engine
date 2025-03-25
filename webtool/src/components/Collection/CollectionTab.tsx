@@ -3,13 +3,9 @@ import React, {
     useEffect
 } from 'react';
 
-// Import uuid
-import axios from 'axios';
-import ApiResponse from '../types/ApiResponse';
-
-import "../styles/CollectionTab.css";
-import ArtPiecesGallery from './ArtPiecesGallery';
-import CollectionData from '../types/Collections';
+import "../../styles/CollectionTab.css";
+import ArtPiecesGallery from '../Artwork/ArtPiecesGallery';
+import CollectionData from '../../types/Collections';
 import { BsStars } from 'react-icons/bs';
 import { useCookies } from 'react-cookie';
 import { FaPlay, FaTrash } from 'react-icons/fa';

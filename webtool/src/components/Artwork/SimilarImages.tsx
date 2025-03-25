@@ -4,10 +4,10 @@ import React, {
 } from 'react';
 // Import uuid
 import axios from 'axios';
-import ApiResponse from '../types/ApiResponse';
+import ApiResponse from '../../types/ApiResponse';
 
-import "../styles/SimilarImages.css";
-import ArtPiecesGallery from './ArtPiecesGallery';
+import "../../styles/SimilarImages.css";
+import ArtPiecesGallery from './../Artwork/ArtPiecesGallery';
 
 
 const SimilarImages: React.FC<{

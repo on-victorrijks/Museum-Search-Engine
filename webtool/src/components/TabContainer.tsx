@@ -8,9 +8,9 @@ import { FaFolderPlus, FaTimes } from 'react-icons/fa';
 import SearchResults from './SearchResults';
 import { FaPenToSquare } from 'react-icons/fa6';
 import { Query } from '../types/queries';
-import ArtPieceProfile from './ArtPieceProfile';
-import ArtistProfile from './ArtistProfile';
-import CollectionTab from './CollectionTab';
+import ArtPieceProfile from './Profiles/ArtPieceProfile';
+import ArtistProfile from './Profiles/ArtistProfile';
+import CollectionTab from './Collection/CollectionTab';
 import CollectionData from '../types/Collections';
 import ArtPieceData from '../types/ArtPiece';
 

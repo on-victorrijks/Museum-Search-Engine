@@ -137,7 +137,7 @@ def get_artwork(record_id):
         )
 
 @app.route('/api/artwork/<int:record_id>/image', methods=['GET'])
-@limiter.limit("120 per minute")  # Rate limit for image serving
+@limiter.limit("240 per minute")  # Rate limit for image serving
 def get_artwork_image(record_id):
     try:
         image_path = DB_MANAGER.get_image_path_by_recordID(record_id)

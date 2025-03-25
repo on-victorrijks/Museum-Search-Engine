@@ -1,7 +1,7 @@
 import React from 'react';
-import CollectionData from '../types/Collections';
+import CollectionData from '../../types/Collections';
 
-import "../styles/CollectionItem.css";
+import "../../styles/CollectionItem.css";
 import { FaCheck, FaPlay } from 'react-icons/fa';
 
 const CollectionItem: React.FC<{

@@ -2,9 +2,9 @@ import React, {
     useState,
 } from 'react';
 
-import "../styles/ArtPieceInteractions.css";
+import "../../styles/ArtPieceInteractions.css";
 import { FaBookmark, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
-import CollectionData from '../types/Collections';
+import CollectionData from '../../types/Collections';
 
 
 

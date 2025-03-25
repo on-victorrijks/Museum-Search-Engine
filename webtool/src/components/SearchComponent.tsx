@@ -24,6 +24,8 @@ import {
 
 import Slider from '@mui/material/Slider';
 import QueryBuilder from './QueryBuilder';
+import { NotificationType } from '../types/Notification';
+import { useNotification } from '../contexts/NotificationContext';
 
 const keywords = [
     "Portrait", "Autoportrait", "Femme", "Homme", "Enfant", "Couple", 
@@ -233,21 +235,17 @@ enum SearchType {
     SOFT = 'SOFT',
 }
 
-
-//
-const SearchComponent: React.FC<{
+interface SearchComponentProps {
     loading: boolean;
     receiveQuery: (query: Query) => void;
-    
     selectedTabIdentifier: string;
-
     queryParts: QueryPart[];
     setQueryParts: (queryParts: QueryPart[]) => void;
-
     updateQueryPartWeight: (identifier: string, weight: number) => void;
-
     resetQuery: () => void;
-}> = ({
+}
+
+const SearchComponent: React.FC<SearchComponentProps> = ({
     loading,
     receiveQuery,
     selectedTabIdentifier,
@@ -256,7 +254,7 @@ const SearchComponent: React.FC<{
     updateQueryPartWeight,
     resetQuery
 }) => {
-
+    const { showNotification } = useNotification();
     // Which search tab is selected
     const [searchSelection, setSearchSelection] = useState<SearchType>(SearchType.SOFT);
 

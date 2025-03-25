@@ -1,0 +1,138 @@
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 600px;
+    width: 33vw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: var(--background-color);
+    overflow: hidden;
+}
+.notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+    padding: 20px;
+}
+.notification-header-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    gap: 15px;
+    color: var(--text-color);
+}
+.notification-header-icon {
+    font-size: 15px;
+    line-height: 0;
+}
+.notification-header-title h3 {
+    margin: 0;
+    flex: 1;
+    font-size: 18px;
+    font-weight: 500;
+}
+.notification-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    line-height: 0;
+}
+.notification-close:hover {
+    opacity: 0.5;	
+}
+.notification-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+.notification-content p {
+    color: var(--text-color);
+    opacity: .8;
+    font-size: 16px;
+}
+.notification-buttons {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}
+.notification-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    opacity: .8;
+    transition: all 0.3s ease;
+    background: var(--button-bg);
+    border: 1px solid var(--border-color);
+    color: var(--button-text);
+    font-weight: 500;
+}
+.notification-button:hover {
+    background: var(--button-bg-hover);
+    color: var(--button-text-hover);
+}
+.notification-button.POSITIVE {
+    background: var(--button-bg-positive);
+    color: var(--button-text-positive);
+}
+.notification-button.POSITIVE:hover {
+    background: var(--button-bg-positive-hover);
+    color: var(--button-text-positive-hover);
+}
+.notification-button.NEGATIVE {
+    background: var(--button-bg-negative);
+    color: var(--button-text-negative);
+}
+.notification-button.NEGATIVE:hover {
+    background: var(--button-bg-negative-hover);
+    color: var(--button-text-negative-hover);
+}
+
+.notification.notification-success .notification-header {
+    background: var(--color-positive);
+}
+.notification.notification-success .notification-header-title {
+    color: var(--color-positive);
+}
+.notification.notification-success .notification-header-icon {
+    color: var(--color-positive-text);
+}
+.notification.notification-error .notification-header {
+    background: var(--color-negative);
+}
+.notification.notification-error .notification-header-title {
+    color: var(--color-negative-text);
+}
+.notification.notification-error .notification-header-icon {
+    color: var(--color-negative-text);
+}
+.notification.notification-warning .notification-header {
+    background: var(--color-warning);
+}
+.notification.notification-warning .notification-header-title {
+    color: var(--color-warning-text);
+}
+.notification.notification-warning .notification-header-icon {
+    color: var(--color-warning-text);
+}

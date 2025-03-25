@@ -6,7 +6,7 @@ import { FaTimes } from 'react-icons/fa';
 import CollectionData from '../../types/Collections';
 
 import axios from "axios";
-import ApiResponse from '../../types/ApiResponse';
+import ApiResponse from '../../types/ApiResponses';
 
 import Slider from '@mui/material/Slider';
 import { useCookies } from 'react-cookie';

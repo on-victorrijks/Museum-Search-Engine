@@ -54,6 +54,21 @@
 
     --stabs-selectable-bg: #2c2b32;
     --stabs-selectable-bg-selected: #3c3b42;
+
+    --color-positive: #006800;
+    --color-positive-text: #fff;
+    --color-negative: #a10000;
+    --color-negative-text: #fff;
+    --color-warning: #ab6f00;
+    --color-warning-text: #fff;
+
+    --button-bg-positive: var(--color-positive);
+    --button-text-positive: var(--color-positive-text);
+    --button-bg-positive-hover: var(--color-positive-hover);
+    --button-text-positive-hover: var(--color-positive-text-hover);
+    --button-bg-negative: var(--color-negative);
+    --button-text-negative: var(--color-negative-text);
+    --button-bg-negative-hover: var(--color-negative-hover);
 }
 
 
