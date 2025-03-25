@@ -1,224 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/SearchComponent.css';
+import '../../../styles/SearchComponent.css';
 
 // Use react-icons
-import { FaMicrophone, FaAngleUp, FaAngleDown, FaPlus, FaTimes, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import { FaMicrophone, FaAngleUp, FaAngleDown, FaPlus } from 'react-icons/fa';
 
 // Import uuid
 import { v4 as uuidv4 } from 'uuid';
 
 // Import types
 import { 
+    BetweenBlockProps,
+    BlockType,
+    IncludesBlockProps,
+    EqualBlockProps,
     Query,
     QueryPart,
     SoftQueryPart,
     SoftQueryType,
-} from '../types/queries';
+    GroupBlockProps,
+} from '../../../types/queries';
 
-import Slider from '@mui/material/Slider';
-import QueryBuilder from './QueryBuilder';
-import { useNotification } from '../contexts/NotificationContext';
+import QueryBuilder from '../../QueryBuilder';
+import { useNotification } from '../../../contexts/NotificationContext';
 import axios from 'axios';
-import { ApiResponse, SuccessfulKeywordsResponse } from '../types/ApiResponses';
-import { NotificationType } from '../types/Notification';
+import { ApiResponse, SuccessfulKeywordsResponse } from '../../../types/ApiResponses';
+import { NotificationType } from '../../../types/Notification';
+import { NewQueryButton, SearchButton, renderKeyword, renderColor, renderLuminosity, renderSoftQueryPart, ClearButton, BottomButtons } from './SubComponents';
+import { colors, luminosities } from '../../../constants/SearchPanel';
 
-
-const colors = [
-    { id: 'Noir et blanc', style: 'linear-gradient(45deg, #000000, #ffffff)' },
-    { id: 'Couleurs vives', style: 'conic-gradient(#ff5733, #ffc300, #28a745, #17a2b8, #6f42c1, #ff5733)' },
-    { id: 'Couleurs sombres', style: 'conic-gradient(#4a322f, #3f522d, #2d4a4a, #2f2f4a, #4a2d4a, #4a322f)' },
-    { id: 'Rouge', style: 'linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.8))' },
-    { id: 'Bleu', style: 'linear-gradient(to right, rgba(0, 0, 255, 0.5), rgba(0, 0, 255, 0.8))' },
-    { id: 'Vert', style: 'linear-gradient(to right, rgba(0, 255, 0, 0.5), rgba(0, 255, 0, 0.8))' },
-];
-
-const luminosities = [
-    { id: 'Image sombre', color: '#000', text: 'Sombre', textColor: '#fff' },
-    { id: 'Image claire', color: '#ababab', text: 'Clair', textColor: '#000' },
-];
-
-const formatType = (type: string) => {
-    switch(type) {
-        case SoftQueryType.TERM:
-            return 'Texte';
-        case SoftQueryType.KEYWORD:
-            return 'Mot-clé';
-        case SoftQueryType.COLOR:
-            return 'Couleur';
-        case SoftQueryType.LUMINOSITY:
-            return 'Luminosité';
-        case SoftQueryType.PRECOMPUTED:
-            return 'Image';
-        default:
-            return 'Inconnu';
-    }
-}
-
-// TO EXPORT
-const SearchButton: React.FC<{
-    canSearch: boolean,
-    compileIntoTab: (isNewSearch: boolean) => void
-}> = ({ 
-    canSearch,
-    compileIntoTab
-}) => {
-    return (
-        <button
-            className="primary"
-            onClick={() => compileIntoTab(false)}
-            disabled={!canSearch}
-        >
-            Rechercher
-        </button>
-    );
-}
-
-const NewQueryButton: React.FC<{
-    canSearch: boolean,
-    compileIntoTab: (isNewSearch: boolean) => void
-}> = ({ 
-    canSearch,
-    compileIntoTab
-}) => {
-    return (
-        <button
-            className="secondary"
-            onClick={() => compileIntoTab(true)}
-            disabled={!canSearch}
-        >
-            Nouvel onglet
-        </button>
-    );
-}
-
-const renderKeyword = (
-    isEnabled: boolean,
-    toggleKeyword: (keyword: string) => void,
-    keyword: string
-) => {
-    return (
-        <div 
-            key={keyword} 
-            className={`keyword ${isEnabled ? 'enabled' : ''}`}
-            onClick={() => toggleKeyword(keyword)}
-        >
-            <h3>{keyword}</h3>
-        </div>
-    );
-}
-const renderColor = (
-    isEnabled: boolean,
-    toggleColor: (colorId: string) => void,
-    color: { id: string, style: string }
-) => {
-    return (
-        <div 
-            key={color.id} 
-            className={`color ${isEnabled ? 'enabled' : ''}`}
-            style={{ background: color.style }}
-            onClick={() => toggleColor(color.id)}
-        >
-        </div>
-    );
-}
-const renderLuminosity = (
-    isEnabled: boolean,
-    toggleLuminosity: (luminosityId: string) => void,
-    luminosity: { id: string, color: string, text: string, textColor: string }
-) => {
-    return (
-        <div 
-            key={luminosity.id} 
-            className={`luminosity ${isEnabled ? 'enabled' : ''}`}
-            style={{ background: luminosity.color, color: luminosity.textColor }}
-            onClick={() => toggleLuminosity(luminosity.id)}
-        >
-            <h3 
-                style={{ color: luminosity.textColor }}
-            >{luminosity.text}</h3>
-        </div>
-    );
-}
-const RenderSlider = (
-    updateQueryPartWeight: (identifier: string, weight: number) => void,
-    loading: boolean,
-    queryPart: SoftQueryPart
-) => {
-    return (
-        <div className='queryPart-Slider'>
-            <div className='side min'>
-                <FaThumbsDown />
-            </div>
-            <Slider
-                defaultValue={queryPart.weight}
-                step={0.25}
-                min={-2}
-                max={2}
-                valueLabelDisplay="off"
-                onChangeCommitted={(e, value) => updateQueryPartWeight(
-                    queryPart.identifier, 
-                    value as number
-                )}
-                color='primary'
-                disabled={loading}
-            />
-            <div className='side max'>
-                <FaThumbsUp />
-            </div>
-        </div>
-    );
-}
-const renderSoftQueryPart = (
-    removeQueryPart: (identifier: string) => void,
-    updateQueryPartWeight: (identifier: string, weight: number) => void,
-    loading: boolean,
-    queryPart: SoftQueryPart
-) => {
-    let imageURL;
-    if (queryPart.imageInformations) {
-        imageURL = "http://127.0.0.1:5000/api/artwork/" + queryPart.imageInformations.recordid + "/image";
-    }
-
-    return (
-        <div key={queryPart.identifier} className="queryPart">
-            { queryPart.imageInformations &&
-            <div className="queryPartImage" style={{ backgroundImage: `url(${imageURL})` }}>
-            </div>
-            }
-            <div className='queryPart-Header'>
-                <div className="queryPartText">
-                    <h4>{formatType(queryPart.type)}</h4>
-                    {queryPart.term && <h2>{queryPart.term}</h2>}
-                    {queryPart.keyword && <h2>{queryPart.keyword}</h2>}
-                    {queryPart.color && <h2>{queryPart.color}</h2>}
-                    {queryPart.luminosity && <h2>{queryPart.luminosity}</h2>}
-                    {queryPart.imageInformations && <>
-                        <h2>
-                            {queryPart.imageInformations.title} - {queryPart.imageInformations.creatorfirstname} {queryPart.imageInformations.creatorlastname}
-                        </h2>
-                    </>}
-                </div>
-                <button
-                    onClick={() => removeQueryPart(queryPart.identifier)}
-                >
-                    <FaTimes />
-                </button>
-            </div>
-            {RenderSlider(
-                updateQueryPartWeight,
-                loading,
-                queryPart
-            )}
-        </div>
-    );
-}
 
 enum SearchType {
     HARD = 'HARD',
     SOFT = 'SOFT',
 }
 
-interface SearchComponentProps {
+const SearchComponent: React.FC<{
     loading: boolean;
     receiveQuery: (query: Query) => void;
     selectedTabIdentifier: string;
@@ -226,9 +42,7 @@ interface SearchComponentProps {
     setQueryParts: (queryParts: QueryPart[]) => void;
     updateQueryPartWeight: (identifier: string, weight: number) => void;
     resetQuery: () => void;
-}
-
-const SearchComponent: React.FC<SearchComponentProps> = ({
+}> = ({
     loading,
     receiveQuery,
     selectedTabIdentifier,
@@ -279,70 +93,81 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         }
     }, []);
 
-    const validateBlocks = (callback: (blocksValidDirect: boolean) => void) => {
-        // TODO: Validate the blocks
-        callback(true);
-    };
+    const validateSingleBlock = (block: QueryPart) => {
+        switch(block.type) {
+            case BlockType.EQUAL:
+                return (block as EqualBlockProps).equalTo && (block as EqualBlockProps).equalTo.length > 0 
+            case BlockType.BETWEEN:
+                return (block as BetweenBlockProps).from && (block as BetweenBlockProps).to
+            case BlockType.INCLUDES:
+                return (block as IncludesBlockProps).values && (block as IncludesBlockProps).values.length > 0
+            case BlockType.GROUP:
+                return (block as GroupBlockProps).children && (block as GroupBlockProps).children.length > 0
+            default:
+                return true;
+        }
+    }
 
-    const UND = () => {
+    const validateBlocks = (
+        blocks: QueryPart[], 
+        callback: (blocksValidDirect: boolean) => void
+    ) => {
+        // TODO: Validate the blocks
         /*
-            RULES: 
-            AND/OR can only be placed after EQUAL, BETWEEN, or INCLUDES blocks
-            EQUAL, BETWEEN, INCLUDES can only be placed after AND/OR blocks (except when it is the first block !)
-            AND/OR cannot be placed last
+        RULES: 
+        > AND/OR can only be placed after EQUAL, BETWEEN, or INCLUDES blocks
+        > EQUAL, BETWEEN, INCLUDES can only be placed after AND/OR blocks (except when it is the first block !)
+        > AND/OR cannot be placed last 
+        > Obviously, each block must be filled with the required data
+        */
+        let lastBlock = null;
+        let valid = true;
+        let message = '';
+
+        for (let i=0; i<blocks.length; i++) {
             
-            Obviously, each block must be filled with the required data
-            let lastBlock = null;
-            let valid = true;
-            let message = '';
-    
-            for (let i=0; i<blocks.length; i++) {
-                
-                if(!validateSingleBlock(blocks[i])){
+            if(!validateSingleBlock(blocks[i])){
+                valid = false;
+                message = 'Chaque block doit être rempli avec les données requises';
+                break;
+            }
+
+            const block = blocks[i];
+            if (block.type === BlockType.AND || block.type === BlockType.OR) {
+                if(i === (blocks.length - 1)) {
                     valid = false;
-                    message = 'Chaque block doit être rempli avec les données requises';
+                    message = 'ET/OU ne peut être placé en dernier';
+                    break;
+                } else if (
+                    (lastBlock === null ) || 
+                    (lastBlock.type !== BlockType.EQUAL && lastBlock.type !== BlockType.BETWEEN && lastBlock.type !== BlockType.INCLUDES)
+                ) {
+                    valid = false;
+                    message = 'ET/OU ne peut être placé qu\'après des blocs ÉGAL, ENTRE ou CONTIENT';
                     break;
                 }
-    
-                const block = blocks[i];
-                if (block.type === BlockType.AND || block.type === BlockType.OR) {
-                    if(i === (blocks.length - 1)) {
-                        valid = false;
-                        message = 'ET/OU ne peut être placé en dernier';
-                        break;
-                    } else if (
-                        (lastBlock === null ) || 
-                        (lastBlock.type !== BlockType.EQUAL && lastBlock.type !== BlockType.BETWEEN && lastBlock.type !== BlockType.INCLUDES)
-                    ) {
-                        valid = false;
-                        message = 'ET/OU ne peut être placé qu\'après des blocs ÉGAL, ENTRE ou CONTIENT';
-                        break;
-                    }
-                } else if (block.type === BlockType.EQUAL || block.type === BlockType.BETWEEN || block.type === BlockType.INCLUDES) {
-                    if (
-                        (lastBlock !== null && i>0) && 
-                        lastBlock.type !== BlockType.AND && lastBlock.type !== BlockType.OR
-                    ) {
-                        valid = false;
-                        message = 'ÉGAL, ENTRE, CONTIENT ne peut être placé qu\'après des blocs ET/OU';
-                        break;
-                    }
+            } else if (block.type === BlockType.EQUAL || block.type === BlockType.BETWEEN || block.type === BlockType.INCLUDES) {
+                if (
+                    (lastBlock !== null && i>0) && 
+                    lastBlock.type !== BlockType.AND && lastBlock.type !== BlockType.OR
+                ) {
+                    valid = false;
+                    message = 'ÉGAL, ENTRE, CONTIENT ne peut être placé qu\'après des blocs ET/OU';
+                    break;
                 }
-                lastBlock = block;
             }
-    
-            setBlocksValid(valid);
-            setBlocksValidMessage(message);
+            lastBlock = block;
+        }
 
-            if(valid) {
-                updateQueryPartsFromBlocks();
-            }
-        */
-    }
+        setBlocksValid(valid);
+        setBlocksValidMessage(message);
+
+        callback(valid);
+    };
 
     useEffect(() => {
         // TODO: Verify if the blocks are valid to update blocksValid and blocksValidMessage
-        validateBlocks((blocksValidDirect: boolean) => {
+        validateBlocks(queryParts, (blocksValidDirect: boolean) => {
             setBlocksValid(blocksValidDirect);
             if (blocksValidDirect && isAutoSearchEnabled) {
                 const canSearch = !loading && blocksValid && queryParts.length > 0;
@@ -454,7 +279,6 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         }
     }
 
-    // Remove query part
     const removeQueryPart = (identifier: string) => setQueryParts(queryParts.filter(q => q.identifier !== identifier));
 
     const EmptyQueryParts = () => {
@@ -465,7 +289,6 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         );
     }
 
-    // Buttons
     const compileIntoTab = (isNewSearch:boolean) => {
         let identifier = isNewSearch ? 'N/A' : selectedTabIdentifier;
         const query = {
@@ -474,25 +297,6 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
             results: null
         };
         receiveQuery(query);
-    }
-
-    const clearAll = () => {
-        setQueryParts([]);
-    }
-
-    const BottomButtons = () => {
-        return (
-        <div className="buttons">
-            <SearchButton 
-                canSearch={blocksValid && queryParts.length > 0} 
-                compileIntoTab={compileIntoTab}
-            />
-            <NewQueryButton 
-                canSearch={blocksValid && queryParts.length > 0} 
-                compileIntoTab={compileIntoTab} 
-            />
-        </div>
-        );
     }
 
     return (
@@ -628,7 +432,12 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         }
 
     
-        <BottomButtons />
+        <BottomButtons 
+            blocksValid={blocksValid}
+            queryParts={queryParts}
+            compileIntoTab={compileIntoTab}
+            resetQuery={resetQuery}
+        />
 
         </div>
     );

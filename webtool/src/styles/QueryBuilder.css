@@ -218,6 +218,7 @@
     font-family: "Montserrat";
     text-align: center;
     flex-shrink: 0;
+    font-weight: 500;
 }
 .qb-block-base-option.enabled .qb-block-base-option-repr{
     background: #2a2a2a;
@@ -270,6 +271,7 @@ select.border.rounded.p-1 {
     max-height: 50px;
     min-width: 0;
     flex: 1;
+    font-weight: 500;
 }
 .qb-block-input {
     font-size: 12px;
@@ -279,6 +281,7 @@ select.border.rounded.p-1 {
     align-items: center;
     width: 100%;
     position: relative;
+    font-weight: 500;
 }
 .qb-block-input-br {
     flex: 1;
@@ -295,6 +298,7 @@ select.border.rounded.p-1 {
     padding: 8px;
     border-radius: 4px;
     border: solid 1px var(--border-color);
+    font-weight: 500;
 }
 .qb-block-input-br input[type="text"]:disabled {
     opacity: .7;

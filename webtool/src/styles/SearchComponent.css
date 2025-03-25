@@ -294,7 +294,7 @@ color: var(--text-color);
 .buttons {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
     padding: 10px;
     justify-content: center;
     align-items: center;
@@ -310,8 +310,14 @@ color: var(--text-color);
     border-radius: 5px;
     font-size: 15px;
     cursor: pointer;
-    flex: 1;
     height: 100%;
+    font-weight: 500;
+    flex: 1;
+}
+.buttons button.square {
+    aspect-ratio: 1;
+    flex: unset;
+    line-height: 0;
 }
 .buttons button:hover {
     background-color: var(--hover-bg);

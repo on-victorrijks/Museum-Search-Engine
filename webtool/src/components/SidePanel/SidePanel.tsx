@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/SidePanel.css';
 import ResizableDiv from '../ResizableDiv';
 import CollectionPanel from '../Collection/CollectionPanel';
-import SearchComponent from '../SearchComponent';
+import SearchComponent from './Search/SearchComponent';
 import { FaExclamationTriangle, FaFolder, FaSearch } from 'react-icons/fa';
 import { QueryPart } from '../../types/queries';
 import { Query } from '../../types/queries';

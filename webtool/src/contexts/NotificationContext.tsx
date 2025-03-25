@@ -17,6 +17,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     const showNotification = (notification: NotificationData) => {
         notification.identifier = uuidv4();
+        // if the notification queue has more than 3 notifications, remove the oldest one
         setNotificationQueue([...notificationQueue, notification]);
         notification.timestamp = Date.now();
         if (notification.type === NotificationType.ERROR && notification.errorContext) {
