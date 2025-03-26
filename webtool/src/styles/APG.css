@@ -38,3 +38,17 @@
 .APG-delete:hover {
     background: var(--button-bg-hover);
 }
+.APG-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 4px;
+}
+.APG-container .APG-item {
+    width: calc(20% - 4px);
+    height: 100%;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+

@@ -1,25 +1,28 @@
-import React, {
-    useState,
-    useEffect
-} from 'react';
+import React from 'react';
 
 import "../../styles/CollectionTab.css";
 import ArtPiecesGallery from '../Artwork/ArtPiecesGallery';
 import CollectionData from '../../types/Collections';
 import { BsStars } from 'react-icons/bs';
-import { useCookies } from 'react-cookie';
-import { FaPlay, FaTrash } from 'react-icons/fa';
-
+import { FaArrowRight, FaPlay, FaSort, FaTrash } from 'react-icons/fa';
+import { useCollection } from '../../contexts/CollectionContext';
+import { data__PathFromTwoTerms, useModal } from '../../contexts/ModalContext';
 const CollectionHeader: React.FC<{
     collectionData: CollectionData,
-    removeCollection: (collectionData: CollectionData) => void,
+    removeCollection: (collectionIdentifier: string) => void,
     setCollectionDataForAugment: (collectionData: CollectionData) => void,
-    setCollectionDataForSlideShow: (collectionData: CollectionData) => void
+    setCollectionDataForSlideShow: (collectionData: CollectionData) => void,
+    sortCollectionBySimilarity: (collectionIdentifier: string) => void,
+    loadingSortCollectionBySimilarity: Record<string, boolean>,
+    openPathFromTwoTerms: (data: data__PathFromTwoTerms) => void
 }> = ({ 
     collectionData,
     removeCollection,
     setCollectionDataForAugment,
     setCollectionDataForSlideShow,
+    sortCollectionBySimilarity,
+    loadingSortCollectionBySimilarity,
+    openPathFromTwoTerms
  }) => {
     return (
         <div className="collectionTab-header">
@@ -34,7 +37,7 @@ const CollectionHeader: React.FC<{
             </div>
             <div className="collectionTab-header-buttons">
                 <button 
-                    onClick={() => removeCollection(collectionData)}
+                    onClick={() => removeCollection(collectionData.identifier)}
                 >
                     Supprimer
                     <div className="collectionTab-header-buttons-icon">
@@ -59,6 +62,23 @@ const CollectionHeader: React.FC<{
                         <FaPlay />
                     </div>
                 </button>
+                <button
+                    onClick={() => sortCollectionBySimilarity(collectionData.identifier)}
+                    disabled={loadingSortCollectionBySimilarity[collectionData.identifier]}
+                >
+                    Trier par similarité
+                    <div className="collectionTab-header-buttons-icon">
+                        <FaSort />
+                    </div>
+                </button>
+                <button
+                    onClick={() => openPathFromTwoTerms({ collectionIdentifier: collectionData.identifier })}
+                >
+                    Chemin entre termes
+                    <div className="collectionTab-header-buttons-icon">
+                        <FaArrowRight />
+                    </div>
+                </button>
             </div>
         </div>
     );
@@ -74,41 +94,9 @@ const CollectionTab: React.FC<{
     setCollectionDataForSlideShow
 }) => {
 
-    const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [collectionData, setCollectionData] = useState<CollectionData|undefined>(undefined);
-
-    useEffect(() => {
-        setLoading(true);
-        if (collections['fab-seg-collections']) {
-            const collectionsData: CollectionData[] = collections['fab-seg-collections'] as CollectionData[];
-            const collection = collectionsData.find((collection) => collection.identifier === collectionIdentifier);
-            if (collection) {
-                setCollectionData(collection);
-            } else {
-                // TODO: Handle error
-            }
-        }
-        setLoading(false);
-    }, [collections]);
-
-    const deleteFromCollection = (recordID: number) => {
-        if(collectionData === undefined) {
-            return;
-        }
-
-        setCollections('fab-seg-collections', (collections['fab-seg-collections'] as CollectionData[]).map((collection: CollectionData) => {
-            if (collection.identifier === collectionData.identifier) {
-                return {
-                    ...collection,
-                    recordIDs: collection.recordIDs.filter((id) => id !== recordID),
-                };
-            } else {
-                return collection;
-            }
-        }));
-    }
-
+    const { openPathFromTwoTerms } = useModal();
+    const { collections, loading, sortCollectionBySimilarity, loadingSortCollectionBySimilarity, removeArtworkFromCollection, removeCollection } = useCollection();
+    const collectionData = collections.find((collection) => collection.identifier === collectionIdentifier);
     return (
         <div className="collection-tab">
             { loading
@@ -127,13 +115,17 @@ const CollectionTab: React.FC<{
                 <>
                     <CollectionHeader 
                         collectionData={collectionData} 
-                        removeCollection={(collectionData: CollectionData) => {}}
+                        removeCollection={removeCollection}
                         setCollectionDataForAugment={setCollectionDataForAugment}
                         setCollectionDataForSlideShow={setCollectionDataForSlideShow}
+                        sortCollectionBySimilarity={sortCollectionBySimilarity}
+                        loadingSortCollectionBySimilarity={loadingSortCollectionBySimilarity}
+                        openPathFromTwoTerms={openPathFromTwoTerms}
                     />
                     <ArtPiecesGallery 
                         recordIDs={collectionData.recordIDs} 
-                        deleteFromCollection={deleteFromCollection}
+                        deleteFromCollection={(recordID: number) => removeArtworkFromCollection(collectionData.identifier, recordID)}
+                        masonry={false}
                     />
                     { collectionData.recordIDs.length > 0
                     ?

@@ -49,10 +49,12 @@ const ArtPiecesGallery: React.FC<{
     recordIDs: number[],
     openArtPieceProfile?: ((recordID: number) => void) | undefined;
     deleteFromCollection?: ((recordID: number) => void) | undefined;
+    masonry?: boolean;
 }> = ({
     recordIDs,
     openArtPieceProfile = undefined,
-    deleteFromCollection = undefined
+    deleteFromCollection = undefined,
+    masonry = true
 }) => {
 
     const componentRef = useRef<HTMLDivElement>(null);
@@ -93,6 +95,8 @@ const ArtPiecesGallery: React.FC<{
 
     return (
         <div ref={componentRef} style={{width: "100%"}}>
+            {masonry
+            ?
             <Masonry 
                 columnsCount={numberOfColums} 
                 gutter="10px"
@@ -107,6 +111,18 @@ const ArtPiecesGallery: React.FC<{
                     deleteFromCollection={deleteFromCollection}
                 />)}
             </Masonry>
+            :
+            <div className="APG-container">
+                {recordIDs && recordIDs.map((recordID, index) => 
+                <RenderImage 
+                    key={index} 
+                    recordID={recordID} 
+                    index={index} 
+                    openArtPieceProfile={openArtPieceProfile} 
+                    deleteFromCollection={deleteFromCollection}
+                />)}
+            </div>
+            }
         </div>
     );
 }

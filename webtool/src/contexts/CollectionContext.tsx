@@ -3,20 +3,30 @@ import { useCookies } from 'react-cookie';
 import CollectionData from '../types/Collections';
 import { useNotification } from './NotificationContext';
 import { NotificationType } from '../types/Notification';
+import axios from 'axios';
+import { ApiResponse } from '../types/ApiResponses';
 
 interface CollectionContextType {
     collections: CollectionData[];
+
     loading: boolean;
+
     addCollection: (collection: CollectionData) => void;
     removeCollection: (identifier: string) => void;
     editCollection: (identifier: string, updatedCollection: CollectionData) => void;
+
     setSelectedCollectionIdentifier: (identifier: string) => void;
     selectedCollectionIdentifier: string|undefined;
     getSelectedCollection: () => CollectionData|undefined;
+
     addArtworkToSelectedCollection: (artworkID: number) => void;
+    batchAddArtworksToSelectedCollection: (collectionIdentifier: string, artworkIDs: number[]) => boolean;
     removeArtworkFromSelectedCollection: (artworkID: number) => void;
     getIsAddedToCollection: (collection: CollectionData|undefined, recordID: number) => boolean;
-    batchAddArtworksToSelectedCollection: (collectionIdentifier: string, artworkIDs: number[]) => boolean;
+    removeArtworkFromCollection: (collectionIdentifier: string, artworkID: number) => void;
+
+    sortCollectionBySimilarity: (collectionIdentifier: string) => void;
+    loadingSortCollectionBySimilarity: Record<string, boolean>;
 }
 
 const CollectionContext = createContext<CollectionContextType | undefined>(undefined);
@@ -26,6 +36,7 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const [loading, setLoading] = useState<boolean>(true);
     const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
     const [selectedCollectionIdentifier, setSelectedCollectionIdentifier] = useState<string|undefined>(undefined);
+    const [loadingSortCollectionBySimilarity, setLoadingSortCollectionBySimilarity] = useState<Record<string, boolean>>({});
 
     const { showNotification } = useNotification();
 
@@ -167,6 +178,76 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         return false;
     }
 
+    const sortCollectionBySimilarity = async (collectionIdentifier: string) => {
+        setLoadingSortCollectionBySimilarity({...loadingSortCollectionBySimilarity, collectionIdentifier: true});
+        const updatedCollections = getUpdatedCollections();
+        const collection = updatedCollections.find((collection) => collection.identifier === collectionIdentifier);
+        if (collection) {
+            // Ask the backend to sort the collection by similarity (use axios)
+            const body = {
+                recordIDs: collection.recordIDs,
+                model_name: "february_finetuned"
+            };
+    
+            try {
+                const response = await axios.post("http://127.0.0.1:5000/api/collection/sort_by_similarity", body, {
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                });
+            
+                // Parse response.data as JSON
+                const data: ApiResponse = response.data;
+                const success = data["success"];
+                if (!success) {
+                    showNotification({
+                        type: NotificationType.ERROR,
+                        title: "Erreur lors de la récupération des résultats",
+                        text: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
+                        buttons: [],
+                        timeout: 5000,
+                        errorContext: {
+                            timestamp: Date.now(),
+                            message: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
+                            origin: "sortCollectionBySimilarity"
+                        }
+                    });
+                    return;
+                }
+                
+                const sortedRecordIDs = data["data"];
+                collection.recordIDs = sortedRecordIDs;
+                editCollection(collectionIdentifier, collection);
+                return true;
+
+            } catch (error) {
+                showNotification({
+                    type: NotificationType.ERROR,
+                    title: "Erreur lors de la récupération des résultats",
+                    text: "Une erreur est survenue lors de la récupération des résultats",
+                    buttons: [],
+                    timeout: 5000,
+                    errorContext: {
+                        timestamp: Date.now(),
+                        message: "Une erreur est survenue lors de la récupération des résultats",
+                        origin: "sortCollectionBySimilarity"
+                    }
+                });
+                return false;
+            } finally {
+                setLoadingSortCollectionBySimilarity({...loadingSortCollectionBySimilarity, collectionIdentifier: false});
+            }
+        }
+    }
+
+    const removeArtworkFromCollection = (collectionIdentifier: string, artworkID: number) => {
+        const updatedCollections = getUpdatedCollections();
+        const collection = updatedCollections.find((collection) => collection.identifier === collectionIdentifier);
+        if (collection) {
+            collection.recordIDs = collection.recordIDs.filter((id) => id !== artworkID);
+            editCollection(collectionIdentifier, collection);
+        }
+    }
     return (
         <CollectionContext.Provider value={{
             collections: parsedCollections,
@@ -180,7 +261,10 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             addArtworkToSelectedCollection,
             removeArtworkFromSelectedCollection,
             getIsAddedToCollection,
-            batchAddArtworksToSelectedCollection
+            batchAddArtworksToSelectedCollection,
+            sortCollectionBySimilarity,
+            loadingSortCollectionBySimilarity,
+            removeArtworkFromCollection
         }}>
             {children}
         </CollectionContext.Provider>

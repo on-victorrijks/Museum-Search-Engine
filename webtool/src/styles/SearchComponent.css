@@ -315,6 +315,9 @@ color: var(--text-color);
     height: 100%;
     font-weight: 500;
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .buttons button.square {
     aspect-ratio: 1;

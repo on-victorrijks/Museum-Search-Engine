@@ -137,6 +137,10 @@ const SearchComponent: React.FC<{
                 break;
             }
 
+            if (lastBlock===null) {
+                continue;
+            }
+
             const block = blocks[i];
             if (block.type === BlockType.AND || block.type === BlockType.OR) {
                 if(i === (blocks.length - 1)) {

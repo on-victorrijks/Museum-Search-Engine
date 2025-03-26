@@ -578,7 +578,7 @@ select.border.rounded.p-1 {
 .qt-verif-header h3 {
     color: var(--text-color);
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 500;
 }
 .qt-verif-content h4 {
     font-size: 13px;

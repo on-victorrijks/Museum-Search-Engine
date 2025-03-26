@@ -26,7 +26,6 @@ def formatReturn(
     user_error: str = "",
     error_code: int = 200
 ):
-    print(python_error)
     if python_error is not None:
         # TODO: Log the error into a Logger
         print(f"Error: {python_error}")
@@ -291,7 +290,7 @@ def get_keywords():
         )
     
 # Augmentation parameters
-VALID_METHODS = ["convex_fill"]
+VALID_METHODS = ["convex_fill", "shortest_path"]
 # Convex fill parameters
 CONVEX_FILL__MIN_NUMBER_OF_IMAGES = 1
 CONVEX_FILL__MAX_NUMBER_OF_IMAGES = 50
@@ -359,8 +358,80 @@ def augment_collection():
             user_error="Une erreur est survenue lors de l'augmentation de la collection",
             error_code=500
         )
+    
+@app.route('/api/collection/sort_by_similarity', methods=['POST'])
+def sort_by_similarity():
+    try:
+        data = request.json
+        record_ids = data.get('recordIDs', [])
+        model_name = data.get('model_name', "february_finetuned")
 
+        if len(record_ids) <= 1:
+            return formatReturn(
+                success=False,
+                user_error="Aucune oeuvre spécifiée",
+                error_code=400
+            )
 
+        if model_name not in MODELS:
+            return formatReturn(
+                success=False,
+                user_error="Modèle invalide",
+                error_code=400
+            ) 
+        
+        sorted_record_ids = DB_MANAGER.sort_by_similarity(model_name, record_ids)
+
+        return formatReturn(success=True, data=sorted_record_ids)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de la trie des oeuvres par similarité",
+            error_code=500
+        )
+
+@app.route('/api/collection/path_from_two_terms', methods=['POST'])
+def path_from_two_terms():
+    try:
+        data = request.json
+        record_ids = data.get('recordIDs', [])
+        model_name = data.get('model_name', "february_finetuned")
+        term1 = data.get('term1', "")
+        term2 = data.get('term2', "")
+
+        if len(record_ids) <= 1:
+            return formatReturn(
+                success=False,
+                user_error="Aucune oeuvre spécifiée",
+                error_code=400
+            )
+
+        if model_name not in MODELS:
+            return formatReturn(
+                success=False,
+                user_error="Modèle invalide",
+                error_code=400
+            ) 
+        
+        if len(term1) == 0 or len(term2) == 0:
+            return formatReturn(
+                success=False,
+                user_error="Aucun terme spécifié",
+                error_code=400
+            )
+        
+        path = DB_MANAGER.path_from_two_terms(model_name, record_ids, term1, term2)
+
+        return formatReturn(success=True, data=path)
+    
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de la recherche du chemin entre les deux termes",
+            error_code=500
+        )
 
 if __name__ == '__main__':
     # Development server

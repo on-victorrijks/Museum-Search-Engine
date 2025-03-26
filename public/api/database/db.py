@@ -4,6 +4,8 @@ import pandas as pd
 import json
 from pgvector.psycopg2 import register_vector
 import random
+import networkx as nx
+from sklearn.metrics.pairwise import cosine_similarity
 
 def betterInt(x):
     # If x is nan, return None
@@ -1038,6 +1040,7 @@ class DatabaseManager:
                     return results[0]
                 return None
 
+
     def convex_fill(self, model_name, record_ids, parameters):
         """
             The goal is to find k images that are similar to the recordIDs and that are not in recordIDs.
@@ -1089,7 +1092,7 @@ class DatabaseManager:
             vector2 = embeddings[recordID2]
 
             # Get the cosine similarity between the two vectors
-            similarity = np.dot(vector1, vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2))
+            similarity = cosine_similarity([vector1], [vector2])[0][0]
             if similarity < min_cosine_similarity:
                 # The two images are too different for the intersection to be interesting
                 patience += 1
@@ -1118,9 +1121,140 @@ class DatabaseManager:
 
         return augmented_collection
 
+    def find_shortest_path(self, recordIDs, embeddings_as_list):
+        """
+            We find the shortest path between all the recordIDs
+        """
+        # Initialize the distance matrix
+        cosine_similarity_matrix = cosine_similarity(embeddings_as_list)
+        # Since two vectors are more similar the closest to 1 their cosine similarity, we transform the matrix
+        cosine_similarity_matrix = 2 - cosine_similarity_matrix
+
+        # Set the diagonal to 0
+        for i in range(len(cosine_similarity_matrix)):
+            cosine_similarity_matrix[i, i] = 0
+
+        # Get the shortest path between the two points
+        G = nx.from_numpy_array(cosine_similarity_matrix)
+        shortest_path = nx.approximation.traveling_salesman_problem(G, cycle=False)
+
+        # Transform from indexes to recordIDs
+        shortest_path = [recordIDs[i] for i in shortest_path]
+
+        return shortest_path
+
+    def path_from_two_terms(self, model_name, record_ids, term1, term2):
+        """
+            We encode the two terms.
+            We compute two lists of distances.
+            The first list contains the distances between the first term and the embeddings of the recordIDs.
+            The second list contains the distances between the second term and the embeddings of the recordIDs.
+            We sort the recordIDs by the closeness to the first term and then by the closeness to the second term.
+            The first recordID of the sorted list is the recordID that is closest to the first term.
+            The last recordID of the sorted list is the recordID that is closest to the second term.
+            etc.
+        """
+        embeddings = {
+            recordID: self.get_embedding_from_recordID(recordID, model_name)
+            for recordID in record_ids
+        }
+        if any(embedding is None for embedding in embeddings.values()):
+            raise Exception("PathFromTwoTerms: Missing embeddings")
+        
+        embeddings_as_list = []
+        for recordID in record_ids:
+            embeddings_as_list.append(embeddings[recordID])
+        
+        term1_embedding = self.get_keyword_embedding(term1, model_name)
+        term2_embedding = self.get_keyword_embedding(term2, model_name)
+
+        if term1_embedding is None or term2_embedding is None:
+            raise Exception("PathFromTwoTerms: Missing embeddings")
+
+        # We want to project the recordIDs onto the line defined between the two terms
+        v = term2_embedding - term1_embedding
+
+        # We project the recordIDs onto the line
+        projected_values = []
+        for recordID in record_ids:
+            e = embeddings[recordID]
+            e_shifted = e - term1_embedding
+            alpha = np.dot(e_shifted, v) / np.dot(v, v)
+            projected_values.append((recordID, alpha))
+
+        # We sort the recordIDs by the projection
+        projected_values.sort(key=lambda x: x[1])
+
+        # We return the sorted recordIDs
+        sorted_recordIDs = [x[0] for x in projected_values]
+        return sorted_recordIDs
+
+    def sort_by_similarity(self, model_name, record_ids):
+        """
+            We sort the recordIDs by making the shortest path between all the recordIDs.
+        """
+        if len(record_ids) == 0:
+            raise Exception("SortBySimilarity: No recordIDs provided")
+
+        if len(record_ids) == 1:
+            raise Exception("SortBySimilarity: Only one recordID provided")
+
+        # Sort the recordIDs (deterministic)
+        record_ids = sorted(record_ids)
+
+        embeddings = {
+            recordID: self.get_embedding_from_recordID(recordID, model_name)
+            for recordID in record_ids
+        }
+        if any(embedding is None for embedding in embeddings.values()):
+            raise Exception("SortBySimilarity: Missing embeddings")
+
+        embeddings_as_list = []
+        for recordID in record_ids:
+            embeddings_as_list.append(embeddings[recordID])
+
+        shortest_path = self.find_shortest_path(record_ids, embeddings_as_list)
+
+        return shortest_path
+
+    def shortest_path(self, model_name, record_ids, parameters):
+        """
+            The goal is to find the shortest path between the recordIDs.
+            Then for each link between two recordIDs, we find the centroid of the two vectors and
+            we add the closest recordID to the augmented collection.
+        """
+        embeddings = {
+            recordID: self.get_embedding_from_recordID(recordID, model_name)
+            for recordID in record_ids
+        }
+        if any(embedding is None for embedding in embeddings.values()):
+            raise Exception("ShortestPath: Missing embeddings")
+
+        other_recordIDs = set(self.get_all_recordIDs())
+        recordIDs = set(record_ids)
+        other_recordIDs = other_recordIDs - recordIDs
+        other_recordIDs = list(other_recordIDs)
+
+        sorted_recordIDs = self.sort_by_similarity(model_name, record_ids)
+
+        augmented_collection = []
+        for i in range(len(sorted_recordIDs) - 1):
+            recordID1 = sorted_recordIDs[i]
+            recordID2 = sorted_recordIDs[i + 1]
+            centroid = (embeddings[recordID1] + embeddings[recordID2]) / 2
+            closestRecordID = self.get_closest_recordID_to_embedding(centroid, other_recordIDs, model_name)
+            augmented_collection.append(closestRecordID)
+
+            # We remove the recordID from the available_recordIDs
+            other_recordIDs.remove(closestRecordID)
+        
+        return augmented_collection
+
     def augment_collection(self, model_name, record_ids, method, parameters):
         if method == "convex_fill":
             return self.convex_fill(model_name, record_ids, parameters)
+        elif method == "shortest_path":
+            return self.shortest_path(model_name, record_ids, parameters)
         else:
             raise Exception("Unknown method")
 
