@@ -12,6 +12,7 @@ import CollectionTab from './Collection/CollectionTab';
 import CollectionData from '../types/Collections';
 import ArtPieceData from '../types/ArtPiece';
 import '../styles/tabs.css';
+import { useCollection } from '../contexts/CollectionContext';
 
 const renderTab = (
     loading: boolean,
@@ -97,8 +98,6 @@ const renderTab = (
                         getOpenInNewTabStatut(tab.identifier)
                     )}
 
-                    selectedCollection={selectedCollection}
-
                     canLike={canLike}
 
                     askForMoreResults={askForMoreResults}
@@ -124,8 +123,6 @@ const renderTab = (
                     dislikeRecord={dislikeRecord}
                     likeRecord={likeRecord}
                     getLikeStatus={(recordID) => getLikeStatus(recordID)}
-
-                    selectedCollection={selectedCollection}
 
                     canLike={canLike}
                 />
@@ -176,8 +173,6 @@ const TabContainer: React.FC<{
     setCollectionDataForAugment: (collectionData: CollectionData) => void;
     setCollectionDataForSlideShow: (collectionData: CollectionData) => void;
 
-    selectedCollection: CollectionData|undefined;
-
     canLike: boolean;
 
     askForMoreResults: () => void;
@@ -197,12 +192,12 @@ const TabContainer: React.FC<{
     openArtistProfileWrapper,
     setCollectionDataForAugment,
     setCollectionDataForSlideShow,
-    selectedCollection,
     canLike,
     askForMoreResults
 }) => {
 
     const [openInNewTabPerTab, setOpenInNewTabPerTab] = useState<Record<string, boolean>>({});
+    const { selectedCollection } = useCollection();
 
     const getTabName = (tab: TabData) => {
         switch(tab.type) {

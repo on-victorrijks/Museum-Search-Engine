@@ -42,8 +42,6 @@ const SidePanel: React.FC<{
     resetQuery: () => void, 
     openCollectionInTab: (collection: CollectionData) => void,
     setModalCreateCollectionIsOpen: (isOpened: boolean) => void,
-    selectedCollection: CollectionData|undefined,
-    setSelectedCollection: (selectedCollection: CollectionData|undefined) => void,
     setCollectionDataForSlideShowWrapper: (collectionData: CollectionData) => void,
 }> = ({
     loading,
@@ -55,8 +53,6 @@ const SidePanel: React.FC<{
     resetQuery,
     openCollectionInTab,
     setModalCreateCollectionIsOpen,
-    selectedCollection,
-    setSelectedCollection,
     setCollectionDataForSlideShowWrapper,
 }) => {
 
@@ -134,8 +130,6 @@ const SidePanel: React.FC<{
                         <CollectionPanel 
                             openCollectionInTab={openCollectionInTab}
                             openCollectionCreationModal={() => setModalCreateCollectionIsOpen(true)}
-                            selectedCollection={selectedCollection}
-                            setSelectedCollection={setSelectedCollection}
                             setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
                         />
                     </>

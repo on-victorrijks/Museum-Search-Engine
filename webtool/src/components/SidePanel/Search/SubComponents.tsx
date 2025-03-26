@@ -1,4 +1,4 @@
-import { FaTimes, FaUndo } from "react-icons/fa";
+import { FaSync, FaTimes, FaUndo } from "react-icons/fa";
 
 import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
 import { QueryPart, SoftQueryPart, SoftQueryType } from "../../../types/queries";
@@ -52,6 +52,23 @@ const ClearButton: React.FC<{
             <FaUndo />
         </button>
     );
+}
+const AutoSearchButton: React.FC<{
+    isAutoSearchEnabled: boolean,
+    setIsAutoSearchEnabled: (isAutoSearchEnabled: boolean) => void
+}> = ({
+    isAutoSearchEnabled,
+    setIsAutoSearchEnabled
+}) => {
+    return (
+        <button
+            className="square"
+            onClick={() => setIsAutoSearchEnabled(!isAutoSearchEnabled)}
+            is-enabled={isAutoSearchEnabled.toString()}
+        >
+            <FaSync />
+        </button>
+    );  
 }
 
 const renderKeyword = (
@@ -196,12 +213,16 @@ const BottomButtons = ({
     blocksValid,
     queryParts,
     compileIntoTab,
-    resetQuery
+    resetQuery,
+    isAutoSearchEnabled,
+    setIsAutoSearchEnabled
 }: {
     blocksValid: boolean,
     queryParts: QueryPart[],
     compileIntoTab: (isNewSearch: boolean) => void,
-    resetQuery: () => void
+    resetQuery: () => void,
+    isAutoSearchEnabled: boolean,
+    setIsAutoSearchEnabled: (isAutoSearchEnabled: boolean) => void
 }) => {
     return (
         <div className="buttons">
@@ -216,6 +237,10 @@ const BottomButtons = ({
         <ClearButton
             canReset={queryParts.length > 0}
             resetQuery={resetQuery}
+        />
+        <AutoSearchButton
+            isAutoSearchEnabled={isAutoSearchEnabled}
+            setIsAutoSearchEnabled={setIsAutoSearchEnabled}
         />
     </div>
     );

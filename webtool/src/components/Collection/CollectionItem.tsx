@@ -1,16 +1,13 @@
 import React from 'react';
 import CollectionData from '../../types/Collections';
-
+import { useCollection } from '../../contexts/CollectionContext';
 import "../../styles/CollectionItem.css";
 import { FaCheck, FaPlay } from 'react-icons/fa';
 
 const CollectionItem: React.FC<{
     data: CollectionData,
-    removeCollection: (identifier: string) => void,
     openCollectionInTab?: (collectionData: CollectionData) => void,
     setCollectionDataForSlideShow?: (collectionData: CollectionData) => void,
-    selectedCollection?: CollectionData|undefined,
-    setSelectedCollection?: (collectionData: CollectionData) => void,
     showButtons?: boolean,
     onClick?: (identifier: string) => void,
     maxImages?: number,
@@ -18,11 +15,8 @@ const CollectionItem: React.FC<{
     cursor?: string
 }> = ({
     data,
-    removeCollection,
-    openCollectionInTab = (collectionData: CollectionData) => {},
-    setCollectionDataForSlideShow = (collectionData: CollectionData) => {},
-    selectedCollection = undefined,
-    setSelectedCollection = (collectionData: CollectionData) => {},
+    openCollectionInTab = () => {},
+    setCollectionDataForSlideShow = () => {},
     showButtons = true,
     onClick = () => {},
     maxImages = 5,
@@ -31,7 +25,8 @@ const CollectionItem: React.FC<{
 }) => {
 
     const alreadyInCollection = data.recordIDs.includes(candidateRecordID);
-    const isSelected = selectedCollection !== undefined && selectedCollection.identifier === data.identifier;
+    const { getSelectedCollection, setSelectedCollectionIdentifier, removeCollection } = useCollection();
+    const isSelected = getSelectedCollection()?.identifier === data.identifier;
 
     return (
         <div 
@@ -63,13 +58,14 @@ const CollectionItem: React.FC<{
             }
             <div className="collection-item-text">
                 <h2>{data.name}</h2>
+                <h4>{new Date(data.timestamp).toLocaleDateString()}</h4>
                 <p>{data.description}</p>
                 <p>{data.recordIDs.length} enregistrements</p>
             </div>
             { showButtons &&
             <div className="collection-item-buttons">
                 <button
-                    onClick={() => setSelectedCollection(data)}
+                    onClick={() => setSelectedCollectionIdentifier(data.identifier)}
                     is-selected={isSelected.toString()}
                 >
                     {

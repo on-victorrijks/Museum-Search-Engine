@@ -7,10 +7,7 @@ import { FaArrowDown, FaArrowRight } from 'react-icons/fa';
 
 import Masonry from "react-responsive-masonry"
 import { TabData } from '../types/tab';
-// Import uuid
 import { v4 as uuidv4 } from 'uuid';
-import CollectionData from '../types/Collections';
-import { useCookies } from 'react-cookie';
 import ArtPieceInteractions from './Artwork/ArtPieceInteractions';
 import ArtPieceData from '../types/ArtPiece';
 
@@ -32,8 +29,6 @@ const SearchResults: React.FC<{
     addTab: (tab: TabData) => void;
     openArtistProfile: (creatorid: string) => void;
 
-    selectedCollection: CollectionData|undefined;
-
     canLike: boolean;
 
     askForMoreResults: () => void;
@@ -47,11 +42,9 @@ const SearchResults: React.FC<{
     getTermStatusInQuery,
     addTab,
     openArtistProfile,
-    selectedCollection,
     canLike,
     askForMoreResults
 }) => {
-
     const componentRef = useRef<HTMLDivElement>(null);
     const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   
@@ -87,69 +80,6 @@ const SearchResults: React.FC<{
 
     const [numberOfColums, setNumberOfColumns] = useState(3); 
 
-
-    const [collections, setCollections] = useCookies(['fab-seg-collections']);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
-
-    useEffect(() => {
-        setLoading(true);
-        if (collections['fab-seg-collections']) {
-            const collectionsData: CollectionData[] = collections['fab-seg-collections'] as CollectionData[];
-            setParsedCollections(collectionsData);
-        }
-        setLoading(false);
-    }, [collections]);
-
-    const addToSelectedCollection = (recordID: number) => {
-        if(selectedCollection === undefined) {
-            return;
-        }
-
-        setCollections('fab-seg-collections', parsedCollections.map((collection: CollectionData) => {
-            if (collection.identifier === selectedCollection.identifier) {
-                return {
-                    ...collection,
-                    recordIDs: [...collection.recordIDs, recordID],
-                };
-            } else {
-                return collection;
-            }
-        }));
-
-    }
-
-    const removeFromSelectedCollection = (recordID: number) => {
-        if(selectedCollection === undefined) {
-            return;
-        }
-
-        setCollections('fab-seg-collections', parsedCollections.map((collection: CollectionData) => {
-            if (collection.identifier === selectedCollection.identifier) {
-                return {
-                    ...collection,
-                    recordIDs: collection.recordIDs.filter((id) => id !== recordID),
-                };
-            } else {
-                return collection;
-            }
-        }));
-    }
-
-    const getIsAddedToACollection = (recordID: number) => {
-        if(selectedCollection === undefined) {
-            return false;
-        }
-        // selectedCollection has no guarantee to be up to date (wrong coding ! #TODO)
-        // We have to check the parsedCollections
-        const collection = parsedCollections.find((collection) => collection.identifier === selectedCollection.identifier);
-        if(collection === undefined) {
-            return false;
-        }
-        return collection.recordIDs.includes(recordID); 
-    }
-
-
     const renderResult = (result: ArtPieceData, index: number) => {
         const recordID = result.recordid;
         let similarity = result.similarity || 0;
@@ -166,7 +96,6 @@ const SearchResults: React.FC<{
 
         const imageURL = "http://127.0.0.1:5000/api/artwork/" + recordID + "/image";
 
-        const isAddedToACollection = getIsAddedToACollection(recordID);
         const isLiked = getLikeStatus(recordID);
         const isLikedStr = isLiked === true ? "true" : isLiked === false ? "false" : "none";
         
@@ -180,12 +109,8 @@ const SearchResults: React.FC<{
                     <ArtPieceInteractions
                         recordID={recordID}
                         isLiked={isLiked}
-                        isAddedToACollection={isAddedToACollection}
-                        removeFromSelectedCollection={removeFromSelectedCollection}
-                        addToSelectedCollection={addToSelectedCollection}
                         likeRecord={() => likeRecord(result)}
                         dislikeRecord={() => dislikeRecord(result)}
-                        selectedCollection={selectedCollection}
                         absolutePosition={true}
                         small={true}
                         canLike={canLike}

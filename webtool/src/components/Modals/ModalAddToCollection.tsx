@@ -23,7 +23,7 @@ const ModalAddToCollection: React.FC<{
     recordID
 }) => {
 
-    const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
+    const [collections, setCollections] = useCookies(['fab-seg-collections']);
     const [loading, setLoading] = useState<boolean>(true);
     const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
 
@@ -94,7 +94,6 @@ const ModalAddToCollection: React.FC<{
                             <CollectionItem 
                                 key={index} 
                                 data={collectionData} 
-                                removeCollection={() => {}}
                                 onClick={(identifier: string) => addToCollection(identifier)}
                                 showButtons={false}
                                 maxImages={5}

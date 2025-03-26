@@ -25,7 +25,7 @@ import { useNotification } from '../../../contexts/NotificationContext';
 import axios from 'axios';
 import { ApiResponse, SuccessfulKeywordsResponse } from '../../../types/ApiResponses';
 import { NotificationType } from '../../../types/Notification';
-import { NewQueryButton, SearchButton, renderKeyword, renderColor, renderLuminosity, renderSoftQueryPart, ClearButton, BottomButtons } from './SubComponents';
+import {renderKeyword, renderColor, renderLuminosity, renderSoftQueryPart, BottomButtons } from './SubComponents';
 import { colors, luminosities } from '../../../constants/SearchPanel';
 
 
@@ -84,7 +84,12 @@ const SearchComponent: React.FC<{
                     title: "Erreur lors de la récupération des mots-clés",
                     text: response.error_message ?? "",
                     buttons: [],
-                    timeout: 5000
+                    timeout: 5000,
+                    errorContext: {
+                        timestamp: Date.now(),
+                        message: "Une erreur est survenue lors de la récupération des mots-clés",
+                        origin: "fetchKeywords"
+                    }
                 });
             }
         };
@@ -437,6 +442,8 @@ const SearchComponent: React.FC<{
             queryParts={queryParts}
             compileIntoTab={compileIntoTab}
             resetQuery={resetQuery}
+            isAutoSearchEnabled={isAutoSearchEnabled}
+            setIsAutoSearchEnabled={setIsAutoSearchEnabled}
         />
 
         </div>

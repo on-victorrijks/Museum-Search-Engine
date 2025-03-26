@@ -59,8 +59,6 @@ const App: React.FC = () => {
 
     const { showNotification } = useNotification();
 
-    const [selectedCollection, setSelectedCollection] = useState<CollectionData|undefined>(undefined);
-
     const [tabs, setTabs] = useState<TabData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedTabIdentifier, setSelectedTabIdentifier] = useState<string>("N/A");
@@ -78,7 +76,12 @@ const App: React.FC = () => {
           title: "Erreur",
           text: "Tab non trouvé",
           buttons: [],
-          timeout: 5000
+          timeout: 5000,
+          errorContext: {
+            timestamp: Date.now(),
+            message: "Tab non trouvé",
+            origin: "selectTab"
+          }
         });
         return;
       }
@@ -102,7 +105,12 @@ const App: React.FC = () => {
           title: "Erreur",
           text: "Une erreur est survenue lors de la récupération du tab sélectionné",
           buttons: [],
-          timeout: 5000
+          timeout: 5000,
+          errorContext: {
+            timestamp: Date.now(),
+            message: "Une erreur est survenue lors de la récupération du tab sélectionné",
+            origin: "askForMoreResults"
+          }
         });
         return;
       }
@@ -114,7 +122,12 @@ const App: React.FC = () => {
           title: "Erreur",
           text: "Une erreur est survenue lors de la récupération du tab sélectionné",
           buttons: [],
-          timeout: 5000
+          timeout: 5000,
+          errorContext: {
+            timestamp: Date.now(),
+            message: "Une erreur est survenue lors de la récupération du tab sélectionné",
+            origin: "askForMoreResults"
+          }
         });
         return;
       }
@@ -171,7 +184,12 @@ const App: React.FC = () => {
               title: "Erreur",
               text: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
               buttons: [],
-              timeout: 5000
+              timeout: 5000,
+              errorContext: {
+                timestamp: Date.now(),
+                message: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
+                origin: "queryServer"
+              }
             });
             return;
           }
@@ -194,7 +212,12 @@ const App: React.FC = () => {
             title: "Erreur lors de la récupération des résultats",
             text: "Une erreur est survenue lors de la récupération des résultats",
             buttons: [],
-            timeout: 5000
+            timeout: 5000,
+            errorContext: {
+              timestamp: Date.now(),
+              message: "Une erreur est survenue lors de la récupération des résultats",
+              origin: "queryServer"
+            }
           });
           return { success: false, message: "An error occurred" };
         } finally {
@@ -309,7 +332,12 @@ const App: React.FC = () => {
             title: "Erreur",
             text: "Tab non trouvé",
             buttons: [],
-            timeout: 5000
+            timeout: 5000,
+            errorContext: {
+              timestamp: Date.now(),
+              message: "Tab non trouvé",
+              origin: "removeTab"
+            }
           });
           return;
         }
@@ -605,8 +633,6 @@ const App: React.FC = () => {
                     resetQuery={resetQuery}
                     openCollectionInTab={openCollectionInTab}
                     setModalCreateCollectionIsOpen={setModalCreateCollectionIsOpen}
-                    selectedCollection={selectedCollection}
-                    setSelectedCollection={setSelectedCollection}
                     setCollectionDataForSlideShowWrapper={setCollectionDataForSlideShowWrapper}
                 />
               
@@ -637,8 +663,6 @@ const App: React.FC = () => {
                         openArtistProfileWrapper={openArtistProfileWrapper}
                         
                         setCollectionDataForAugment={setCollectionDataForAugmentWrapper}
-
-                        selectedCollection={selectedCollection}
 
                         canLike={canLike()}
 

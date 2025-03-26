@@ -1,7 +1,4 @@
-import React, {
-    useEffect,
-    useState,
-} from 'react';
+import React, { useState } from 'react';
 
 import "../../styles/Modals/ModalSlideshowSettings.css";
 import { FaTimes } from 'react-icons/fa';
@@ -61,7 +58,7 @@ const ModalSlideshowSettings: React.FC<{
                     <div className="modal-input-spacer"></div>
                     <Slider
                         value={slideshowInterval}
-                        onChange={(e, value) => {
+                        onChange={(_e, value) => {
                             value = Math.max(100, Math.min(60000, value as number));
                             setSlideshowInterval(value);
                         }}

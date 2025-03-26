@@ -1,37 +1,23 @@
-import React, {
-    useEffect,
-    useState,
-} from 'react';
-
+import React, { useState } from 'react';
 import "../../styles/Modals/ModalCreateCollection.css";
 import { FaTimes } from 'react-icons/fa';
 import CollectionData from '../../types/Collections';
-
-import { useCookies } from 'react-cookie';
-
-// Import uuid
 import { v4 as uuidv4 } from 'uuid';
+import { useCollection } from '../../contexts/CollectionContext';
 
 const ModalCreateCollection: React.FC<{
     askToClose: () => void;
 }> = ({
     askToClose
 }) => {
-
-    const [collections, setCollections, removeCollections] = useCookies(['fab-seg-collections']);
+    const { addCollection } = useCollection();
     const [collection, setCollection] = useState<CollectionData>({
         identifier: "",
         name: "",
         description: "",
-        creationDate: {
-            year: 0,
-            month: 0,
-            day: 0,
-            hour: 0,
-            minute: 0,
-            second: 0,
-        },
+        timestamp: 0,
         recordIDs: [],
+        editCount: 0,
     });
 
     const askToCreateCollection = () => {
@@ -39,22 +25,9 @@ const ModalCreateCollection: React.FC<{
         const newCollection: CollectionData = {
             ...collection,
             identifier: uuidv4(),
-            creationDate: {
-                year: currentDate.getFullYear(),
-                month: currentDate.getMonth(),
-                day: currentDate.getDate(),
-                hour: currentDate.getHours(),
-                minute: currentDate.getMinutes(),
-                second: currentDate.getSeconds(),
-            },
+            timestamp: currentDate.getTime(),
         };
-        // Add the new collection to the list of collections
-        let newCollections: CollectionData[] = [];
-        if (collections['fab-seg-collections']) {
-            newCollections = collections['fab-seg-collections'] as CollectionData[];
-        }
-        newCollections.push(newCollection);
-        setCollections('fab-seg-collections', newCollections);
+        addCollection(newCollection);
         askToClose();
     }
 
@@ -64,7 +37,6 @@ const ModalCreateCollection: React.FC<{
     
     return (
         <div className="modal">
-            
             <div className="modal-header">
                 <h1>Créer une collection</h1>
                 <button className="modal-close-button" onClick={askToClose}>
@@ -73,7 +45,6 @@ const ModalCreateCollection: React.FC<{
             </div>
 
             <div className="modal-content">
-
                 <div className="modal-input">
                     <label>Nom de la collection</label>
                     <input 
@@ -107,9 +78,7 @@ const ModalCreateCollection: React.FC<{
                         Créer la collection
                     </button>
                 </div>
-
             </div>
-
         </div>
     );
 };

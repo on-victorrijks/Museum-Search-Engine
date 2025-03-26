@@ -2,29 +2,20 @@ import React from 'react';
 
 import "../../styles/ArtPieceInteractions.css";
 import { FaBookmark, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
-import CollectionData from '../../types/Collections';
-
+import { useCollection } from '../../contexts/CollectionContext';
 
 
 const ArtPieceInteractions: React.FC<{
-    selectedCollection: CollectionData|undefined,
-    addToSelectedCollection: (recordID: number) => void,
-    removeFromSelectedCollection: (recordID: number) => void,
     canLike: boolean,
     isLiked: boolean|undefined,
-    isAddedToACollection: boolean,
     likeRecord: () => void,
     dislikeRecord: () => void,
     recordID: number,
     absolutePosition?: boolean,
     small?: boolean
 }> = ({
-    selectedCollection,
-    addToSelectedCollection,
-    removeFromSelectedCollection,
     canLike,
     isLiked,
-    isAddedToACollection,
     likeRecord,
     dislikeRecord,
     recordID,
@@ -32,16 +23,19 @@ const ArtPieceInteractions: React.FC<{
     small=false
 }) => {
 
+    const { getSelectedCollection, addArtworkToSelectedCollection, removeArtworkFromSelectedCollection } = useCollection();
+    const isAddedToACollection = getSelectedCollection()?.recordIDs.includes(recordID) ?? false;
+
     return (
     <div className={`art-piece-interactions ${absolutePosition && 'absolute'} ${small ? 'small' : 'large'}`}>
-        { selectedCollection !== undefined &&
+        { getSelectedCollection() !== undefined &&
         <button
-            className={`square ${isAddedToACollection===true && 'enabled'}`}
+            className={`square ${isAddedToACollection && 'enabled'}`}
             is-selected={isAddedToACollection.toString()}
             onClick={
                 isAddedToACollection
-                ? () => removeFromSelectedCollection(recordID)
-                : () => addToSelectedCollection(recordID)
+                ? () => removeArtworkFromSelectedCollection(recordID)
+                : () => addArtworkToSelectedCollection(recordID)
             }
         >
             { !small &&

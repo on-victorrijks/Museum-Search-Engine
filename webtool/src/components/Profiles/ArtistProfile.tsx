@@ -136,7 +136,12 @@ const ArtistProfile: React.FC<{
                 title: "Erreur lors de la récupération des données",
                 text: "Une erreur est survenue lors de la récupération des données",
                 buttons: [],
-                timeout: 5000
+                timeout: 5000,
+                errorContext: {
+                    timestamp: Date.now(),
+                    message: "Une erreur est survenue lors de la récupération des données",
+                    origin: "fetchData"
+                }
             });
             return { success: false, message: "An error occurred" };
         }

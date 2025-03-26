@@ -4,13 +4,20 @@ import App from './App.tsx'
 
 import { CookiesProvider } from 'react-cookie';
 import { NotificationProvider } from './contexts/NotificationContext.tsx';
+import { CollectionProvider } from './contexts/CollectionContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <CookiesProvider defaultSetOptions={{ path: '/' }}>
+
         <NotificationProvider>
-          <App />
+        <CollectionProvider>
+
+            <App />
+
+        </CollectionProvider>
         </NotificationProvider>
+        
       </CookiesProvider>
   </StrictMode>,
 )

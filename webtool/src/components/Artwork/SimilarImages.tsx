@@ -42,7 +42,12 @@ const SimilarImages: React.FC<{
                 title: "Erreur lors de la récupération des images similaires",
                 text: "Une erreur est survenue lors de la récupération des images similaires",
                 buttons: [],
-                timeout: 5000
+                timeout: 5000,
+                errorContext: {
+                    timestamp: Date.now(),
+                    message: "Une erreur est survenue lors de la récupération des images similaires",
+                    origin: "fetchNeighbours"
+                }
             });
             return { success: false, message: "An error occurred" };
         } finally {

@@ -55,6 +55,13 @@
     font-weight: 300;
     width: 100%;
 }
+.collection-item-text h4 {
+    color: var(--text-color);
+    opacity: .8;
+    font-size: 14px;
+    font-weight: 300;
+    width: 100%;
+}
 .collection-item-buttons {
     display: flex;
     flex-direction: row;

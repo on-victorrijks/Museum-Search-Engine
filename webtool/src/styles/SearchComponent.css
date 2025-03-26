@@ -24,6 +24,7 @@
 .searchSection h1 {
     font-size: 14px;
     color: rgb(200, 200, 200);
+    font-weight: 500;
 }
 
 /* Form for Text Input */
@@ -159,6 +160,7 @@ color: var(--text-color);
     color: #acacac;
     text-align: left;
     width: 100%;
+    font-weight: 500;
 }
 .queries_container {
     flex: 1;
@@ -318,6 +320,16 @@ color: var(--text-color);
     aspect-ratio: 1;
     flex: unset;
     line-height: 0;
+}
+.buttons button[is-enabled="true"] {
+    border: solid 3px white;
+    background-color: white;
+    color: black;
+}
+.buttons button[is-enabled="false"] {
+    border: solid 3px #646464;
+    background-color: #646464;
+    color: #acacac;
 }
 .buttons button:hover {
     background-color: var(--hover-bg);

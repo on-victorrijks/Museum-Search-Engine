@@ -4,6 +4,7 @@
     flex-direction: column;
     width: 100%;
     background: var(--background-color);
+    overflow: hidden;
 }
 .collection-content {
     flex: 1;
