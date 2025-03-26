@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import json
 from pgvector.psycopg2 import register_vector
+import random
 
 def betterInt(x):
     # If x is nan, return None
@@ -229,7 +230,15 @@ class DatabaseManager:
         self.paths = paths
         self.models = models
         self.preloaded_keywords = None
+        self.preloaded_recordIDs = None
         self.preload_keywords()
+        self.preload_recordIDs()
+        
+    def preload_recordIDs(self):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT recordID FROM Artwork")
+                self.preloaded_recordIDs = [row[0] for row in cur.fetchall()]
     
     def _connect(self):
         return psycopg2.connect(
@@ -1000,6 +1009,120 @@ class DatabaseManager:
         embeddings /= np.linalg.norm(embeddings)
 
         return embeddings
+
+    def get_all_recordIDs(self):
+        if self.preloaded_recordIDs is None:
+            raise Exception("RecordIDs not preloaded")
+        return self.preloaded_recordIDs
+
+    def get_closest_recordID_to_embedding(
+        self,
+        embedding,
+        recordIDs,
+        model_name,
+    ):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT recordID
+                    FROM Embedding e
+                    JOIN Model m ON e.modelID = m.modelID
+                    WHERE e.recordID = ANY(%s) AND m.model_name = %s
+                    ORDER BY e.embedding_vector <#> %s  
+                    LIMIT 1;
+                    """,
+                    (recordIDs, model_name, embedding)
+                )
+                results = cur.fetchone()
+                if results:
+                    return results[0]
+                return None
+
+    def convex_fill(self, model_name, record_ids, parameters):
+        """
+            The goal is to find k images that are similar to the recordIDs and that are not in recordIDs.
+            The naive approach would be to find the k closest images to the centroid of the recordIDs,
+            but in my opinion this would not be very interesting since the centroid would be a mix of all the images.
+
+            The approach I chose is to select two recordIDs at random (they can be equal !), then get the closest image to the intersection of the two images.
+            I repeat this process k times to get k images. 
+        """
+        if len(record_ids) == 0:
+            raise Exception("ConvexFill: No recordIDs provided")
+
+        number_of_images = parameters["numberOfImages"]
+        similarity_threshold = parameters["similarityThreshold"]
+        decay_rate = parameters["decayRate"]
+        patience = parameters["patience"]
+        if None in [number_of_images, similarity_threshold, decay_rate, patience]:
+            raise Exception(f"ConvexFill: Missing parameters")
+
+        embeddings = {
+            recordID: self.get_embedding_from_recordID(recordID, model_name)
+            for recordID in record_ids
+        }
+        if any(embedding is None for embedding in embeddings.values()):
+            raise Exception(f"ConvexFill: Missing embeddings")
+
+        other_recordIDs = set(self.get_all_recordIDs())
+        recordIDs = set(record_ids)
+        other_recordIDs = other_recordIDs - recordIDs
+
+        # To keep the order
+        recordIDs = list(recordIDs) 
+        other_recordIDs = list(other_recordIDs)
+
+        augmented_collection = []
+
+        i = 0
+        patience_counter = 0
+        min_cosine_similarity = similarity_threshold
+
+        while i < number_of_images:
+            if len(other_recordIDs) == 0:
+                return augmented_collection
+
+            recordID1 = random.choice(recordIDs)
+            recordID2 = random.choice(recordIDs)
+            
+            vector1 = embeddings[recordID1]
+            vector2 = embeddings[recordID2]
+
+            # Get the cosine similarity between the two vectors
+            similarity = np.dot(vector1, vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2))
+            if similarity < min_cosine_similarity:
+                # The two images are too different for the intersection to be interesting
+                patience += 1
+                min_cosine_similarity *= decay_rate
+                
+                if patience_counter < patience:
+                    continue
+                else:
+                    # We continue anyways because we reached the max_patience
+                    pass
+
+            # We reset the patience and min_cosine_similarity because we found a good intersection (or we reached the max_patience)
+            patience = 0
+            min_cosine_similarity = similarity_threshold
+
+            centroid = (vector1 + vector2) / 2
+            closestRecordID = self.get_closest_recordID_to_embedding(centroid, other_recordIDs, model_name)
+            if closestRecordID is None:
+                raise Exception("ConvexFill: No closest recordID found")
+            
+            # We remove the recordID from the available_recordIDs
+            other_recordIDs.remove(closestRecordID)
+            augmented_collection.append(closestRecordID)
+
+            i += 1
+
+        return augmented_collection
+
+    def augment_collection(self, model_name, record_ids, method, parameters):
+        if method == "convex_fill":
+            return self.convex_fill(model_name, record_ids, parameters)
+        else:
+            raise Exception("Unknown method")
 
     def get_models(self):
         with self._connect() as conn:

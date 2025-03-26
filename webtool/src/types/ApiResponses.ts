@@ -35,11 +35,16 @@ interface SuccessfulArtPieceDataResponse extends ApiResponse {
     data: ArtPieceData
 }
 
+interface SuccessfulAugmentCollectionResponse extends ApiResponse {
+    data: number[]
+}
+
 export type {
     ApiResponse,
     SuccessfulQueryResponse,
     SuccessfulKeywordsResponse,
     SuccessfulNeighboursResponse,
     SuccessfulArtistDataResponse,
-    SuccessfulArtPieceDataResponse
+    SuccessfulArtPieceDataResponse,
+    SuccessfulAugmentCollectionResponse
 }

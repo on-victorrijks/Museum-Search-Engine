@@ -16,6 +16,7 @@ interface CollectionContextType {
     addArtworkToSelectedCollection: (artworkID: number) => void;
     removeArtworkFromSelectedCollection: (artworkID: number) => void;
     getIsAddedToCollection: (collection: CollectionData|undefined, recordID: number) => boolean;
+    batchAddArtworksToSelectedCollection: (collectionIdentifier: string, artworkIDs: number[]) => boolean;
 }
 
 const CollectionContext = createContext<CollectionContextType | undefined>(undefined);
@@ -156,6 +157,16 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         return collection.recordIDs.includes(recordID);
     }
 
+    const batchAddArtworksToSelectedCollection = (collectionIdentifier: string, artworkIDs: number[]) => {
+        const updatedCollections = getUpdatedCollections();
+        const collection = updatedCollections.find((collection) => collection.identifier === collectionIdentifier);
+        if (collection) {
+            collection.recordIDs.push(...artworkIDs);
+            editCollection(collectionIdentifier, collection);
+        }
+        return false;
+    }
+
     return (
         <CollectionContext.Provider value={{
             collections: parsedCollections,
@@ -168,7 +179,8 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             getSelectedCollection,
             addArtworkToSelectedCollection,
             removeArtworkFromSelectedCollection,
-            getIsAddedToCollection
+            getIsAddedToCollection,
+            batchAddArtworksToSelectedCollection
         }}>
             {children}
         </CollectionContext.Provider>

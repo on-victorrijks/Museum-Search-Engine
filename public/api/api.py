@@ -289,6 +289,77 @@ def get_keywords():
             user_error="Une erreur est survenue lors de la récupération des mots-clés",
             error_code=500
         )
+    
+# Augmentation parameters
+VALID_METHODS = ["convex_fill"]
+# Convex fill parameters
+CONVEX_FILL__MIN_NUMBER_OF_IMAGES = 1
+CONVEX_FILL__MAX_NUMBER_OF_IMAGES = 50
+CONVEX_FILL__MIN_SIMILARITY_THRESHOLD = 0
+CONVEX_FILL__MAX_SIMILARITY_THRESHOLD = 1
+CONVEX_FILL__MIN_DECAY_RATE = 0
+CONVEX_FILL__MAX_DECAY_RATE = 1
+CONVEX_FILL__MIN_PATIENCE = 1
+CONVEX_FILL__MAX_PATIENCE = 50
+
+
+@app.route('/api/collection/augment', methods=['POST'])
+def augment_collection():
+    try:
+        data = request.json
+        record_ids = data.get('recordIDs', [])
+        if len(record_ids) == 0:
+            return formatReturn(
+                success=False,
+                user_error="Aucune oeuvre spécifiée",
+                error_code=400
+            )
+    
+        method = data.get('method', "convex_fill")
+        if method not in VALID_METHODS:
+            return formatReturn(
+                success=False,
+                user_error="Méthode invalide",
+                error_code=400
+            )
+        
+        # Convex fill parameters
+        parameters = {}
+        if method == "convex_fill":
+            number_of_images = data.get('numberOfImages', 10)
+            number_of_images = max(CONVEX_FILL__MIN_NUMBER_OF_IMAGES, min(number_of_images, CONVEX_FILL__MAX_NUMBER_OF_IMAGES))
+            similarity_threshold = data.get('similarityThreshold', 0.5)
+            similarity_threshold = max(CONVEX_FILL__MIN_SIMILARITY_THRESHOLD, min(similarity_threshold, CONVEX_FILL__MAX_SIMILARITY_THRESHOLD))
+            decay_rate = data.get('decayRate', 0.5)
+            decay_rate = max(CONVEX_FILL__MIN_DECAY_RATE, min(decay_rate, CONVEX_FILL__MAX_DECAY_RATE))
+            patience = data.get('patience', 10)
+            patience = max(CONVEX_FILL__MIN_PATIENCE, min(patience, CONVEX_FILL__MAX_PATIENCE))
+            parameters = {
+                "numberOfImages": number_of_images,
+                "similarityThreshold": similarity_threshold,
+                "decayRate": decay_rate,
+                "patience": patience
+            }
+
+        model_name = data.get('model_name', "february_finetuned")
+        if model_name not in MODELS:
+            return formatReturn(
+                success=False,
+                user_error="Modèle invalide",
+                error_code=400
+            )
+
+        new_record_ids = DB_MANAGER.augment_collection(model_name, record_ids, method, parameters)
+
+        return formatReturn(success=True, data=new_record_ids)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de l'augmentation de la collection",
+            error_code=500
+        )
+
 
 
 if __name__ == '__main__':

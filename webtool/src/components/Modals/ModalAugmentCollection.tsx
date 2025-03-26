@@ -6,7 +6,7 @@ import { FaTimes } from 'react-icons/fa';
 import CollectionData from '../../types/Collections';
 
 import axios from "axios";
-import { ApiResponse } from '../../types/ApiResponses';
+import { ApiResponse, SuccessfulAugmentCollectionResponse } from '../../types/ApiResponses';
 
 import Slider from '@mui/material/Slider';
 import { NotificationType } from '../../types/Notification';
@@ -21,7 +21,7 @@ const ModalAugmentCollection: React.FC<{
     collectionData
 }) => {
     const { showNotification } = useNotification();
-    const { collections, editCollection } = useCollection();
+    const { batchAddArtworksToSelectedCollection } = useCollection();
 
     const [numberOfAIAugmentedImages, setNumberOfAIAugmentedImages] = useState<number>(10);
     const [minCosineSimilarity, setMinCosineSimilarity] = useState<number>(0.8);
@@ -30,19 +30,34 @@ const ModalAugmentCollection: React.FC<{
     const [AIAugmentedLoading, setAIAugmentedLoading] = useState<boolean>(false);
 
     const generateAIAugmentedCollection = async() => {
+        if (!collectionData) {
+            showNotification({
+                type: NotificationType.ERROR,
+                title: "Collection non trouvée",
+                text: "La collection n'a pas été trouvée",
+                buttons: [],
+                timeout: 5000,
+                errorContext: {
+                    timestamp: Date.now(),
+                    message: "La collection n'a pas été trouvée",
+                    origin: "generateAIAugmentedCollection"
+                }
+            });
+        }
         setAIAugmentedLoading(true);
 
         // Send the query
         const body = {
             recordIDs: collectionData?.recordIDs,
+            method: "convex_fill",
             numberOfImages: numberOfAIAugmentedImages,
-            min_cosine_similarity: minCosineSimilarity,
-            decay_cosine_similarity: decayCosineSimilarity,
-            max_patience: maxPatience
+            similarityThreshold: minCosineSimilarity,
+            decayRate: decayCosineSimilarity,
+            patience: maxPatience,
         };
 
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/search/v2/augmentCollection", body, {
+            const response = await axios.post("http://127.0.0.1:5000/api/collection/augment", body, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -52,19 +67,12 @@ const ModalAugmentCollection: React.FC<{
             const data: ApiResponse = response.data;
             const success = data["success"];
             if (!success) throw new Error(data["error_message"] ? data["error_message"].toString() : "An error occurred");
-            const results = data["message"];
-            if(!results) throw new Error("No results returned");
-
+            const results = data["data"] as number[];
+            const augmentedRecordIDs = results;
             // Add the recordIDs to the collection
-            const augmentedRecordIDs = results.augmentedRecordIDs as number[];
-            if (collectionData) {
-                const updatedCollection = {
-                    ...collectionData,
-                    recordIDs: [...collectionData.recordIDs, ...augmentedRecordIDs],
-                };
-                editCollection(collectionData.identifier, updatedCollection);
+            if (collectionData) { // Redundant but ts
+                batchAddArtworksToSelectedCollection(collectionData.identifier, augmentedRecordIDs);
             }
-
         } catch (error) {
             showNotification({
                 type: NotificationType.ERROR,
@@ -75,7 +83,7 @@ const ModalAugmentCollection: React.FC<{
                 errorContext: {
                     timestamp: Date.now(),
                     message: "Une erreur est survenue lors de l'augmentation de la collection",
-                    origin: "generateAIAugmentedCollection"
+                    origin: "generateAIAugmentedCollection:" + error
                 }
             });
             return { success: false, message: "An error occurred" };
