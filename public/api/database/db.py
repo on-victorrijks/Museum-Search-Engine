@@ -734,9 +734,15 @@ class DatabaseManager:
                 column = column_mapping[key]
                 isColumnAList = column_is_list.get(key, False)
 
-            not_prefix = "NOT " if is_not else ""
-            not_prefix = f" OR {column} IS NULL" if keep_null else ""
-            suffix = " "
+            if is_not:
+                not_prefix = "NOT "
+            else:
+                not_prefix = " "
+                
+            if keep_null:
+                suffix = f" OR {column} IS NULL "
+            else:
+                suffix = " "
 
             if constraint_type == "AND":
                 return "AND" + suffix, []
