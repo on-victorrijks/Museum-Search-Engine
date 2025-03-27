@@ -4,12 +4,11 @@ import { FaTimes } from 'react-icons/fa';
 import CollectionData from '../../types/Collections';
 import { v4 as uuidv4 } from 'uuid';
 import { useCollection } from '../../contexts/CollectionContext';
+import { useModal } from '../../contexts/ModalContext';
 
-const ModalCreateCollection: React.FC<{
-    askToClose: () => void;
-}> = ({
-    askToClose
-}) => {
+
+const ModalCreateCollection: React.FC<{}> = ({}) => {
+    const { closeCreateCollection } = useModal();
     const { addCollection } = useCollection();
     const [collection, setCollection] = useState<CollectionData>({
         identifier: "",
@@ -28,7 +27,7 @@ const ModalCreateCollection: React.FC<{
             timestamp: currentDate.getTime(),
         };
         addCollection(newCollection);
-        askToClose();
+        closeCreateCollection();
     }
 
     const isCollectionDataValid = () => {
@@ -39,7 +38,7 @@ const ModalCreateCollection: React.FC<{
         <div className="modal">
             <div className="modal-header">
                 <h1>Créer une collection</h1>
-                <button className="modal-close-button" onClick={askToClose}>
+                <button className="modal-close-button" onClick={closeCreateCollection}>
                     <FaTimes />
                 </button>
             </div>

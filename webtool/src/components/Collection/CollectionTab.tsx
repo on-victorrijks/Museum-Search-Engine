@@ -86,17 +86,22 @@ const CollectionHeader: React.FC<{
 
 const CollectionTab: React.FC<{
     collectionIdentifier: string,
-    setCollectionDataForAugment: (collectionData: CollectionData) => void,
-    setCollectionDataForSlideShow: (collectionData: CollectionData) => void
 }> = ({
     collectionIdentifier,
-    setCollectionDataForAugment,
-    setCollectionDataForSlideShow
 }) => {
 
-    const { openPathFromTwoTerms } = useModal();
+    const { openPathFromTwoTerms, openAugmentCollection, openSlideshowSettings } = useModal();
     const { collections, loading, sortCollectionBySimilarity, loadingSortCollectionBySimilarity, removeArtworkFromCollection, removeCollection } = useCollection();
     const collectionData = collections.find((collection) => collection.identifier === collectionIdentifier);
+    
+    const setCollectionDataForAugment = (collectionData: CollectionData) => {
+        openAugmentCollection({ collectionIdentifier: collectionData.identifier });
+    }
+
+    const setCollectionDataForSlideShow = (collectionData: CollectionData) => {
+        openSlideshowSettings({ collectionIdentifier: collectionData.identifier });
+    }
+    
     return (
         <div className="collection-tab">
             { loading

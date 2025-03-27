@@ -119,6 +119,7 @@ const SearchResults: React.FC<{
                     <div className="result-header-sec"></div>
 
                     <h2>{title}</h2>
+                    <h3>RecordID: {result.recordid}</h3>
                     <div className='result-infos'>
                         <h3 className="clickable" onClick={() => openArtistProfile(result.creatorid)}>{author}</h3>
                         <div className='bubble'></div>

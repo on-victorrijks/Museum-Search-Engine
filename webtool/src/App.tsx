@@ -25,7 +25,6 @@ import { v4 as uuidv4 } from 'uuid';
 import './styles/App.css';
 import "./styles/Modals/Modals.css"
 
-import ModalCreateCollection from './components/Modals/ModalCreateCollection';
 import CollectionData from './types/Collections';
 import ArtPieceData from './types/ArtPiece';
 import ModalAugmentCollection from './components/Modals/ModalAugmentCollection';
@@ -38,24 +37,6 @@ import { dislikeRecord, getLikeStatus, likeRecord } from './logic/LikingSystem';
 import SidePanel from './components/SidePanel/SidePanel';
 
 const App: React.FC = () => {
-
-    const [modalCreateCollectionIsOpen, setModalCreateCollectionIsOpen] = useState<boolean>(false);
-
-    const [modalAugmentCollectionIsOpen, setModalAugmentCollectionIsOpen] = useState<boolean>(false);
-    const [collectionDataForAugment, setCollectionDataForAugment] = useState<CollectionData|undefined>(undefined);
-    const setCollectionDataForAugmentWrapper = (collectionData: CollectionData) => {
-      setCollectionDataForAugment(collectionData);
-      setModalAugmentCollectionIsOpen(true);
-    }
-
-    const [ModalSlideshowSettingsIsOpen, setModalSlideshowSettingsIsOpen] = useState<boolean>(false);
-    const [collectionDataForSlideShow, setCollectionDataForSlideShow] = useState<CollectionData|undefined>(undefined);
-    const setCollectionDataForSlideShowWrapper = (collectionData: CollectionData) => {
-      setCollectionDataForSlideShow(collectionData);
-      setModalSlideshowSettingsIsOpen(true);
-    }
-
-    const [slideShowData, setSlideShowData] = useState<SlideShowData|undefined>(undefined);
 
     const { showNotification } = useNotification();
 
@@ -159,7 +140,7 @@ const App: React.FC = () => {
           "soft_constraints": query.parts.filter((part: QueryPart) => part.isSoft),
           "model_name": "february_finetuned",
           "page": updatedTabs[tabIndex].page,
-          "page_size": isFirstPage ? 50 : 10,
+          "page_size": isFirstPage ? 25 : 10,
           "version": query.version,
           "rocchio_k": query.rocchio_k,
           "rocchio_scale": query.rocchio_scale
@@ -352,8 +333,12 @@ const App: React.FC = () => {
           }
         });
         setTabs(updatedTabs);
-        selectTab(newSelectedTabIdentifier);
-        setQueryParts(newQueryParts);
+        if (newSelectedTabIdentifier==="N/A") {
+          setQueryParts([]);
+        } else {
+          selectTab(newSelectedTabIdentifier);
+          setQueryParts(newQueryParts);
+        }
       }
 
       const updateQueryPartWeight = (queryPartIdentifier: string, newWeight: number) => {
@@ -588,95 +573,52 @@ const App: React.FC = () => {
       }
 
       return (
-            <>
-                { slideShowData!==undefined &&
-                    <Slideshow
-                        collectionData={slideShowData.collectionData}
-                        automaticSlideshow={slideShowData.automaticSlideshow}
-                        slideshowInterval={slideShowData.slideshowInterval}
-                        infiniteSlideshow={slideShowData.infiniteSlideshow}
-                        exitSlideshow={() => setSlideShowData(undefined)}
-                    />
-                }
+        <div className='tabs-container'>
 
-                { (modalCreateCollectionIsOpen || modalAugmentCollectionIsOpen || ModalSlideshowSettingsIsOpen) &&
-                <div className="modals-container">
-                    {
-                        modalCreateCollectionIsOpen &&
-                        <ModalCreateCollection
-                            askToClose={() => setModalCreateCollectionIsOpen(false)}
-                        />
-                    }
-                    { modalAugmentCollectionIsOpen &&
-                        <ModalAugmentCollection
-                            askToClose={() => setModalAugmentCollectionIsOpen(false)}
-                            collectionData={collectionDataForAugment}
-                        />
-                    }
-                    { (ModalSlideshowSettingsIsOpen && collectionDataForSlideShow) &&
-                        <ModalSlideshowSettings
-                            askToClose={() => setModalSlideshowSettingsIsOpen(false)}
-                            collectionData={collectionDataForSlideShow}
-                            launchSlideshow={(slideShowData: SlideShowData) => setSlideShowData(slideShowData)}
-                        />
-                    }
-                </div>
-                }
+            <SidePanel 
+                loading={loading}
+                receiveQuery={receiveQuery}
+                selectedTabIdentifier={selectedTabIdentifier}
+                queryParts={queryParts}
+                setQueryParts={setQueryParts}
+                updateQueryPartWeight={updateQueryPartWeight}
+                resetQuery={resetQuery}
+                openCollectionInTab={openCollectionInTab}
+            />
+          
 
-
-            <div className='tabs-container'>
-
-                <SidePanel 
-                    loading={loading}
-                    receiveQuery={receiveQuery}
-                    selectedTabIdentifier={selectedTabIdentifier}
-                    queryParts={queryParts}
-                    setQueryParts={setQueryParts}
-                    updateQueryPartWeight={updateQueryPartWeight}
-                    resetQuery={resetQuery}
-                    openCollectionInTab={openCollectionInTab}
-                    setModalCreateCollectionIsOpen={setModalCreateCollectionIsOpen}
-                    setCollectionDataForSlideShowWrapper={setCollectionDataForSlideShowWrapper}
-                />
-              
-
-                { getNumberOfTabs()==0
-                ?
-                <div className="empty-tabs">
-                    <h2>Effectuez une recherche pour voir des oeuvres !</h2>
-                </div>
-                :
-                    <TabContainer 
-                      loading={loading}
-
-                        tabs={tabs} 
-                        selectedTabIdentifier={selectedTabIdentifier}
-                        selectTab={selectTab}
-                        addTab={addTab}
-                        removeTab={removeTab}
-
-                        dislikeRecord={(imageInformations: ArtPieceData) => dislikeRecord(tabs, selectedTabIdentifier, setQueryParts, receiveQuery, imageInformations)}
-                        likeRecord={(imageInformations: ArtPieceData) => likeRecord(tabs, selectedTabIdentifier, setQueryParts, receiveQuery, imageInformations)}
-                        getLikeStatus={(recordID: number) => getLikeStatus(tabs, selectedTabIdentifier, recordID)}
-
-                        addTermFromIconography={addTermFromIconography}
-                        getTermStatusInQuery={getTermStatusInQuery}
-
-                        openArtPieceProfileWrapper={openArtPieceProfileWrapper}
-                        openArtistProfileWrapper={openArtistProfileWrapper}
-                        
-                        setCollectionDataForAugment={setCollectionDataForAugmentWrapper}
-
-                        canLike={canLike()}
-
-                        setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
-
-                        askForMoreResults={askForMoreResults}
-                    />
-                }
-
+            { getNumberOfTabs()==0
+            ?
+            <div className="empty-tabs">
+                <h2>Effectuez une recherche pour voir des oeuvres !</h2>
             </div>
-          </>
+            :
+                <TabContainer 
+                  loading={loading}
+
+                    tabs={tabs} 
+                    selectedTabIdentifier={selectedTabIdentifier}
+                    selectTab={selectTab}
+                    addTab={addTab}
+                    removeTab={removeTab}
+
+                    dislikeRecord={(imageInformations: ArtPieceData) => dislikeRecord(tabs, selectedTabIdentifier, setQueryParts, receiveQuery, imageInformations)}
+                    likeRecord={(imageInformations: ArtPieceData) => likeRecord(tabs, selectedTabIdentifier, setQueryParts, receiveQuery, imageInformations)}
+                    getLikeStatus={(recordID: number) => getLikeStatus(tabs, selectedTabIdentifier, recordID)}
+
+                    addTermFromIconography={addTermFromIconography}
+                    getTermStatusInQuery={getTermStatusInQuery}
+
+                    openArtPieceProfileWrapper={openArtPieceProfileWrapper}
+                    openArtistProfileWrapper={openArtistProfileWrapper}
+                    
+                    canLike={canLike()}
+
+                    askForMoreResults={askForMoreResults}
+                />
+            }
+
+        </div>
       );
 };
 

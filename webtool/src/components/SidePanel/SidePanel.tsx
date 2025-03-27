@@ -41,8 +41,6 @@ const SidePanel: React.FC<{
     updateQueryPartWeight: (identifier: string, weight: number) => void,
     resetQuery: () => void, 
     openCollectionInTab: (collection: CollectionData) => void,
-    setModalCreateCollectionIsOpen: (isOpened: boolean) => void,
-    setCollectionDataForSlideShowWrapper: (collectionData: CollectionData) => void,
 }> = ({
     loading,
     receiveQuery,
@@ -52,8 +50,6 @@ const SidePanel: React.FC<{
     updateQueryPartWeight,
     resetQuery,
     openCollectionInTab,
-    setModalCreateCollectionIsOpen,
-    setCollectionDataForSlideShowWrapper,
 }) => {
 
     const { getErrorLogs, showNotification } = useNotification();
@@ -127,11 +123,7 @@ const SidePanel: React.FC<{
                     {mode === SidePanelMode.COLLECTION &&
                     <>
                         <SidePanelHeader title="Collections" />
-                        <CollectionPanel 
-                            openCollectionInTab={openCollectionInTab}
-                            openCollectionCreationModal={() => setModalCreateCollectionIsOpen(true)}
-                            setCollectionDataForSlideShow={setCollectionDataForSlideShowWrapper}
-                        />
+                        <CollectionPanel openCollectionInTab={openCollectionInTab}/>
                     </>
                     } 
                     {mode === SidePanelMode.ERROR_LOGS &&

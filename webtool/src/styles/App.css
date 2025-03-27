@@ -212,6 +212,13 @@
     text-align: left;
     width: 100%;
 }
+.result-content h3 {
+    font-size: 13px;
+    color: #a2a2a2;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+}
 .result-infos{
     display: flex;
     flex-direction: row;

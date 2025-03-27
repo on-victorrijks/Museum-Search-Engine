@@ -9,7 +9,6 @@ import { Query } from '../types/queries';
 import ArtPieceProfile from './Profiles/ArtPieceProfile';
 import ArtistProfile from './Profiles/ArtistProfile';
 import CollectionTab from './Collection/CollectionTab';
-import CollectionData from '../types/Collections';
 import ArtPieceData from '../types/ArtPiece';
 import '../styles/tabs.css';
 import { useCollection } from '../contexts/CollectionContext';
@@ -32,10 +31,7 @@ const renderTab = (
     addTab: (tab: TabData) => void,
     openArtistProfileWrapper: (fromTabIdentifier: string, creatorid: string, openInNewTab: boolean) => void,
     openArtPieceProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void,
-    selectedCollection: CollectionData|undefined,
     canLike: boolean,
-    setCollectionDataForAugment: (collectionData: CollectionData) => void,
-    setCollectionDataForSlideShow: (collectionData: CollectionData) => void,
     askForMoreResults: () => void,
 ) => {
 
@@ -141,8 +137,6 @@ const renderTab = (
             { tab.type === 'collection' &&
                 <CollectionTab
                     collectionIdentifier={tab.content.collectionIdentifier}
-                    setCollectionDataForAugment={setCollectionDataForAugment}
-                    setCollectionDataForSlideShow={setCollectionDataForSlideShow}
                 />
             }
         </div>
@@ -170,9 +164,6 @@ const TabContainer: React.FC<{
     openArtPieceProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void;
     openArtistProfileWrapper: (fromTabIdentifier: string, creatorid: string, openInNewTab: boolean) => void;
 
-    setCollectionDataForAugment: (collectionData: CollectionData) => void;
-    setCollectionDataForSlideShow: (collectionData: CollectionData) => void;
-
     canLike: boolean;
 
     askForMoreResults: () => void;
@@ -190,14 +181,12 @@ const TabContainer: React.FC<{
     getTermStatusInQuery,
     openArtPieceProfileWrapper,
     openArtistProfileWrapper,
-    setCollectionDataForAugment,
-    setCollectionDataForSlideShow,
     canLike,
     askForMoreResults
 }) => {
 
     const [openInNewTabPerTab, setOpenInNewTabPerTab] = useState<Record<string, boolean>>({});
-    const { selectedCollection } = useCollection();
+    const { getSelectedCollection } = useCollection();
 
     const getTabName = (tab: TabData) => {
         switch(tab.type) {
@@ -255,10 +244,7 @@ const TabContainer: React.FC<{
                 addTab,
                 openArtistProfileWrapper,
                 openArtPieceProfileWrapper,
-                selectedCollection,
                 canLike,
-                setCollectionDataForAugment,
-                setCollectionDataForSlideShow,
                 askForMoreResults
             ))}
 

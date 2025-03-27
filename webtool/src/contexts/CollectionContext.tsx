@@ -27,6 +27,8 @@ interface CollectionContextType {
 
     sortCollectionBySimilarity: (collectionIdentifier: string) => void;
     loadingSortCollectionBySimilarity: Record<string, boolean>;
+
+    getCollection: (collectionIdentifier: string|undefined) => CollectionData|undefined;
 }
 
 const CollectionContext = createContext<CollectionContextType | undefined>(undefined);
@@ -248,6 +250,14 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             editCollection(collectionIdentifier, collection);
         }
     }
+
+    const getCollection = (collectionIdentifier: string|undefined) => {
+        if (!collectionIdentifier) {
+            return undefined;
+        }
+        return parsedCollections.find((collection) => collection.identifier === collectionIdentifier);
+    }
+
     return (
         <CollectionContext.Provider value={{
             collections: parsedCollections,
@@ -264,7 +274,8 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             batchAddArtworksToSelectedCollection,
             sortCollectionBySimilarity,
             loadingSortCollectionBySimilarity,
-            removeArtworkFromCollection
+            removeArtworkFromCollection,
+            getCollection
         }}>
             {children}
         </CollectionContext.Provider>

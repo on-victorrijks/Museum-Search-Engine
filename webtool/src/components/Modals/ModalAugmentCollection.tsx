@@ -12,6 +12,7 @@ import Slider from '@mui/material/Slider';
 import { NotificationType } from '../../types/Notification';
 import { useNotification } from '../../contexts/NotificationContext';
 import { useCollection } from '../../contexts/CollectionContext';
+import { useModal } from '../../contexts/ModalContext';
 
 const RenderParametersConvexFill: React.FC<{
     numberOfAIAugmentedImages: number;
@@ -153,15 +154,10 @@ const RenderParameters: React.FC<{
     }
 };
 
-const ModalAugmentCollection: React.FC<{
-    askToClose: () => void;
-    collectionData: CollectionData|undefined
-}> = ({
-    askToClose,
-    collectionData
-}) => {
+const ModalAugmentCollection: React.FC<{}> = ({}) => {
     const { showNotification } = useNotification();
-    const { batchAddArtworksToSelectedCollection } = useCollection();
+    const { batchAddArtworksToSelectedCollection, getCollection } = useCollection();
+    const { closeAugmentCollection, data__AugmentCollection } = useModal();
 
     // Model
     const [modelName, setModelName] = useState<string>("february_finetuned");
@@ -176,42 +172,34 @@ const ModalAugmentCollection: React.FC<{
     const [maxPatience, setMaxPatience] = useState<number>(20);
 
     // Shortest path parameters
-    
+    // none
 
     const [AIAugmentedLoading, setAIAugmentedLoading] = useState<boolean>(false);
 
     const generateAIAugmentedCollection = async() => {
-        if (!collectionData) {
-            showNotification({
-                type: NotificationType.ERROR,
-                title: "Collection non trouvée",
-                text: "La collection n'a pas été trouvée",
-                buttons: [],
-                timeout: 5000,
-                errorContext: {
-                    timestamp: Date.now(),
-                    message: "La collection n'a pas été trouvée",
-                    origin: "generateAIAugmentedCollection"
-                }
-            });
-        }
-        setAIAugmentedLoading(true);
-
-        // Send the query
-        const body : Record<string, any> = {
-            recordIDs: collectionData?.recordIDs,
-            model_name: modelName,
-            method: method,
-        };
-
-        if (method === "convex_fill") {
-            body.numberOfImages = numberOfAIAugmentedImages;
-            body.similarityThreshold = minCosineSimilarity;
-            body.decayRate = decayCosineSimilarity;
-            body.patience = maxPatience;
-        }
-
         try {
+
+            setAIAugmentedLoading(true);
+
+            const collectionData = getCollection(data__AugmentCollection.collectionIdentifier);
+            if (!collectionData) {
+                throw new Error("Collection non trouvée");
+            }
+    
+            // Send the query
+            const body : Record<string, any> = {
+                recordIDs: collectionData?.recordIDs,
+                model_name: modelName,
+                method: method,
+            };
+    
+            if (method === "convex_fill") {
+                body.numberOfImages = numberOfAIAugmentedImages;
+                body.similarityThreshold = minCosineSimilarity;
+                body.decayRate = decayCosineSimilarity;
+                body.patience = maxPatience;
+            }
+
             const response = await axios.post("http://127.0.0.1:5000/api/collection/augment", body, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -244,7 +232,7 @@ const ModalAugmentCollection: React.FC<{
             return { success: false, message: "An error occurred" };
         } finally {
             setAIAugmentedLoading(false);
-            askToClose();
+            closeAugmentCollection();
         }
     }
 
@@ -253,7 +241,7 @@ const ModalAugmentCollection: React.FC<{
             
             <div className="modal-header">
                 <h1>Augmenter la taille de la collection avec l'IA</h1>
-                <button className="modal-close-button" onClick={askToClose}>
+                <button className="modal-close-button" onClick={closeAugmentCollection}>
                     <FaTimes />
                 </button>
             </div>

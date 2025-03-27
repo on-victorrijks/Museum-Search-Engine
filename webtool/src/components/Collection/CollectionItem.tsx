@@ -7,7 +7,6 @@ import { FaCheck, FaPlay } from 'react-icons/fa';
 const CollectionItem: React.FC<{
     data: CollectionData,
     openCollectionInTab?: (collectionData: CollectionData) => void,
-    setCollectionDataForSlideShow?: (collectionData: CollectionData) => void,
     showButtons?: boolean,
     onClick?: (identifier: string) => void,
     maxImages?: number,
@@ -16,7 +15,6 @@ const CollectionItem: React.FC<{
 }> = ({
     data,
     openCollectionInTab = () => {},
-    setCollectionDataForSlideShow = () => {},
     showButtons = true,
     onClick = () => {},
     maxImages = 5,
@@ -90,7 +88,7 @@ const CollectionItem: React.FC<{
                     Supprimer
                 </button>
                 <button
-                    onClick={() => setCollectionDataForSlideShow(data)}
+                    onClick={() => alert("Not implemented yet")}
                     disabled={data.recordIDs.length === 0}
                 >
                     <div className="collection-item-button-icon">
