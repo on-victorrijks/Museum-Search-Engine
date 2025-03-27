@@ -1154,6 +1154,11 @@ class DatabaseManager:
             The last recordID of the sorted list is the recordID that is closest to the second term.
             etc.
         """
+        if model_name not in self.models:
+            raise Exception(f"PathFromTwoTerms: Model {model_name} not found")
+        
+        model = self.models[model_name]
+        
         embeddings = {
             recordID: self.get_embedding_from_recordID(recordID, model_name)
             for recordID in record_ids
@@ -1165,8 +1170,9 @@ class DatabaseManager:
         for recordID in record_ids:
             embeddings_as_list.append(embeddings[recordID])
         
-        term1_embedding = self.get_keyword_embedding(term1, model_name)
-        term2_embedding = self.get_keyword_embedding(term2, model_name)
+        
+        term1_embedding = model.encode_text(term1)
+        term2_embedding = model.encode_text(term2)
 
         if term1_embedding is None or term2_embedding is None:
             raise Exception("PathFromTwoTerms: Missing embeddings")

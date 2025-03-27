@@ -121,11 +121,12 @@
     background: var(--color-positive);
 }
 .notification.notification-success .notification-header-title {
-    color: var(--color-positive);
+    color: var(--color-positive-text);
 }
 .notification.notification-success .notification-header-icon {
     color: var(--color-positive-text);
 }
+
 .notification.notification-error .notification-header {
     background: var(--color-negative);
 }
@@ -135,6 +136,7 @@
 .notification.notification-error .notification-header-icon {
     color: var(--color-negative-text);
 }
+
 .notification.notification-warning .notification-header {
     background: var(--color-warning);
 }

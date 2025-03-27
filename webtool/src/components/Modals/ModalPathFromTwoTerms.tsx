@@ -105,13 +105,9 @@ const ModalPathFromTwoTerms: React.FC = () => {
                 term2: term2
             });
 
-            // This is just wrong: TODO !!
-            console.log(response.data);
-            return;
-
             const updatedCollection = {
                 ...collection,
-                recordIDs: response.data
+                recordIDs: response.data.data
             };
             editCollection(collectionIdentifier, updatedCollection);    
 
