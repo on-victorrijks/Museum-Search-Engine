@@ -203,7 +203,11 @@ def query_artworks():
             ],
             "soft_constraints": [],
             "page": 1,
-            "page_size": 10
+            "page_size": 10,
+            "model_name": "february_finetuned",
+            "version": "rocchio",
+            "rocchio_k": 5,
+            "rocchio_scale": 1.0
         }
         Another example:
         {
@@ -223,7 +227,10 @@ def query_artworks():
             "soft_constraints": [],
             "page": 1,
             "page_size": 10,
-            "model_name": "february_finetuned"
+            "model_name": "february_finetuned",
+            "version": "rocchio",
+            "rocchio_k": 5,
+            "rocchio_scale": 1.0
         }
     """
     try:
@@ -233,13 +240,19 @@ def query_artworks():
         model_name = data.get('model_name', "february_finetuned")
         page = data.get('page', 1)
         page_size = data.get('page_size', 10)
+        version = data.get('version', "power")
+        rocchio_k = data.get('rocchio_k', 5)
+        rocchio_scale = data.get('rocchio_scale', 1.0)
 
         results = DB_MANAGER.query(
             hard_constraints,
             soft_constraints,
             page,
             page_size,
-            model_name
+            model_name,
+            version,
+            rocchio_k,
+            rocchio_scale
         )
         return formatReturn(success=True, data=results)
     except Exception as e:

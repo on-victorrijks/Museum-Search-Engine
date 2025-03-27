@@ -6,6 +6,9 @@ interface Query {
     identifier: string;
     parts: QueryPart[];
     results: any;
+    version: string;
+    rocchio_k: number;
+    rocchio_scale: number;
 }
 //// A part of a query
 interface QueryPart {

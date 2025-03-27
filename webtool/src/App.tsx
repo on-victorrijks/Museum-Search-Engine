@@ -159,7 +159,10 @@ const App: React.FC = () => {
           "soft_constraints": query.parts.filter((part: QueryPart) => part.isSoft),
           "model_name": "february_finetuned",
           "page": updatedTabs[tabIndex].page,
-          "page_size": isFirstPage ? 50 : 10
+          "page_size": isFirstPage ? 50 : 10,
+          "version": query.version,
+          "rocchio_k": query.rocchio_k,
+          "rocchio_scale": query.rocchio_scale
         };
         body["soft_constraints"] = body["soft_constraints"].map((part: QueryPart) => {
           return {

@@ -651,6 +651,7 @@ class DatabaseManager:
         page_size: int = 10,
         keep_original_record: bool = False
     ):
+        # TODO: Add modelID to the query !!
         # First get the embedding of the artwork with the given recordID
         with self._connect() as conn:
             with conn.cursor() as cur:
@@ -906,13 +907,16 @@ class DatabaseManager:
         page: int,
         page_size: int,
         model_name: str,
+        version: str,
+        rocchio_k: int,
+        rocchio_scale: float
     ):
         # Get the base query and the params
         base_query, params = self.get_hard_query(hard_constraints)
 
         # Soft constraints are a list of text, colors, keywords, ... and recordIDs
         # that will form a query embedding using the model.
-        query_embedding = self.get_query_embedding(soft_constraints, model_name)
+        query_embedding = self.get_query_embedding(soft_constraints, model_name, version, rocchio_k, rocchio_scale)
         
         # Get the page_size nearest artworks to the query embedding with the offset page
         nearest_artworks = self.get_nearest_artworks_to_embedding_from_subset(
@@ -947,7 +951,9 @@ class DatabaseManager:
         self, 
         soft_constraints, 
         model_name: str,
-        version: str = "power"
+        version: str = "rocchio",
+        rocchio_k: int = 5,
+        rocchio_scale: float = 1.0
     ):
         if model_name not in self.models:
             raise Exception(f"Model {model_name} not found")
@@ -983,8 +989,29 @@ class DatabaseManager:
                 if recordID is not None and weight != 0:
                     artwork_embedding = self.get_embedding_from_recordID(recordID, model_name)
                     if artwork_embedding is not None:
+                        
+                        # We add the artwork embedding to the embeddings list
                         embeddings.append(artwork_embedding)
                         weights.append(weight)
+
+                        if version == "rocchio":
+                            # Get k nearest artworks to the artwork embedding
+                            nearest_artworks = self.get_nearest_artworks_to_recordID(
+                                recordID,
+                                #model_name,
+                                page=1,
+                                page_size=rocchio_k,
+                                keep_original_record=False
+                            )
+
+                            # We add the nearest artworks to the embeddings list
+                            for nearest_artwork in nearest_artworks:
+                                recordID = nearest_artwork["recordID"]
+                                distance = -nearest_artwork["distance"] # The closest distance possible is -1 (pgvector quirk ?)
+                                nearest_artwork_embedding = self.get_embedding_from_recordID(recordID, model_name)
+                                if nearest_artwork_embedding is not None:
+                                    embeddings.append(nearest_artwork_embedding)
+                                    weights.append(rocchio_scale * weight * np.power(distance, 2))
 
         if len(embeddings) == 0:
             return None
@@ -992,7 +1019,7 @@ class DatabaseManager:
         embeddings = np.array(embeddings)   # Convert to numpy array
         weights = np.array(weights)         # Convert to numpy array
 
-        if version == "classic":
+        if version == "classic" or version == "rocchio":
             # Multiply each embedding by its weight
             for i in range(len(embeddings)):
                 embeddings[i] *= weights[i]
