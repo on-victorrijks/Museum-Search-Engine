@@ -120,7 +120,6 @@ const SearchComponent: React.FC<{
         blocks: QueryPart[], 
         callback: (blocksValidDirect: boolean) => void
     ) => {
-        // TODO: Validate the blocks
         /*
         RULES: 
         > AND/OR can only be placed after EQUAL, BETWEEN, or INCLUDES blocks
@@ -140,11 +139,12 @@ const SearchComponent: React.FC<{
                 break;
             }
 
+            const block = blocks[i];
             if (lastBlock===null) {
+                lastBlock = block;
                 continue;
             }
 
-            const block = blocks[i];
             if (block.type === BlockType.AND || block.type === BlockType.OR) {
                 if(i === (blocks.length - 1)) {
                     valid = false;
@@ -308,7 +308,7 @@ const SearchComponent: React.FC<{
             parts: isNewSearch ? [] : queryParts,
             results: null,
             version: version,
-            rocchio_k: 5,
+            rocchio_k: 30,
             rocchio_scale: 1.0
         };
         receiveQuery(query);

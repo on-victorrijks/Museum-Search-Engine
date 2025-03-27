@@ -59,6 +59,30 @@ MIN_PAGE = 1
 # For now we set an upper bound to 7000
 UPPER_BOUND_ARTWORKS = 7000 
 
+# Query parameters
+VALID_VERSIONS = ["classic", "power", "rocchio"]
+MIN_ROCCHIO_K = 1
+MAX_ROCCHIO_K = 100
+MIN_ROCCHIO_SCALE = 0
+MAX_ROCCHIO_SCALE = 10.0
+
+# Augmentation parameters
+VALID_METHODS = ["convex_fill", "shortest_path"]
+# Convex fill parameters
+CONVEX_FILL__MIN_NUMBER_OF_IMAGES = 1
+CONVEX_FILL__MAX_NUMBER_OF_IMAGES = 50
+CONVEX_FILL__MIN_SIMILARITY_THRESHOLD = 0
+CONVEX_FILL__MAX_SIMILARITY_THRESHOLD = 1
+CONVEX_FILL__MIN_DECAY_RATE = 0
+CONVEX_FILL__MAX_DECAY_RATE = 1
+CONVEX_FILL__MIN_PATIENCE = 1
+CONVEX_FILL__MAX_PATIENCE = 50
+
+# Autocomplete parameters
+MIN_AUTOCOMPLETE_PREFIX_LENGTH = 1
+MAX_AUTOCOMPLETE_PREFIX_LENGTH = 100
+MAX_AUTOCOMPLETE_RESULTS = 5
+
 # Routes
 @app.route('/api/artwork/<int:record_id>/similar', methods=['GET'])
 @limiter.limit("60 per minute")
@@ -244,6 +268,27 @@ def query_artworks():
         rocchio_k = data.get('rocchio_k', 5)
         rocchio_scale = data.get('rocchio_scale', 1.0)
 
+        page_size = max(MIN_PAGE_SIZE, min(page_size, MAX_PAGE_SIZE))
+        max_page = math.ceil(UPPER_BOUND_ARTWORKS / page_size)
+        page = max(MIN_PAGE, min(page, max_page))
+
+        if model_name not in MODELS:
+            return formatReturn(
+                success=False,
+                user_error="Modèle invalide",
+                error_code=400
+            )
+        
+        if version not in VALID_VERSIONS:
+            return formatReturn(
+                success=False,
+                user_error="Version invalide",
+                error_code=400
+            )
+        
+        rocchio_k = max(MIN_ROCCHIO_K, min(rocchio_k, MAX_ROCCHIO_K))
+        rocchio_scale = max(MIN_ROCCHIO_SCALE, min(rocchio_scale, MAX_ROCCHIO_SCALE))    
+
         results = DB_MANAGER.query(
             hard_constraints,
             soft_constraints,
@@ -302,19 +347,6 @@ def get_keywords():
             error_code=500
         )
     
-# Augmentation parameters
-VALID_METHODS = ["convex_fill", "shortest_path"]
-# Convex fill parameters
-CONVEX_FILL__MIN_NUMBER_OF_IMAGES = 1
-CONVEX_FILL__MAX_NUMBER_OF_IMAGES = 50
-CONVEX_FILL__MIN_SIMILARITY_THRESHOLD = 0
-CONVEX_FILL__MAX_SIMILARITY_THRESHOLD = 1
-CONVEX_FILL__MIN_DECAY_RATE = 0
-CONVEX_FILL__MAX_DECAY_RATE = 1
-CONVEX_FILL__MIN_PATIENCE = 1
-CONVEX_FILL__MAX_PATIENCE = 50
-
-
 @app.route('/api/collection/augment', methods=['POST'])
 def augment_collection():
     try:
@@ -445,7 +477,39 @@ def path_from_two_terms():
             user_error="Une erreur est survenue lors de la recherche du chemin entre les deux termes",
             error_code=500
         )
+    
+@app.route('/api/autocomplete', methods=['POST'])
+def autocomplete():
+    try:
+        data = request.json
+        prefix = data.get('prefix', "")
+        column = data.get('column', None)
+        prefix_length = len(prefix)
+        if prefix_length < MIN_AUTOCOMPLETE_PREFIX_LENGTH or prefix_length > MAX_AUTOCOMPLETE_PREFIX_LENGTH:
+            return formatReturn(
+                success=False,
+                user_error="Préfixe invalide",
+                error_code=400
+            )
+        
+        if column is None:  
+            return formatReturn(
+                success=False,
+                user_error="Colonne invalide",
+                error_code=400
+            )
+        
+        results = DB_MANAGER.autocomplete(prefix, column, MAX_AUTOCOMPLETE_RESULTS) 
 
+        return formatReturn(success=True, data=results)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de l'autocomplétion",
+            error_code=500
+        )
+    
 if __name__ == '__main__':
     # Development server
     app.run(debug=False, host='0.0.0.0', port=5000)

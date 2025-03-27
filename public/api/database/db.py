@@ -98,9 +98,9 @@ column_mapping = {
 }
 column_is_list = {
     # Artwork
-    "objectWorkType": True,
+    "objectType": True,
     "materials": True,
-    "formalDescriptionTermStylesPeriods": True,
+    "imageStyle": True,
     
     # ConceptualTerms_Flat
     "CFT_values": True,
@@ -214,6 +214,94 @@ for column, block_types in blockType_per_column.items():
         "compatibleBlockTypes": block_types,
         "userFriendlyName": userFriendlyName_per_column[column]
     })
+columnsWithAutocomplete = {
+    # Artwork
+    "language": "Artwork AS a",
+    "title": "Artwork AS a",
+    "objectType": "Artwork AS a",
+    "classification": "Artwork AS a",
+    "materials": "Artwork AS a",
+    "inscription": "Artwork AS a",
+    "creator": "Artwork AS a",
+    "physicalAppearance": "Artwork AS a",
+    "imageType": "Artwork AS a",
+    "imageColor": "Artwork AS a",
+    "imageCopyright": "Artwork AS a",
+    "imageStyle": "Artwork AS a",
+    
+    # Artist
+    "creatorFirstName": "Artist AS ar",
+    "creatorLastName": "Artist AS ar",
+    "creatorBirthDeathPlace": "Artist AS ar",
+    "creatorNationality": "Artist AS ar",
+
+    # ConceptualTerms_Flat
+    "CFT_values": "ConceptualTerms_Flat AS CFT",
+
+    # IconographicTerms_Flat
+    "IFT_values": "IconographicTerms_Flat AS IFT",
+
+    # SubjectTerms_Flat
+    "STF_values": "SubjectTerms_Flat AS STF",
+
+    # IconographicInterpretation
+    "II_value": "IconographicInterpretation AS II",
+
+    # GeneralSubjectDescription
+    "GSD_value": "GeneralSubjectDescription AS GSD",
+
+    # SpecificSubjectIdentification
+    "SSI_value": "SpecificSubjectIdentification AS SSI",
+}
+column_types = {
+    # Artwork
+    "recordID": "INTEGER",
+    "workID": "TEXT",
+    "language": "TEXT",
+    "title": "TEXT",
+    "objectType": "TEXT[]",
+    "classification": "TEXT",
+    "materials": "TEXT[]",
+    "inscription": "TEXT",
+    "creationEarliestDate": "INTEGER",
+    "creationLatestDate": "INTEGER",
+    "creator": "TEXT",
+    "physicalAppearance": "TEXT",
+    "imageType": "TEXT",
+    "imageColor": "TEXT",
+    "imageCopyright": "TEXT",
+    "imageStyle": "TEXT",
+    "height": "NUMERIC",
+    "width": "NUMERIC",
+    "ratio": "NUMERIC",
+    
+    # Artist
+    "creatorID": "TEXT",
+    "creatorFirstName": "TEXT",
+    "creatorLastName": "TEXT",
+    "creatorBirthDate": "INTEGER",
+    "creatorDeathDate": "INTEGER",
+    "creatorBirthDeathPlace": "TEXT",
+    "creatorNationality": "TEXT",
+
+    # ConceptualTerms_Flat
+    "CFT_values": "TEXT[]",
+
+    # IconographicTerms_Flat
+    "IFT_values": "TEXT[]",
+
+    # SubjectTerms_Flat
+    "STF_values": "TEXT[]",
+
+    # IconographicInterpretation
+    "II_value": "TEXT",
+
+    # GeneralSubjectDescription
+    "GSD_value": "TEXT",
+
+    # SpecificSubjectIdentification
+    "SSI_value": "TEXT",
+}
 
 class DatabaseManager:
     def __init__(
@@ -235,6 +323,7 @@ class DatabaseManager:
         self.preloaded_recordIDs = None
         self.preload_keywords()
         self.preload_recordIDs()
+        self.refresh_autocomplete_views()
         
     def preload_recordIDs(self):
         with self._connect() as conn:
@@ -269,6 +358,7 @@ class DatabaseManager:
         self._create_structured_subject_matter_tables("ConceptualTerms")
 
         self._create_keywords_table()
+        self._create_autocomplete_materialized_views()
 
     def _create_keywords_table(self):
         with self._connect() as conn:
@@ -727,12 +817,18 @@ class DatabaseManager:
 
             column = ""
             isColumnAList = False
+            columnType = None
 
             if constraint_type not in ["AND", "OR", "GROUP"]:
                 if key not in column_mapping:
                     return "", []
                 column = column_mapping[key]
                 isColumnAList = column_is_list.get(key, False)
+                columnType = column_types.get(key, None)
+
+            # If the columnType is either INTEGER or NUMERIC, we will override the case_sensitive to True to avoid LOWER()
+            if columnType in ["INTEGER", "NUMERIC"]:
+                case_sensitive = True
 
             if is_not:
                 not_prefix = "NOT "
@@ -770,14 +866,40 @@ class DatabaseManager:
                     return "", []
                 if exact_match:
                     if case_sensitive:
-                        return not_prefix + f"{column} = %s" + suffix, [inp_equalTo]
+                        if isColumnAList:
+                            return not_prefix + f"{column} @> ARRAY[%s]" + suffix, [inp_equalTo]
+                        else:
+                            return not_prefix + f"{column} = %s" + suffix, [inp_equalTo]
                     else:
-                        return not_prefix + f"LOWER({column}) = LOWER(%s)" + suffix, [inp_equalTo]
+                        if isColumnAList:
+                            return not_prefix + f"LOWER({column}) @> ARRAY[LOWER(%s)]" + suffix, [inp_equalTo]
+                        else:
+                            return not_prefix + f"LOWER({column}) = LOWER(%s)" + suffix, [inp_equalTo]
                 else:
                     if case_sensitive:
-                        return not_prefix + f"{column} LIKE %s" + suffix, [f"%{inp_equalTo}%"]
+                        if isColumnAList:
+                            # At least one term from the TEXT[] column must be LIKE the input
+                            return not_prefix + f"""
+                                EXISTS (
+                                    SELECT 1
+                                    FROM unnest({column}) AS term
+                                    WHERE term LIKE %s
+                                )
+                            """ + suffix, [f"%{inp_equalTo}%"]
+                        else:
+                            return not_prefix + f"{column} LIKE %s" + suffix, [f"%{inp_equalTo}%"]
                     else:
-                        return not_prefix + f"LOWER({column}) LIKE LOWER(%s)" + suffix, [f"%{inp_equalTo}%"]
+                        if isColumnAList:
+                            # At least one lowered term from the TEXT[] column must be LIKE the lowered input
+                            return not_prefix + f"""
+                                EXISTS (
+                                    SELECT 1
+                                    FROM unnest({column}) AS term
+                                    WHERE LOWER(term) LIKE LOWER(%s)
+                                ) 
+                            """ + suffix, [f"%{inp_equalTo}%"]
+                        else:
+                            return not_prefix + f"LOWER({column}) LIKE LOWER(%s)" + suffix, [f"%{inp_equalTo}%"]
             elif constraint_type == "BETWEEN":
                 """
                 ==> "column BETWEEN %s AND %s", [value1, value2] if case_sensitive
@@ -1289,6 +1411,29 @@ class DatabaseManager:
         
         return augmented_collection
 
+    def autocomplete(self, prefix, column, max_results):
+        """
+            We return the top max_results unique values that start with the prefix.
+            The values are fetched from the materialized view for the given column.
+        """
+        # Check if the column is valid
+        isAutocompleteAvailable = column in columnsWithAutocomplete
+        if not isAutocompleteAvailable:
+            return []
+
+        view_name = f"mv_autocomplete_{column}"
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"""
+                    SELECT value
+                    FROM {view_name}
+                    WHERE LOWER(value) LIKE LOWER(%s)
+                    ORDER BY value
+                    LIMIT %s;
+                """, (f"{prefix}%", max_results))
+                results = [row[0] for row in cur.fetchall()]
+                return results
+
     def augment_collection(self, model_name, record_ids, method, parameters):
         if method == "convex_fill":
             return self.convex_fill(model_name, record_ids, parameters)
@@ -1687,4 +1832,64 @@ class DatabaseManager:
                     """,
                     (recordID, value)
                 )
+                conn.commit()
+
+    def _create_autocomplete_materialized_views(self):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                # Colonnes de type TEXT
+                text_columns = {}
+
+                # Colonnes de type TEXT[]
+                array_columns = {}
+
+                for columnKey in columnsWithAutocomplete.keys():
+                    columnInTable = column_mapping[columnKey]
+                    tableName = columnsWithAutocomplete[columnKey]
+                    isList = column_is_list.get(columnKey, False)
+                    if isList:
+                        array_columns[columnKey] = (tableName, columnInTable)
+                    else:
+                        text_columns[columnKey] = (tableName, columnInTable)
+
+                # Création des vues matérialisées pour les colonnes TEXT
+                for column, (tableName, columnInTable) in text_columns.items():
+                    view_name = f"mv_autocomplete_{column}"
+                    cur.execute(f"""
+                        CREATE MATERIALIZED VIEW IF NOT EXISTS {view_name} AS
+                        SELECT DISTINCT {columnInTable} as value
+                        FROM {tableName}
+                        WHERE {columnInTable} IS NOT NULL
+                        AND {columnInTable} != '';
+                    """)
+                    # Index sur la colonne value
+                    cur.execute(f"""
+                        CREATE UNIQUE INDEX IF NOT EXISTS idx_{view_name}_value 
+                        ON {view_name} (value);
+                    """)
+
+                # Création des vues matérialisées pour les colonnes TEXT[]
+                for columnKey, (tableName, columnInTable) in array_columns.items():
+                    view_name = f"mv_autocomplete_{columnKey}"
+                    cur.execute(f"""
+                        CREATE MATERIALIZED VIEW IF NOT EXISTS {view_name} AS
+                        SELECT DISTINCT unnest({columnInTable}) as value
+                        FROM {tableName}
+                        WHERE {columnInTable} IS NOT NULL
+                        AND array_length({columnInTable}, 1) > 0;
+                    """)
+                    # Index sur la colonne value
+                    cur.execute(f"""
+                        CREATE UNIQUE INDEX IF NOT EXISTS idx_{view_name}_value 
+                        ON {view_name} (value);
+                    """)
+
+                conn.commit()
+
+    def refresh_autocomplete_views(self):
+        with self._connect() as conn:
+            with conn.cursor() as cur:
+                for column in columnsWithAutocomplete.keys():
+                    view_name = f"mv_autocomplete_{column}"
+                    cur.execute(f"REFRESH MATERIALIZED VIEW CONCURRENTLY {view_name};")
                 conn.commit()

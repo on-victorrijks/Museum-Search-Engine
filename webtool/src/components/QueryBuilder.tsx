@@ -578,9 +578,9 @@ const queryAPIForAutocomplete = async (
     setAutocompleteLoading(true);
 
     try {
-        const response = await axios.post("http://127.0.0.1:5000/api/search/v2/autocomplete", {
-            key,
-            query
+        const response = await axios.post("http://127.0.0.1:5000/api/autocomplete", {
+            prefix: query,
+            column: key
         }, {
             headers: {
             'Content-Type': 'application/json',
@@ -590,8 +590,9 @@ const queryAPIForAutocomplete = async (
         // Parse response.data as JSON
         const data: ApiResponse = response.data;
         const success = data["success"];
-        //if (!success) throw new Error(data["message"] ? data["message"].toString() : "An error occurred");        
-        //setAutocomplete(data["message"] ? data["message"]["results"] : []);
+        if (!success) throw new Error(data["error_message"] ? data["error_message"].toString() : "An error occurred");
+        const results = data["data"] ? data["data"] : [];
+        setAutocomplete(results ? results : []);
     } catch (error) {
         showNotification({
             type: NotificationType.ERROR,

@@ -27,10 +27,6 @@ import "./styles/Modals/Modals.css"
 
 import CollectionData from './types/Collections';
 import ArtPieceData from './types/ArtPiece';
-import ModalAugmentCollection from './components/Modals/ModalAugmentCollection';
-import SlideShowData from './types/Slideshow';
-import Slideshow from './components/Slideshow';
-import ModalSlideshowSettings from './components/Modals/ModalSlideshowSettings';
 import { useNotification } from './contexts/NotificationContext';
 import { NotificationType } from './types/Notification';
 import { dislikeRecord, getLikeStatus, likeRecord } from './logic/LikingSystem';
@@ -172,7 +168,7 @@ const App: React.FC = () => {
               errorContext: {
                 timestamp: Date.now(),
                 message: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
-                origin: "queryServer"
+                origin: "queryServer:success=false"
               }
             });
             return;
@@ -200,7 +196,7 @@ const App: React.FC = () => {
             errorContext: {
               timestamp: Date.now(),
               message: "Une erreur est survenue lors de la récupération des résultats",
-              origin: "queryServer"
+              origin: "queryServer:error=" + error
             }
           });
           return { success: false, message: "An error occurred" };
