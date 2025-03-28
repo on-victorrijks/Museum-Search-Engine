@@ -21,7 +21,8 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         method: 'rocchio',
         rocchio_k: 10,
         rocchio_scale: 1.0,
-        language: 'fr'
+        language: 'fr',
+        page_size: 30
     });
 
     const [loading, setLoading] = useState<boolean>(true);

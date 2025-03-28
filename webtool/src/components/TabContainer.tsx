@@ -5,7 +5,6 @@ import { TabData } from '../types/tab';
 import { FaFolderPlus, FaTimes } from 'react-icons/fa';
 import SearchResults from './SearchResults';
 import { FaPenToSquare } from 'react-icons/fa6';
-import { Query } from '../types/queries';
 import ArtPieceProfile from './Profiles/ArtPieceProfile';
 import ArtistProfile from './Profiles/ArtistProfile';
 import CollectionTab from './Collection/CollectionTab';

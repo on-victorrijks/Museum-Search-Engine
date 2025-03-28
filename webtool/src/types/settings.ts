@@ -4,6 +4,7 @@ export interface Settings {
     rocchio_k: number;
     rocchio_scale: number;
     language: 'fr' | 'nl' | 'en';
+    page_size: number;
 }
 
 export interface Model {
