@@ -7,6 +7,7 @@ import { NotificationProvider } from './contexts/NotificationContext.tsx';
 import { CollectionProvider } from './contexts/CollectionContext.tsx';
 import { ModalProvider } from './contexts/ModalContext.tsx';
 import { SettingsProvider } from './contexts/SettingsContext.tsx';
+import { TabProvider } from './contexts/TabContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,11 +15,13 @@ createRoot(document.getElementById('root')!).render(
 
         <SettingsProvider>
           <NotificationProvider>
-            <CollectionProvider>
-              <ModalProvider>
-              <App />
-              </ModalProvider>
-            </CollectionProvider>
+            <TabProvider>
+              <CollectionProvider>
+                <ModalProvider>
+                  <App />
+                </ModalProvider>
+              </CollectionProvider>
+            </TabProvider>
           </NotificationProvider>
         </SettingsProvider>
         
