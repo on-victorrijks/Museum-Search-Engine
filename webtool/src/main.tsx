@@ -6,18 +6,21 @@ import { CookiesProvider } from 'react-cookie';
 import { NotificationProvider } from './contexts/NotificationContext.tsx';
 import { CollectionProvider } from './contexts/CollectionContext.tsx';
 import { ModalProvider } from './contexts/ModalContext.tsx';
+import { SettingsProvider } from './contexts/SettingsContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <CookiesProvider defaultSetOptions={{ path: '/' }}>
 
-        <NotificationProvider>
-          <CollectionProvider>
-            <ModalProvider>
+        <SettingsProvider>
+          <NotificationProvider>
+            <CollectionProvider>
+              <ModalProvider>
               <App />
-            </ModalProvider>
-          </CollectionProvider>
-        </NotificationProvider>
+              </ModalProvider>
+            </CollectionProvider>
+          </NotificationProvider>
+        </SettingsProvider>
         
       </CookiesProvider>
   </StrictMode>,

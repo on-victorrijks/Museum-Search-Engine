@@ -15,10 +15,14 @@ class Model:
         self.weights_path = weights_path
         self.device = device
 
+        print(f"    Loading processor, model and tokenizer...")
         self.processor = CLIPProcessor.from_pretrained(base_name)
         self.model = CLIPModel.from_pretrained(base_name).to(device)
         self.tokenizer = AutoTokenizer.from_pretrained(base_name)
+        print(f"    ✓ : Processor, model and tokenizer loaded")
+        print(f"Loading weights...")
         self.model.load_state_dict(torch.load(weights_path, weights_only=True))
+        print(f"    ✓ : Weights loaded")
 
     def encode_text(self, text):
         inputs = self.tokenizer(text, return_tensors="pt", padding=True, truncation=True)

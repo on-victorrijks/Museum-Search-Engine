@@ -55,9 +55,6 @@ const SearchComponent: React.FC<{
     // Which search tab is selected
     const [searchSelection, setSearchSelection] = useState<SearchType>(SearchType.SOFT);
 
-    // Version
-    const [version, setVersion] = useState<string>("power");
-
     // Auto-search
     const [isAutoSearchEnabled, setIsAutoSearchEnabled] = useState<boolean>(true);
 
@@ -132,6 +129,10 @@ const SearchComponent: React.FC<{
         let message = '';
 
         for (let i=0; i<blocks.length; i++) {
+
+            if(blocks[i].isSoft) {
+                continue;
+            }
             
             if(!validateSingleBlock(blocks[i])){
                 valid = false;
@@ -307,9 +308,6 @@ const SearchComponent: React.FC<{
             identifier: identifier,
             parts: isNewSearch ? [] : queryParts,
             results: null,
-            version: version,
-            rocchio_k: 30,
-            rocchio_scale: 1.0
         };
         receiveQuery(query);
     }
@@ -344,20 +342,6 @@ const SearchComponent: React.FC<{
         { searchSelection === SearchType.SOFT &&
         <>
             <div className='search-section'>
-            
-            <div className="searchSection">
-                <h1>Version de l'algorithme</h1>
-                <div className="textForm">
-                    <select 
-                        value={version}
-                        onChange={(e) => setVersion(e.target.value)}
-                    >
-                        <option value="classic">Classique</option>
-                        <option value="power">Power</option>
-                        <option value="rocchio">Rocchio</option>
-                    </select>
-                </div>                
-            </div>
 
             <div className="searchSection">
                 <h1>Rechercher via du texte</h1>

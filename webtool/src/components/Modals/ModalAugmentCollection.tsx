@@ -75,7 +75,7 @@ const RenderParametersConvexFill: React.FC<{
         <div className="modal-input-spacer"></div>
         <Slider
             value={decayCosineSimilarity}
-            onChange={(e, value) => {
+            onChange={(_e, value) => {
                 value = Math.max(0, Math.min(1, value as number));
                 setDecayCosineSimilarity(value);
             }}
@@ -91,7 +91,7 @@ const RenderParametersConvexFill: React.FC<{
         <div className="modal-input-spacer"></div>
         <Slider
             value={maxPatience}
-            onChange={(e, value) => {
+            onChange={(_e, value) => {
                 value = Math.max(0, Math.min(50, value as number));
                 setMaxPatience(value);
             }}

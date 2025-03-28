@@ -798,6 +798,8 @@ class DatabaseManager:
             LEFT JOIN GeneralSubjectDescription GSD ON a.recordID = GSD.recordID
             LEFT JOIN SpecificSubjectIdentification SSI ON a.recordID = SSI.recordID
             JOIN Embedding e ON a.recordID = e.recordID
+            JOIN Model m ON e.modelID = m.modelID
+            AND m.model_name = %s
             WHERE 1=1
         """
 
@@ -987,6 +989,7 @@ class DatabaseManager:
         self,
         base_query,
         params,
+        model_name,
         query_embedding,
         page,
         page_size,
@@ -998,6 +1001,7 @@ class DatabaseManager:
                 if query_embedding is None:
                     # Not soft constraints, we just get the artworks with the hard constraints
                     params_full = []
+                    params_full.append(model_name)
                     params_full.extend(params)
                     params_full.append(page_size)
                     params_full.append(offset)
@@ -1013,6 +1017,7 @@ class DatabaseManager:
                 else:
                     # Soft constraints, we get the artworks ordered by the query embedding
                     params_full = []
+                    params_full.append(model_name)
                     params_full.extend(params)
                     params_full.append(query_embedding)
                     params_full.append(page_size)
@@ -1050,6 +1055,7 @@ class DatabaseManager:
         nearest_artworks = self.get_nearest_artworks_to_embedding_from_subset(
             base_query,
             params,
+            model_name,
             query_embedding,
             page,
             page_size,
@@ -1445,8 +1451,8 @@ class DatabaseManager:
     def get_models(self):
         with self._connect() as conn:
             with conn.cursor() as cur:
-                cur.execute("SELECT model_name FROM Model")
-                return [row[0] for row in cur.fetchall()]
+                cur.execute("SELECT model_name, modelID FROM Model")
+                return [row for row in cur.fetchall()]
 
     def get_columns(self):
         # Return the columns that the hard constraints can be applied to

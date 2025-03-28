@@ -1,0 +1,148 @@
+.settings-fullpage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--background-color);
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Error message */
+.settings-fullpage h1 {
+    color: var(--text-color);
+    font-weight: 300;
+    font-size: 96px;
+    text-align: center;
+}
+
+.settings-fullpage p {
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 24px;
+    text-align: center;
+    max-width: 500px;
+    opacity: .75;
+}
+
+.settings-fullpage button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 22px;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+    text-decoration: underline;
+    margin-top: 20px;
+}
+
+.settings-fullpage button:hover {
+    opacity: 0.5;
+}
+
+
+
+/* Loading spinner */
+.lds-ripple,
+.lds-ripple div {
+  box-sizing: border-box;
+}
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid white;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.75s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 72px;
+    left: 72px;
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+  }
+  4.9% {
+    top: 72px;
+    left: 72px;
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+  }
+  5% {
+    top: 72px;
+    left: 72px;
+    width: 16px;
+    height: 16px;
+    opacity: 1;
+  }
+  100% {
+    top: 0;
+    left: 0;
+    width: 160px;
+    height: 160px;
+    opacity: 0;
+  }
+}
+
+/* Settings page */
+.settings {
+    min-height: 0;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    gap: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+}
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.settings-section label {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 300;
+}
+.settings-section select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: solid 1px var(--border-color);
+    background-color: var(--input-bg);
+    color: white;
+}
+.settings-section input[type="text"], .settings-section input[type="number"] {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+}
+.settings-section input[is-disabled="true"] {
+    cursor: not-allowed;
+    opacity: .5;
+}
+.settings-section-spacer{
+    height: 20px;
+}

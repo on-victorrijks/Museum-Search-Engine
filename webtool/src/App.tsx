@@ -31,9 +31,11 @@ import { useNotification } from './contexts/NotificationContext';
 import { NotificationType } from './types/Notification';
 import { dislikeRecord, getLikeStatus, likeRecord } from './logic/LikingSystem';
 import SidePanel from './components/SidePanel/SidePanel';
+import { useSettings } from './contexts/SettingsContext';
 
 const App: React.FC = () => {
 
+    const { settings } = useSettings();
     const { showNotification } = useNotification();
 
     const [tabs, setTabs] = useState<TabData[]>([]);
@@ -129,17 +131,17 @@ const App: React.FC = () => {
       query: Query
     ) => {
         const isFollowingOfPreviousQuery = updatedTabs[tabIndex].page && updatedTabs[tabIndex].page > 1;
-        const isFirstPage = updatedTabs[tabIndex].page === 1;
+
         // Send the query
         const body = {
           "hard_constraints": query.parts.filter((part: QueryPart) => !part.isSoft),
           "soft_constraints": query.parts.filter((part: QueryPart) => part.isSoft),
-          "model_name": "february_finetuned",
+          "model_name": settings.model_name,  
           "page": updatedTabs[tabIndex].page,
-          "page_size": isFirstPage ? 25 : 10,
-          "version": query.version,
-          "rocchio_k": query.rocchio_k,
-          "rocchio_scale": query.rocchio_scale
+          "page_size": 30,
+          "version": settings.method,
+          "rocchio_k": settings.rocchio_k,
+          "rocchio_scale": settings.rocchio_scale
         };
         body["soft_constraints"] = body["soft_constraints"].map((part: QueryPart) => {
           return {

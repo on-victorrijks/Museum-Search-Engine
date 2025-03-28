@@ -40,14 +40,23 @@ def formatReturn(
     return response
 
 # Initialize models
+device = "cuda" if torch.cuda.is_available() else "cpu"
+#device = "cpu"
+
+print(f"Using device: {device}")
+
 MODELS = {}
+print(f"Loading models...")
 for embedding in get_paths()["embeddings"]:
+    print(f"Loading model {embedding['name']}...")
     MODELS[embedding["name"]] = Model(
         embedding["name"],
         embedding["base_name"],
         embedding["weights_path"],
-        device="cuda" if torch.cuda.is_available() else "cpu"
+        device=device
     )
+    print(f"✓ : Model {embedding['name']} loaded")
+print(f"Models loaded")
 
 # Initialize database manager
 DB_MANAGER = DatabaseManager(get_db_config(), get_paths(), MODELS)
@@ -307,45 +316,6 @@ def query_artworks():
             user_error="Une erreur est survenue lors de la requête",
             error_code=500
         )
-
-@app.route('/api/get_columns', methods=['GET'])
-def get_columns():
-    try:
-        columns = DB_MANAGER.get_columns()
-        return formatReturn(success=True, data=columns)
-    except Exception as e:
-        return formatReturn(
-            success=False,
-            python_error=e,
-            user_error="Une erreur est survenue lors de la récupération des colonnes",
-            error_code=500
-        )
-
-@app.route('/api/get_models', methods=['GET'])
-def get_models():
-    try:
-        models = DB_MANAGER.get_models()
-        return formatReturn(success=True, data=models)
-    except Exception as e:
-        return formatReturn(
-            success=False,
-            python_error=e,
-            user_error="Une erreur est survenue lors de la récupération des modèles",
-            error_code=500
-        )
-
-@app.route('/api/get_keywords', methods=['GET'])
-def get_keywords():
-    try:
-        keywords = DB_MANAGER.get_keywords()
-        return formatReturn(success=True, data=keywords)
-    except Exception as e:
-        return formatReturn(
-            success=False,
-            python_error=e,
-            user_error="Une erreur est survenue lors de la récupération des mots-clés",
-            error_code=500
-        )
     
 @app.route('/api/collection/augment', methods=['POST'])
 def augment_collection():
@@ -510,6 +480,90 @@ def autocomplete():
             error_code=500
         )
     
+@app.route('/api/get_settings_infos', methods=['GET'])
+def get_settings_infos():
+    return formatReturn(success=True, data={
+        # Models
+        "models": [{"model_name": model[0], "modelID": model[1]} for model in DB_MANAGER.get_models()],
+
+        # Methods
+        "methods": VALID_VERSIONS,
+
+        # Languages
+        "languages": ["fr", "en", "nl"],
+        
+        # Rocchio
+        "min_rocchio_k": MIN_ROCCHIO_K,
+        "max_rocchio_k": MAX_ROCCHIO_K,
+        "min_rocchio_scale": MIN_ROCCHIO_SCALE,
+        "max_rocchio_scale": MAX_ROCCHIO_SCALE,
+
+        # Page
+        "min_page_size": MIN_PAGE_SIZE,
+        "max_page_size": MAX_PAGE_SIZE,
+
+        # Autocomplete
+        "min_autocomplete_prefix_length": MIN_AUTOCOMPLETE_PREFIX_LENGTH,
+        "max_autocomplete_prefix_length": MAX_AUTOCOMPLETE_PREFIX_LENGTH,
+        "max_autocomplete_results": MAX_AUTOCOMPLETE_RESULTS,
+
+        # Augment
+        "augment_methods": VALID_METHODS,
+
+        # Convex fill
+        "min_convex_fill_number_of_images": CONVEX_FILL__MIN_NUMBER_OF_IMAGES,
+        "max_convex_fill_number_of_images": CONVEX_FILL__MAX_NUMBER_OF_IMAGES,
+        "min_convex_fill_similarity_threshold": CONVEX_FILL__MIN_SIMILARITY_THRESHOLD,
+        "max_convex_fill_similarity_threshold": CONVEX_FILL__MAX_SIMILARITY_THRESHOLD,
+        "min_convex_fill_decay_rate": CONVEX_FILL__MIN_DECAY_RATE,
+        "max_convex_fill_decay_rate": CONVEX_FILL__MAX_DECAY_RATE,
+        "min_convex_fill_patience": CONVEX_FILL__MIN_PATIENCE,
+        "max_convex_fill_patience": CONVEX_FILL__MAX_PATIENCE,
+    })
+
+# /api/get_settings_infos should replace the routes below
+@app.route('/api/get_columns', methods=['GET'])
+def get_columns():
+    # TODO: Deprecate this route
+    try:
+        columns = DB_MANAGER.get_columns()
+        return formatReturn(success=True, data=columns)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de la récupération des colonnes",
+            error_code=500
+        )
+
+@app.route('/api/get_models', methods=['GET'])
+def get_models():
+    # TODO: Deprecate this route
+    try:
+        models = [model[0] for model in DB_MANAGER.get_models()]
+        return formatReturn(success=True, data=models)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de la récupération des modèles",
+            error_code=500
+        )
+
+@app.route('/api/get_keywords', methods=['GET'])
+def get_keywords():
+    # TODO: Deprecate this route
+    try:
+        keywords = DB_MANAGER.get_keywords()
+        return formatReturn(success=True, data=keywords)
+    except Exception as e:
+        return formatReturn(
+            success=False,
+            python_error=e,
+            user_error="Une erreur est survenue lors de la récupération des mots-clés",
+            error_code=500
+        )
+
 if __name__ == '__main__':
     # Development server
     app.run(debug=False, host='0.0.0.0', port=5000)

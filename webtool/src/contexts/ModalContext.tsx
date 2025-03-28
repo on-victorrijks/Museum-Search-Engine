@@ -3,7 +3,6 @@ import ModalPathFromTwoTerms from '../components/Modals/ModalPathFromTwoTerms';
 import ModalCreateCollection from '../components/Modals/ModalCreateCollection';
 import ModalAugmentCollection from '../components/Modals/ModalAugmentCollection';
 import ModalSlideshowSettings from '../components/Modals/ModalSlideshowSettings';
-import SlideShowData from '../types/Slideshow';
 
 export interface data__PathFromTwoTerms {
     collectionIdentifier: string|undefined;
@@ -68,6 +67,7 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const [data__SlideshowSettings, setData__SlideshowSettings] = useState<data__SlideshowSettings>({
         collectionIdentifier: undefined
     });
+    
 
     const any_open = isOpen__PathFromTwoTerms || isOpen__CreateCollection || isOpen__AugmentCollection || isOpen__SlideshowSettings;
 
@@ -103,7 +103,7 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 setData__SlideshowSettings(data);
             },
             closeSlideshowSettings: () => setIsOpen__SlideshowSettings(false),
-            data__SlideshowSettings: data__SlideshowSettings
+            data__SlideshowSettings: data__SlideshowSettings,
         }}>
             <div className="modals-container" style={{
                 display: any_open ? "flex" : "none"
