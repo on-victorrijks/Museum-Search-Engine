@@ -13,6 +13,7 @@ import { NotificationType } from '../../types/Notification';
 import { useNotification } from '../../contexts/NotificationContext';
 import { useCollection } from '../../contexts/CollectionContext';
 import { useModal } from '../../contexts/ModalContext';
+import { useSettings } from '../../contexts/SettingsContext';
 
 const RenderParametersConvexFill: React.FC<{
     numberOfAIAugmentedImages: number;
@@ -110,7 +111,6 @@ const RenderParametersShortestPath: React.FC<{}> = () => {
 };
 
 const RenderParameters: React.FC<{
-    modelName: string;
     method: string;
     numberOfAIAugmentedImages: number;
     setNumberOfAIAugmentedImages: (value: number) => void;
@@ -122,7 +122,6 @@ const RenderParameters: React.FC<{
     setMaxPatience: (value: number) => void;
     AIAugmentedLoading: boolean;
 }> = ({
-    modelName,
     method,
     numberOfAIAugmentedImages,
     setNumberOfAIAugmentedImages,
@@ -158,10 +157,8 @@ const ModalAugmentCollection: React.FC<{}> = ({}) => {
     const { showNotification } = useNotification();
     const { batchAddArtworksToSelectedCollection, getCollection } = useCollection();
     const { closeAugmentCollection, data__AugmentCollection } = useModal();
-
-    // Model
-    const [modelName, setModelName] = useState<string>("february_finetuned");
-
+    const { settings } = useSettings();
+    
     // Method
     const [method, setMethod] = useState<string>("convex_fill");
 
@@ -189,7 +186,7 @@ const ModalAugmentCollection: React.FC<{}> = ({}) => {
             // Send the query
             const body : Record<string, any> = {
                 recordIDs: collectionData?.recordIDs,
-                model_name: modelName,
+                model_name: settings.model_name,
                 method: method,
             };
     
@@ -249,14 +246,6 @@ const ModalAugmentCollection: React.FC<{}> = ({}) => {
             <div className="modal-content largePadding">
 
                 <div className="modal-input">
-                    <label>Modèle</label>
-                    <select value={modelName} onChange={(e) => setModelName(e.target.value)}>
-                        <option value="february_finetuned">February Finetuned</option>
-                        <option value="march_finetuned">March Finetuned</option>
-                    </select>
-                </div>
-
-                <div className="modal-input">
                     <label>Méthode</label>
                     <select value={method} onChange={(e) => setMethod(e.target.value)}>
                         <option value="convex_fill">Convex Fill</option>
@@ -265,7 +254,6 @@ const ModalAugmentCollection: React.FC<{}> = ({}) => {
                 </div>
 
                 <RenderParameters
-                    modelName={modelName}
                     method={method}
 
                     numberOfAIAugmentedImages={numberOfAIAugmentedImages}

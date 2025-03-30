@@ -319,6 +319,7 @@ class DatabaseManager:
         self.initialize_tables()
         self.paths = paths
         self.models = models
+        self.newModelAddedHandler()
         self.preloaded_keywords = None
         self.preloaded_recordIDs = None
         self.preload_keywords()
@@ -359,6 +360,48 @@ class DatabaseManager:
 
         self._create_keywords_table()
         self._create_autocomplete_materialized_views()
+
+    def newModelAddedHandler(self):
+        # Verify that each model is present in the Model table
+        for model_name in self.models:
+            # Query the Model table to check if the model is present
+            with self._connect() as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT * FROM Model WHERE model_name = %s", (model_name,))
+                    if cur.fetchone() is None:
+                        # The model is not present, so we add it
+                        correspondingEmbeddingData = None
+                        for embedding in self.paths["embeddings"]:
+                            if embedding["name"] == model_name:
+                                correspondingEmbeddingData = embedding
+                                break
+
+                        if correspondingEmbeddingData is None:
+                            raise Exception(f"Model {model_name} not found in paths !")
+                        
+                        print(f"Adding model {model_name} to the database...")
+                        modelID = self.populate_model_table(
+                            correspondingEmbeddingData["name"],
+                            correspondingEmbeddingData["text_dim"],
+                            correspondingEmbeddingData["img_dim"],
+                            correspondingEmbeddingData["description"],
+                            correspondingEmbeddingData["base_name"]
+                        )
+                        self.populate_embedding_vectors(
+                            modelID,
+                            correspondingEmbeddingData["path_embeddings"],
+                            correspondingEmbeddingData["path_index_to_recordID"]
+                        )
+                        self.populate_metrics(
+                            modelID,
+                            correspondingEmbeddingData["metrics"]
+                        )
+                        self.populate_keywords_table(
+                            modelID,
+                            correspondingEmbeddingData["path_keywords"],
+                            correspondingEmbeddingData["path_term_to_index"]
+                        )
+                        print(f"✓ : Model {model_name} added to the database")
 
     def _create_keywords_table(self):
         with self._connect() as conn:
@@ -1502,7 +1545,8 @@ class DatabaseManager:
                 embedding["name"],
                 embedding["text_dim"],
                 embedding["img_dim"],
-                embedding["description"]
+                embedding["description"],
+                embedding["base_name"]
             )
             self.populate_embedding_vectors(
                 modelID,
@@ -1594,7 +1638,8 @@ class DatabaseManager:
         model_name,
         text_dim,
         img_dim,
-        description
+        description,
+        base_name
     ):
         with self._connect() as conn:
             with conn.cursor() as cur:
@@ -1604,9 +1649,11 @@ class DatabaseManager:
                         model_name,
                         text_dim,
                         img_dim,
-                        description
+                        description,
+                        base_name
                     )
                     VALUES (
+                        %s,
                         %s,
                         %s,
                         %s,
@@ -1614,7 +1661,7 @@ class DatabaseManager:
                     )
                     RETURNING modelID;
                     """,
-                    (model_name, text_dim, img_dim, description)
+                    (model_name, text_dim, img_dim, description, base_name)
                 )
                 modelID = cur.fetchone()[0]
                 conn.commit()

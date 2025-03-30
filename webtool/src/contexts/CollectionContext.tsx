@@ -5,7 +5,7 @@ import { useNotification } from './NotificationContext';
 import { NotificationType } from '../types/Notification';
 import axios from 'axios';
 import { ApiResponse } from '../types/ApiResponses';
-
+import { useSettings } from './SettingsContext';
 interface CollectionContextType {
     collections: CollectionData[];
 
@@ -39,6 +39,8 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const [parsedCollections, setParsedCollections] = useState<CollectionData[]>([]);
     const [selectedCollectionIdentifier, setSelectedCollectionIdentifier] = useState<string|undefined>(undefined);
     const [loadingSortCollectionBySimilarity, setLoadingSortCollectionBySimilarity] = useState<Record<string, boolean>>({});
+
+    const { settings } = useSettings();
 
     const { showNotification } = useNotification();
 
@@ -188,7 +190,7 @@ export const CollectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             // Ask the backend to sort the collection by similarity (use axios)
             const body = {
                 recordIDs: collection.recordIDs,
-                model_name: "february_finetuned"
+                model_name: settings.model_name
             };
     
             try {

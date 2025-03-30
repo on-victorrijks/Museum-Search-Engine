@@ -17,10 +17,10 @@ const SettingsContext = createContext<SettingsContext | undefined>(undefined);
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     const [settings, setSettings] = useState<Settings>({
-        model_name: 'february_finetuned',
+        model_name: 'march_finetuned',
         method: 'rocchio',
-        rocchio_k: 10,
-        rocchio_scale: 1.0,
+        rocchio_k: 5,
+        rocchio_scale: 0.25,
         language: 'fr'
     });
 

@@ -237,7 +237,7 @@ def query_artworks():
             "soft_constraints": [],
             "page": 1,
             "page_size": 10,
-            "model_name": "february_finetuned",
+            "model_name": "march_finetuned",
             "version": "rocchio",
             "rocchio_k": 5,
             "rocchio_scale": 1.0
@@ -260,7 +260,7 @@ def query_artworks():
             "soft_constraints": [],
             "page": 1,
             "page_size": 10,
-            "model_name": "february_finetuned",
+            "model_name": "march_finetuned",
             "version": "rocchio",
             "rocchio_k": 5,
             "rocchio_scale": 1.0
@@ -270,7 +270,7 @@ def query_artworks():
         data = request.json
         hard_constraints = data.get('hard_constraints', [])
         soft_constraints = data.get('soft_constraints', [])
-        model_name = data.get('model_name', "february_finetuned")
+        model_name = data.get('model_name', "march_finetuned")
         page = data.get('page', 1)
         page_size = data.get('page_size', 10)
         version = data.get('version', "power")
@@ -321,6 +321,7 @@ def query_artworks():
 def augment_collection():
     try:
         data = request.json
+
         record_ids = data.get('recordIDs', [])
         if len(record_ids) == 0:
             return formatReturn(
@@ -328,7 +329,7 @@ def augment_collection():
                 user_error="Aucune oeuvre spécifiée",
                 error_code=400
             )
-    
+
         method = data.get('method', "convex_fill")
         if method not in VALID_METHODS:
             return formatReturn(
@@ -355,7 +356,7 @@ def augment_collection():
                 "patience": patience
             }
 
-        model_name = data.get('model_name', "february_finetuned")
+        model_name = data.get('model_name', "march_finetuned")
         if model_name not in MODELS:
             return formatReturn(
                 success=False,
@@ -379,7 +380,7 @@ def sort_by_similarity():
     try:
         data = request.json
         record_ids = data.get('recordIDs', [])
-        model_name = data.get('model_name', "february_finetuned")
+        model_name = data.get('model_name', "march_finetuned")
 
         if len(record_ids) <= 1:
             return formatReturn(
@@ -411,7 +412,7 @@ def path_from_two_terms():
     try:
         data = request.json
         record_ids = data.get('recordIDs', [])
-        model_name = data.get('model_name', "february_finetuned")
+        model_name = data.get('model_name', "march_finetuned")
         term1 = data.get('term1', "")
         term2 = data.get('term2', "")
 

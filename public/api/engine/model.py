@@ -24,6 +24,9 @@ class Model:
         self.model.load_state_dict(torch.load(weights_path, weights_only=True))
         print(f"    ✓ : Weights loaded")
 
+    def get_model_name(self):
+        return self.model_name
+
     def encode_text(self, text):
         inputs = self.tokenizer(text, return_tensors="pt", padding=True, truncation=True)
         inputs = inputs.to(self.device)

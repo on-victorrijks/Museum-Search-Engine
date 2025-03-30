@@ -5,47 +5,21 @@ import { useModal } from '../../contexts/ModalContext';
 import { NotificationType } from '../../types/Notification';
 import axios from 'axios';
 import { FaTimes } from 'react-icons/fa';
+import { useSettings } from '../../contexts/SettingsContext';
 
 const ModalPathFromTwoTerms: React.FC = () => {
 
     const { showNotification } = useNotification();
     const { editCollection, collections } = useCollection();
     const { closePathFromTwoTerms, data__PathFromTwoTerms } = useModal();
+    const { settings } = useSettings();
     
     const [term1, setTerm1] = useState<string>('');
     const [term2, setTerm2] = useState<string>('');
-    const [selectedModel, setSelectedModel] = useState<string>('');
-    const [models, setModels] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    React.useEffect(() => {
-        const fetchModels = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:5000/api/get_models');
-                setModels(response.data.data);
-                if (response.data.data.length > 0) {
-                    setSelectedModel(response.data.data[0]);
-                }
-            } catch (error) {
-                showNotification({
-                    type: NotificationType.ERROR,
-                    title: "Erreur lors de la récupération des modèles",
-                    text: "Une erreur est survenue lors de la récupération des modèles",
-                    buttons: [],
-                    timeout: 5000,
-                    errorContext: {
-                        timestamp: Date.now(),
-                        message: "Une erreur est survenue lors de la récupération des modèles",
-                        origin: "fetchModels"
-                    }
-                });
-            }
-        };
-        fetchModels();
-    }, []);
-
     const handleSubmit = async () => {
-        if (!term1 || !term2 || !selectedModel) {
+        if (!term1 || !term2) {
             showNotification({
                 type: NotificationType.ERROR,
                 title: "Erreur",
@@ -99,7 +73,7 @@ const ModalPathFromTwoTerms: React.FC = () => {
         setIsLoading(true);
         try {
             const response = await axios.post('http://127.0.0.1:5000/api/collection/path_from_two_terms', {
-                model_name: selectedModel,
+                model_name: settings.model_name,
                 recordIDs: collection.recordIDs,
                 term1: term1,
                 term2: term2
@@ -148,18 +122,7 @@ const ModalPathFromTwoTerms: React.FC = () => {
             </div>
 
             <div className="modal-content">
-                    
-                <div className="modal-input">
-                    <label>Modèle</label>
-                    <select value={selectedModel} onChange={(e) => setSelectedModel(e.target.value)}>
-                        {models.map((model) => (
-                            <option key={model} value={model}>
-                                {model}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
+   
                 <div className="modal-input">
                     <label>Premier terme</label>
                     <input 

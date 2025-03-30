@@ -28,9 +28,28 @@ def get_paths():
                 "weights_path": PARENT + os.getenv("february_finetuned_weights_path"),
                 "description": "February finetuned embeddings",
                 "metrics": [
-                    {"name": "Acc@1", "value": 0.7},
-                    {"name": "Acc@5", "value": 0.89},
-                    {"name": "Acc@10", "value": 0.98}
+                    {"name": "loss", "value": 0.353437},
+                    {"name": "average_position", "value": 2.634336},
+                    {"name": "mrr", "value": 0.744311},
+                    {"name": "recall@1", "value": 0.619004},
+                ]
+            },
+            {
+                "name": "march_finetuned",
+                "path_embeddings": PARENT + os.getenv("march_finetuned_path_embeddings"),
+                "path_index_to_recordID": PARENT + os.getenv("march_finetuned_path_index_to_recordID"),
+                "path_keywords": PARENT + os.getenv("march_finetuned_path_keywords_embeddings"),
+                "path_term_to_index": PARENT + os.getenv("march_finetuned_path_keywords_term_to_index"),
+                "text_dim": 768,    
+                "img_dim": 768,
+                "base_name": os.getenv("march_finetuned_model_name"),
+                "weights_path": PARENT + os.getenv("march_finetuned_weights_path"),
+                "description": "March finetuned embeddings",
+                "metrics": [
+                    {"name": "loss", "value": 0.283353},
+                    {"name": "average_position", "value": 2.305237},
+                    {"name": "mrr", "value": 0.784912},
+                    {"name": "recall@1", "value": 0.666860},
                 ]
             }
         ],
