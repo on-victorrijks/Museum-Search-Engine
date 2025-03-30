@@ -165,40 +165,4 @@
     font-weight: 500;
 }
 
-.settings-section select,
-.settings-section input[type="range"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
-}
-
-.settings-section input[type="range"] {
-    padding: 0;
-    height: 20px;
-    -webkit-appearance: none;
-    background: #ddd;
-    border-radius: 10px;
-    outline: none;
-}
-
-.settings-section input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #4a90e2;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.settings-section input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #4a90e2;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
-
 
