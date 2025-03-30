@@ -41,7 +41,9 @@ def formatReturn(
 
 # Initialize models
 device = "cuda" if torch.cuda.is_available() else "cpu"
-#device = "cpu"
+# CUDA not needed for one inference at a time !
+# TODO: Batch inference for long queries
+device = "cpu"
 
 print(f"Using device: {device}")
 
@@ -71,7 +73,7 @@ UPPER_BOUND_ARTWORKS = 7000
 # Query parameters
 VALID_VERSIONS = ["classic", "power", "rocchio"]
 MIN_ROCCHIO_K = 1
-MAX_ROCCHIO_K = 100
+MAX_ROCCHIO_K = 15
 MIN_ROCCHIO_SCALE = 0
 MAX_ROCCHIO_SCALE = 10.0
 
@@ -79,13 +81,13 @@ MAX_ROCCHIO_SCALE = 10.0
 VALID_METHODS = ["convex_fill", "shortest_path"]
 # Convex fill parameters
 CONVEX_FILL__MIN_NUMBER_OF_IMAGES = 1
-CONVEX_FILL__MAX_NUMBER_OF_IMAGES = 50
+CONVEX_FILL__MAX_NUMBER_OF_IMAGES = 10
 CONVEX_FILL__MIN_SIMILARITY_THRESHOLD = 0
-CONVEX_FILL__MAX_SIMILARITY_THRESHOLD = 1
+CONVEX_FILL__MAX_SIMILARITY_THRESHOLD = 0.95
 CONVEX_FILL__MIN_DECAY_RATE = 0
-CONVEX_FILL__MAX_DECAY_RATE = 1
+CONVEX_FILL__MAX_DECAY_RATE = 0.95
 CONVEX_FILL__MIN_PATIENCE = 1
-CONVEX_FILL__MAX_PATIENCE = 50
+CONVEX_FILL__MAX_PATIENCE = 10
 
 # Autocomplete parameters
 MIN_AUTOCOMPLETE_PREFIX_LENGTH = 1

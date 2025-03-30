@@ -28,12 +28,18 @@ class Model:
         return self.model_name
 
     def encode_text(self, text):
-        inputs = self.tokenizer(text, return_tensors="pt", padding=True, truncation=True)
-        inputs = inputs.to(self.device)
-        outputs = self.model.get_text_features(**inputs).squeeze()
-        # If the device is not cpu, convert the output to a numpy array
-        if self.device != "cpu":
-            outputs = outputs.detach().cpu().numpy()
-        else:
-            outputs = outputs.numpy()
+        with torch.no_grad():
+            inputs = self.tokenizer(text, return_tensors="pt", padding=True, truncation=True)
+
+            if self.device != "cpu":
+                inputs = inputs.to(self.device)
+
+            outputs = self.model.get_text_features(**inputs).squeeze()
+            # If the device is not cpu, convert the output to a numpy array
+
+            if self.device != "cpu":
+                outputs = outputs.cpu().numpy()
+            else:
+                outputs = outputs.numpy()
+
         return outputs
