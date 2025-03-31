@@ -4,14 +4,13 @@ import React, {
 import { TabData } from '../types/tab';
 import { FaFolderPlus, FaTimes } from 'react-icons/fa';
 import SearchResults from './SearchResults';
-import { FaPenToSquare } from 'react-icons/fa6';
+import { FaMagnifyingGlassMinus, FaMagnifyingGlassPlus, FaPenToSquare } from 'react-icons/fa6';
 import { Query } from '../types/queries';
 import ArtPieceProfile from './Profiles/ArtPieceProfile';
 import ArtistProfile from './Profiles/ArtistProfile';
 import CollectionTab from './Collection/CollectionTab';
 import ArtPieceData from '../types/ArtPiece';
 import '../styles/tabs.css';
-import { useCollection } from '../contexts/CollectionContext';
 
 const renderTab = (
     loading: boolean,
@@ -38,6 +37,31 @@ const renderTab = (
     const is_selected = selectedTabIdentifier === tab.identifier;
     const is_loading = loading && is_selected;
 
+    const [userChangedColumnsCount, setUserChangedColumnsCount] = useState(false);
+    const [columnsCount, setColumnsCount] = useState(3); 
+
+    const MIN_COLUMNS_COUNT = 1;
+    const MAX_COLUMNS_COUNT = 10;
+
+    const canDecreaseColumnsCount = columnsCount > MIN_COLUMNS_COUNT;
+    const canIncreaseColumnsCount = columnsCount < MAX_COLUMNS_COUNT;
+
+    const setColumnsCountWrapper = (columnsCount: number) => {
+        if (columnsCount < MIN_COLUMNS_COUNT) return false;
+        if (columnsCount > MAX_COLUMNS_COUNT) return false;
+        setColumnsCount(columnsCount);
+        return true;
+    }
+
+    const decreaseColumnsCount = () => {
+        setUserChangedColumnsCount(setColumnsCountWrapper(columnsCount - 1));
+    }
+
+    const increaseColumnsCount = () => {
+        setUserChangedColumnsCount(setColumnsCountWrapper(columnsCount + 1));
+        
+    }
+
     return (
     <div 
         key={tab.identifier} 
@@ -56,11 +80,27 @@ const renderTab = (
                     <FaFolderPlus />
                 </button>
             }
-            <button
-                onClick={() => selectTab(tab.identifier)}
-            >
-                <FaPenToSquare />
-            </button>
+
+            {tab.type === 'results' &&
+                <>
+                    <button 
+                        onClick={increaseColumnsCount}
+                        disabled={!canIncreaseColumnsCount}
+                    >
+                        <FaMagnifyingGlassMinus />
+                    </button>
+                    <button 
+                        onClick={decreaseColumnsCount}
+                        disabled={!canDecreaseColumnsCount}
+                    >
+                        <FaMagnifyingGlassPlus />
+                    </button>
+                    <div className='tab-handler-separator'></div>
+                    <button onClick={() => selectTab(tab.identifier)}>
+                        <FaPenToSquare />
+                    </button>
+                </>
+            }
             <button
                 onClick={() => removeTab(tab.identifier)}
             >
@@ -73,8 +113,10 @@ const renderTab = (
                 <div className="lds-ripple"><div></div><div></div></div> {/* https://loading.io/css/ */}
             </div>
         }
-
-        <div className={`tab-content ${is_loading ? 'loading' : ''}`}>
+        
+        <div 
+            className={`tab-content ${is_loading ? 'loading' : ''}`}
+        >
             { tab.type === 'results' &&
                 <SearchResults 
                     isEmptyQuery={isEmptyQuery(tab.content.query)}
@@ -97,6 +139,11 @@ const renderTab = (
                     canLike={canLike}
 
                     askForMoreResults={askForMoreResults}
+
+                    columnsCount={columnsCount}
+                    setColumnsCount={setColumnsCountWrapper}
+                    
+                    userChangedColumnsCount={userChangedColumnsCount}
                 />
             }
             { tab.type === 'artpiece-profile' && 
@@ -186,7 +233,6 @@ const TabContainer: React.FC<{
 }) => {
 
     const [openInNewTabPerTab, setOpenInNewTabPerTab] = useState<Record<string, boolean>>({});
-    const { getSelectedCollection } = useCollection();
 
     const getTabName = (tab: TabData) => {
         switch(tab.type) {
@@ -245,7 +291,7 @@ const TabContainer: React.FC<{
                 openArtistProfileWrapper,
                 openArtPieceProfileWrapper,
                 canLike,
-                askForMoreResults
+                askForMoreResults,
             ))}
 
         </>

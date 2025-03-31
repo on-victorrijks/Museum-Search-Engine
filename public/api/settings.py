@@ -51,6 +51,24 @@ def get_paths():
                     {"name": "mrr", "value": 0.784912},
                     {"name": "recall@1", "value": 0.666860},
                 ]
+            },
+            {
+                "name": "trilang_finetuned",
+                "path_embeddings": PARENT + os.getenv("trilang_finetuned_path_embeddings"),
+                "path_index_to_recordID": PARENT + os.getenv("trilang_finetuned_path_index_to_recordID"),
+                "path_keywords": PARENT + os.getenv("trilang_finetuned_path_keywords_embeddings"),
+                "path_term_to_index": PARENT + os.getenv("trilang_finetuned_path_keywords_term_to_index"),
+                "text_dim": 768,    
+                "img_dim": 768,
+                "base_name": os.getenv("trilang_finetuned_model_name"),
+                "weights_path": PARENT + os.getenv("trilang_finetuned_weights_path"),
+                "description": "Trilang finetuned embeddings",
+                "metrics": [
+                    {"name": "loss", "value": 0.270707},
+                    {"name": "average_position", "value": 2.104928},
+                    {"name": "mrr", "value": 0.793721},
+                    {"name": "recall@1", "value": 0.678622},
+                ]
             }
         ],
         "images": PARENT + os.getenv("IMAGES_FOLDER")

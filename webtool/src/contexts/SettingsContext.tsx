@@ -41,6 +41,16 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         fetchServerSettingsInfos();
     }, []);
 
+    useEffect(() => {
+        if(loaded) {
+            // Set the model_name to the last model in the serverSettingsInfos.models array
+            setSettings({
+                ...settings,
+                model_name: serverSettingsInfos.models[serverSettingsInfos.models.length - 1].model_name
+            });
+        }
+    }, [serverSettingsInfos]);
+
     const fetchServerSettingsInfos = async () => {
         setLoaded(false);
         setLoading(true);

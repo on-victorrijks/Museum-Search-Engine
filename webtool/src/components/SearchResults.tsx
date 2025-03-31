@@ -32,6 +32,11 @@ const SearchResults: React.FC<{
     canLike: boolean;
 
     askForMoreResults: () => void;
+
+    columnsCount: number;
+    setColumnsCount: (columnsCount: number) => void;
+
+    userChangedColumnsCount: boolean;
 }> = ({
     isEmptyQuery,
     results,
@@ -43,7 +48,12 @@ const SearchResults: React.FC<{
     addTab,
     openArtistProfile,
     canLike,
-    askForMoreResults
+    askForMoreResults,
+
+    columnsCount,
+    setColumnsCount,
+
+    userChangedColumnsCount
 }) => {
     const componentRef = useRef<HTMLDivElement>(null);
     const [size, setSize] = useState<{ width: number; height: number } | null>(null);
@@ -71,14 +81,12 @@ const SearchResults: React.FC<{
     }, []);
 
     useEffect(() => {
-        if (size) {
+        if (size && !userChangedColumnsCount) {
             const width = size.width;
             const columns = Math.floor(width / MIN_COLUMN_WIDTH);
-            setNumberOfColumns(columns);
+            setColumnsCount(columns);
         }
     }, [size]);
-
-    const [numberOfColums, setNumberOfColumns] = useState(3); 
 
     const renderResult = (result: ArtPieceData, index: number) => {
         const recordID = result.recordid;
@@ -175,7 +183,7 @@ const SearchResults: React.FC<{
                 )
             }
             <Masonry 
-                columnsCount={numberOfColums} 
+                columnsCount={columnsCount} 
                 gutter="10px"
                 sequential={true}
             >
