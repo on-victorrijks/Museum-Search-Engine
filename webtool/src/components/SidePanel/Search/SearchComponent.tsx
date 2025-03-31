@@ -25,8 +25,9 @@ import { useNotification } from '../../../contexts/NotificationContext';
 import axios from 'axios';
 import { ApiResponse, SuccessfulKeywordsResponse } from '../../../types/ApiResponses';
 import { NotificationType } from '../../../types/Notification';
-import {renderKeyword, renderColor, renderLuminosity, renderSoftQueryPart, BottomButtons } from './SubComponents';
+import {renderKeyword, renderColor, renderLuminosity, renderSoftQueryPart, SearchButton, NewQueryButton, ClearButton, AutoSearchButton } from './SubComponents';
 import { colors, luminosities } from '../../../constants/SearchPanel';
+import { useTranslation } from 'react-i18next';
 
 
 enum SearchType {
@@ -51,7 +52,10 @@ const SearchComponent: React.FC<{
     updateQueryPartWeight,
     resetQuery
 }) => {
+
+    const { t } = useTranslation();
     const { showNotification } = useNotification();
+
     // Which search tab is selected
     const [searchSelection, setSearchSelection] = useState<SearchType>(SearchType.SOFT);
 
@@ -81,13 +85,13 @@ const SearchComponent: React.FC<{
             } else {
                 showNotification({
                     type: NotificationType.ERROR,
-                    title: "Erreur lors de la récupération des mots-clés",
+                    title: t('search.keywords.error'),
                     text: response.error_message ?? "",
                     buttons: [],
                     timeout: 5000,
                     errorContext: {
                         timestamp: Date.now(),
-                        message: "Une erreur est survenue lors de la récupération des mots-clés",
+                        message: t('search.keywords.error'),
                         origin: "fetchKeywords"
                     }
                 });
@@ -136,7 +140,7 @@ const SearchComponent: React.FC<{
             
             if(!validateSingleBlock(blocks[i])){
                 valid = false;
-                message = 'Chaque block doit être rempli avec les données requises';
+                message = t('search.validation.blockRequired');
                 break;
             }
 
@@ -149,14 +153,14 @@ const SearchComponent: React.FC<{
             if (block.type === BlockType.AND || block.type === BlockType.OR) {
                 if(i === (blocks.length - 1)) {
                     valid = false;
-                    message = 'ET/OU ne peut être placé en dernier';
+                    message = t('search.validation.andOrLast');
                     break;
                 } else if (
                     (lastBlock === null ) || 
                     (lastBlock.type !== BlockType.EQUAL && lastBlock.type !== BlockType.BETWEEN && lastBlock.type !== BlockType.INCLUDES)
                 ) {
                     valid = false;
-                    message = 'ET/OU ne peut être placé qu\'après des blocs ÉGAL, ENTRE ou CONTIENT';
+                    message = t('search.validation.andOrAfter');
                     break;
                 }
             } else if (block.type === BlockType.EQUAL || block.type === BlockType.BETWEEN || block.type === BlockType.INCLUDES) {
@@ -165,7 +169,7 @@ const SearchComponent: React.FC<{
                     lastBlock.type !== BlockType.AND && lastBlock.type !== BlockType.OR
                 ) {
                     valid = false;
-                    message = 'ÉGAL, ENTRE, CONTIENT ne peut être placé qu\'après des blocs ET/OU';
+                    message = t('search.validation.equalAfter');
                     break;
                 }
             }
@@ -297,7 +301,7 @@ const SearchComponent: React.FC<{
     const EmptyQueryParts = () => {
         return (
             <div className='emptyQueryParts'>
-                <h1>Aucun filtre appliqué</h1>
+                <h1>{t('search.filters.empty')}</h1>
             </div>
         );
     }
@@ -320,13 +324,13 @@ const SearchComponent: React.FC<{
                 className={"search-selection " + (searchSelection === 'HARD' ? 'selected' : '')}
                 onClick={() => setSearchSelection(SearchType.HARD)}
             >
-                <h1>Contraintes d'exclusion</h1>
+                <h1>{t('search.constraints.exclusion')}</h1>
             </div>
             <div 
                 className={"search-selection " + (searchSelection === 'SOFT' ? 'selected' : '')}
                 onClick={() => setSearchSelection(SearchType.SOFT)}
             >
-                <h1>Contraintes de tri</h1>
+                <h1>{t('search.constraints.sorting')}</h1>
             </div>
         </div>
 
@@ -344,11 +348,11 @@ const SearchComponent: React.FC<{
             <div className='search-section'>
 
             <div className="searchSection">
-                <h1>Rechercher via du texte</h1>
+                <h1>{t('search.text.title')}</h1>
                 <div className="textForm">
                     <input 
                         type="text" 
-                        placeholder="Un homme avec un chien"
+                        placeholder={t('search.text.placeholder')}
                         value={localSearchTerm}
                         onChange={(e) => setLocalSearchTerm(e.target.value)}
                     />
@@ -370,7 +374,7 @@ const SearchComponent: React.FC<{
             <div className="searchSection">
 
                 <div className="dropHeader" id="dropHeader" onClick={toggleKeywords}>
-                    <h1>Rechercher via des mots-clés</h1>
+                    <h1>{t('search.keywords.title')}</h1>
                     <div className="drop">
                         {
                             keywordsVisible ? 
@@ -394,7 +398,7 @@ const SearchComponent: React.FC<{
 
             {/* Search via Colors */}
             <div className="searchSection">
-                <h1>Rechercher via des couleurs</h1>
+                <h1>{t('search.colors.title')}</h1>
                 <div className="container" id="colors_container">
                     {colors.map(color => renderColor(
                         getColorStatus(color.id),
@@ -406,7 +410,7 @@ const SearchComponent: React.FC<{
 
             {/* Search via Luminosity */}
             <div className="searchSection">
-                <h1>Rechercher via une luminosité</h1>
+                <h1>{t('search.luminosity.title')}</h1>
                 <div className="container" id="luminosity_container">
                     {luminosities.map(luminosity => renderLuminosity(
                         getLuminosityStatus(luminosity.id),
@@ -421,7 +425,7 @@ const SearchComponent: React.FC<{
             {/* Queries Container */}
             <div className="queries">
                 <div className='queryPartsHeader'>
-                    <h1>Vos filtres</h1>
+                    <h1>{t('search.filters.title')}</h1>
                 </div>
                 <div className='queries_container'>
                 {
@@ -445,14 +449,26 @@ const SearchComponent: React.FC<{
         }
 
     
-        <BottomButtons 
-            blocksValid={blocksValid}
-            queryParts={queryParts}
-            compileIntoTab={compileIntoTab}
-            resetQuery={resetQuery}
-            isAutoSearchEnabled={isAutoSearchEnabled}
-            setIsAutoSearchEnabled={setIsAutoSearchEnabled}
-        />
+        <div className="buttons">
+            <SearchButton
+                canSearch={blocksValid && queryParts.length > 0} 
+                compileIntoTab={compileIntoTab}
+                text={t('search.buttons.search')}
+            />
+            <NewQueryButton 
+                canSearch={blocksValid && queryParts.length > 0} 
+                compileIntoTab={compileIntoTab} 
+                text={t('search.buttons.newQuery')}
+            />
+            <ClearButton
+                canReset={queryParts.length > 0}
+                resetQuery={resetQuery}
+            />
+            <AutoSearchButton
+                isAutoSearchEnabled={isAutoSearchEnabled}
+                setIsAutoSearchEnabled={setIsAutoSearchEnabled}
+            />
+        </div>
 
         </div>
     );

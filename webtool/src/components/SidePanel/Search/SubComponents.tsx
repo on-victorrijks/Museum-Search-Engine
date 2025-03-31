@@ -1,38 +1,42 @@
 import { FaSync, FaTimes, FaUndo } from "react-icons/fa";
 
 import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
-import { QueryPart, SoftQueryPart, SoftQueryType } from "../../../types/queries";
+import { SoftQueryPart, SoftQueryType } from "../../../types/queries";
 import { Slider } from "@mui/material";
 
 const SearchButton: React.FC<{
     canSearch: boolean,
-    compileIntoTab: (isNewSearch: boolean) => void
+    compileIntoTab: (isNewSearch: boolean) => void,
+    text: string
 }> = ({ 
     canSearch,
-    compileIntoTab
+    compileIntoTab,
+    text
 }) => {
     return (
         <button
             onClick={() => compileIntoTab(false)}
             disabled={!canSearch}
         >
-            Rechercher
+            {text}
         </button>
     );
 }
 const NewQueryButton: React.FC<{
     canSearch: boolean,
-    compileIntoTab: (isNewSearch: boolean) => void
+    compileIntoTab: (isNewSearch: boolean) => void,
+    text: string
 }> = ({ 
     canSearch,
-    compileIntoTab
+    compileIntoTab,
+    text
 }) => {
     return (
         <button
             onClick={() => compileIntoTab(true)}
             disabled={!canSearch}
         >
-            Nouvel onglet
+            {text}
         </button>
     );
 }
@@ -209,50 +213,14 @@ const renderSoftQueryPart = (
     );
 }
 
-const BottomButtons = ({
-    blocksValid,
-    queryParts,
-    compileIntoTab,
-    resetQuery,
-    isAutoSearchEnabled,
-    setIsAutoSearchEnabled
-}: {
-    blocksValid: boolean,
-    queryParts: QueryPart[],
-    compileIntoTab: (isNewSearch: boolean) => void,
-    resetQuery: () => void,
-    isAutoSearchEnabled: boolean,
-    setIsAutoSearchEnabled: (isAutoSearchEnabled: boolean) => void
-}) => {
-    return (
-        <div className="buttons">
-        <SearchButton
-            canSearch={blocksValid && queryParts.length > 0} 
-            compileIntoTab={compileIntoTab}
-        />
-        <NewQueryButton 
-            canSearch={blocksValid && queryParts.length > 0} 
-            compileIntoTab={compileIntoTab} 
-        />
-        <ClearButton
-            canReset={queryParts.length > 0}
-            resetQuery={resetQuery}
-        />
-        <AutoSearchButton
-            isAutoSearchEnabled={isAutoSearchEnabled}
-            setIsAutoSearchEnabled={setIsAutoSearchEnabled}
-        />
-    </div>
-    );
-}
 
 export {
     SearchButton,
     NewQueryButton,
     ClearButton,
+    AutoSearchButton,
     renderKeyword,
     renderColor,
     renderLuminosity,
     renderSoftQueryPart,
-    BottomButtons
 }

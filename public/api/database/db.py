@@ -583,7 +583,7 @@ class DatabaseManager:
     def preload_keywords(self):
         with self._connect() as conn:
             with conn.cursor() as cur:
-                cur.execute("SELECT keyword FROM Keywords")
+                cur.execute("SELECT DISTINCT keyword FROM Keywords")
                 self.preloaded_keywords = [row[0] for row in cur.fetchall()]
 
     # Methods to fetch

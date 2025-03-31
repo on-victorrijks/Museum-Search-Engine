@@ -84,7 +84,7 @@ const CollectionHeader: React.FC<{
     );
 }
 
-const CollectionTab: React.FC<{
+const CollectionProfile: React.FC<{
     collectionIdentifier: string,
 }> = ({
     collectionIdentifier,
@@ -160,4 +160,4 @@ const CollectionTab: React.FC<{
         </div>
     );
 }
-export default CollectionTab;
+export default CollectionProfile;

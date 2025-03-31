@@ -1,0 +1,112 @@
+{
+  "settings": {
+    "title": "Instellingen",
+    "model": "Model",
+    "method": "Methode",
+    "language": "Taal",
+    "rocchioK": "Rocchio K",
+    "rocchioScale": "Rocchio Schaal",
+    "error": {
+      "title": "Oeps!",
+      "message": "Het lijkt erop dat de server niet bereikbaar is. Probeer het later opnieuw.",
+      "retry": "Opnieuw proberen"
+    }
+  },
+  "common": {
+    "loading": "Laden...",
+    "save": "Opslaan",
+    "cancel": "Annuleren"
+  },
+  "app": {
+    "emptyState": "Voer een zoekopdracht uit om kunstwerken te zien!",
+    "errors": {
+      "tabNotFound": "Tab niet gevonden",
+      "selectedTabError": "Er is een fout opgetreden bij het ophalen van de geselecteerde tab",
+      "serverError": "Er is een fout opgetreden",
+      "resultsError": "Er is een fout opgetreden bij het ophalen van de resultaten"
+    }
+  },
+  "search": {
+    "constraints": {
+      "exclusion": "Uitsluitingsbeperkingen",
+      "sorting": "Sorteerbeperkingen"
+    },
+    "text": {
+      "title": "Zoeken op tekst",
+      "placeholder": "Een man met een hond"
+    },
+    "keywords": {
+      "title": "Zoeken op trefwoorden",
+      "error": "Fout bij het ophalen van trefwoorden"
+    },
+    "colors": {
+      "title": "Zoeken op kleuren"
+    },
+    "luminosity": {
+      "title": "Zoeken op helderheid"
+    },
+    "filters": {
+      "title": "Uw filters",
+      "empty": "Geen filters toegepast"
+    },
+    "validation": {
+      "blockRequired": "Elk blok moet worden gevuld met de vereiste gegevens",
+      "andOrLast": "EN/OF kan niet als laatste worden geplaatst",
+      "andOrAfter": "EN/OF kan alleen worden geplaatst na GELIJK AAN, TUSSEN of BEVAT blokken",
+      "equalAfter": "GELIJK AAN, TUSSEN, BEVAT kan alleen worden geplaatst na EN/OF blokken"
+    },
+    "buttons": {
+      "search": "Zoeken",
+      "newQuery": "Nieuw tabblad"
+    }
+  },
+  "queryBuilder": {
+    "selectColumn": "Selecteer een kolom",
+    "empty": "Geen beperkingen",
+    "buttons": {
+      "replaceWith": "Vervang door"
+    },
+    "types": {
+      "and": "EN",
+      "or": "OF",
+      "equal": "GELIJK AAN",
+      "between": "TUSSEN",
+      "includes": "BEVAT",
+      "group": "GROEP"
+    },
+    "constraints": {
+      "valid": "Uw beperking is geldig",
+      "invalid": "Uw beperking is ongeldig"
+    },
+    "options": {
+      "not": "NIET",
+      "notIncludes": "NIET (BEVAT)",
+      "all": "ALLE",
+      "exact": "EXACT",
+      "caseSensitive": "HOOFDLETTERGevoelig",
+      "keepNull": "NULL BEHOUDEN"
+    },
+    "autocomplete": {
+      "loading": "Laden..."
+    },
+    "inputs": {
+      "text": {
+        "placeholder": "Waarde"
+      },
+      "values": {
+        "empty": "Geen waarden"
+      }
+    },
+    "errors": {
+      "getColumns": {
+        "title": "Fout bij het ophalen van kolommen",
+        "message": "Er is een fout opgetreden bij het ophalen van kolommen"
+      },
+      "autocomplete": {
+        "title": "Fout bij het ophalen van suggesties",
+        "message": "Er is een fout opgetreden bij het ophalen van suggesties"
+      }
+    },
+    "loading": "Kolommen laden..."
+  }
+} 

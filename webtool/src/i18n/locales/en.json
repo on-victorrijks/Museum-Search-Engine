@@ -1,0 +1,112 @@
+{
+  "settings": {
+    "title": "Settings",
+    "model": "Model",
+    "method": "Method",
+    "language": "Language",
+    "rocchioK": "Rocchio K",
+    "rocchioScale": "Rocchio Scale",
+    "error": {
+      "title": "Oops!",
+      "message": "It seems the server is unreachable. Please try again later.",
+      "retry": "Retry"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "app": {
+    "emptyState": "Perform a search to see artworks!",
+    "errors": {
+      "tabNotFound": "Tab not found",
+      "selectedTabError": "An error occurred while retrieving the selected tab",
+      "serverError": "An error occurred",
+      "resultsError": "An error occurred while retrieving results"
+    }
+  },
+  "search": {
+    "constraints": {
+      "exclusion": "Exclusion Constraints",
+      "sorting": "Sorting Constraints"
+    },
+    "text": {
+      "title": "Search by text",
+      "placeholder": "A man with a dog"
+    },
+    "keywords": {
+      "title": "Search by keywords",
+      "error": "Error while retrieving keywords"
+    },
+    "colors": {
+      "title": "Search by colors"
+    },
+    "luminosity": {
+      "title": "Search by luminosity"
+    },
+    "filters": {
+      "title": "Your filters",
+      "empty": "No filters applied"
+    },
+    "validation": {
+      "blockRequired": "Each block must be filled with required data",
+      "andOrLast": "AND/OR cannot be placed last",
+      "andOrAfter": "AND/OR can only be placed after EQUAL, BETWEEN, or INCLUDES blocks",
+      "equalAfter": "EQUAL, BETWEEN, INCLUDES can only be placed after AND/OR blocks"
+    },
+    "buttons": {
+      "search": "Search",
+      "newQuery": "New tab"
+    }
+  },
+  "queryBuilder": {
+    "selectColumn": "Select a column",
+    "empty": "No constraints",
+    "buttons": {
+      "replaceWith": "Replace with"
+    },
+    "types": {
+      "and": "AND",
+      "or": "OR",
+      "equal": "EQUAL",
+      "between": "BETWEEN",
+      "includes": "INCLUDES",
+      "group": "GROUP"
+    },
+    "constraints": {
+      "valid": "Your constraint is valid",
+      "invalid": "Your constraint is invalid"
+    },
+    "options": {
+      "not": "NOT",
+      "notIncludes": "NOT (INCLUDES)",
+      "all": "ALL",
+      "exact": "EXACTLY",
+      "caseSensitive": "CASE SENSITIVE",
+      "keepNull": "KEEP NULL"
+    },
+    "autocomplete": {
+      "loading": "Loading..."
+    },
+    "inputs": {
+      "text": {
+        "placeholder": "Value"
+      },
+      "values": {
+        "empty": "No values"
+      }
+    },
+    "errors": {
+      "getColumns": {
+        "title": "Error while retrieving columns",
+        "message": "An error occurred while retrieving columns"
+      },
+      "autocomplete": {
+        "title": "Error while retrieving suggestions",
+        "message": "An error occurred while retrieving suggestions"
+      }
+    },
+    "loading": "Loading columns..."
+  }
+} 

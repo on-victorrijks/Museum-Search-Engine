@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { ServerSettingsInfos, Settings } from '../types/settings';
+import { useTranslation } from 'react-i18next';
 
 import '../styles/settings.css';
 
@@ -15,7 +16,7 @@ export interface SettingsContext {
 const SettingsContext = createContext<SettingsContext | undefined>(undefined);
 
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-
+    const { i18n } = useTranslation();
     const [settings, setSettings] = useState<Settings>({
         model_name: 'march_finetuned',
         method: 'rocchio',
@@ -51,6 +52,10 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         }
     }, [serverSettingsInfos]);
 
+    useEffect(() => {
+        i18n.changeLanguage(settings.language);
+    }, [settings.language, i18n]);
+
     const fetchServerSettingsInfos = async () => {
         setLoaded(false);
         setLoading(true);
@@ -70,7 +75,6 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         } finally {
             setLoading(false);
         }
-
     }
 
     return (
@@ -88,14 +92,14 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
             ? children
             :
             <div className="settings-fullpage">
-                <h1>Oups !</h1>
-                <p>Il semblerait que le serveur soit inaccessible. Veuillez réessayer plus tard.</p>
+                <h1>{i18n.t('settings.error.title')}</h1>
+                <p>{i18n.t('settings.error.message')}</p>
                 <button 
                     className="settings-fullpage-error-button"
                     onClick={fetchServerSettingsInfos}
                     disabled={loading}
                 >
-                    Réessayer
+                    {i18n.t('settings.error.retry')}
                 </button>
             </div>
             }

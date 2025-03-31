@@ -2,194 +2,12 @@ import React, {
     useState,
 } from 'react';
 import { TabData } from '../types/tab';
-import { FaFolderPlus, FaTimes } from 'react-icons/fa';
-import SearchResults from './SearchResults';
-import { FaMagnifyingGlassMinus, FaMagnifyingGlassPlus, FaPenToSquare } from 'react-icons/fa6';
-import { Query } from '../types/queries';
-import ArtPieceProfile from './Profiles/ArtPieceProfile';
-import ArtistProfile from './Profiles/ArtistProfile';
-import CollectionTab from './Collection/CollectionTab';
 import ArtPieceData from '../types/ArtPiece';
 import '../styles/tabs.css';
-
-const renderTab = (
-    loading: boolean,
-    tab: TabData,
-    selectedTabIdentifier: string,
-    selectTab: (tabIdentifier: string) => void,
-    removeTab: (tabIdentifier: string) => void,
-    switchOpenInNewTab: (tabIdentifier: string) => void,
-    getOpenInNewTabStatut: (tabIdentifier: string) => boolean,
-    getTabName: (tab: TabData) => string,
-    isEmptyQuery: (query: Query) => boolean,
-    dislikeRecord: (imageInformations: ArtPieceData) => void,
-    likeRecord: (imageInformations: ArtPieceData) => void,
-    getLikeStatus: (recordID: number) => boolean | undefined,
-    addTermFromIconography: (term: string) => void,
-    getTermStatusInQuery: (term: string) => boolean,
-    addTab: (tab: TabData) => void,
-    openArtistProfileWrapper: (fromTabIdentifier: string, creatorid: string, openInNewTab: boolean) => void,
-    openArtPieceProfileWrapper: (fromTabIdentifier: string, recordID: number, openInNewTab: boolean) => void,
-    canLike: boolean,
-    askForMoreResults: () => void,
-) => {
-
-    const is_selected = selectedTabIdentifier === tab.identifier;
-    const is_loading = loading && is_selected;
-
-    const [userChangedColumnsCount, setUserChangedColumnsCount] = useState(false);
-    const [columnsCount, setColumnsCount] = useState(3); 
-
-    const MIN_COLUMNS_COUNT = 1;
-    const MAX_COLUMNS_COUNT = 10;
-
-    const canDecreaseColumnsCount = columnsCount > MIN_COLUMNS_COUNT;
-    const canIncreaseColumnsCount = columnsCount < MAX_COLUMNS_COUNT;
-
-    const setColumnsCountWrapper = (columnsCount: number) => {
-        if (columnsCount < MIN_COLUMNS_COUNT) return false;
-        if (columnsCount > MAX_COLUMNS_COUNT) return false;
-        setColumnsCount(columnsCount);
-        return true;
-    }
-
-    const decreaseColumnsCount = () => {
-        setUserChangedColumnsCount(setColumnsCountWrapper(columnsCount - 1));
-    }
-
-    const increaseColumnsCount = () => {
-        setUserChangedColumnsCount(setColumnsCountWrapper(columnsCount + 1));
-        
-    }
-
-    return (
-    <div 
-        key={tab.identifier} 
-        className={`tab ${is_selected ? 'selected' : ''}`}
-    >
-
-        <div 
-            className='tab-handler'
-        >
-            <h1>{getTabName(tab)}</h1>
-            { (tab.type==="artpiece-profile" || tab.type==="artist-profile") &&
-                <button className="long" onClick={() => switchOpenInNewTab(tab.identifier)}>
-                    <div className="switch" is-enabled={getOpenInNewTabStatut(tab.identifier) ? "true" : "false"}>
-                        <div className="switch-handler"></div>
-                    </div>
-                    <FaFolderPlus />
-                </button>
-            }
-
-            {tab.type === 'results' &&
-                <>
-                    <button 
-                        onClick={increaseColumnsCount}
-                        disabled={!canIncreaseColumnsCount}
-                    >
-                        <FaMagnifyingGlassMinus />
-                    </button>
-                    <button 
-                        onClick={decreaseColumnsCount}
-                        disabled={!canDecreaseColumnsCount}
-                    >
-                        <FaMagnifyingGlassPlus />
-                    </button>
-                    <div className='tab-handler-separator'></div>
-                    <button onClick={() => selectTab(tab.identifier)}>
-                        <FaPenToSquare />
-                    </button>
-                </>
-            }
-            <button
-                onClick={() => removeTab(tab.identifier)}
-            >
-                <FaTimes />
-            </button>
-        </div>
-
-        { is_loading &&
-            <div className="tab-content-loading">
-                <div className="lds-ripple"><div></div><div></div></div> {/* https://loading.io/css/ */}
-            </div>
-        }
-        
-        <div 
-            className={`tab-content ${is_loading ? 'loading' : ''}`}
-        >
-            { tab.type === 'results' &&
-                <SearchResults 
-                    isEmptyQuery={isEmptyQuery(tab.content.query)}
-                    results={tab.content.results} 
-
-                    dislikeRecord={dislikeRecord}
-                    likeRecord={likeRecord}
-                    getLikeStatus={(recordID) => getLikeStatus(recordID)}
-
-                    addTermFromIconography={addTermFromIconography}
-                    getTermStatusInQuery={getTermStatusInQuery}
-
-                    addTab={addTab}
-                    openArtistProfile={(creatorid: string) => openArtistProfileWrapper(
-                        tab.identifier,
-                        creatorid,
-                        getOpenInNewTabStatut(tab.identifier)
-                    )}
-
-                    canLike={canLike}
-
-                    askForMoreResults={askForMoreResults}
-
-                    columnsCount={columnsCount}
-                    setColumnsCount={setColumnsCountWrapper}
-                    
-                    userChangedColumnsCount={userChangedColumnsCount}
-                />
-            }
-            { tab.type === 'artpiece-profile' && 
-                <ArtPieceProfile 
-                    recordID={tab.content.recordID}
-                    tab={tab}
-                    openArtPieceProfile={(recordID: number) => openArtPieceProfileWrapper(
-                        tab.identifier,
-                        recordID, 
-                        getOpenInNewTabStatut(tab.identifier)
-                    )}
-                    openArtistProfile={(creatorid: string) => {
-                        openArtistProfileWrapper(
-                            tab.identifier,
-                            creatorid,
-                            getOpenInNewTabStatut(tab.identifier)
-                        );
-                    }}
-
-                    dislikeRecord={dislikeRecord}
-                    likeRecord={likeRecord}
-                    getLikeStatus={(recordID) => getLikeStatus(recordID)}
-
-                    canLike={canLike}
-                />
-            }
-            { tab.type === 'artist-profile' &&
-                <ArtistProfile
-                    creatorid={tab.content.creatorid}
-                    tab={tab}
-                    openArtPieceProfile={(recordID: number) => openArtPieceProfileWrapper(
-                        tab.identifier,
-                        recordID,
-                        getOpenInNewTabStatut(tab.identifier)
-                    )}
-                />
-            }
-            { tab.type === 'collection' &&
-                <CollectionTab
-                    collectionIdentifier={tab.content.collectionIdentifier}
-                />
-            }
-        </div>
-    </div>
-    );
-}
+import ResultsTab from './Tabs/ResultsTab';
+import ArtPieceProfileTab from './Tabs/ArtPieceProfileTab';
+import ArtistProfileTab from './Tabs/ArtistProfileTab';
+import CollectionTab from './Tabs/CollectionTab';
 
 const TabContainer: React.FC<{
     loading: boolean;
@@ -234,25 +52,6 @@ const TabContainer: React.FC<{
 
     const [openInNewTabPerTab, setOpenInNewTabPerTab] = useState<Record<string, boolean>>({});
 
-    const getTabName = (tab: TabData) => {
-        switch(tab.type) {
-            case 'results':
-                return 'Résultats';
-            case 'artpiece-profile':
-                return 'Profil d\'oeuvre';
-            case 'artist-profile':
-                return 'Profil d\'artiste';
-            case 'collection':
-                return 'Collection';
-            default:
-                return 'Tab';
-        }
-    }
-    
-    const isEmptyQuery = (query: Query) => {
-        return query.parts.length === 0;
-    }
-
     const getOpenInNewTabStatut = (tabIdentifier: string) => {
         const keys = Object.keys(openInNewTabPerTab);
         if (!keys.includes(tabIdentifier)) {
@@ -269,33 +68,82 @@ const TabContainer: React.FC<{
         });
     }
 
-    return (
-        <>
-            
-            {tabs.map(tab => renderTab(
-                loading,
-                tab,
-                selectedTabIdentifier,
-                selectTab,
-                removeTab,
-                switchOpenInNewTab,
-                getOpenInNewTabStatut,
-                getTabName,
-                isEmptyQuery,
-                dislikeRecord,
-                likeRecord,
-                getLikeStatus,
-                addTermFromIconography,
-                getTermStatusInQuery,
-                addTab,
-                openArtistProfileWrapper,
-                openArtPieceProfileWrapper,
-                canLike,
-                askForMoreResults,
-            ))}
+    const renderTab = (tab: TabData, index: number) => {
+        switch (tab.type) {
+            case 'results':
+                return (
+                    <ResultsTab
+                        key={index}
+                        tab={tab}
+                        selectedTabIdentifier={selectedTabIdentifier}
+                        selectTab={selectTab}
+                        removeTab={removeTab}
+                        switchOpenInNewTab={switchOpenInNewTab}
+                        getOpenInNewTabStatut={getOpenInNewTabStatut}
+                        dislikeRecord={dislikeRecord}
+                        likeRecord={likeRecord}
+                        getLikeStatus={getLikeStatus}
+                        addTermFromIconography={addTermFromIconography}
+                        getTermStatusInQuery={getTermStatusInQuery}
+                        addTab={addTab}
+                        openArtistProfileWrapper={openArtistProfileWrapper}
+                        canLike={canLike}
+                        askForMoreResults={askForMoreResults} 
+                        loading={loading}        
+                    />
+                );
+            case 'artpiece-profile':
+                return (
+                    <ArtPieceProfileTab
+                        key={index}
+                        tab={tab}
+                        selectedTabIdentifier={selectedTabIdentifier}
+                        selectTab={selectTab}
+                        removeTab={removeTab}
+                        switchOpenInNewTab={switchOpenInNewTab}
+                        getOpenInNewTabStatut={getOpenInNewTabStatut}
+                        dislikeRecord={dislikeRecord}
+                        likeRecord={likeRecord}
+                        getLikeStatus={getLikeStatus}
+                        openArtistProfileWrapper={openArtistProfileWrapper}
+                        canLike={canLike}
+                        openArtPieceProfileWrapper={openArtPieceProfileWrapper}
+                        loading={loading}
+                    />
+                );
+            case 'artist-profile':
+                return (
+                    <ArtistProfileTab
+                        key={index}
+                        tab={tab}
+                        selectedTabIdentifier={selectedTabIdentifier}
+                        selectTab={selectTab}
+                        removeTab={removeTab}
+                        switchOpenInNewTab={switchOpenInNewTab}
+                        getOpenInNewTabStatut={getOpenInNewTabStatut}
+                        openArtPieceProfileWrapper={openArtPieceProfileWrapper}
+                        loading={loading}
+                    />
+                );
+            case 'collection':
+                return (
+                    <CollectionTab
+                        key={index}
+                        tab={tab}
+                        selectedTabIdentifier={selectedTabIdentifier}
+                        selectTab={selectTab}
+                        removeTab={removeTab}
+                        switchOpenInNewTab={switchOpenInNewTab}
+                        getOpenInNewTabStatut={getOpenInNewTabStatut}
+                        loading={loading}
+                    />
+                );
+            default:
+                return null;
+        }
+    }
 
-        </>
-    );
+    return tabs.map((tab, index) => renderTab(tab, index));
 };
 
 export default TabContainer;

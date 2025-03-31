@@ -1,4 +1,5 @@
 import { JSX } from 'react';
+import { TFunction } from 'i18next';
 import ArtPieceData from './ArtPiece';
 
 // Type definitions for queries
@@ -126,7 +127,7 @@ interface GroupBlockProps extends HardQueryPartControlled {
     children: HardQueryPart[];
     onChildAdd: (child: HardQueryPartControlled) => void;
     onChildDelete: (childIdentifier: string) => void;
-    renderBlock: (parents: QueryPart[], setParents: (newParents: QueryPart[]) => void, queryPart: HardQueryPartControlled) => JSX.Element;
+    renderBlock: (parents: QueryPart[], setParents: (newParents: QueryPart[]) => void, queryPart: HardQueryPartControlled, t: TFunction) => JSX.Element;
     isBlockDisabled: (type: BlockType, queryParts: QueryPart[]) => boolean;
 }
 interface EqualBlockProps extends HardQueryPartControlled {

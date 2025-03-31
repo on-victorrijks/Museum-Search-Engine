@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import TabContainer from './components/TabContainer';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import { ApiResponse, SuccessfulQueryResponse } from './types/ApiResponses';
 
@@ -37,6 +38,7 @@ const App: React.FC = () => {
 
     const { settings } = useSettings();
     const { showNotification } = useNotification();
+    const { t } = useTranslation();
 
     const [tabs, setTabs] = useState<TabData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -52,13 +54,13 @@ const App: React.FC = () => {
       if (!tab) {
         showNotification({
           type: NotificationType.ERROR,
-          title: "Erreur",
-          text: "Tab non trouvé",
+          title: t('app.errors.tabNotFound'),
+          text: t('app.errors.tabNotFound'),
           buttons: [],
           timeout: 5000,
           errorContext: {
             timestamp: Date.now(),
-            message: "Tab non trouvé",
+            message: t('app.errors.tabNotFound'),
             origin: "selectTab"
           }
         });
@@ -81,13 +83,13 @@ const App: React.FC = () => {
       if (tabIndex === -1) {
         showNotification({
           type: NotificationType.ERROR,
-          title: "Erreur",
-          text: "Une erreur est survenue lors de la récupération du tab sélectionné",
+          title: t('app.errors.selectedTabError'),
+          text: t('app.errors.selectedTabError'),
           buttons: [],
           timeout: 5000,
           errorContext: {
             timestamp: Date.now(),
-            message: "Une erreur est survenue lors de la récupération du tab sélectionné",
+            message: t('app.errors.selectedTabError'),
             origin: "askForMoreResults"
           }
         });
@@ -98,13 +100,13 @@ const App: React.FC = () => {
       if (!tab) {
         showNotification({
           type: NotificationType.ERROR,
-          title: "Erreur",
-          text: "Une erreur est survenue lors de la récupération du tab sélectionné",
+          title: t('app.errors.selectedTabError'),
+          text: t('app.errors.selectedTabError'),
           buttons: [],
           timeout: 5000,
           errorContext: {
             timestamp: Date.now(),
-            message: "Une erreur est survenue lors de la récupération du tab sélectionné",
+            message: t('app.errors.selectedTabError'),
             origin: "askForMoreResults"
           }
         });
@@ -163,13 +165,13 @@ const App: React.FC = () => {
           if (!success) {
             showNotification({
               type: NotificationType.ERROR,
-              title: "Erreur",
-              text: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
+              title: t('app.errors.serverError'),
+              text: data["error_message"] ? data["error_message"].toString() : t('app.errors.serverError'),
               buttons: [],
               timeout: 5000,
               errorContext: {
                 timestamp: Date.now(),
-                message: data["error_message"] ? data["error_message"].toString() : "Une erreur est survenue",
+                message: data["error_message"] ? data["error_message"].toString() : t('app.errors.serverError'),
                 origin: "queryServer:success=false"
               }
             });
@@ -191,17 +193,17 @@ const App: React.FC = () => {
         } catch (error) {
           showNotification({
             type: NotificationType.ERROR,
-            title: "Erreur lors de la récupération des résultats",
-            text: "Une erreur est survenue lors de la récupération des résultats",
+            title: t('app.errors.resultsError'),
+            text: t('app.errors.resultsError'),
             buttons: [],
             timeout: 5000,
             errorContext: {
               timestamp: Date.now(),
-              message: "Une erreur est survenue lors de la récupération des résultats",
+              message: t('app.errors.resultsError'),
               origin: "queryServer:error=" + error
             }
           });
-          return { success: false, message: "An error occurred" };
+          return { success: false, message: t('app.errors.serverError') };
         } finally {
           setLoading(false);
         }
@@ -311,13 +313,13 @@ const App: React.FC = () => {
         if (toRemoveTabIndex === -1) {
           showNotification({
             type: NotificationType.ERROR,
-            title: "Erreur",
-            text: "Tab non trouvé",
+            title: t('app.errors.tabNotFound'),
+            text: t('app.errors.tabNotFound'),
             buttons: [],
             timeout: 5000,
             errorContext: {
               timestamp: Date.now(),
-              message: "Tab non trouvé",
+              message: t('app.errors.tabNotFound'),
               origin: "removeTab"
             }
           });
@@ -588,7 +590,7 @@ const App: React.FC = () => {
             { getNumberOfTabs()==0
             ?
             <div className="empty-tabs">
-                <h2>Effectuez une recherche pour voir des oeuvres !</h2>
+                <h2>{t('app.emptyState')}</h2>
             </div>
             :
                 <TabContainer 

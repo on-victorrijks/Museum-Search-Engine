@@ -1,0 +1,112 @@
+{
+  "settings": {
+    "title": "Paramètres",
+    "model": "Modèle",
+    "method": "Méthode",
+    "language": "Langue",
+    "rocchioK": "K Rocchio",
+    "rocchioScale": "Échelle Rocchio",
+    "error": {
+      "title": "Oups !",
+      "message": "Il semblerait que le serveur soit inaccessible. Veuillez réessayer plus tard.",
+      "retry": "Réessayer"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
+  "app": {
+    "emptyState": "Effectuez une recherche pour voir des oeuvres !",
+    "errors": {
+      "tabNotFound": "Tab non trouvé",
+      "selectedTabError": "Une erreur est survenue lors de la récupération du tab sélectionné",
+      "serverError": "Une erreur est survenue",
+      "resultsError": "Une erreur est survenue lors de la récupération des résultats"
+    }
+  },
+  "search": {
+    "constraints": {
+      "exclusion": "Contraintes d'exclusion",
+      "sorting": "Contraintes de tri"
+    },
+    "text": {
+      "title": "Rechercher via du texte",
+      "placeholder": "Un homme avec un chien"
+    },
+    "keywords": {
+      "title": "Rechercher via des mots-clés",
+      "error": "Erreur lors de la récupération des mots-clés"
+    },
+    "colors": {
+      "title": "Rechercher via des couleurs"
+    },
+    "luminosity": {
+      "title": "Rechercher via une luminosité"
+    },
+    "filters": {
+      "title": "Vos filtres",
+      "empty": "Aucun filtre appliqué"
+    },
+    "validation": {
+      "blockRequired": "Chaque block doit être rempli avec les données requises",
+      "andOrLast": "ET/OU ne peut être placé en dernier",
+      "andOrAfter": "ET/OU ne peut être placé qu'après des blocs ÉGAL, ENTRE ou CONTIENT",
+      "equalAfter": "ÉGAL, ENTRE, CONTIENT ne peut être placé qu'après des blocs ET/OU"
+    },
+    "buttons": {
+      "search": "Rechercher",
+      "newQuery": "Nouvel onglet"
+    }
+  },
+  "queryBuilder": {
+    "selectColumn": "Sélectionner une colonne",
+    "empty": "Aucune contrainte",
+    "buttons": {
+      "replaceWith": "Remplacer par"
+    },
+    "types": {
+      "and": "ET",
+      "or": "OU",
+      "equal": "ÉGAL",
+      "between": "ENTRE",
+      "includes": "CONTIENT",
+      "group": "GROUPE"
+    },
+    "constraints": {
+      "valid": "Votre contrainte est valide",
+      "invalid": "Votre contrainte est invalide"
+    },
+    "options": {
+      "not": "NE",
+      "notIncludes": "NE (CONTIENT) PAS",
+      "all": "TOUS",
+      "exact": "EXACTEMENT",
+      "caseSensitive": "SENSIBLE À LA CASSE",
+      "keepNull": "GARDER LES NULL"
+    },
+    "autocomplete": {
+      "loading": "Chargement..."
+    },
+    "inputs": {
+      "text": {
+        "placeholder": "Valeur"
+      },
+      "values": {
+        "empty": "Aucune valeur"
+      }
+    },
+    "errors": {
+      "getColumns": {
+        "title": "Erreur lors de la récupération des colonnes",
+        "message": "Une erreur est survenue lors de la récupération des colonnes"
+      },
+      "autocomplete": {
+        "title": "Erreur lors de la récupération des suggestions",
+        "message": "Une erreur est survenue lors de la récupération des suggestions"
+      }
+    },
+    "loading": "Chargement des colonnes..."
+  }
+} 
