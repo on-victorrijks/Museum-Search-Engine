@@ -123,6 +123,36 @@ def get_paths():
                     {"name": "mrr", "value": 0.793721},
                     {"name": "recall@1", "value": 0.678622},
                 ]
+            },
+            {
+                "name": "art-large",
+                "path_embeddings": PARENT + os.getenv("art-large_path_embeddings"),
+                "path_index_to_recordID": PARENT + os.getenv("art-large_path_index_to_recordID"),
+                "keywords": {
+                    "fr": {
+                        "path": PARENT + os.getenv("art-large_path_keywords_embeddings_fr"),
+                        "term_data": PARENT + os.getenv("art-large_path_keywords_term_data_fr")
+                    },
+                    "en": {
+                        "path": PARENT + os.getenv("art-large_path_keywords_embeddings_en"),
+                        "term_data": PARENT + os.getenv("art-large_path_keywords_term_data_en")
+                    },
+                    "nl": {
+                        "path": PARENT + os.getenv("art-large_path_keywords_embeddings_nl"),
+                        "term_data": PARENT + os.getenv("art-large_path_keywords_term_data_nl")
+                    },
+                },
+                "text_dim": 768,
+                "img_dim": 768,
+                "base_name": os.getenv("art-large_model_name"),
+                "weights_path": PARENT + os.getenv("art-large_weights_path"),
+                "description": "Art-large embeddings",
+                "metrics": [
+                    {"name": "loss", "value": 0.119609},
+                    {"name": "average_position", "value": 2.042647},
+                    {"name": "mrr", "value": 0.816944},
+                    {"name": "recall@1", "value": 0.710869},
+                ]
             }
         ],
         "images": PARENT + os.getenv("IMAGES_FOLDER")

@@ -409,8 +409,7 @@ class DatabaseManager:
                         )
                         self.populate_keywords_table(
                             modelID,
-                            correspondingEmbeddingData["path_keywords"],
-                            correspondingEmbeddingData["path_term_to_index"]
+                            correspondingEmbeddingData["keywords"],
                         )
                         print(f"✓ : Model {model_name} added to the database")
 
