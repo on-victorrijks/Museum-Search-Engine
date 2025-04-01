@@ -22,12 +22,10 @@ import {
 
 import QueryBuilder from '../../QueryBuilder';
 import { useNotification } from '../../../contexts/NotificationContext';
-import axios from 'axios';
-import { ApiResponse, SuccessfulKeywordsResponse } from '../../../types/ApiResponses';
-import { NotificationType } from '../../../types/Notification';
 import {renderKeyword, renderColor, renderLuminosity, renderSoftQueryPart, SearchButton, NewQueryButton, ClearButton, AutoSearchButton } from './SubComponents';
 import { colors, luminosities } from '../../../constants/SearchPanel';
 import { useTranslation } from 'react-i18next';
+import { useSettings } from '../../../contexts/SettingsContext';
 
 
 enum SearchType {
@@ -54,7 +52,6 @@ const SearchComponent: React.FC<{
 }) => {
 
     const { t } = useTranslation();
-    const { showNotification } = useNotification();
 
     // Which search tab is selected
     const [searchSelection, setSearchSelection] = useState<SearchType>(SearchType.SOFT);
@@ -70,37 +67,6 @@ const SearchComponent: React.FC<{
     // Are blocks valid
     const [blocksValid, setBlocksValid] = useState<boolean>(true);
     const [blocksValidMessage, setBlocksValidMessage] = useState<string>('');
-
-    // Keywords
-    const [keywords, setKeywords] = useState<string[]>([]);
-    const [keywordLoaded, setKeywordLoaded] = useState<boolean>(false);
-
-    useEffect(() => {
-        const fetchKeywords = async () => {
-            const response: ApiResponse = (await axios.get('http://127.0.0.1:5000/api/get_keywords')).data;
-            if (response.success) {
-                const data = (response as SuccessfulKeywordsResponse).data;
-                setKeywords(data);
-                setKeywordLoaded(true);
-            } else {
-                showNotification({
-                    type: NotificationType.ERROR,
-                    title: t('search.keywords.error'),
-                    text: response.error_message ?? "",
-                    buttons: [],
-                    timeout: 5000,
-                    errorContext: {
-                        timestamp: Date.now(),
-                        message: t('search.keywords.error'),
-                        origin: "fetchKeywords"
-                    }
-                });
-            }
-        };
-        if (!keywordLoaded) {
-            fetchKeywords();
-        }
-    }, []);
 
     const validateSingleBlock = (block: QueryPart) => {
         switch(block.type) {
@@ -316,6 +282,8 @@ const SearchComponent: React.FC<{
         receiveQuery(query);
     }
 
+    const { serverSettingsInfos } = useSettings();
+
     return (
         <div className="sb-Content">
 
@@ -356,12 +324,14 @@ const SearchComponent: React.FC<{
                         value={localSearchTerm}
                         onChange={(e) => setLocalSearchTerm(e.target.value)}
                     />
-                    <button
-                        className='microphone'
-                        onClick={() => startAudioRecording()}
-                    >
-                        <FaMicrophone />
-                    </button>
+                    { false &&
+                        <button
+                            className='microphone'
+                            onClick={() => startAudioRecording()}
+                        >
+                            <FaMicrophone />
+                        </button>
+                    }
                     <button
                         onClick={() => addTermToSearch()}
                     >
@@ -386,7 +356,7 @@ const SearchComponent: React.FC<{
 
                 {keywordsVisible && 
                 <div className="container" id="keywords_container">
-                    { keywordLoaded && keywords.map(keyword => renderKeyword(
+                    { serverSettingsInfos.keywords.map(keyword => renderKeyword(
                         getKeywordStatus(keyword),
                         toggleKeyword,
                         keyword
@@ -400,8 +370,8 @@ const SearchComponent: React.FC<{
             <div className="searchSection">
                 <h1>{t('search.colors.title')}</h1>
                 <div className="container" id="colors_container">
-                    {colors.map(color => renderColor(
-                        getColorStatus(color.id),
+                    { serverSettingsInfos.colors.map(color => renderColor(
+                        getColorStatus(color),
                         toggleColor,
                         color
                     ))}
@@ -412,8 +382,8 @@ const SearchComponent: React.FC<{
             <div className="searchSection">
                 <h1>{t('search.luminosity.title')}</h1>
                 <div className="container" id="luminosity_container">
-                    {luminosities.map(luminosity => renderLuminosity(
-                        getLuminosityStatus(luminosity.id),
+                    {serverSettingsInfos.luminosities.map(luminosity => renderLuminosity(
+                        getLuminosityStatus(luminosity),
                         toggleLuminosity,
                         luminosity
                     ))}

@@ -92,34 +92,32 @@ const renderKeyword = (
 }
 const renderColor = (
     isEnabled: boolean,
-    toggleColor: (colorId: string) => void,
-    color: { id: string, style: string }
+    toggleColor: (color: string) => void,
+    color: string
 ) => {
     return (
         <div 
-            key={color.id} 
+            key={color} 
             className={`color ${isEnabled ? 'enabled' : ''}`}
-            style={{ background: color.style }}
-            onClick={() => toggleColor(color.id)}
+            color-name={color}
+            onClick={() => toggleColor(color)}
         >
         </div>
     );
 }
 const renderLuminosity = (
     isEnabled: boolean,
-    toggleLuminosity: (luminosityId: string) => void,
-    luminosity: { id: string, color: string, text: string, textColor: string }
+    toggleLuminosity: (luminosity: string) => void,
+    luminosity: string
 ) => {
     return (
         <div 
-            key={luminosity.id} 
+            key={luminosity} 
             className={`luminosity ${isEnabled ? 'enabled' : ''}`}
-            style={{ background: luminosity.color, color: luminosity.textColor }}
-            onClick={() => toggleLuminosity(luminosity.id)}
+            luminosity-name={luminosity}
+            onClick={() => toggleLuminosity(luminosity)}
         >
-            <h3 
-                style={{ color: luminosity.textColor }}
-            >{luminosity.text}</h3>
+            <h3 >{luminosity}</h3>
         </div>
     );
 }

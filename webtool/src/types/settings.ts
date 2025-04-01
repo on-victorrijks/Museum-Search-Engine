@@ -13,9 +13,11 @@ export interface Model {
 
 export interface ServerSettingsInfos {
     models: Model[];
+    keywords: string[];
+    colors: string[];
+    luminosities: string[];
     methods: string[];
     languages: string[];
-    
     min_rocchio_k: number;
     max_rocchio_k: number;
     min_rocchio_scale: number;

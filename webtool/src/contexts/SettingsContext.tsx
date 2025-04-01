@@ -18,7 +18,7 @@ const SettingsContext = createContext<SettingsContext | undefined>(undefined);
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { i18n } = useTranslation();
     const [settings, setSettings] = useState<Settings>({
-        model_name: 'march_finetuned',
+        model_name: 'art-base',
         method: 'rocchio',
         rocchio_k: 5,
         rocchio_scale: 0.25,
@@ -34,7 +34,10 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         min_rocchio_k: 0,
         max_rocchio_k: 100,
         min_rocchio_scale: 0,
-        max_rocchio_scale: 10.0
+        max_rocchio_scale: 10.0,
+        keywords: [],
+        colors: [],
+        luminosities: []
     });
 
     useEffect(() => {
@@ -48,7 +51,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
             setSettings({
                 ...settings,
                 model_name: serverSettingsInfos.models[serverSettingsInfos.models.length - 1].model_name
-            });
+            });            
         }
     }, [serverSettingsInfos]);
 
@@ -63,7 +66,8 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         try {
             const response = await axios.get('http://127.0.0.1:5000/api/get_settings_infos');
             if (response && response.data && response.data.data) {
-                setServerSettingsInfos(response.data.data);
+                const infos = response.data.data;
+                setServerSettingsInfos(infos);
                 setLoaded(true);            
             } else {
                 throw new Error("No data received from server");

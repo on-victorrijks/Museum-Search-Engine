@@ -9,6 +9,7 @@ import "../../styles/SimilarImages.css";
 import ArtPiecesGallery from './../Artwork/ArtPiecesGallery';
 import { NotificationType } from '../../types/Notification';
 import { useNotification } from '../../contexts/NotificationContext';
+import { useSettings } from '../../contexts/SettingsContext';
 
 const SimilarImages: React.FC<{
     recordID: number;
@@ -18,6 +19,7 @@ const SimilarImages: React.FC<{
     openArtPieceProfile
 }) => {
 
+    const { settings } = useSettings();
     const { showNotification } = useNotification();
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -26,7 +28,16 @@ const SimilarImages: React.FC<{
     const fetchNeighbours = async(recordID: number) => {
 
         try {
-            const response = await axios.get("http://127.0.0.1:5000/api/artwork/" + recordID + "/similar");
+            const response = await axios.post("http://127.0.0.1:5000/api/artwork/" + recordID + "/similar", {
+                "page": 0,
+                "page_size": 10,
+                "keep_original_record": false,
+                "model_name": settings.model_name,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
         
             // Parse response.data as JSON
             const data: ApiResponse = response.data;

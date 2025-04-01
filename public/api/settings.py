@@ -20,8 +20,20 @@ def get_paths():
                 "name": "february_finetuned",
                 "path_embeddings": PARENT + os.getenv("february_finetuned_path_embeddings"),
                 "path_index_to_recordID": PARENT + os.getenv("february_finetuned_path_index_to_recordID"),
-                "path_keywords": PARENT + os.getenv("february_finetuned_path_keywords_embeddings"),
-                "path_term_to_index": PARENT + os.getenv("february_finetuned_path_keywords_term_to_index"),
+                "keywords": {
+                    "fr": {
+                        "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_fr"),
+                        "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_fr")
+                    },
+                    "en": {
+                        "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_en"),
+                        "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_en")
+                    },
+                    "nl": {
+                        "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_nl"),
+                        "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_nl")
+                    },
+                },
                 "text_dim": 768,    
                 "img_dim": 768,
                 "base_name": os.getenv("february_finetuned_model_name"),
@@ -34,35 +46,77 @@ def get_paths():
                     {"name": "recall@1", "value": 0.619004},
                 ]
             },
+            #{
+            #    "name": "march_finetuned",
+            #    "path_embeddings": PARENT + os.getenv("march_finetuned_path_embeddings"),
+            #    "path_index_to_recordID": PARENT + os.getenv("march_finetuned_path_index_to_recordID"),
+            #    "path_keywords": PARENT + os.getenv("march_finetuned_path_keywords_embeddings"),
+            #    "path_term_to_index": PARENT + os.getenv("march_finetuned_path_keywords_term_to_index"),
+            #    "text_dim": 768,    
+            #    "img_dim": 768,
+            #    "base_name": os.getenv("march_finetuned_model_name"),
+            #    "weights_path": PARENT + os.getenv("march_finetuned_weights_path"),
+            #    "description": "March finetuned embeddings",
+            #    "metrics": [
+            #        {"name": "loss", "value": 0.283353},
+            #        {"name": "average_position", "value": 2.305237},
+            #        {"name": "mrr", "value": 0.784912},
+            #        {"name": "recall@1", "value": 0.666860},
+            #    ]
+            #},
             {
-                "name": "march_finetuned",
-                "path_embeddings": PARENT + os.getenv("march_finetuned_path_embeddings"),
-                "path_index_to_recordID": PARENT + os.getenv("march_finetuned_path_index_to_recordID"),
-                "path_keywords": PARENT + os.getenv("march_finetuned_path_keywords_embeddings"),
-                "path_term_to_index": PARENT + os.getenv("march_finetuned_path_keywords_term_to_index"),
-                "text_dim": 768,    
-                "img_dim": 768,
-                "base_name": os.getenv("march_finetuned_model_name"),
-                "weights_path": PARENT + os.getenv("march_finetuned_weights_path"),
-                "description": "March finetuned embeddings",
+                "name": "art-mini",
+                "path_embeddings": PARENT + os.getenv("art-mini_path_embeddings"),
+                "path_index_to_recordID": PARENT + os.getenv("art-mini_path_index_to_recordID"),
+                "keywords": {
+                    "fr": {
+                        "path": PARENT + os.getenv("art-mini_path_keywords_embeddings_fr"),
+                        "term_data": PARENT + os.getenv("art-mini_path_keywords_term_data_fr")
+                    },
+                    "en": {
+                        "path": PARENT + os.getenv("art-mini_path_keywords_embeddings_en"),
+                        "term_data": PARENT + os.getenv("art-mini_path_keywords_term_data_en")
+                    },
+                    "nl": {
+                        "path": PARENT + os.getenv("art-mini_path_keywords_embeddings_nl"),
+                        "term_data": PARENT + os.getenv("art-mini_path_keywords_term_data_nl")
+                    },
+                },
+                "text_dim": 512,    
+                "img_dim": 512,
+                "base_name": os.getenv("art-mini_model_name"),
+                "weights_path": PARENT + os.getenv("art-mini_weights_path"),
+                "description": "Art-mini embeddings",
                 "metrics": [
-                    {"name": "loss", "value": 0.283353},
-                    {"name": "average_position", "value": 2.305237},
-                    {"name": "mrr", "value": 0.784912},
-                    {"name": "recall@1", "value": 0.666860},
+                    {"name": "loss", "value": 1.097012},
+                    {"name": "average_position", "value": 2.357923},
+                    {"name": "mrr", "value": 0.748386},
+                    {"name": "recall@1", "value": 0.623060},
                 ]
             },
             {
-                "name": "trilang_finetuned",
-                "path_embeddings": PARENT + os.getenv("trilang_finetuned_path_embeddings"),
-                "path_index_to_recordID": PARENT + os.getenv("trilang_finetuned_path_index_to_recordID"),
-                "path_keywords": PARENT + os.getenv("trilang_finetuned_path_keywords_embeddings"),
-                "path_term_to_index": PARENT + os.getenv("trilang_finetuned_path_keywords_term_to_index"),
-                "text_dim": 768,    
+                "name": "art-base",
+                "path_embeddings": PARENT + os.getenv("art-base_path_embeddings"),
+                "path_index_to_recordID": PARENT + os.getenv("art-base_path_index_to_recordID"),
+                "keywords": {
+                    "fr": {
+                        "path": PARENT + os.getenv("art-base_path_keywords_embeddings_fr"),
+                        "term_data": PARENT + os.getenv("art-base_path_keywords_term_data_fr")
+                    },
+                    "en": {
+                        "path": PARENT + os.getenv("art-base_path_keywords_embeddings_en"),
+                        "term_data": PARENT + os.getenv("art-base_path_keywords_term_data_en")
+                    },
+                    "nl": {
+                        "path": PARENT + os.getenv("art-base_path_keywords_embeddings_nl"),
+                        "term_data": PARENT + os.getenv("art-base_path_keywords_term_data_nl")
+                    },
+                },
+                "text_dim": 768,
                 "img_dim": 768,
-                "base_name": os.getenv("trilang_finetuned_model_name"),
-                "weights_path": PARENT + os.getenv("trilang_finetuned_weights_path"),
-                "description": "Trilang finetuned embeddings",
+                "base_name": os.getenv("art-base_model_name"),
+                "weights_path": PARENT + os.getenv("art-base_weights_path"),
+                "description": "Art-base embeddings",
                 "metrics": [
                     {"name": "loss", "value": 0.270707},
                     {"name": "average_position", "value": 2.104928},

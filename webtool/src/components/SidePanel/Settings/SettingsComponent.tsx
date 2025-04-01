@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSettings } from '../../../contexts/SettingsContext';
 import { Settings } from '../../../types/settings';
 import { Slider } from '@mui/material';
@@ -54,7 +54,7 @@ const SettingsRocchioComponent: React.FC<{
 const SettingsComponent: React.FC<{}> = ({}) => {
 
     const { settings, setSettings, serverSettingsInfos } = useSettings();
-
+    
     return (
     <div className="settings">
         <div className="settings-section">

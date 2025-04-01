@@ -61,7 +61,12 @@ for embedding in get_paths()["embeddings"]:
 print(f"Models loaded")
 
 # Initialize database manager
+print("Initializing database manager...")
 DB_MANAGER = DatabaseManager(get_db_config(), get_paths(), MODELS)
+print("MODELS:")
+for modelData in list(DB_MANAGER.get_models().keys()):
+    print(f"  - {modelData}")
+print("✓ : Database manager initialized")
 
 MIN_PAGE_SIZE = 1
 MAX_PAGE_SIZE = 100
@@ -95,17 +100,26 @@ MAX_AUTOCOMPLETE_PREFIX_LENGTH = 100
 MAX_AUTOCOMPLETE_RESULTS = 5
 
 # Default model
-DEFAULT_MODEL = "trilang_finetuned"
+DEFAULT_MODEL = "art-base"
 
 
 # Routes
-@app.route('/api/artwork/<int:record_id>/similar', methods=['GET'])
+@app.route('/api/artwork/<int:record_id>/similar', methods=['POST'])
 @limiter.limit("60 per minute")
 def get_similar_artworks(record_id):
     try:
-        page = int(request.args.get('page', 1))
-        page_size = int(request.args.get('page_size', 10))
-        keep_original_record = request.args.get('keep_original_record', False)
+        data = request.json
+        page = int(data.get('page', 1))
+        page_size = int(data.get('page_size', 10))
+        keep_original_record = data.get('keep_original_record', False)
+        model_name = data.get('model_name', DEFAULT_MODEL)
+
+        if model_name not in MODELS:
+            return formatReturn(
+                success=False,
+                user_error="Modèle invalide",
+                error_code=400
+            )
 
         page_size = max(MIN_PAGE_SIZE, min(page_size, MAX_PAGE_SIZE))
         max_page = math.ceil(UPPER_BOUND_ARTWORKS / page_size)
@@ -123,7 +137,8 @@ def get_similar_artworks(record_id):
             recordID=record_id,
             page=page,
             page_size=page_size,
-            keep_original_record=keep_original_record
+            keep_original_record=keep_original_record,
+            model_name=model_name
         )
         
         if results is None:
@@ -491,7 +506,12 @@ def autocomplete():
 def get_settings_infos():
     return formatReturn(success=True, data={
         # Models
-        "models": [{"model_name": model[0], "modelID": model[1]} for model in DB_MANAGER.get_models()],
+        "models": DB_MANAGER.get_formatted_models(),
+
+        # Keywords
+        "keywords": DB_MANAGER.get_keywords(),
+        "colors": DB_MANAGER.get_colors(),
+        "luminosities": DB_MANAGER.get_luminosities(),
 
         # Methods
         "methods": VALID_VERSIONS,
@@ -547,7 +567,7 @@ def get_columns():
 def get_models():
     # TODO: Deprecate this route
     try:
-        models = [model[0] for model in DB_MANAGER.get_models()]
+        models = list(DB_MANAGER.get_models().keys())
         return formatReturn(success=True, data=models)
     except Exception as e:
         return formatReturn(
