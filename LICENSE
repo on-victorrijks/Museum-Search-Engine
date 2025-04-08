@@ -1,0 +1,22 @@
+This tool does not have a definitive name, it is called : “AI Museum Search Engine” for now.
+ 
+This repository contains a web application allowing users (staff from the museum or the general public) to search a database of artworks, artists and subject matters (iconographies). The tool uses AI to sort the results, augment collections, sort collections and refine the results. Other additional algorithms are used to refine the results or to sort the collections.
+ 
+This tool has been made to help the museums (more specifically the Royal Museums of Fine Arts of Belgium). It is not intended to be sold to them as a full product or as a subscription-based product. I wish that this tool remains free and accessible to museums. 
+ 
+Copyright (C) 2025  VICTOR RIJKS
+ 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+ 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ 
+For commercial use or custom licensing, please contact the author at victor.rijks12@gmail.com.
