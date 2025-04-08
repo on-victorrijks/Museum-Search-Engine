@@ -2,3 +2,6 @@
 /private_data
 datasets/sample_queries.csv
 /public/models
+/schematics
+/public/programs
+/public/psd
