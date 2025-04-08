@@ -6,3 +6,4 @@ datasets/sample_queries.csv
 /public/programs
 /public/psd
 *.sql
+private_data.zip
