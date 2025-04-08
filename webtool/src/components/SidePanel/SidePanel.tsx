@@ -104,12 +104,12 @@ import SettingsComponent from './Settings/SettingsComponent';
                             >
                                 <FaExclamationTriangle />
                             </div>
-                        </div>
-                        <div 
-                            className="icons-selector-item"
-                            onClick={() => setMode(SidePanelMode.SETTINGS)}
-                        >
-                            <FaCog />
+                            <div 
+                                className="icons-selector-item"
+                                onClick={() => setMode(SidePanelMode.SETTINGS)}
+                            >
+                                <FaCog />
+                            </div>
                         </div>
                         <div className="side-pannel-selector-icon-bar"></div>
                     </div>
