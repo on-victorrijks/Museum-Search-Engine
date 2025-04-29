@@ -7,3 +7,6 @@ datasets/sample_queries.csv
 /public/psd
 *.sql
 private_data.zip
+/IconClassTest
+/IconClassTest_Images
+/IconclassTest_Exploded

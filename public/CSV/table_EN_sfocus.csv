@@ -1,0 +1,7 @@
+Dataset,ViT,Model,Avg. Pos.,MRR,Recall@1,Recall@5,Recall@10,nDCG@5,nDCG@10,P50,P75,P90,P95
+Synthetic captions,L/14,sfocus__S_Caption,1.952,0.801,0.688,0.948,0.982,0.834,0.845,\textbf{1.0},\textbf{2.0},4.0,7.0
+Synthetic captions + Synthetic colors,L/14,sfocus__S_Caption__S_Colors,1.957,0.805,0.697,0.945,0.98,0.836,0.848,\textbf{1.0},\textbf{2.0},4.0,6.0
+Synthetic captions + Synthetic emotions,L/14,sfocus__S_Caption__S_Emotions,2.165,0.801,0.697,0.937,0.977,0.83,0.843,\textbf{1.0},\textbf{2.0},4.0,7.0
+Synthetic captions + Synthetic luminosity,L/14,sfocus__S_Caption__S_Luminosity,1.99,0.803,0.696,0.948,0.986,0.835,0.848,\textbf{1.0},\textbf{2.0},4.0,6.0
+Synthetic captions + Synthetic objects,L/14,sfocus__S_Caption__S_Objects,\textbf{1.751},\textbf{0.846},\textbf{0.751},\textbf{0.97},\textbf{0.987},\textbf{0.875},\textbf{0.881},\textbf{1.0},\textbf{2.0},\textbf{3.0},\textbf{5.0}
+Real subject matter,L/14,sfocus__Subjectmatter,2.073,0.796,0.682,0.939,0.977,0.828,0.84,\textbf{1.0},\textbf{2.0},4.0,7.0
