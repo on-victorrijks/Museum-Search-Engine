@@ -21,7 +21,10 @@ class Model:
         self.tokenizer = AutoTokenizer.from_pretrained(base_name)
         print(f"    ✓ : Processor, model and tokenizer loaded")
         print(f"Loading weights...")
-        self.model.load_state_dict(torch.load(weights_path, weights_only=True))
+        if self.device != "cpu":
+            self.model.load_state_dict(torch.load(weights_path, weights_only=True))
+        else:
+            self.model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
         print(f"    ✓ : Weights loaded")
 
     def get_model_name(self):
