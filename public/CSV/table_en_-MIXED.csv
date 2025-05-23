@@ -1,0 +1,9 @@
+Dataset,ViT,Model,Avg. Pos.,MRR,Recall@1,Recall@3,Recall@5,Recall@10,nDCG@3,nDCG@5,nDCG@10
+N/A,B/32,basic-mini,12.921,0.483,0.358,0.544,0.625,0.733,0.466,0.499,0.534
+N/A,L/14,basic-base,9.098,0.537,0.402,0.609,0.705,0.814,0.522,0.562,0.597
+N/A,L/14@336px,basic-large,9.014,0.558,0.426,0.627,0.721,0.832,0.543,0.581,0.618
+cap-FR-1,L/14,february_finetuned,3.484,0.72,0.6,0.808,0.873,0.928,0.723,0.75,0.768
+cap-FR-2 \& ico-FR,L/14,march_finetuned,\textbf{2.891},0.739,0.62,\textbf{\textbf{0.828}},0.885,\textbf{0.949},0.743,0.766,0.788
+cap-TRI \& ico-TRI,B/32,art-mini,3.211,0.716,0.596,0.804,0.872,0.941,0.717,0.745,0.768
+cap-TRI \& ico-TRI,L/14,art-base,2.934,0.74,0.626,0.825,\textbf{0.894},\textbf{0.949},0.742,0.771,0.789
+cap-TRI \& ico-TRI,L/14@336px,art-large,3.096,\textbf{0.747},\textbf{0.637},0.826,0.886,0.946,\textbf{0.749},\textbf{0.774},\textbf{0.793}

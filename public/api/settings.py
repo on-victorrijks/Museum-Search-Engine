@@ -16,36 +16,36 @@ def get_paths():
         "artists": DB_INPUT_ARTISTS,
         "subjectmatter": FILE_SUBJECTMATTERS_PARSED,
         "embeddings": [
-            {
-                "name": "february_finetuned",
-                "path_embeddings": PARENT + os.getenv("february_finetuned_path_embeddings"),
-                "path_index_to_recordID": PARENT + os.getenv("february_finetuned_path_index_to_recordID"),
-                "keywords": {
-                    "fr": {
-                        "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_fr"),
-                        "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_fr")
-                    },
-                    "en": {
-                        "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_en"),
-                        "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_en")
-                    },
-                    "nl": {
-                        "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_nl"),
-                        "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_nl")
-                    },
-                },
-                "text_dim": 768,    
-                "img_dim": 768,
-                "base_name": os.getenv("february_finetuned_model_name"),
-                "weights_path": PARENT + os.getenv("february_finetuned_weights_path"),
-                "description": "February finetuned embeddings",
-                "metrics": [
-                    {"name": "loss", "value": 0.353437},
-                    {"name": "average_position", "value": 2.634336},
-                    {"name": "mrr", "value": 0.744311},
-                    {"name": "recall@1", "value": 0.619004},
-                ]
-            },
+            #{
+            #    "name": "february_finetuned",
+            #    "path_embeddings": PARENT + os.getenv("february_finetuned_path_embeddings"),
+            #    "path_index_to_recordID": PARENT + os.getenv("february_finetuned_path_index_to_recordID"),
+            #    "keywords": {
+            #        "fr": {
+            #            "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_fr"),
+            #            "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_fr")
+            #        },
+            #        "en": {
+            #            "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_en"),
+            #            "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_en")
+            #        },
+            #        "nl": {
+            #            "path": PARENT + os.getenv("february_finetuned_path_keywords_embeddings_nl"),
+            #            "term_data": PARENT + os.getenv("february_finetuned_path_keywords_term_data_nl")
+            #        },
+            #    },
+            #    "text_dim": 768,    
+            #    "img_dim": 768,
+            #    "base_name": os.getenv("february_finetuned_model_name"),
+            #    "weights_path": PARENT + os.getenv("february_finetuned_weights_path"),
+            #    "description": "February finetuned embeddings",
+            #    "metrics": [
+            #        {"name": "loss", "value": 0.353437},
+            #        {"name": "average_position", "value": 2.634336},
+            #        {"name": "mrr", "value": 0.744311},
+            #        {"name": "recall@1", "value": 0.619004},
+            #    ]
+            #},
             #{
             #    "name": "march_finetuned",
             #    "path_embeddings": PARENT + os.getenv("march_finetuned_path_embeddings"),

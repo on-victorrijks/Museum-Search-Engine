@@ -1293,6 +1293,7 @@ class DatabaseManager:
                                 nearest_artwork_embedding = self.get_embedding_from_recordID(recordID, model_name)
                                 if nearest_artwork_embedding is not None:
                                     embeddings.append(nearest_artwork_embedding)
+                                    distance = max(distance, 0)
                                     weights.append(rocchio_scale * weight * np.power(distance, 2))
 
         if len(embeddings) == 0:

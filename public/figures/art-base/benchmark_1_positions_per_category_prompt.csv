@@ -1,0 +1,13 @@
+Language,Category,Mean,Std,N
+French,Dessin,3.2155,6.588,152.0
+French,Tableau,2.4459,5.1314,296.0
+French,Sculpture,1.9167,1.1055,6.0
+English,Dessin,2.1118,2.4238,152.0
+English,Tableau,1.5777,1.8978,296.0
+English,Sculpture,1.7917,1.1851,6.0
+Dutch,Dessin,7.8618,26.2504,152.0
+Dutch,Tableau,3.9265,10.339,296.0
+Dutch,Sculpture,8.75,8.4385,6.0
+Mean,Dessin,4.3964,11.7541,152.0
+Mean,Tableau,2.6501,5.7894,296.0
+Mean,Sculpture,4.1528,3.5764,6.0

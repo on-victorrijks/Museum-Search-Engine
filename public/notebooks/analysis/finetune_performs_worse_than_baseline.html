@@ -1,0 +1,215 @@
+
+    <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./res_style.css">
+    </head>
+    <body>
+        
+    <div class='title'>
+        <h1>Baseline performs better than finetuning</h1>
+    </div>
+    <div class='container'>
+    
+    <div class='query'>
+        <div class='query-image'>
+            <img src='./../../../private_data/local_images/art-foto/old/Internet/Cantagallina-2994_057dig-L.jpg' alt='Vue des remparts'>
+            <div class='query-image-info'>
+                <h2>Vue des remparts</h2>
+                <h3>Remigio Cantagallina</h3>
+            </div>
+        </div>
+        <div class='query-text'>
+            <b>Prompt</b>
+            <h1>Deux personnes, une muraille, une tour, des arbres</h1>
+        </div>
+    </div>
+    
+        <div class='row' finetuned='False'>
+            <div class='model-name'>
+                <h1>basic-mini</h1>
+                <h2>Found at position #20</h2>
+            </div>
+            <div class='results'>
+        
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/Hondius-11941dig-L.jpg' alt='Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')'>
+                <div class='result-info'>
+                    <h2>Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')</h2>
+                    <h3>Hendrick I Hondius</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/pynacker-1478ZW-L.jpg' alt='Chasse au daim'>
+                <div class='result-info'>
+                    <h2>Chasse au daim</h2>
+                    <h3>Adam Pynacker</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/Old/Internet/Cats-4060.856dig-L.jpg' alt='Villageois menant un troupeau à l'abreuvoir'>
+                <div class='result-info'>
+                    <h2>Villageois menant un troupeau à l'abreuvoir</h2>
+                    <h3>Jacob Cats</h3>
+                </div>
+            </div>
+            </div></div>
+        <div class='row' finetuned='True'>
+            <div class='model-name'>
+                <h1>art-mini</h1>
+                <h2>Found at position #41</h2>
+            </div>
+            <div class='results'>
+        
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/vanNieulandt-4060_2706dig-L.jpg' alt='Paysage italien avec mausolée rond'>
+                <div class='result-info'>
+                    <h2>Paysage italien avec mausolée rond</h2>
+                    <h3>Willem Adriaensz. van Nieulandt II</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/Internet/Farinati-4060.1310-L.jpg' alt='Allégorie de l'Automne'>
+                <div class='result-info'>
+                    <h2>Allégorie de l'Automne</h2>
+                    <h3>Paolo Farinati</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/Hondius-11941dig-L.jpg' alt='Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')'>
+                <div class='result-info'>
+                    <h2>Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')</h2>
+                    <h3>Hendrick I Hondius</h3>
+                </div>
+            </div>
+            </div></div>
+        <div class='row' finetuned='False'>
+            <div class='model-name'>
+                <h1>basic-base</h1>
+                <h2>Found at position #6</h2>
+            </div>
+            <div class='results'>
+        
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/Old/Internet/vanDrielst-4060.1125dig-L.jpg' alt='Ferme à Westerbork (Drenthe)'>
+                <div class='result-info'>
+                    <h2>Ferme à Westerbork (Drenthe)</h2>
+                    <h3>Egbert van Drielst</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/Hondius-11941dig-L.jpg' alt='Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')'>
+                <div class='result-info'>
+                    <h2>Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')</h2>
+                    <h3>Hendrick I Hondius</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/deBisschop-4060_309dig-L.jpg' alt='Le Bois de la Haye'>
+                <div class='result-info'>
+                    <h2>Le Bois de la Haye</h2>
+                    <h3>Jan de Bisschop, dit Episcopius</h3>
+                </div>
+            </div>
+            </div></div>
+        <div class='row' finetuned='True'>
+            <div class='model-name'>
+                <h1>art-base</h1>
+                <h2>Found at position #20</h2>
+            </div>
+            <div class='results'>
+        
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/vanNieulandt-4060_2706dig-L.jpg' alt='Paysage italien avec mausolée rond'>
+                <div class='result-info'>
+                    <h2>Paysage italien avec mausolée rond</h2>
+                    <h3>Willem Adriaensz. van Nieulandt II</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/Baltens-12060dig-L.jpg' alt='Paysage aux voyageurs'>
+                <div class='result-info'>
+                    <h2>Paysage aux voyageurs</h2>
+                    <h3>Peeter Baltens alias Custodis van Antwerpen</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/mod/internet/Lynen-3995ZW-L.jpg' alt='Le peintre de sujets décoratifs'>
+                <div class='result-info'>
+                    <h2>Le peintre de sujets décoratifs</h2>
+                    <h3>Amédée Lynen</h3>
+                </div>
+            </div>
+            </div></div>
+        <div class='row' finetuned='False'>
+            <div class='model-name'>
+                <h1>basic-large</h1>
+                <h2>Found at position #5</h2>
+            </div>
+            <div class='results'>
+        
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/deBisschop-4060_309dig-L.jpg' alt='Le Bois de la Haye'>
+                <div class='result-info'>
+                    <h2>Le Bois de la Haye</h2>
+                    <h3>Jan de Bisschop, dit Episcopius</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/Hondius-11941dig-L.jpg' alt='Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')'>
+                <div class='result-info'>
+                    <h2>Saint Jean-Baptiste reconnaît Jésus comme l'Agneau mystique ('Ecce Agnus Dei')</h2>
+                    <h3>Hendrick I Hondius</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/vanNieulandt-4060_2706dig-L.jpg' alt='Paysage italien avec mausolée rond'>
+                <div class='result-info'>
+                    <h2>Paysage italien avec mausolée rond</h2>
+                    <h3>Willem Adriaensz. van Nieulandt II</h3>
+                </div>
+            </div>
+            </div></div>
+        <div class='row' finetuned='True'>
+            <div class='model-name'>
+                <h1>art-large</h1>
+                <h2>Found at position #4</h2>
+            </div>
+            <div class='results'>
+        
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/old/internet/vanNieulandt-4060_2706dig-L.jpg' alt='Paysage italien avec mausolée rond'>
+                <div class='result-info'>
+                    <h2>Paysage italien avec mausolée rond</h2>
+                    <h3>Willem Adriaensz. van Nieulandt II</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/mod/internet/Meunier-12192dig-L.jpg' alt='Religieuse et convalescente'>
+                <div class='result-info'>
+                    <h2>Religieuse et convalescente</h2>
+                    <h3>Constantin Meunier</h3>
+                </div>
+            </div>
+            
+            <div class='result' isexpected='False'>
+                <img src='./../../../private_data/local_images/art-foto/mod/internet/Lynen-3995ZW-L.jpg' alt='Le peintre de sujets décoratifs'>
+                <div class='result-info'>
+                    <h2>Le peintre de sujets décoratifs</h2>
+                    <h3>Amédée Lynen</h3>
+                </div>
+            </div>
+            </div></div></div>
+    </body>
+    </html>
+    

@@ -455,7 +455,7 @@ const App: React.FC = () => {
             queryPartAsHard.exactMatch === true &&
             queryPartAsHard.isNot === false &&
             queryPartAsHard.selectedColumn &&
-            queryPartAsHard.selectedColumn.key === "iconography"
+            queryPartAsHard.selectedColumn.key === "STF_values"
           ) {
             const queryPartAsIncludes = queryPartAsHard as IncludesBlockProps;
             if (queryPartAsIncludes.values && queryPartAsIncludes.values.includes(term)) {

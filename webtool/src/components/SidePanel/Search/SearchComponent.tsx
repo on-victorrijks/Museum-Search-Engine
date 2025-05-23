@@ -116,6 +116,7 @@ const SearchComponent: React.FC<{
                 continue;
             }
 
+
             if (block.type === BlockType.AND || block.type === BlockType.OR) {
                 if(i === (blocks.length - 1)) {
                     valid = false;
@@ -123,7 +124,11 @@ const SearchComponent: React.FC<{
                     break;
                 } else if (
                     (lastBlock === null ) || 
-                    (lastBlock.type !== BlockType.EQUAL && lastBlock.type !== BlockType.BETWEEN && lastBlock.type !== BlockType.INCLUDES)
+                    (
+                        lastBlock.type !== BlockType.EQUAL 
+                        && lastBlock.type !== BlockType.BETWEEN 
+                        && lastBlock.type !== BlockType.INCLUDES 
+                        && lastBlock.type !== BlockType.GROUP)
                 ) {
                     valid = false;
                     message = t('search.validation.andOrAfter');

@@ -79,7 +79,7 @@
       "invalid": "Votre contrainte est invalide"
     },
     "options": {
-      "not": "NE",
+      "not": "SAUF",
       "notIncludes": "NE (CONTIENT) PAS",
       "all": "TOUS",
       "exact": "EXACTEMENT",
