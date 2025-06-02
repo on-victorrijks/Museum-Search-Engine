@@ -20,3 +20,8 @@ private_data.zip
 /public/api/__pycache__
 /public/notebooks/ablation
 /public/notebooks/temp_images
+BACK_COVER.pdf
+FRONT_COVER.pdf
+/public/notebooks/uploads
+/public/notebooks/wikiart_benchmark_3/wikiart_images
+/SE

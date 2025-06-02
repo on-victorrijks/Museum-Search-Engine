@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Viewer</title>
+    <style>
+        body {
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            margin: auto;
+            left: 0;
+            right: 0;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1400px;
+            height: 70vh;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .section {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 6px 12px;
+            margin-left: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            background-color: #1976d2;
+            color: white;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #145ea8;
+        }
+
+        img {
+            max-width: 100%;
+            margin-top: 10px;
+            border-radius: 8px;
+            width: 100%;
+            max-height: 50vh;
+            object-fit: contain;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 3px;
+            background: #e0f7fa;
+            border: solid 1px #b2ebf2;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .icon-button {
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
+        }
+
+        .term-tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .remove-icon {
+            color: #d32f2f;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .prediction-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="group">
+        <div class="section">
+            <img id="imageDisplay" src="" alt="Image will appear here">
+        </div>
+
+        <div class="section">
+            <h3>Upload a New Image</h3>
+            <label>Record ID:</label>
+            <input type="number" id="uploadRecordID">
+            <input type="file" id="uploadFile" accept="image/*">
+            <button onclick="uploadImage()">Upload</button>
+        </div>
+    </div>
+
+
+    <div class="group">
+        <div class="section flex-between">
+            <div>
+                <label>Record ID:</label>
+                <input type="number" id="recordIDInput">
+                <button onclick="submitRecordID()">Submit</button>
+            </div>
+            <button onclick="getRandomRecord()">🎲 Random Record</button>
+        </div>
+
+        <div class="section">
+            <label>Known term:</label>
+            <input type="text" id="knownInput">
+            <button onclick="addKnown()">Add Known</button>
+            <ul id="knownList"></ul>
+        </div>
+
+        <div class="section">
+            <label>Banned term:</label>
+            <input type="text" id="bannedInput">
+            <button onclick="addBanned()">Add Banned</button>
+            <ul id="bannedList"></ul>
+        </div>
+
+        <div class="section">
+            <label>Prediction Threshold (N):</label>
+            <input type="range" min="0.01" max="0.99" step="0.01" value="0.5" id="thresholdRange" onChange="updateN(this.value)">
+            <span id="currentNValue">0.5</span>
+
+            <hr />
+
+            <label>Alpha:</label>
+            <input type="range" min="0.01" max="0.99" step="0.01" value="0.2" id="alphaRange" onChange="updateAlpha(this.value)">
+            <span id="currentAlphaValue">0.2</span>
+        
+        </div>
+
+        
+        <div class="section">
+            <button onclick="getPredictions()">Get Predictions</button>
+            <h3>Predicted Terms with N=<span id="currentNValue">0.5</span></h3>
+            <ul id="predictionsList"></ul>
+        </div>
+    </div>
+
+
+    <script>
+        let known = [];
+        let banned = [];
+        let recordID = null;
+        let N = 0.5;
+        let alpha = 0.2;
+        const URL = "http://localhost:5000";
+
+        function uploadImage() {
+            const recordID = document.getElementById("uploadRecordID").value;
+            const fileInput = document.getElementById("uploadFile");
+            const file = fileInput.files[0];
+
+            if (!recordID || !file) {
+                alert("Please enter a record ID and select an image.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("recordID", recordID);
+            formData.append("image", file);
+
+            fetch(`${URL}/upload`, {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Image uploaded successfully. Waiting 5s for the server to process...");
+                    setTimeout(() => {
+                        setRecordID(recordID);
+                    }, 5000);
+                } else {
+                    alert("Upload failed: " + data.error);
+                }
+            })
+            .catch(() => alert("Upload failed due to server error."));
+        }
+
+        function updateAlpha(newAlpha) {
+            alpha = parseFloat(newAlpha);
+            getPredictions();
+            document.querySelectorAll("#currentAlphaValue").forEach(el => el.textContent = alpha.toFixed(2));
+        }
+
+        function updateN(newN) {
+            N = parseFloat(newN);
+            getPredictions();
+            document.querySelectorAll("#currentNValue").forEach(el => el.textContent = N.toFixed(2));
+        }
+
+        function setRecordID(id) {
+            // Reset known and banned terms when changing record ID
+            known = [];
+            banned = [];
+            updateLists();
+
+            recordID = id;
+            document.getElementById("recordIDInput").value = id;
+            loadImage(id);
+            getPredictions();
+        }
+
+        function submitRecordID() {
+            const inputVal = document.getElementById("recordIDInput").value;
+            if (!inputVal) return;
+            setRecordID(parseInt(inputVal));
+        }
+
+        function getRandomRecord() {
+            fetch(`${URL}/random_record`)
+                .then(res => res.json())
+                .then(data => {
+                    setRecordID(data.recordID);
+                })
+                .catch(() => alert("Error fetching random record."));
+        }
+
+        function loadImage(id) {
+            const imagePath = `${URL}/image/${id}`;
+            fetch(imagePath, { method: 'HEAD' })
+                .then(response => {
+                    document.getElementById("imageDisplay").src = response.ok ? imagePath : "";
+                    if (!response.ok) alert("Image not found.");
+                })
+                .catch(() => {
+                    document.getElementById("imageDisplay").src = "";
+                    alert("Error fetching image.");
+                });
+        }
+
+        function addKnown(term = null) {
+            const input = (term || document.getElementById("knownInput").value.trim()).toLowerCase();
+            if (!input) return;
+            banned = banned.filter(t => t !== input);
+            if (!known.includes(input)) known.push(input);
+            updateLists();
+            if (!term) document.getElementById("knownInput").value = "";
+            getPredictions();
+        }
+
+        function addBanned(term = null) {
+            const input = (term || document.getElementById("bannedInput").value.trim()).toLowerCase();
+            if (!input) return;
+            known = known.filter(t => t !== input);
+            if (!banned.includes(input)) banned.push(input);
+            updateLists();
+            if (!term) document.getElementById("bannedInput").value = "";
+            getPredictions();
+        }
+
+        function removeTerm(term, list) {
+            if (list === 'known') known = known.filter(t => t !== term);
+            else if (list === 'banned') banned = banned.filter(t => t !== term);
+            updateLists();
+            getPredictions();
+        }
+
+        function updateLists() {
+            updateList("knownList", known, 'known');
+            updateList("bannedList", banned, 'banned');
+        }
+
+        function updateList(listID, items, listType) {
+            const ul = document.getElementById(listID);
+            ul.innerHTML = "";
+            items.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `<span class="term-tag">${item}<span class="remove-icon" onclick="removeTerm('${item}', '${listType}')">✖</span></span>`;
+                ul.appendChild(li);
+            });
+        }
+
+        function getPredictions() {
+            if (recordID === null) {
+                alert("Please submit a record ID first.");
+                return;
+            }
+
+            fetch(`${URL}/predict`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ recordID, known, banned, N, alpha })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("predictionsList");
+                list.innerHTML = "";
+
+                if (data.predicted_terms && data.scores) {
+                    data.predicted_terms.forEach((term, index) => {
+                        const li = document.createElement("li");
+                        const score = data.scores[index].toFixed(3);
+
+                        li.innerHTML = `
+                            <span class="prediction-item">
+                                ${term} (Score: ${score})
+                                <span class="icon-button" title="Add to known" onclick="addKnown('${term}')">👍</span>
+                                <span class="icon-button" title="Add to banned" onclick="addBanned('${term}')">🚫</span>
+                            </span>`;
+                        list.appendChild(li);
+                    });
+                } else {
+                    alert(data.error || "No predictions returned.");
+                }
+            })
+            .catch(() => alert("Failed to fetch predictions."));
+        }
+    </script>
+</body>
+</html>
